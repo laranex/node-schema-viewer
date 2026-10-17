@@ -2,14 +2,14 @@
 // database driver, no MCP SDK and no application code. Each command runs under the Node.js Permission Model
 // (`--permission`, without --allow-net, --allow-child-process, --allow-worker or --allow-addons) with file reads limited
 // to this package's dist/ and package.json, the laranex-schema-viewer-ui package, and the project's package.json and
-// snapshot; writes, where a command writes, only to the project directory. Loading anything else (pg, mysql2, the MCP
-// SDK, a project file) is refused with ERR_ACCESS_DENIED. The Permission Model blocks child processes everywhere but the
-// network only from Node.js 25 on, so tests/fixtures/sentinel/deny.mjs is preloaded to make every network, DNS and
-// child-process call fail loudly on 22 and 24 as well. The Permission Model disables fsync, which atomic writes need,
-// so compare --write and check --output run with the sentinel alone.
+// snapshot; writes, where a command writes, only to the output's directory (--allow-fs-write). Loading anything else
+// (pg, mysql2, the MCP SDK, a project file) is refused with ERR_ACCESS_DENIED. The Permission Model blocks child
+// processes everywhere but the network only from Node.js 25 on, so tests/fixtures/sentinel/deny.mjs is preloaded to make
+// every network, DNS and child-process call fail loudly on 22 and 24 as well. Node.js 22.23+, 24 and 26 refuse fsync
+// under the Permission Model; atomic writes still rename a complete temporary file there (src/snapshot.ts).
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { copyFileSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { describe, test, type TestContext } from 'node:test';
@@ -35,11 +35,28 @@ function project(t: TestContext): string {
     return dir;
 }
 
-// Under the Permission Model with the sentinel; a writing command with the sentinel only.
-function sandboxed(args: string[], cwd: string, options: { write?: boolean; reads?: string[] } = {}): Promise<Run> {
+// A copy of a project, for the expected output of a command that writes.
+function copy(t: TestContext, dir: string): string {
+    const other = realpathSync(mkdtempSync(join(tmpdir(), 'lsv-test-')));
+    t.after(() => {
+        rmSync(other, { recursive: true, force: true });
+    });
+    for (const name of ['package.json', 'schema-viewer.json']) {
+        copyFileSync(join(dir, name), join(other, name));
+    }
+    return other;
+}
+
+// Under the Permission Model with the sentinel: reads as listed, writes only where listed.
+function sandboxed(args: string[], cwd: string, options: { writes?: string[]; reads?: string[] } = {}): Promise<Run> {
     const reads = options.reads ?? [join(cwd, 'package.json'), join(cwd, 'schema-viewer.json')];
-    const permission = ['--permission', ...[join(ROOT, 'dist'), join(ROOT, 'package.json'), UI, SENTINEL, ...reads].map((path) => `--allow-fs-read=${path}`)];
-    const flags = [...(options.write ? [] : permission), '--import', SENTINEL];
+    const flags = [
+        '--permission',
+        ...[join(ROOT, 'dist'), join(ROOT, 'package.json'), UI, SENTINEL, ...reads].map((path) => `--allow-fs-read=${path}`),
+        ...(options.writes ?? []).map((path) => `--allow-fs-write=${path}`),
+        '--import',
+        SENTINEL,
+    ];
     return new Promise((resolve, reject) => {
         const child = spawn(process.execPath, [...flags, CLI, ...args], { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
         let stdout = '';
@@ -77,16 +94,52 @@ describe('compare and check stay inside the document', () => {
         });
     }
 
-    test('compare --write and check --output make no network or child-process call and import no project code', async (t) => {
+    // The snapshot compare --write rewrites, alone in out/; renaming the temporary file over it needs read access there.
+    function output(dir: string): string {
+        const out = join(dir, 'out');
+        mkdirSync(out);
+        copyFileSync(TENANTS, join(out, 'schema-viewer.json'));
+        mkdirSync(join(dir, 'reports'));
+        return out;
+    }
+    const COMPARE_WRITE = ['compare', '--write', '--snapshot', 'out/schema-viewer.json'];
+
+    test('compare --write and check --output write atomically under the Permission Model, only to the output directory', async (t) => {
         const dir = project(t);
-        const write = await sandboxed(['compare', '--write'], dir, { write: true });
+        const out = output(dir);
+        const reports = join(dir, 'reports');
+        const expected = copy(t, dir);
+        assert.equal((await runCli(['compare', '--write'], { cwd: expected })).code, 0);
+        const write = await sandboxed(COMPARE_WRITE, dir, { reads: [join(dir, 'package.json'), out], writes: [out] });
         assertClean(write, 'compare --write');
         assert.equal(write.code, 0, write.stderr);
-        assert.match(write.stdout, /Stored 1 comparisons in /);
-        const output = await sandboxed(['check', '--output', 'gate.json'], dir, { write: true });
-        assertClean(output, 'check --output');
-        assert.equal(output.code, 1, output.stderr);
-        assert.equal(readFileSync(join(dir, 'gate.json'), 'utf8'), (await runCli(['check', '--json'], { cwd: dir })).stdout);
+        assert.equal(write.stdout.split('\n').at(-2), 'Stored 1 comparisons in out/schema-viewer.json');
+        assert.equal(readFileSync(join(out, 'schema-viewer.json'), 'utf8'), readFileSync(join(expected, 'schema-viewer.json'), 'utf8'));
+        const check = await sandboxed(['check', '--output', 'reports/gate.json'], dir, { reads: [join(dir, 'package.json'), join(dir, 'schema-viewer.json'), reports], writes: [reports] });
+        assertClean(check, 'check --output');
+        assert.equal(check.code, 1, check.stderr);
+        assert.equal(readFileSync(join(reports, 'gate.json'), 'utf8'), (await runCli(['check', '--json'], { cwd: dir })).stdout);
+        // No temporary file is left beside either output.
+        assert.deepEqual(readdirSync(out), ['schema-viewer.json']);
+        assert.deepEqual(readdirSync(reports), ['gate.json']);
+    });
+
+    test('a write outside the granted directory is refused under the Permission Model and leaves nothing behind', async (t) => {
+        const dir = project(t);
+        const out = output(dir);
+        const reports = join(dir, 'reports');
+        const before = readFileSync(join(out, 'schema-viewer.json'));
+        const write = await sandboxed(COMPARE_WRITE, dir, { reads: [join(dir, 'package.json'), out], writes: [reports] });
+        assert.equal(write.code, 1);
+        assert.match(write.stderr, /^Error: Access to this API has been restricted/m);
+        assert.deepEqual(readFileSync(join(out, 'schema-viewer.json')), before);
+        assert.deepEqual(readdirSync(out), ['schema-viewer.json']);
+        const check = await sandboxed(['check', '--output', 'gate.json'], dir, { reads: [join(dir, 'package.json'), join(dir, 'schema-viewer.json'), dir], writes: [reports] });
+        assert.equal(check.code, 2);
+        assert.equal(check.stdout, '');
+        assert.match(check.stderr, /^Error: Access to this API has been restricted/);
+        assert.deepEqual(readdirSync(dir).sort(), ['index.js', 'out', 'package.json', 'reports', 'schema-viewer.json']);
+        assert.deepEqual(readdirSync(reports), []);
     });
 
     test('the sandbox is effective: a file outside the granted reads cannot be read, and the sentinel fires', async (t) => {

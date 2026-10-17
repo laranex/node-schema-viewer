@@ -2,7 +2,7 @@
 // rejected with one clear error: nothing reads or converts it.
 // The contract (validation, canonical JSON, revision) comes from laranex-schema-viewer-ui; nothing here duplicates it.
 import { randomBytes } from 'node:crypto';
-import { closeSync, fsyncSync, mkdirSync, openSync, readSync, renameSync, rmSync, writeSync } from 'node:fs';
+import { closeSync, fsyncSync, mkdirSync, openSync, readSync, renameSync, unlinkSync, writeSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { assertDocument, canonicalJson, documentRevision, UnsupportedDocumentError, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
 
@@ -81,6 +81,23 @@ export function writeDocument(document: unknown, path: string): void {
     writeAtomically(snapshotBytes(valid), path);
 }
 
+// Under the Node.js Permission Model, Node.js 22.23+, 24 and 26 refuse fsync with ERR_ACCESS_DENIED even for a path
+// --allow-fs-write grants (22.13 allows it). There the write stays atomic (a temporary file renamed over the
+// destination) but is not flushed before the rename. Any other fsync failure, or ERR_ACCESS_DENIED without the
+// Permission Model, fails the write.
+function flush(fd: number): void {
+    try {
+        fsyncSync(fd);
+    } catch (error) {
+        const underPermissionModel = (process as { permission?: unknown }).permission !== undefined;
+        if (!underPermissionModel || (error as NodeJS.ErrnoException).code !== 'ERR_ACCESS_DENIED') {
+            throw error;
+        }
+    }
+}
+
+// A temporary file in the destination's directory, written, flushed and renamed over the destination: readers see the
+// previous file or the new one, never a partial one, and a failed write removes the temporary file.
 export function writeAtomically(data: Uint8Array, path: string, limit = MAX_SNAPSHOT_BYTES): void {
     if (data.length > limit) {
         throw new SnapshotError('Snapshot exceeds the 32 MiB limit');
@@ -95,12 +112,18 @@ export function writeAtomically(data: Uint8Array, path: string, limit = MAX_SNAP
             while (written < data.length) {
                 written += writeSync(fd, data, written, data.length - written);
             }
-            fsyncSync(fd);
+            flush(fd);
         } finally {
             closeSync(fd);
         }
         renameSync(temporary, destination);
-    } finally {
-        rmSync(temporary, { force: true });
+    } catch (error) {
+        // unlink, not rm: rm also reads the path, which a process granted only writes to this directory cannot.
+        try {
+            unlinkSync(temporary);
+        } catch {
+            // The write's own error is the one to report.
+        }
+        throw error;
     }
 }
