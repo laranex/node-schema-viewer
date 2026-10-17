@@ -26,21 +26,24 @@ export async function extract(request: ExtractRequest, overrides: Partial<Isolat
 // Permission Model flags shared by both levels. Never --allow-net, --allow-child-process, --allow-worker,
 // --allow-addons or --allow-wasi.
 export function permissionFlags(reads: readonly string[], writes: readonly string[], config: IsolationConfig): string[] {
-    for (const path of [...reads, ...writes]) {
-        if (path.includes(',')) {
-            // Node.js 22 reads a comma as a list separator in these flags.
-            throw new IsolationError(`Paths with commas cannot be granted to the extraction worker: ${path}`);
-        }
-    }
     return [
-        '--permission',
-        ...unique(reads).map((path) => `--allow-fs-read=${path}`),
-        ...unique(writes).map((path) => `--allow-fs-write=${path}`),
+        ...fileSystemFlags(reads, writes, 'extraction'),
         '--no-addons',
         // node:sqlite ignores the Permission Model; without the module, application code cannot open database files.
         '--no-experimental-sqlite',
         ...(config.allowCodeGeneration ? [] : ['--disallow-code-generation-from-strings']),
     ];
+}
+
+// --permission with the given read and write grants, shared by the extraction and introspection workers.
+export function fileSystemFlags(reads: readonly string[], writes: readonly string[], worker: string): string[] {
+    for (const path of [...reads, ...writes]) {
+        if (path.includes(',')) {
+            // Node.js 22 reads a comma as a list separator in these flags.
+            throw new IsolationError(`Paths with commas cannot be granted to the ${worker} worker: ${path}`);
+        }
+    }
+    return ['--permission', ...unique(reads).map((path) => `--allow-fs-read=${path}`), ...unique(writes).map((path) => `--allow-fs-write=${path}`)];
 }
 
 function unique(paths: readonly string[]): string[] {
@@ -163,7 +166,7 @@ export interface WorkerRun {
 export function runWorker(
     command: string,
     args: readonly string[],
-    options: { cwd: string; env: Record<string, string>; input: string; log: string; timeoutMs: number; onTimeout?: () => void },
+    options: { cwd: string; env: Record<string, string>; input: string; log: string; timeoutMs: number; onTimeout?: () => void; worker?: string },
 ): Promise<WorkerRun> {
     const output = openSync(options.log, 'w', 0o600);
     let child: ChildProcess;
@@ -191,7 +194,7 @@ export function runWorker(
         child.stdin?.end(options.input);
         child.on('error', (error) => {
             clearTimeout(timer);
-            reject(new IsolationError(`Cannot start the extraction worker: ${error.message}`));
+            reject(new IsolationError(`Cannot start the ${options.worker ?? 'extraction'} worker: ${error.message}`));
         });
         child.on('exit', (code, signal) => {
             clearTimeout(timer);
@@ -234,25 +237,29 @@ export function logTail(path: string): string {
     }
 }
 
-// The worker's result file: a regular file (never followed through a symlink) of at most 32 MiB, holding a
-// laranex-schema document with source "declared" that passes the contract's strict (producer) validation.
-export function readResult(path: string, log: string): ExtractResult['document'] {
+// A worker's result file: a regular file (never followed through a symlink) of at most 32 MiB holding a JSON object.
+// Errors are raised with `fail`, naming the worker.
+export function readResultFile(path: string, log: string, worker: string, fail: (message: string) => Error): Record<string, unknown> {
+    const missing = (): Error => fail(`The ${worker} worker exited without a result.${logTail(log)}`);
+    let regular: boolean;
+    try {
+        regular = lstatSync(path).isFile();
+    } catch {
+        throw missing();
+    }
+    if (!regular) {
+        throw fail(`The ${worker} worker's result is not a regular file`);
+    }
     let fd: number;
     try {
-        if (!lstatSync(path).isFile()) {
-            throw new IsolationError('The extraction worker\'s result is not a regular file');
-        }
         fd = openSync(path, constants.O_RDONLY | (POSIX ? constants.O_NOFOLLOW : 0));
-    } catch (error) {
-        if (error instanceof IsolationError) {
-            throw error;
-        }
-        throw new IsolationError(`The extraction worker exited without a result.${logTail(log)}`);
+    } catch {
+        throw missing();
     }
     let data: Buffer;
     try {
         if (!fstatSync(fd).isFile() || fstatSync(fd).size > MAX_RESULT_BYTES) {
-            throw new IsolationError('The extraction worker\'s result exceeds 32 MiB or is not a regular file');
+            throw fail(`The ${worker} worker's result exceeds 32 MiB or is not a regular file`);
         }
         data = Buffer.alloc(MAX_RESULT_BYTES + 1);
         let length = 0;
@@ -264,7 +271,7 @@ export function readResult(path: string, log: string): ExtractResult['document']
             length += read;
         }
         if (length > MAX_RESULT_BYTES) {
-            throw new IsolationError('The extraction worker\'s result exceeds 32 MiB');
+            throw fail(`The ${worker} worker's result exceeds 32 MiB`);
         }
         data = data.subarray(0, length);
     } finally {
@@ -274,12 +281,18 @@ export function readResult(path: string, log: string): ExtractResult['document']
     try {
         result = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(data));
     } catch {
-        throw new IsolationError('The extraction worker\'s result is not JSON');
+        throw fail(`The ${worker} worker's result is not JSON`);
     }
-    if (typeof result !== 'object' || result === null) {
-        throw new IsolationError('The extraction worker\'s result is not an object');
+    if (typeof result !== 'object' || result === null || Array.isArray(result)) {
+        throw fail(`The ${worker} worker's result is not an object`);
     }
-    const { ok, error, document } = result as { ok?: unknown; error?: unknown; document?: unknown };
+    return result as Record<string, unknown>;
+}
+
+// The extraction worker's result: a laranex-schema document with source "declared" that passes the contract's strict
+// (producer) validation.
+export function readResult(path: string, log: string): ExtractResult['document'] {
+    const { ok, error, document } = readResultFile(path, log, 'extraction', (message) => new IsolationError(message));
     if (ok !== true) {
         throw new IsolationError(`Extraction failed in the isolated worker: ${String(error).slice(0, 4000)}${logTail(log)}`);
     }

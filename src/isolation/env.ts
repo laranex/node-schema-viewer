@@ -71,3 +71,37 @@ export function workerEnvironment(
     const withheld = Object.entries(source).filter(([name, value]) => value !== undefined && !(name in env)).length;
     return { env, withheld };
 }
+
+// What the introspection worker's database drivers may need: the search path, locale, time zone, the Windows system
+// variables and TLS settings. Never NODE_OPTIONS, NODE_PATH, credentials or application settings.
+const INTROSPECTION = new Set([
+    'PATH',
+    'LANG',
+    'LANGUAGE',
+    'TZ',
+    'SYSTEMROOT',
+    'WINDIR',
+    'COMSPEC',
+    'PATHEXT',
+    'SSL_CERT_FILE',
+    'SSL_CERT_DIR',
+    'NODE_EXTRA_CA_CERTS',
+    'PGSSLMODE',
+    'PGSSLROOTCERT',
+    'PGSSLCERT',
+    'PGSSLKEY',
+    'PGSSLCRL',
+    'PGGSSENCMODE',
+]);
+
+export function introspectionEnvironment(source: NodeJS.ProcessEnv, options: { home: string; tmp: string }): Record<string, string> {
+    const env: Record<string, string> = {};
+    for (const [name, value] of Object.entries(source)) {
+        const upper = name.toUpperCase();
+        if (value !== undefined && (INTROSPECTION.has(upper) || ALLOWED_PREFIXES.some((prefix) => upper.startsWith(prefix)))) {
+            env[name] = value;
+        }
+    }
+    Object.assign(env, { HOME: options.home, USERPROFILE: options.home, TMPDIR: options.tmp, TEMP: options.tmp, TMP: options.tmp });
+    return env;
+}
