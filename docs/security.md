@@ -30,7 +30,7 @@ On Node.js 22 and 24 the Permission Model does not restrict the network, so proc
 
 | | `process` (Node.js 26+) | `container` |
 | --- | --- | --- |
-| Separate process, timeout, cleanup | Yes; the worker's process group is killed | Yes; the container is killed and removed |
+| Separate process, timeout, cleanup | Yes; the worker's process group is killed | Yes; the container is killed and removed, and the build waits until the runtime has removed it |
 | Environment | Allowlist only | Allowlist only |
 | Network | Blocked by the Permission Model | None (`--network none`), plus the Permission Model inside |
 | Child processes, worker threads, native addons, WASI, inspector | Blocked by the Permission Model | Blocked by the Permission Model |
@@ -59,7 +59,7 @@ Enforced outside the worker's JavaScript, by the operating system, the container
 
 - **No network:** the container has only a loopback interface. The tests check this with Node.js 24 in the image, whose Permission Model does not restrict the network, so the refusal comes from the container (`ENETUNREACH`, `EAI_AGAIN`).
 - **The project is mounted read-only**, and so is the image's root filesystem. Only a 128 MB `/tmp` and a disposable output directory are writable. Directories in `allowWrites` stay read-only (`EROFS`). A package inside an npm, Yarn, pnpm, Lerna or Rush workspace is mounted with its workspace root, so that linked packages resolve; `allowReads` directories outside it are mounted read-only at their host paths.
-- **Nothing outlives the build:** the container runs with `--rm`, is killed and removed on timeout, and takes every process in it along.
+- **Nothing outlives the build:** the container runs with `--rm`, is killed and removed on timeout (the build waits until the runtime no longer knows it, and says so when it could not be removed), and takes every process in it along. Containers are named `nsv-extract-<random>`.
 - **Reduced privileges:** `--cap-drop ALL`, `--security-opt no-new-privileges`, `--pids-limit 256`, `--memory`, and your uid and gid.
 - **Images are never pulled by default.** Every run, the checks included, uses `--pull never`. An image that is not present locally stops the build with a message naming it and how to build or pull it. `pullImage: true` opts in to `--pull missing`; when the reference is not pinned by digest (`image@sha256:…`), the result carries a notice recommending one, because a tag can be moved to a different image.
 - **The image is checked before use.** The package is found from the image's working directory (as `require.resolve('node-schema-viewer/package.json')` would), or at `containerPackagePath`. A global install is not needed. The build then runs that package's worker entry point itself, under `--permission`, with `--probe`; it prints the package name and version from its own `package.json` and the Node.js version. The build stops when the entry point is missing or does not run, when the name is not `node-schema-viewer` or the version is not exactly the host's, or when Node.js is older than 22.13.

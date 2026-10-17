@@ -37,7 +37,7 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
 
 ## MCP
 
-`mcp [--snapshot PATH]` runs five read-only tools over stdio with the official MCP TypeScript SDK: `schema_overview`, `schema_search`, `schema_get_table`, `schema_get_model` and `schema_get_relationships`. Arguments, pagination (`limit` 1–100, `offset`, `revision`, `next_offset`), the 64 KiB response limit and the response fields are the same as python-schema-viewer's ([its MCP documentation](https://github.com/laranex/python-schema-viewer/blob/main/docs/mcp.md)); a recorded conformance suite checks it. The responses keep their current format while python-schema-viewer redesigns them for laranex-schema 2.0; this package will follow it byte for byte. Use absolute paths in client configuration:
+`mcp [--snapshot PATH]` runs five read-only tools over stdio with the official MCP TypeScript SDK: `schema_overview`, `schema_search`, `schema_get_table`, `schema_get_model` and `schema_get_relationships`. The response format is the one shared by the Laranex Schema Viewer family and specified in [python-schema-viewer's MCP documentation](https://github.com/laranex/python-schema-viewer/blob/main/docs/mcp.md#response-format): the document's own laranex-schema 2.0 objects as items, an envelope with `revision`, `total`, `offset`, `limit`, `items` and `nextOffset` (`limit` 1–100), a 64 KiB cap measured on compact UTF-8 JSON, the `links`, `derived_links` and `diagnostics` table sections, and the same error messages. A conformance suite compares every call python-schema-viewer recorded, by value and by the exact text its MCP server sends. Use absolute paths in client configuration:
 
 ```json
 {

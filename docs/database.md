@@ -97,9 +97,9 @@ A foreign key into a schema (or MySQL database) that is not inspected makes the 
 
 ## Conformance with python-schema-viewer
 
-`tests/fixtures/conformance/database/*.json` are python-schema-viewer's documents for the synthetic schemas in `tests/databases/` (PostgreSQL with and without explicit schemas, MySQL, MariaDB, SQLite, the drift schemas on every database, and a PostgreSQL + MySQL + SQLite multi-connection document), recorded read-only with `scripts/record-database-conformance.py`. `tests/introspection-conformance.test.ts` requires the Node.js documents to be equal after replacing only the `generator` (`node-schema-viewer` instead of `python-schema-viewer`) and the random MySQL database name. They are.
+`tests/fixtures/conformance/database/*.json` are python-schema-viewer's laranex-schema 2.0 documents for the synthetic schemas in `tests/databases/` (PostgreSQL with and without explicit schemas, MySQL, MariaDB, SQLite, the drift schemas on every database, and a PostgreSQL + MySQL + SQLite multi-connection document), recorded read-only with `scripts/record-database-conformance.py`. `tests/introspection-conformance.test.ts` requires the Node.js documents to be equal after replacing only the `generator` (`node-schema-viewer` instead of `python-schema-viewer`) and the random MySQL database name. They are.
 
-Python recorded them as laranex-schema 1.0, and python-schema-viewer is moving to 2.0 at the same time as this package. Until it is done, the fixtures are its 1.0 output converted once to 2.0 by `scripts/convert-database-conformance-2.0.mjs`, a documented one-off test-data step (version, `pgsql` → `postgresql`, `Index.columns` and `Index.primary` removed, diagnostic ids, the three empty arrays; each result strictly valid), not a runtime converter. They must be re-recorded from python-schema-viewer's own 2.0 output once it writes 2.0, and the script deleted.
+They are python-schema-viewer's own laranex-schema 2.0 documents (recorded from its `feat/contract-2` branch at 7339d3b), run read-only against the same throwaway databases.
 
 Known, deliberate differences that the fixtures do not exercise:
 
