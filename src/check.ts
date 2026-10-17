@@ -7,8 +7,8 @@
 // python-schema-viewer's check command (its docs/check.md), so both CLIs behave the same.
 import { closeSync, openSync, readSync } from 'node:fs';
 import { getSystemErrorMessage } from 'node:util';
-import { gateDocument, qualifies, validateDocument, VERSION, type GateReport, type GateThresholds, type RequestedComparison } from 'laranex-schema-viewer-ui/contract';
-import { compute, scopes, store } from './compare.js';
+import { gateDocument, qualifies, storeComparisons, validateDocument, VERSION, type GateReport, type GateThresholds } from 'laranex-schema-viewer-ui/contract';
+import { CompareError, compute, requests } from './compare.js';
 import type { ComparisonConfig } from './config.js';
 import { byCodePoint } from './schema/serialize.js';
 import { MAX_SNAPSHOT_BYTES } from './snapshot.js';
@@ -58,14 +58,6 @@ export function readInput(path: string): Input {
     }
 }
 
-// Comparisons as the gate takes them, by connection name and as written ("*" targets unexpanded).
-export function requests(specs: readonly ComparisonConfig[]): RequestedComparison[] {
-    return specs.map((spec) => ({
-        baseline: { connection: spec.baseline.connection, schema: spec.baseline.schema },
-        target: { connection: spec.target.connection, schema: spec.target.schema },
-    }));
-}
-
 const versionOf = (data: unknown): string | null => {
     if (typeof data !== 'object' || data === null || Array.isArray(data)) {
         return null;
@@ -75,8 +67,9 @@ const versionOf = (data: unknown): string | null => {
 };
 
 // The document with specs computed and stored in memory, as compare --write would store them, when it is a valid 2.x
-// document. Comparisons that name a connection the document does not have, or a "*" target its inspection cannot
-// expand, are left for the gate to report as not found; an invalid document is left to the gate.
+// document. A request named twice is a usage error; requests the shared expansion cannot resolve (an unknown
+// connection, a "*" target that expands to nothing) are left for the gate, which reports them with the same message.
+// An invalid document is left to the gate.
 export function withAdHoc(data: unknown, specs: readonly ComparisonConfig[]): unknown {
     const version = versionOf(data);
     if (version === null) {
@@ -86,17 +79,12 @@ export function withAdHoc(data: unknown, specs: readonly ComparisonConfig[]): un
     if (!result.ok) {
         return data;
     }
-    const document = result.document;
-    const resolvable = specs.filter((spec) => {
-        try {
-            scopes(document, spec);
-            return true;
-        } catch {
-            return false;
-        }
-    });
-    const { comparisons, diagnostics } = compute(document, resolvable);
-    const stored = store(document, comparisons, diagnostics);
+    const { comparisons, errors } = compute(result.document, specs);
+    const duplicates = errors.filter((e) => e.kind === 'duplicate');
+    if (duplicates.length) {
+        throw new CompareError(duplicates.map((e) => e.message).join('\n'));
+    }
+    const stored = storeComparisons(result.document, comparisons);
     // Only the computed arrays change: a newer minor's version and additions stay as read.
     return { ...(data as Record<string, unknown>), comparisons: stored.comparisons, diagnostics: stored.diagnostics };
 }

@@ -2,7 +2,7 @@
 // files are never executed, unknown keys are rejected, and database URLs never belong in configuration.
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { CHANGES, OBJECT_TYPES, type Certainty, type Change, type ObjectType, type Severity } from 'laranex-schema-viewer-ui/contract';
+import { validateSeverityOverrides, WILDCARD, type Certainty, type SeverityOverride, type Severity } from 'laranex-schema-viewer-ui/contract';
 import { writeAtomically } from './snapshot.js';
 
 export const SECTION = 'node-schema-viewer';
@@ -15,18 +15,8 @@ const MAX_PACKAGE_JSON_BYTES = 4 * 1024 * 1024;
 // Differences listed per comparison; the rest are counted as omitted. Keeps a document with many tenant comparisons
 // well inside the 32 MiB snapshot limit.
 export const DEFAULT_COMPARISON_LIMIT = 500;
-export const WILDCARD = '*';
 export const SEVERITIES = ['error', 'warning', 'info'] as const;
 export const CERTAINTIES = ['certain', 'likely'] as const;
-// The fields a changed difference of each object type can list (the contract's comparison algorithm).
-export const FIELDS: Record<ObjectType, readonly string[]> = {
-    table: ['comment'],
-    column: ['collation', 'comment', 'default', 'enum', 'generated', 'nullable', 'type'],
-    primaryKey: ['columns'],
-    index: ['included', 'method', 'name', 'parts', 'predicate', 'unique'],
-    foreignKey: ['columns', 'deferrable', 'foreignColumns', 'foreignTable', 'initially', 'name', 'onDelete', 'onUpdate'],
-    constraint: ['columns', 'expression', 'name'],
-};
 // Python's [A-Za-z0-9_][\w.-]*, whose \w also matches Unicode letters and digits.
 const CONNECTION_NAME = /^[\p{L}\p{N}_][\p{L}\p{N}_.-]*$/u;
 export const COMPARISON_FORMAT = 'A comparison is BASELINE=TARGET, each scope a connection name, optionally with :SCHEMA (the target\'s schema may be *)';
@@ -42,19 +32,12 @@ export interface ScopeConfig {
     schema: string | null;
 }
 
-// A severity for (objectType, change), or for one field of a changed difference.
-export interface OverrideConfig {
-    objectType: ObjectType;
-    change: Change;
-    field: string | null;
-    severity: Severity;
-}
-
 export interface ComparisonConfig {
     baseline: ScopeConfig;
     target: ScopeConfig;
     limit: number;
-    overrides: OverrideConfig[];
+    // A severity for (objectType, change), or for one field of a changed difference; field null for a general one.
+    overrides: SeverityOverride[];
 }
 
 // The thresholds a finding must meet to fail check; null for the shared default.
@@ -100,25 +83,13 @@ function scopeConfig(value: unknown, where: string, wildcard: boolean): ScopeCon
     return { connection, schema };
 }
 
-function overrideConfig(value: unknown, where: string): OverrideConfig {
-    if (!isObject(value)) {
-        throw new ConfigError(`${where} overrides must be an array of objects`);
+// Checked with the shared validateSeverityOverrides; its messages are kept and prefixed with the comparison's location.
+function overridesConfig(value: unknown, at: string): SeverityOverride[] {
+    const errors = validateSeverityOverrides(value);
+    if (errors.length) {
+        throw new ConfigError(errors.map((error) => `${at} ${error}`).join('; '));
     }
-    unknownKeys(value, ['objectType', 'change', 'field', 'severity'], `${where} override`);
-    const { objectType, change, severity, field = null } = value;
-    if (!oneOf(objectType, OBJECT_TYPES)) {
-        throw new ConfigError(`${where} override objectType must be one of ${OBJECT_TYPES.join(', ')}`);
-    }
-    if (!oneOf(change, CHANGES)) {
-        throw new ConfigError(`${where} override change must be one of ${CHANGES.join(', ')}`);
-    }
-    if (!oneOf(severity, SEVERITIES)) {
-        throw new ConfigError(`${where} override severity must be one of ${SEVERITIES.join(', ')}`);
-    }
-    if (field !== null && (change !== 'changed' || !oneOf(field, FIELDS[objectType]))) {
-        throw new ConfigError(`${where} override field applies to changed differences; a ${objectType} field is one of ${FIELDS[objectType].join(', ')}`);
-    }
-    return { objectType, change, field, severity };
+    return (value as SeverityOverride[]).map(({ objectType, change, field = null, severity }) => ({ objectType, change, field, severity }));
 }
 
 function comparisonsConfig(value: unknown, where: string): ComparisonConfig[] {
@@ -137,10 +108,7 @@ function comparisonsConfig(value: unknown, where: string): ComparisonConfig[] {
         if (typeof limit !== 'number' || !Number.isSafeInteger(limit) || limit < 0) {
             throw new ConfigError(`${at} limit must be a nonnegative integer`);
         }
-        if (!Array.isArray(overrides)) {
-            throw new ConfigError(`${at} overrides must be an array of objects`);
-        }
-        return { baseline, target, limit, overrides: overrides.map((o) => overrideConfig(o, at)) };
+        return { baseline, target, limit, overrides: overridesConfig(overrides, at) };
     });
 }
 
