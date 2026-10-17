@@ -12,6 +12,8 @@ const ALLOWED_PREFIXES = ['LC_'];
 const CREDENTIAL =
     /(PASSWORD|PASSWD|PASSFILE|SECRET|TOKEN|CREDENTIAL|PRIVATE|AUTH|COOKIE|SESSION|_KEY$|^DATABASE_URL$|_DSN$|_URI$|_URL$|^AWS_|^AZURE_|^GOOGLE_|^GCP_|^MIKRO_ORM_|^TYPEORM_|^PG[A-Z]*$|^MYSQL_|^npm_config_)/i;
 const LOADER = /^(NODE_OPTIONS|NODE_PATH|NODE_REPL_EXTERNAL_MODULE|NODE_V8_COVERAGE|NODE_COMPILE_CACHE)$/i;
+// NODE_ENV is passed unchanged when the parent sets it, and only as a plain token such as production or test.
+const NODE_ENV_VALUE = /^[A-Za-z0-9._-]{1,32}$/;
 // A URL with a password in it, which no placeholder needs.
 const URL_WITH_PASSWORD = /^[A-Za-z][A-Za-z0-9+.-]*:\/\/[^/@\s]*:[^/@\s]*@/;
 
@@ -39,6 +41,16 @@ export function workerEnvironment(
         throw new IsolationError(
             `The isolation env must not set loader settings or URLs with passwords (${badFixed.sort().join(', ')}); use a placeholder`,
         );
+    }
+    for (const [origin, values] of [['The environment', source], ['The isolation env', options.fixed]] as const) {
+        for (const [name, value] of Object.entries(values)) {
+            if (name.toUpperCase() === 'NODE_ENV' && value !== undefined && !NODE_ENV_VALUE.test(value)) {
+                throw new IsolationError(
+                    `${origin} sets NODE_ENV to a value the extraction worker does not accept: it must be a plain token of at most ` +
+                        '32 letters, digits, dots, underscores or hyphens (such as production or test). Unset or correct it.',
+                );
+            }
+        }
     }
     const passthrough = new Set(options.passthrough);
     const env: Record<string, string> = {};

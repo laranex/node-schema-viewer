@@ -133,6 +133,17 @@ describe('the worker environment', () => {
         }
     });
 
+    test('passes NODE_ENV unchanged only when it is set, and refuses values that are not plain tokens', () => {
+        const options = { passthrough: [], fixed: {}, home: '/h', tmp: '/t' };
+        assert.equal(workerEnvironment({ NODE_ENV: 'production' }, options).env.NODE_ENV, 'production');
+        assert.equal(workerEnvironment({ NODE_ENV: 'Test_1.x-y' }, options).env.NODE_ENV, 'Test_1.x-y');
+        assert.equal('NODE_ENV' in workerEnvironment({}, options).env, false);
+        for (const value of ['', 'production; rm -rf /', 'postgres://u:p@h/db', 'a b', 'x'.repeat(33), 'prod\n']) {
+            assert.throws(() => workerEnvironment({ NODE_ENV: value }, options), /NODE_ENV/, JSON.stringify(value));
+            assert.throws(() => workerEnvironment({}, { ...options, fixed: { NODE_ENV: value } }), /NODE_ENV/, JSON.stringify(value));
+        }
+    });
+
     test('refuses loader settings and URLs with passwords as fixed values', () => {
         assert.throws(() => workerEnvironment({}, { passthrough: [], fixed: { NODE_OPTIONS: '--allow-net' }, home: '/h', tmp: '/t' }), IsolationError);
         assert.throws(() => workerEnvironment({}, { passthrough: [], fixed: { DATABASE_URL: 'postgres://u:p@h/db' }, home: '/h', tmp: '/t' }), IsolationError);
