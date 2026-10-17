@@ -40,8 +40,8 @@
     "build": "node scripts/clean.mjs dist && tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
-    "test": "npm run build && node scripts/clean.mjs build && tsc -p tsconfig.test.json && node --test --test-concurrency=4 \"build/tests/**/*.test.js\"",
-    "test:package": "npm run build && node --test build/tests/package.test.js",
+    "test": "npm run build && node scripts/clean.mjs build && tsc -p tsconfig.test.json && node --test --test-concurrency=4 --test-timeout=300000 \"build/tests/**/*.test.js\"",
+    "test:package": "npm run build && tsc -p tsconfig.test.json && node --test build/tests/package.test.js",
     "prepack": "npm run build"
   },
   "dependencies": {
