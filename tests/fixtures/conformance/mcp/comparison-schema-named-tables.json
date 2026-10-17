@@ -1,0 +1,3763 @@
+{
+  "calls": [
+    {
+      "arguments": {
+        "limit": 100
+      },
+      "result": {
+        "connections": [
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "archive",
+                  "billing"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "public",
+            "driver": "postgresql",
+            "id": "connection:ledger",
+            "name": "ledger",
+            "tables": 3
+          }
+        ],
+        "counts": {
+          "columns": 4,
+          "comparisons": 1,
+          "connections": 1,
+          "constraints": 0,
+          "derivedLinks": 0,
+          "diagnostics": 0,
+          "drift": 0,
+          "foreignKeys": 0,
+          "indexes": 4,
+          "inferredAssociations": 0,
+          "links": 0,
+          "migrations": 0,
+          "models": 0,
+          "relationships": 0,
+          "tables": 3
+        },
+        "diagnosticCounts": {
+          "category": {
+            "drift": 0,
+            "extraction": 0,
+            "inspection": 0,
+            "lint": 0,
+            "reconciliation": 0
+          },
+          "certainty": {
+            "certain": 0,
+            "likely": 0
+          },
+          "severity": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          }
+        },
+        "generator": {
+          "name": "python-schema-viewer",
+          "orm": null
+        },
+        "items": [
+          {
+            "connection": "connection:ledger",
+            "counts": {
+              "columns": 1,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "ledger:archive.archive",
+            "name": "archive",
+            "provenance": [
+              "database"
+            ],
+            "schema": "archive"
+          },
+          {
+            "connection": "connection:ledger",
+            "counts": {
+              "columns": 1,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "ledger:archive.billing",
+            "name": "billing",
+            "provenance": [
+              "database"
+            ],
+            "schema": "archive"
+          },
+          {
+            "connection": "connection:ledger",
+            "counts": {
+              "columns": 2,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 2
+            },
+            "id": "ledger:billing.billing",
+            "name": "billing",
+            "provenance": [
+              "database"
+            ],
+            "schema": "billing"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "note": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "source": "database",
+        "total": 3,
+        "version": "2.0"
+      },
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {},
+      "result": {
+        "connections": [
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "archive",
+                  "billing"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "public",
+            "driver": "postgresql",
+            "id": "connection:ledger",
+            "name": "ledger",
+            "tables": 3
+          }
+        ],
+        "counts": {
+          "columns": 4,
+          "comparisons": 1,
+          "connections": 1,
+          "constraints": 0,
+          "derivedLinks": 0,
+          "diagnostics": 0,
+          "drift": 0,
+          "foreignKeys": 0,
+          "indexes": 4,
+          "inferredAssociations": 0,
+          "links": 0,
+          "migrations": 0,
+          "models": 0,
+          "relationships": 0,
+          "tables": 3
+        },
+        "diagnosticCounts": {
+          "category": {
+            "drift": 0,
+            "extraction": 0,
+            "inspection": 0,
+            "lint": 0,
+            "reconciliation": 0
+          },
+          "certainty": {
+            "certain": 0,
+            "likely": 0
+          },
+          "severity": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          }
+        },
+        "generator": {
+          "name": "python-schema-viewer",
+          "orm": null
+        },
+        "items": [
+          {
+            "connection": "connection:ledger",
+            "counts": {
+              "columns": 1,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "ledger:archive.archive",
+            "name": "archive",
+            "provenance": [
+              "database"
+            ],
+            "schema": "archive"
+          },
+          {
+            "connection": "connection:ledger",
+            "counts": {
+              "columns": 1,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "ledger:archive.billing",
+            "name": "billing",
+            "provenance": [
+              "database"
+            ],
+            "schema": "archive"
+          },
+          {
+            "connection": "connection:ledger",
+            "counts": {
+              "columns": 2,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 2
+            },
+            "id": "ledger:billing.billing",
+            "name": "billing",
+            "provenance": [
+              "database"
+            ],
+            "schema": "billing"
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "note": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "source": "database",
+        "total": 3,
+        "version": "2.0"
+      },
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "limit": 1
+      },
+      "result": {
+        "connections": [
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "archive",
+                  "billing"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "public",
+            "driver": "postgresql",
+            "id": "connection:ledger",
+            "name": "ledger",
+            "tables": 3
+          }
+        ],
+        "counts": {
+          "columns": 4,
+          "comparisons": 1,
+          "connections": 1,
+          "constraints": 0,
+          "derivedLinks": 0,
+          "diagnostics": 0,
+          "drift": 0,
+          "foreignKeys": 0,
+          "indexes": 4,
+          "inferredAssociations": 0,
+          "links": 0,
+          "migrations": 0,
+          "models": 0,
+          "relationships": 0,
+          "tables": 3
+        },
+        "diagnosticCounts": {
+          "category": {
+            "drift": 0,
+            "extraction": 0,
+            "inspection": 0,
+            "lint": 0,
+            "reconciliation": 0
+          },
+          "certainty": {
+            "certain": 0,
+            "likely": 0
+          },
+          "severity": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          }
+        },
+        "generator": {
+          "name": "python-schema-viewer",
+          "orm": null
+        },
+        "items": [
+          {
+            "connection": "connection:ledger",
+            "counts": {
+              "columns": 1,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "ledger:archive.archive",
+            "name": "archive",
+            "provenance": [
+              "database"
+            ],
+            "schema": "archive"
+          }
+        ],
+        "limit": 1,
+        "nextOffset": 1,
+        "note": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "source": "database",
+        "total": 3,
+        "version": "2.0"
+      },
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "limit": 1,
+        "offset": 1,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81"
+      },
+      "result": {
+        "connections": [
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "archive",
+                  "billing"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "public",
+            "driver": "postgresql",
+            "id": "connection:ledger",
+            "name": "ledger",
+            "tables": 3
+          }
+        ],
+        "counts": {
+          "columns": 4,
+          "comparisons": 1,
+          "connections": 1,
+          "constraints": 0,
+          "derivedLinks": 0,
+          "diagnostics": 0,
+          "drift": 0,
+          "foreignKeys": 0,
+          "indexes": 4,
+          "inferredAssociations": 0,
+          "links": 0,
+          "migrations": 0,
+          "models": 0,
+          "relationships": 0,
+          "tables": 3
+        },
+        "diagnosticCounts": {
+          "category": {
+            "drift": 0,
+            "extraction": 0,
+            "inspection": 0,
+            "lint": 0,
+            "reconciliation": 0
+          },
+          "certainty": {
+            "certain": 0,
+            "likely": 0
+          },
+          "severity": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          }
+        },
+        "generator": {
+          "name": "python-schema-viewer",
+          "orm": null
+        },
+        "items": [
+          {
+            "connection": "connection:ledger",
+            "counts": {
+              "columns": 1,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "ledger:archive.billing",
+            "name": "billing",
+            "provenance": [
+              "database"
+            ],
+            "schema": "archive"
+          }
+        ],
+        "limit": 1,
+        "nextOffset": 2,
+        "note": null,
+        "offset": 1,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "source": "database",
+        "total": 3,
+        "version": "2.0"
+      },
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "query_text": "id"
+      },
+      "result": {
+        "items": [
+          {
+            "id": null,
+            "kind": "column",
+            "name": "id",
+            "table": "ledger:archive.archive"
+          },
+          {
+            "id": null,
+            "kind": "column",
+            "name": "id",
+            "table": "ledger:archive.billing"
+          },
+          {
+            "id": null,
+            "kind": "column",
+            "name": "id",
+            "table": "ledger:billing.billing"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "query": "id",
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "total": 3
+      },
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "query_text": "USER"
+      },
+      "result": {
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "query": "USER",
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "total": 0
+      },
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "query_text": "_at"
+      },
+      "result": {
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "query": "_at",
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "total": 0
+      },
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "query_text": "zzz-no-match"
+      },
+      "result": {
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "query": "zzz-no-match",
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "total": 0
+      },
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "columns",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint",
+            "typeName": "bigint"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "indexes",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "backs": {
+              "constraint": null,
+              "kind": "primary_key"
+            },
+            "expression": false,
+            "id": "ledger:archive.archive:index:archive_pkey",
+            "included": [],
+            "method": "btree",
+            "name": "archive_pkey",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": true
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "indexes",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "foreign_keys",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "foreign_keys",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "constraints",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "constraints",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "models",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "models",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "relationships",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "relationships",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "links",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "links",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "derived_links",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "derived_links",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "diagnostics",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "diagnostics",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100,
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": "ledger:archive.archive",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100,
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "items": [],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": "ledger:archive.archive",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "columns",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint",
+            "typeName": "bigint"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "indexes",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "backs": {
+              "constraint": null,
+              "kind": "primary_key"
+            },
+            "expression": false,
+            "id": "ledger:archive.billing:index:billing_pkey",
+            "included": [],
+            "method": "btree",
+            "name": "billing_pkey",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": true
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "indexes",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "foreign_keys",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "foreign_keys",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "constraints",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "constraints",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "models",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "models",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "relationships",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "relationships",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "links",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "links",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "derived_links",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "derived_links",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "diagnostics",
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "diagnostics",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100,
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": "ledger:archive.billing",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100,
+        "table": "ledger:archive.billing"
+      },
+      "result": {
+        "items": [],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": "ledger:archive.billing",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "columns",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint",
+            "typeName": "bigint"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "archive",
+            "note": null,
+            "nullable": true,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "text",
+            "typeName": "text"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 2
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "indexes",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "backs": {
+              "constraint": null,
+              "kind": "primary_key"
+            },
+            "expression": false,
+            "id": "ledger:billing.billing:index:billing_pkey",
+            "included": [],
+            "method": "btree",
+            "name": "billing_pkey",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": true
+          },
+          {
+            "backs": null,
+            "expression": false,
+            "id": "ledger:billing.billing:index:archive",
+            "included": [],
+            "method": "btree",
+            "name": "archive",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "archive",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": false
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "indexes",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 2
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "foreign_keys",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "foreign_keys",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "constraints",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "constraints",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "models",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "models",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "relationships",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "relationships",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "links",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "links",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "derived_links",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "derived_links",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "diagnostics",
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 2,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "diagnostics",
+        "table": {
+          "comment": null,
+          "id": "ledger:billing.billing",
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100,
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": "ledger:billing.billing",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100,
+        "table": "ledger:billing.billing"
+      },
+      "result": {
+        "items": [],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": "ledger:billing.billing",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint",
+            "typeName": "bigint"
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 1,
+        "offset": 1,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "columns",
+        "table": "ledger:archive.archive"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:ledger",
+          "name": "ledger"
+        },
+        "counts": {
+          "columns": 1,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 0,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 1,
+        "nextOffset": null,
+        "offset": 1,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "ledger:archive.archive",
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": null,
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100
+      },
+      "result": {
+        "items": [],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": null,
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {},
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "table": null,
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "limit": 0
+      },
+      "error": "limit must be an integer from 1 to 100",
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "limit": 101
+      },
+      "error": "limit must be an integer from 1 to 100",
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "offset": -1
+      },
+      "error": "offset must be a nonnegative integer",
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "revision": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "error": "Document revision differs; restart pagination without revision",
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "query_text": ""
+      },
+      "error": "query must contain 1 to 200 characters",
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "query_text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "error": "query must contain 1 to 200 characters",
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "table": "../../.env"
+      },
+      "error": "Unknown table ID; use schema_overview or schema_search",
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "section": "rows",
+        "table": "ledger:archive.archive"
+      },
+      "error": "Unknown table section: rows",
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "model": "missing"
+      },
+      "error": "Unknown model ID; use schema_search",
+      "tool": "schema_get_model"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "table": "missing"
+      },
+      "error": "Unknown table ID",
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "sql"
+      },
+      "error": "kind must be orm or foreign_key",
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {},
+      "result": {
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "baseline": {
+              "connection": "connection:ledger",
+              "schema": "billing"
+            },
+            "complete": true,
+            "counts": {
+              "certain": 3,
+              "differences": 3,
+              "error": 2,
+              "info": 0,
+              "likely": 0,
+              "warning": 1
+            },
+            "id": "c9ff18bcf1370bef2",
+            "labels": {
+              "baseline": "ledger:billing",
+              "target": "ledger:archive"
+            },
+            "omitted": 0,
+            "summary": {
+              "changed": 0,
+              "extra": 1,
+              "missing": 2
+            },
+            "target": {
+              "connection": "connection:ledger",
+              "schema": "archive"
+            }
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "comparisons",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x77d2bb38d48b7f61",
+              "key": [
+                "archive"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "archive.archive",
+                "table": "ledger:archive.archive"
+              }
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xf0d2fe86566e9696",
+              "key": [
+                "billing",
+                "archive"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": "ledger:billing.billing:index:archive",
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x236a3712a56f0aef",
+              "key": [
+                "billing",
+                "name",
+                "archive"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "ledger:billing",
+        "target": "ledger:archive"
+      },
+      "result": {
+        "filters": {
+          "baseline": "ledger:billing",
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": "ledger:archive"
+        },
+        "items": [
+          {
+            "baseline": {
+              "connection": "connection:ledger",
+              "schema": "billing"
+            },
+            "complete": true,
+            "counts": {
+              "certain": 3,
+              "differences": 3,
+              "error": 2,
+              "info": 0,
+              "likely": 0,
+              "warning": 1
+            },
+            "id": "c9ff18bcf1370bef2",
+            "labels": {
+              "baseline": "ledger:billing",
+              "target": "ledger:archive"
+            },
+            "omitted": 0,
+            "summary": {
+              "changed": 0,
+              "extra": 1,
+              "missing": 2
+            },
+            "target": {
+              "connection": "connection:ledger",
+              "schema": "archive"
+            }
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "comparisons",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x77d2bb38d48b7f61",
+              "key": [
+                "archive"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "archive.archive",
+                "table": "ledger:archive.archive"
+              }
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xf0d2fe86566e9696",
+              "key": [
+                "billing",
+                "archive"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": "ledger:billing.billing:index:archive",
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x236a3712a56f0aef",
+              "key": [
+                "billing",
+                "name",
+                "archive"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 2,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x77d2bb38d48b7f61",
+              "key": [
+                "archive"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "archive.archive",
+                "table": "ledger:archive.archive"
+              }
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xf0d2fe86566e9696",
+              "key": [
+                "billing",
+                "archive"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          }
+        ],
+        "limit": 2,
+        "nextOffset": 2,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 2,
+        "offset": 2,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": "ledger:billing.billing:index:archive",
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x236a3712a56f0aef",
+              "key": [
+                "billing",
+                "name",
+                "archive"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 2,
+        "nextOffset": null,
+        "offset": 2,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "object_type": "table",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": "table",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x77d2bb38d48b7f61",
+              "key": [
+                "archive"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "archive.archive",
+                "table": "ledger:archive.archive"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "object_type": "column",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": "column",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xf0d2fe86566e9696",
+              "key": [
+                "billing",
+                "archive"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "object_type": "primaryKey",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": "primaryKey",
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "object_type": "index",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": "index",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": "ledger:billing.billing:index:archive",
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x236a3712a56f0aef",
+              "key": [
+                "billing",
+                "name",
+                "archive"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "object_type": "foreignKey",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": "foreignKey",
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "object_type": "constraint",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": "constraint",
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "missing",
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "missing",
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xf0d2fe86566e9696",
+              "key": [
+                "billing",
+                "archive"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": "ledger:billing.billing:index:archive",
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x236a3712a56f0aef",
+              "key": [
+                "billing",
+                "name",
+                "archive"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 2
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "extra",
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "extra",
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x77d2bb38d48b7f61",
+              "key": [
+                "archive"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "archive.archive",
+                "table": "ledger:archive.archive"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "changed",
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "changed",
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences",
+        "severity": "error"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": "error",
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x77d2bb38d48b7f61",
+              "key": [
+                "archive"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "archive.archive",
+                "table": "ledger:archive.archive"
+              }
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xf0d2fe86566e9696",
+              "key": [
+                "billing",
+                "archive"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 2
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences",
+        "severity": "warning"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": "warning",
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": "ledger:billing.billing:index:archive",
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x236a3712a56f0aef",
+              "key": [
+                "billing",
+                "name",
+                "archive"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences",
+        "severity": "info"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": "info",
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "certain",
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "certain",
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x77d2bb38d48b7f61",
+              "key": [
+                "archive"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "archive.archive",
+                "table": "ledger:archive.archive"
+              }
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xf0d2fe86566e9696",
+              "key": [
+                "billing",
+                "archive"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": "ledger:billing.billing:index:archive",
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x236a3712a56f0aef",
+              "key": [
+                "billing",
+                "name",
+                "archive"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "likely",
+        "comparison": "c9ff18bcf1370bef2",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "likely",
+          "change": null,
+          "comparison": "c9ff18bcf1370bef2",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "certain",
+        "limit": 100,
+        "section": "differences",
+        "severity": "error",
+        "target": "ledger:archive"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "certain",
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": "error",
+          "target": "ledger:archive"
+        },
+        "items": [
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x77d2bb38d48b7f61",
+              "key": [
+                "archive"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "archive.archive",
+                "table": "ledger:archive.archive"
+              }
+            }
+          },
+          {
+            "comparison": "c9ff18bcf1370bef2",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "billing.billing.archive",
+                "table": "ledger:billing.billing"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xf0d2fe86566e9696",
+              "key": [
+                "billing",
+                "archive"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81",
+        "section": "differences",
+        "total": 2
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "section": "tables"
+      },
+      "error": "section must be comparisons or differences",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "missing"
+      },
+      "error": "Unknown comparison ID; use schema_compare",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "missing"
+      },
+      "error": "Unknown baseline connection; use schema_overview",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "target": "ledger:"
+      },
+      "error": "target must be CONNECTION or CONNECTION:SCHEMA",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "object_type": "view",
+        "section": "differences"
+      },
+      "error": "object_type must be one of table, column, primaryKey, index, foreignKey, constraint",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "gone",
+        "section": "differences"
+      },
+      "error": "change must be one of missing, extra, changed",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "section": "differences",
+        "severity": "fatal"
+      },
+      "error": "severity must be one of error, warning, info",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "maybe",
+        "section": "differences"
+      },
+      "error": "certainty must be one of certain, likely",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "severity": "error"
+      },
+      "error": "object_type, change, severity and certainty filter differences; use section differences",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "ledger",
+        "limit": 0
+      },
+      "error": "limit must be an integer from 1 to 100",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "offset": -1
+      },
+      "error": "offset must be a nonnegative integer",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "revision": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "error": "Document revision differs; restart pagination without revision",
+      "tool": "schema_compare"
+    }
+  ],
+  "document": "tests/fixtures/contract/fixtures/valid/comparison-schema-named-tables.json",
+  "revision": "2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81"
+}

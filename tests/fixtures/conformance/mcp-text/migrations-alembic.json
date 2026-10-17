@@ -1,5 +1,5 @@
 {
-  "pythonCommit": "7339d3b7d264af396aea14beca77d1e44dd15409",
+  "pythonCommit": "195c1a6f6182354b781ba615b2b685e0d463a8db",
   "texts": [
     {
       "isError": false,
@@ -976,6 +976,62 @@
     {
       "isError": true,
       "text": "Error executing tool schema_get_relationships: 1 validation error for schema_get_relationshipsArguments\nkind\n  Input should be 'orm' or 'foreign_key' [type=literal_error, input_value='sql', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+    },
+    {
+      "isError": false,
+      "text": "{\n  \"section\": \"comparisons\",\n  \"filters\": {\n    \"comparison\": null,\n    \"baseline\": null,\n    \"target\": null,\n    \"objectType\": null,\n    \"change\": null,\n    \"severity\": null,\n    \"certainty\": null\n  },\n  \"revision\": \"fe00004a39f2a07f9841ccb5dea11cd53cfc07f2d9fe50db03a1a17cb25a603f\",\n  \"total\": 0,\n  \"offset\": 0,\n  \"limit\": 25,\n  \"items\": [],\n  \"nextOffset\": null\n}"
+    },
+    {
+      "isError": false,
+      "text": "{\n  \"section\": \"differences\",\n  \"filters\": {\n    \"comparison\": null,\n    \"baseline\": null,\n    \"target\": null,\n    \"objectType\": null,\n    \"change\": null,\n    \"severity\": null,\n    \"certainty\": null\n  },\n  \"comparisons\": 0,\n  \"omitted\": 0,\n  \"revision\": \"fe00004a39f2a07f9841ccb5dea11cd53cfc07f2d9fe50db03a1a17cb25a603f\",\n  \"total\": 0,\n  \"offset\": 0,\n  \"limit\": 100,\n  \"items\": [],\n  \"nextOffset\": null\n}"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: 1 validation error for schema_compareArguments\nsection\n  Input should be 'comparisons' or 'differences' [type=literal_error, input_value='tables', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Unknown comparison ID; use schema_compare"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Unknown baseline connection; use schema_overview"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: target must be CONNECTION or CONNECTION:SCHEMA"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: 1 validation error for schema_compareArguments\nobject_type\n  Input should be 'table', 'column', 'primaryKey', 'index', 'foreignKey' or 'constraint' [type=literal_error, input_value='view', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: 1 validation error for schema_compareArguments\nchange\n  Input should be 'missing', 'extra' or 'changed' [type=literal_error, input_value='gone', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: 1 validation error for schema_compareArguments\nseverity\n  Input should be 'error', 'warning' or 'info' [type=literal_error, input_value='fatal', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: 1 validation error for schema_compareArguments\ncertainty\n  Input should be 'certain' or 'likely' [type=literal_error, input_value='maybe', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: object_type, change, severity and certainty filter differences; use section differences"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: 1 validation error for schema_compareArguments\nlimit\n  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/greater_than_equal"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: 1 validation error for schema_compareArguments\noffset\n  Input should be greater than or equal to 0 [type=greater_than_equal, input_value=-1, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/greater_than_equal"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Document revision differs; restart pagination without revision"
     }
   ]
 }

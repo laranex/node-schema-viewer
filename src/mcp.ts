@@ -4,7 +4,7 @@
 import { McpServer, type CallToolResult } from '@modelcontextprotocol/server';
 import { serveStdio, type StdioServerHandle } from '@modelcontextprotocol/server/stdio';
 import { z } from 'zod';
-import { KINDS, QueryError, SECTIONS, SnapshotQuery, type Page, type Pagination } from './query.js';
+import { CERTAINTIES, CHANGES, COMPARE_SECTIONS, KINDS, OBJECT_TYPES, QueryError, SECTIONS, SEVERITIES, SnapshotQuery, type Page, type Pagination } from './query.js';
 import { VERSION } from './version.js';
 
 export const SERVER_NAME = 'Laranex Schema Viewer';
@@ -87,6 +87,43 @@ export function createMcpServer(query: SnapshotQuery): McpServer {
             annotations: ANNOTATIONS,
         },
         (args) => respond('schema_get_relationships', () => query.relationships(args.table, args.kind, paging(args))),
+    );
+    server.registerTool(
+        'schema_compare',
+        {
+            description:
+                'Read the schema comparisons stored in the document (section comparisons) or their differences (section\ndifferences), by comparison ID or by baseline/target scope (CONNECTION or CONNECTION:SCHEMA), and filter\ndifferences by object_type, change, severity and certainty. Never computes or connects.',
+            inputSchema: z.object({
+                section: z.enum(COMPARE_SECTIONS).default('comparisons'),
+                comparison: z.string().nullable().default(null),
+                baseline: z.string().nullable().default(null),
+                target: z.string().nullable().default(null),
+                object_type: z.enum(OBJECT_TYPES).nullable().default(null),
+                change: z.enum(CHANGES).nullable().default(null),
+                severity: z.enum(SEVERITIES).nullable().default(null),
+                certainty: z.enum(CERTAINTIES).nullable().default(null),
+                limit,
+                offset,
+                revision,
+            }),
+            annotations: ANNOTATIONS,
+        },
+        (args) =>
+            respond('schema_compare', () =>
+                query.compare(
+                    args.section,
+                    {
+                        comparison: args.comparison,
+                        baseline: args.baseline,
+                        target: args.target,
+                        objectType: args.object_type,
+                        change: args.change,
+                        severity: args.severity,
+                        certainty: args.certainty,
+                    },
+                    paging(args),
+                ),
+            ),
     );
     return server;
 }

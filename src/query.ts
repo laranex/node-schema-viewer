@@ -6,7 +6,7 @@
 //
 // Key order is part of the response text. Contract objects are written in python-schema-viewer's field order
 // (pyOrder below), as its serializer writes them, so both packages send the same bytes.
-import type { Connection, Diagnostic, SchemaDocument, Table } from 'laranex-schema-viewer-ui/contract';
+import type { Comparison, Connection, Diagnostic, SchemaDocument, Scope, Table } from 'laranex-schema-viewer-ui/contract';
 import { loadDocument, revision as documentRevision } from './snapshot.js';
 
 export const MAX_RESPONSE_BYTES = 64 * 1024;
@@ -15,13 +15,27 @@ export const RESERVED_BYTES = 128;
 export const SECTIONS = ['columns', 'indexes', 'foreign_keys', 'constraints', 'models', 'relationships', 'links', 'derived_links', 'diagnostics'] as const;
 export const KINDS = ['orm', 'foreign_key'] as const;
 const CATEGORIES = ['extraction', 'inspection', 'reconciliation', 'drift', 'lint'] as const;
-const SEVERITIES = ['error', 'warning', 'info'] as const;
-const CERTAINTIES = ['certain', 'likely'] as const;
+export const SEVERITIES = ['error', 'warning', 'info'] as const;
+export const CERTAINTIES = ['certain', 'likely'] as const;
+export const COMPARE_SECTIONS = ['comparisons', 'differences'] as const;
+export const OBJECT_TYPES = ['table', 'column', 'primaryKey', 'index', 'foreignKey', 'constraint'] as const;
+export const CHANGES = ['missing', 'extra', 'changed'] as const;
 
 type Row = Record<string, unknown>;
 
 export class QueryError extends Error {
     override name = 'QueryError';
+}
+
+// schema_compare's selection and difference filters; null when not given.
+export interface CompareFilters {
+    comparison?: string | null;
+    baseline?: string | null;
+    target?: string | null;
+    objectType?: string | null;
+    change?: string | null;
+    severity?: string | null;
+    certainty?: string | null;
 }
 
 export interface Pagination {
@@ -103,6 +117,15 @@ const SHAPES: Record<string, Shape> = {
     // The diagnostic id is computed from its content, and written last.
     diagnostic: ['kind', 'category', 'severity', 'certainty', ['subject', 'subject'], 'message', 'extensions', 'id'],
     generator: ['name', 'orm'],
+    scope: ['connection', 'schema'],
+    summary: ['missing', 'extra', 'changed'],
+    comparison: ['id', ['baseline', 'scope'], ['target', 'scope'], 'complete', 'omitted', ['summary', 'summary'], ['differences', 'difference'], 'extensions'],
+    differenceRef: ['table', 'id', 'label'],
+    fieldDifference: ['field', 'baseline', 'target'],
+    difference: [
+        'id', 'change', 'objectType', 'key', ['baseline', 'differenceRef'], ['target', 'differenceRef'], ['fields', 'fieldDifference'], 'severity', 'certainty',
+        'extensions',
+    ],
 };
 
 const camel = (name: string): string => name.replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase());
@@ -147,6 +170,7 @@ export class SnapshotQuery {
     readonly revision: string;
     readonly tables: Map<string, Table>;
     readonly models: Map<string, SchemaDocument['models'][number]>;
+    readonly comparisons: Map<string, Comparison>;
     private readonly connectionOf: Map<string, Connection>;
 
     constructor(document: SchemaDocument) {
@@ -155,6 +179,7 @@ export class SnapshotQuery {
         this.connectionOf = new Map(document.connections.flatMap((c) => c.tables.map((t) => [t.id, c] as const)));
         this.tables = new Map(this.allTables().map((t) => [t.id, t]));
         this.models = new Map(document.models.map((m) => [m.id, m]));
+        this.comparisons = new Map(document.comparisons.map((c) => [c.id, c]));
     }
 
     static fromFile(path: string): SnapshotQuery {
@@ -378,5 +403,93 @@ export class SnapshotQuery {
             }
         }
         return this.page(items, pagination, { query });
+    }
+
+    // A scope as the command line spells it: the connection's name, then ":schema".
+    private scopeLabel(scope: Scope): string {
+        const name = this.document.connections.find((c) => c.id === scope.connection)?.name ?? scope.connection;
+        return scope.schema === null ? name : `${name}:${scope.schema}`;
+    }
+
+    private scopeFilter(value: string | null, side: 'baseline' | 'target'): Scope | null {
+        if (value === null) {
+            return null;
+        }
+        if (typeof value !== 'string') {
+            throw new QueryError(`${side} must be CONNECTION or CONNECTION:SCHEMA`);
+        }
+        // Python's str.partition(":").
+        const separator = value.indexOf(':');
+        const name = separator < 0 ? value : value.slice(0, separator);
+        const schema = separator < 0 ? '' : value.slice(separator + 1);
+        if (separator >= 0 && !schema) {
+            throw new QueryError(`${side} must be CONNECTION or CONNECTION:SCHEMA`);
+        }
+        const connection = this.document.connections.find((c) => c.name === name);
+        if (connection === undefined) {
+            throw new QueryError(`Unknown ${side} connection; use schema_overview`);
+        }
+        return { connection: connection.id, schema: separator < 0 ? null : schema };
+    }
+
+    // Stored comparisons, or their differences, selected by comparison id or scopes and difference filters.
+    compare(section = 'comparisons', filters: CompareFilters = {}, pagination: Pagination = {}): Page {
+        const { comparison = null, baseline = null, target = null, objectType = null, change = null, severity = null, certainty = null } = filters;
+        if (!(COMPARE_SECTIONS as readonly string[]).includes(section)) {
+            throw new QueryError('section must be comparisons or differences');
+        }
+        if (comparison !== null && !this.comparisons.has(comparison)) {
+            throw new QueryError('Unknown comparison ID; use schema_compare');
+        }
+        const scopes = { baseline: this.scopeFilter(baseline, 'baseline'), target: this.scopeFilter(target, 'target') };
+        const given = { objectType, change, severity, certainty };
+        for (const [name, value, allowed] of [
+            ['object_type', objectType, OBJECT_TYPES],
+            ['change', change, CHANGES],
+            ['severity', severity, SEVERITIES],
+            ['certainty', certainty, CERTAINTIES],
+        ] as const) {
+            if (value !== null && !(allowed as readonly string[]).includes(value)) {
+                throw new QueryError(`${name} must be one of ${allowed.join(', ')}`);
+            }
+        }
+        if (section === 'comparisons' && Object.values(given).some((v) => v !== null)) {
+            throw new QueryError('object_type, change, severity and certainty filter differences; use section differences');
+        }
+        const same = (a: Scope, b: Scope | null): boolean => b === null || (a.connection === b.connection && a.schema === b.schema);
+        const selected = this.document.comparisons.filter(
+            (c) => (comparison === null || c.id === comparison) && same(c.baseline, scopes.baseline) && same(c.target, scopes.target),
+        );
+        const context = { section, filters: { comparison, baseline, target, ...given } };
+        if (section === 'comparisons') {
+            return this.page(
+                selected.map((c) => this.comparisonSummary(c)),
+                pagination,
+                context,
+            );
+        }
+        const items = selected.flatMap((c) =>
+            c.differences
+                .filter(
+                    (d) =>
+                        (objectType === null || d.objectType === objectType) &&
+                        (change === null || d.change === change) &&
+                        (severity === null || d.severity === severity) &&
+                        (certainty === null || d.certainty === certainty),
+                )
+                .map((d) => ({ comparison: c.id, difference: pyOrder('difference', d) })),
+        );
+        return this.page(items, pagination, { ...context, comparisons: selected.length, omitted: selected.reduce((n, c) => n + c.omitted, 0) });
+    }
+
+    // The Comparison object without its differences, with readable scope labels and counts of the listed ones.
+    private comparisonSummary(comparison: Comparison): Row {
+        const summary = pyOrder('comparison', comparison) as Row;
+        delete summary.differences;
+        const listed = comparison.differences;
+        const count = (key: 'severity' | 'certainty', values: readonly string[]): Row => Object.fromEntries(values.map((v) => [v, listed.filter((d) => d[key] === v).length]));
+        summary.labels = { baseline: this.scopeLabel(comparison.baseline), target: this.scopeLabel(comparison.target) };
+        summary.counts = { differences: listed.length, ...count('severity', SEVERITIES), ...count('certainty', CERTAINTIES) };
+        return summary;
     }
 }

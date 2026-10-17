@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { TestContext } from 'node:test';
-import { KINDS, SECTIONS } from '../src/query.js';
+import { CERTAINTIES, CHANGES, COMPARE_SECTIONS, KINDS, OBJECT_TYPES, SECTIONS, SEVERITIES } from '../src/query.js';
 import { buildGraph, canonicalJson, inferAssociations, validateDocument, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
 
 // Tests are compiled to build/tests/; the repository root is two levels up.
@@ -107,11 +107,16 @@ export function recordings(directory: string): Recording[] {
 
 // Arguments the tool's input schema rejects before the query runs; each SDK words that error its own way.
 export function schemaRejected(call: RecordedCall): boolean {
-    const { limit, offset, section, kind } = call.arguments;
+    const { limit, offset, section, kind, object_type: objectType, change, severity, certainty } = call.arguments;
+    const outside = (value: unknown, allowed: readonly unknown[]): boolean => value !== undefined && value !== null && !allowed.includes(value);
     return (
         (limit !== undefined && (!Number.isInteger(limit) || (limit as number) < 1 || (limit as number) > 100)) ||
         (offset !== undefined && (!Number.isInteger(offset) || (offset as number) < 0)) ||
-        (section !== undefined && !(SECTIONS as readonly unknown[]).includes(section)) ||
-        (kind !== undefined && !(KINDS as readonly unknown[]).includes(kind))
+        outside(section, call.tool === 'schema_compare' ? COMPARE_SECTIONS : SECTIONS) ||
+        outside(kind, KINDS) ||
+        outside(objectType, OBJECT_TYPES) ||
+        outside(change, CHANGES) ||
+        outside(severity, SEVERITIES) ||
+        outside(certainty, CERTAINTIES)
     );
 }
