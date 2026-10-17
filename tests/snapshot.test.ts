@@ -5,28 +5,31 @@ import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { canonicalJson } from 'laranex-schema-viewer-ui/contract';
 import { loadDocument, MAX_SNAPSHOT_BYTES, revision, SnapshotError, writeDocument } from '../src/snapshot.js';
-import { DECLARED, DOCUMENTS, EXPECTED, ROOT, tempDir } from './helpers.js';
+import { CONTRACT, DECLARED, tempDir, VALID } from './helpers.js';
 
-const INVALID = join(ROOT, 'node_modules', 'laranex-schema-viewer-ui', 'contract', 'fixtures', 'invalid');
+const INVALID = join(CONTRACT, 'fixtures', 'invalid');
+
+// A later 2.x minor with a property 2.0 does not define.
+function futureMinor(dir: string): string {
+    const document = JSON.parse(readFileSync(DECLARED, 'utf8')) as Record<string, unknown>;
+    const path = join(dir, 'future.json');
+    writeFileSync(path, JSON.stringify({ ...document, version: '2.7', futureField: { added: true } }));
+    return path;
+}
 
 describe('snapshot', () => {
-    test("revision is the contract's documentRevision and equals Python's for every strict fixture", () => {
-        for (const name of readdirSync(DOCUMENTS)) {
-            const document = loadDocument(join(DOCUMENTS, name));
-            const expected = JSON.parse(readFileSync(join(EXPECTED, name), 'utf8')) as { python_revision: string; raw_revision: string };
-            const sha = createHash('sha256').update(canonicalJson(document)).digest('hex');
-            assert.equal(revision(document), sha, name);
-            // Python hashes what it read; for a later minor it drops properties it does not know (documented divergence).
-            assert.equal(revision(document), expected.raw_revision, name);
-            if (name !== 'lenient-future-minor.json') {
-                assert.equal(revision(document), expected.python_revision, name);
-            }
+    test("revision is the contract's documentRevision: the SHA-256 of the canonical bytes of every shared fixture", () => {
+        const names = readdirSync(VALID).filter((name) => name.endsWith('.json'));
+        assert.ok(names.length >= 10);
+        for (const name of names) {
+            const bytes = readFileSync(join(VALID, name));
+            assert.equal(revision(loadDocument(join(VALID, name))), createHash('sha256').update(bytes).digest('hex'), name);
         }
     });
 
-    test('reads later 1.x minors leniently', () => {
-        const document = loadDocument(join(DOCUMENTS, 'lenient-future-minor.json'));
-        assert.equal(document.version, '1.7');
+    test('reads later 2.x minors leniently', (t) => {
+        const document = loadDocument(futureMinor(tempDir(t)));
+        assert.equal(document.version, '2.7');
     });
 
     test('rejects every invalid contract fixture with its expected error; strict-only ones only when writing', (t) => {
@@ -62,8 +65,14 @@ describe('snapshot', () => {
         assert.throws(() => loadDocument(join(dir, 'bad.json')), /is not JSON/);
         writeFileSync(join(dir, 'v1.json'), JSON.stringify({ tables: [], models: [] }));
         assert.throws(() => loadDocument(join(dir, 'v1.json')), /Not a laranex-schema document/);
-        writeFileSync(join(dir, 'v2.json'), JSON.stringify({ format: 'laranex-schema', version: '2.0' }));
-        assert.throws(() => loadDocument(join(dir, 'v2.json')), /Unsupported laranex-schema version "2.0"/);
+        // 1.x is refused with one clear error, never converted.
+        writeFileSync(join(dir, 'v1.0.json'), JSON.stringify({ ...JSON.parse(readFileSync(DECLARED, 'utf8')), version: '1.0' }));
+        assert.throws(
+            () => loadDocument(join(dir, 'v1.0.json')),
+            /Unsupported laranex-schema version "1\.0"; this reader supports 2\.x\. Rebuild the snapshot with a producer that writes laranex-schema 2\.0/,
+        );
+        writeFileSync(join(dir, 'v3.json'), JSON.stringify({ format: 'laranex-schema', version: '3.0' }));
+        assert.throws(() => loadDocument(join(dir, 'v3.json')), /Unsupported laranex-schema version "3\.0"/);
         writeFileSync(join(dir, 'big.json'), Buffer.alloc(MAX_SNAPSHOT_BYTES + 1, 0x20));
         assert.throws(() => loadDocument(join(dir, 'big.json')), /exceeds the 32 MiB limit/);
         writeFileSync(join(dir, 'bom.json'), Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), readFileSync(DECLARED)]));
@@ -78,7 +87,7 @@ describe('snapshot', () => {
         assert.equal(readFileSync(path, 'utf8'), canonicalJson(document));
         assert.deepEqual(readdirSync(join(dir, 'nested')), ['schema.json']);
 
-        const lenient = loadDocument(join(DOCUMENTS, 'lenient-future-minor.json'));
+        const lenient = loadDocument(futureMinor(dir));
         writeFileSync(path, 'previous');
         assert.throws(() => {
             writeDocument(lenient, path);
@@ -88,5 +97,9 @@ describe('snapshot', () => {
         }, /Not a laranex-schema document/);
         assert.equal(readFileSync(path, 'utf8'), 'previous');
         assert.deepEqual(readdirSync(join(dir, 'nested')), ['schema.json']);
+
+        assert.throws(() => {
+            writeDocument({ ...document, version: '1.0' }, path);
+        }, /Unsupported laranex-schema version "1\.0"/);
     });
 });

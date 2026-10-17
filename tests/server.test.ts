@@ -193,7 +193,7 @@ describe('viewer server', () => {
     });
 
     test('the snapshot is re-read on each request: 503 while invalid', async () => {
-        writeFileSync(snapshot, '{"format": "laranex-schema", "version": "1.0"}');
+        writeFileSync(snapshot, JSON.stringify({ ...(JSON.parse(readFileSync(DECLARED, 'utf8')) as object), version: '1.0' }));
         const invalid = await request(port, '/snapshot.json');
         assert.equal(invalid.status, 503);
         assertSecurityHeaders(invalid, '503');
@@ -222,6 +222,22 @@ describe('viewer server startup', () => {
         const viewer = viewerCopy(tempDir(t));
         writeFileSync(join(viewer, 'app.js'), `${readFileSync(join(viewer, 'app.js'), 'utf8')}\n// tampered`);
         assert.throws(() => createViewerServer({ snapshot: COMBINED, viewerDirectory: viewer }), (error: Error) => error instanceof ViewerError && /app\.js does not match/.test(error.message));
+    });
+
+    test('refuses a viewer build for another contract major', (t) => {
+        for (const contract of [{ format: 'laranex-schema', major: 1 }, { format: 'other', major: 2 }, undefined]) {
+            const viewer = viewerCopy(tempDir(t));
+            const data = JSON.parse(readFileSync(join(viewer, 'manifest.json'), 'utf8')) as Record<string, unknown>;
+            data.contract = contract;
+            writeFileSync(join(viewer, 'manifest.json'), JSON.stringify(data));
+            assert.throws(() => createViewerServer({ snapshot: COMBINED, viewerDirectory: viewer }), /does not read laranex-schema 2\.x/, JSON.stringify(contract));
+        }
+    });
+
+    test('serves the viewer of the installed contract package', () => {
+        const installed = JSON.parse(readFileSync(join(defaultViewerDirectory(), 'manifest.json'), 'utf8')) as { version: string; contract: unknown };
+        assert.equal(installed.version, '0.3.0-dev.0');
+        assert.deepEqual(installed.contract, { format: 'laranex-schema', major: 2 });
     });
 
     test('rejects manifest paths outside the viewer directory', (t) => {

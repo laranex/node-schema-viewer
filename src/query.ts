@@ -112,7 +112,7 @@ export function pythonJsonBytes(value: unknown): number {
 }
 
 // Contract objects passed through as they are, with only the properties this version defines (as python-schema-viewer
-// reads them), so a later 1.x minor's additions do not leak into responses.
+// reads them), so a later 2.x minor's additions do not leak into responses.
 function pick<T extends object>(value: T | null, keys: readonly (keyof T)[]): Row | null {
     if (value === null) {
         return null;
@@ -186,7 +186,8 @@ function indexView(i: Index, dialect: string | null): Row {
     }
     return physical(i, {
         name: i.name,
-        columns: i.columns,
+        // 2.0 dropped Index.columns and Index.primary; the response keeps them, derived from parts and backs.
+        columns: i.parts.flatMap((p) => (p.column === null ? [] : [p.column])),
         expressions: i.expression ? i.parts.map((p) => (truthy(p.expression) ? p.expression : p.column)) : [],
         unique: i.unique,
         predicates,
@@ -194,7 +195,7 @@ function indexView(i: Index, dialect: string | null): Row {
         methods,
         id: i.id,
         parts: i.parts.map((p) => pick(p, ['column', 'expression', 'order', 'nulls', 'length', 'collation', 'opclass'])),
-        primary: i.primary,
+        primary: i.backs?.kind === 'primary_key',
         backs: pick(i.backs, ['kind', 'constraint']),
         partial: i.partial,
     });

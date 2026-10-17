@@ -185,7 +185,8 @@ describe('SQLite introspection', () => {
         assert.equal(indexes.notes_active_title.parts[0]?.collation, null);
         assert.equal(indexes.sqlite_autoindex_notes_1?.backs?.kind, 'unique_constraint');
         const primary = byName(tables(document).tags?.indexes ?? []).sqlite_autoindex_tags_1;
-        assert.deepEqual([primary?.primary, primary?.columns], [true, ['note_id', 'name']]);
+        assert.deepEqual([primary?.backs?.kind, primary?.parts.map((p) => p.column)], ['primary_key', ['note_id', 'name']]);
+        assert.ok(!('primary' in (primary ?? {})) && !('columns' in (primary ?? {})));
     });
 
     test('columns and constraints', () => {

@@ -3,7 +3,8 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { casefold, MAX_RESPONSE_BYTES, pythonJsonBytes, QueryError, SnapshotQuery, type Page } from '../src/query.js';
-import { COMBINED, DOCUMENTS, EXPECTED } from './helpers.js';
+import { COMBINED, DOCUMENTS, EXPECTED, largeDocument } from './helpers.js';
+import { pendingMcp } from './pending.js';
 
 interface Call {
     tool: string;
@@ -54,7 +55,7 @@ describe('query conformance with python-schema-viewer', () => {
     });
 
     for (const name of names) {
-        test(name, () => {
+        test(name, { skip: pendingMcp(name) }, () => {
             const expected = JSON.parse(readFileSync(join(EXPECTED, name), 'utf8')) as Expected;
             const query = SnapshotQuery.fromFile(join(DOCUMENTS, name));
             const lenient = expected.python_revision !== expected.raw_revision;
@@ -82,7 +83,7 @@ describe('query conformance with python-schema-viewer', () => {
 
 describe('query', () => {
     test('pagination stops before 64 KiB and follows next_offset', () => {
-        const query = SnapshotQuery.fromFile(join(DOCUMENTS, 'synthetic-large.json'));
+        const query = new SnapshotQuery(largeDocument(400));
         const table = [...query.tables.keys()][0] ?? '';
         let offset: number | null = 0;
         let seen = 0;

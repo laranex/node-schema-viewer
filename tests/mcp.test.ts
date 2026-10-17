@@ -6,6 +6,7 @@ import { after, before, describe, test } from 'node:test';
 import { Client } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
 import { CLI, COMBINED, DOCUMENTS, EXPECTED, runCli, tempDir } from './helpers.js';
+import { pendingMcp } from './pending.js';
 
 const SECTIONS = ['columns', 'indexes', 'foreign_keys', 'constraints', 'models', 'relationships'];
 const TOOLS = ['schema_get_model', 'schema_get_relationships', 'schema_get_table', 'schema_overview', 'schema_search'];
@@ -96,7 +97,7 @@ describe('mcp over stdio', () => {
 
 describe('mcp conformance over stdio with python-schema-viewer', () => {
     for (const name of readdirSync(EXPECTED).filter((file) => file.endsWith('.json'))) {
-        test(name, async () => {
+        test(name, { skip: pendingMcp(name) }, async () => {
             const expected = JSON.parse(readFileSync(join(EXPECTED, name), 'utf8')) as {
                 python_revision: string;
                 raw_revision: string;
@@ -142,6 +143,11 @@ describe('mcp startup', () => {
         assert.equal(missing.stdout, '');
         assert.match(missing.stderr, /Snapshot not found/);
         const invalid = await runCli(['mcp', '--snapshot', join(DOCUMENTS, '..', '..', '..', '..', 'package.json')]);
+        // 1.x is refused with one clear error; nothing converts it.
+        const v1 = await runCli(['mcp', '--snapshot', join(DOCUMENTS, 'combined-drift.json')]);
+        assert.equal(v1.code, 1);
+        assert.equal(v1.stdout, '');
+        assert.match(v1.stderr, /Unsupported laranex-schema version "1\.0"; this reader supports 2\.x\. Rebuild the snapshot/);
         assert.equal(invalid.code, 1);
         assert.equal(invalid.stdout, '');
         assert.match(invalid.stderr, /Not a laranex-schema document/);

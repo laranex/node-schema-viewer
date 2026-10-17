@@ -7,7 +7,7 @@ has this package, at the same version, resolvable from the image's working direc
 ```bash
 rm -rf /tmp/lsv-image && mkdir /tmp/lsv-image
 npm pack --pack-destination /tmp/lsv-image
-cp tests/containers/Dockerfile /tmp/lsv-image/
+cp vendor/*.tgz tests/containers/Dockerfile /tmp/lsv-image/   # the vendored laranex-schema-viewer-ui, while there is one
 docker build -t lsv-node-test /tmp/lsv-image
 LSV_TEST_CONTAINER_IMAGE=lsv-node-test npm test
 ```

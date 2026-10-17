@@ -7,7 +7,7 @@ import { readFileSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { canonicalJson } from 'laranex-schema-viewer-ui/contract';
+import { canonicalJson, FORMAT, MAJOR } from 'laranex-schema-viewer-ui/contract';
 import { loadDocument } from './snapshot.js';
 
 const TYPES: Record<string, string> = {
@@ -45,6 +45,11 @@ export function loadViewer(directory: string = defaultViewerDirectory()): Map<st
         manifest = JSON.parse(readFileSync(join(directory, 'manifest.json'), 'utf8'));
     } catch (error) {
         throw new ViewerError(`Cannot read the viewer manifest in ${directory}: ${(error as Error).message}`);
+    }
+    // The viewer must read the contract major this package writes and validates.
+    const contract = (manifest as { contract?: { format?: unknown; major?: unknown } }).contract;
+    if (contract?.format !== FORMAT || contract.major !== MAJOR) {
+        throw new ViewerError(`The viewer in ${directory} does not read ${FORMAT} ${String(MAJOR)}.x`);
     }
     const files = (manifest as { files?: unknown }).files;
     if (!Array.isArray(files)) {
