@@ -21,10 +21,10 @@ describe('package', { timeout: 300_000 }, () => {
         const tarball = packed[0];
         assert.ok(tarball);
         const files = tarball.files.map((f) => f.path).sort();
-        for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js']) {
+        for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js', 'dist/isolation/worker.js']) {
             assert.ok(files.includes(required), required);
         }
-        assert.deepEqual(files.filter((f) => !/^(dist\/[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
+        assert.deepEqual(files.filter((f) => !/^(dist\/(isolation\/)?[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
 
         const project = join(dir, 'project');
         mkdirSync(project);
