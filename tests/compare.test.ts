@@ -181,6 +181,14 @@ describe('compare command', () => {
             assert.equal(run.code, code, args.join(' '));
             assert.match(run.stderr, message, args.join(' '));
         }
+        // A configured duplicate fails compare (exit 1) as a named one does; check exits 2 with the same message.
+        const request = { baseline: { connection: 'app', schema: 'tenant_a' }, target: { connection: 'app', schema: 'tenant_b' } };
+        writeFileSync(join(dir, 'package.json'), JSON.stringify({ 'node-schema-viewer': { comparisons: [request, { ...request, limit: 2 }] } }));
+        const message = 'Error: Requested comparison app:tenant_a → app:tenant_b is listed more than once.\n';
+        const configured = await runCli(['compare', '--snapshot', TENANTS], { cwd: dir });
+        assert.deepEqual([configured.code, configured.stdout, configured.stderr], [1, '', message]);
+        const gated = await runCli(['check', '--snapshot', TENANTS], { cwd: dir });
+        assert.deepEqual([gated.code, gated.stdout, gated.stderr], [2, '', message]);
         const secret = 'postgres://user:hunter2@db/app';
         const url = await runCli(['compare', '--snapshot', TENANTS, `app=${secret}`]);
         assert.equal(url.code, 1);

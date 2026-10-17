@@ -7,7 +7,19 @@
 // python-schema-viewer's check command (its docs/check.md), so both CLIs behave the same.
 import { closeSync, openSync, readSync } from 'node:fs';
 import { getSystemErrorMessage } from 'node:util';
-import { gateDocument, qualifies, storeComparisons, validateDocument, VERSION, type GateReport, type GateThresholds } from 'laranex-schema-viewer-ui/contract';
+import {
+    expandComparisonRequests,
+    gateDocument,
+    qualifies,
+    spellScope,
+    storeComparisons,
+    validateDocument,
+    VERSION,
+    type GateReport,
+    type GateThresholds,
+    type RequestedComparison,
+    type SchemaDocument,
+} from 'laranex-schema-viewer-ui/contract';
 import { CompareError, compute, requests } from './compare.js';
 import type { ComparisonConfig } from './config.js';
 import { byCodePoint } from './schema/serialize.js';
@@ -67,9 +79,8 @@ const versionOf = (data: unknown): string | null => {
 };
 
 // The document with specs computed and stored in memory, as compare --write would store them, when it is a valid 2.x
-// document. A request named twice is a usage error; requests the shared expansion cannot resolve (an unknown
-// connection, a "*" target that expands to nothing) are left for the gate, which reports them with the same message.
-// An invalid document is left to the gate.
+// document. Requests the shared expansion cannot resolve (an unknown connection, a "*" target that expands to nothing)
+// are left for the gate, which reports them with the same message. An invalid document is left to the gate.
 export function withAdHoc(data: unknown, specs: readonly ComparisonConfig[]): unknown {
     const version = versionOf(data);
     if (version === null) {
@@ -79,14 +90,22 @@ export function withAdHoc(data: unknown, specs: readonly ComparisonConfig[]): un
     if (!result.ok) {
         return data;
     }
-    const { comparisons, errors } = compute(result.document, specs);
+    const stored = storeComparisons(result.document, compute(result.document, specs).comparisons);
+    // Only the computed arrays change: a newer minor's version and additions stay as read.
+    return { ...(data as Record<string, unknown>), comparisons: stored.comparisons, diagnostics: stored.diagnostics };
+}
+
+// Expanding requests against no connections finds the errors that do not depend on the document.
+const NO_CONNECTIONS: Pick<SchemaDocument, 'source' | 'connections'> = { source: 'database', connections: [] };
+
+// A comparison requested twice, configured or named on the command line, is a configuration or usage error whatever
+// the document holds (the gate itself lists each request once). Every other expansion error is the gate's to report.
+export function rejectDuplicates(requested: readonly RequestedComparison[]): void {
+    const { errors } = expandComparisonRequests(NO_CONNECTIONS, requested);
     const duplicates = errors.filter((e) => e.kind === 'duplicate');
     if (duplicates.length) {
         throw new CompareError(duplicates.map((e) => e.message).join('\n'));
     }
-    const stored = storeComparisons(result.document, comparisons);
-    // Only the computed arrays change: a newer minor's version and additions stay as read.
-    return { ...(data as Record<string, unknown>), comparisons: stored.comparisons, diagnostics: stored.diagnostics };
 }
 
 // Why a document the gate called invalid failed validation, printed beside the report, never in it.
@@ -99,15 +118,13 @@ export function validatorErrors(data: unknown, limit = 5): string[] {
     return [...errors.slice(0, limit), ...(errors.length > limit ? [`and ${String(errors.length - limit)} more`] : [])];
 }
 
-const spell = (scope: { connection: string; schema: string | null }): string => (scope.schema === null ? scope.connection : `${scope.connection}:${scope.schema}`);
-
 // A readable, deterministic summary of a report: the verdict, what was checked, the errors and the qualifying findings.
 export function summary(report: GateReport): string {
     const { thresholds: t, counts } = report;
     const lines = [
         `Schema check ${VERDICTS[report.exitCode]} (exit code ${String(report.exitCode)}): ${String(counts.qualifying)} of ${String(counts.findings)} findings meet the thresholds (severity ${t.severity} or above, ${t.certainty === 'certain' ? 'certain only' : 'certain or likely'})`,
     ];
-    const requested = report.requested.map((r) => `${spell(r.baseline)} → ${spell(r.target)}`).join(', ');
+    const requested = report.requested.map((r) => `${spellScope(r.baseline.connection, r.baseline.schema)} → ${spellScope(r.target.connection, r.target.schema)}`).join(', ');
     lines.push(`Checked ${String(report.comparisons.length)} comparisons${requested ? ` (requested: ${requested})` : ' (every stored one)'}`);
     if (report.errors.length) {
         lines.push('Errors (the check is incomplete and never passes):');
@@ -128,16 +145,19 @@ export function summary(report: GateReport): string {
 }
 
 // The gate report of the snapshot at path, and notes for stderr. Comparisons named on the command line (adHoc) are
-// computed in memory, then requested; otherwise the configured ones are requested as configured.
+// computed in memory, then requested; otherwise the configured ones are requested as configured. Duplicate requests
+// are rejected first (CompareError), before the snapshot is read.
 export function run(
     path: string,
     thresholds: Partial<GateThresholds>,
     configured: readonly ComparisonConfig[],
     adHoc: readonly ComparisonConfig[],
 ): { report: GateReport; notes: string[] } {
+    const requested = requests(adHoc.length ? adHoc : configured);
+    rejectDuplicates(requested);
     const given = readInput(path);
     const data = adHoc.length ? withAdHoc(given.data, adHoc) : given.data;
-    const report = gateDocument(data, { thresholds, requested: requests(adHoc.length ? adHoc : configured) });
+    const report = gateDocument(data, { thresholds, requested });
     const notes = given.note === null ? [] : [given.note];
     if (report.errors.some((e) => e.kind === 'invalid_document')) {
         notes.push(...validatorErrors(given.data).map((e) => `${path}: ${e}`));

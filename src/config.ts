@@ -2,7 +2,7 @@
 // files are never executed, unknown keys are rejected, and database URLs never belong in configuration.
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { validateSeverityOverrides, WILDCARD, type Certainty, type SeverityOverride, type Severity } from 'laranex-schema-viewer-ui/contract';
+import { spellScope, validateSeverityOverrides, WILDCARD, type Certainty, type SeverityOverride, type Severity } from 'laranex-schema-viewer-ui/contract';
 import { writeAtomically } from './snapshot.js';
 
 export const SECTION = 'node-schema-viewer';
@@ -53,7 +53,6 @@ export interface ProjectConfig {
     check: CheckConfig;
 }
 
-export const spellScope = (scope: ScopeConfig): string => (scope.schema === null ? scope.connection : `${scope.connection}:${scope.schema}`);
 const sameScope = (a: ScopeConfig, b: ScopeConfig): boolean => a.connection === b.connection && a.schema === b.schema;
 const isObject = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
 const oneOf = <T extends string>(value: unknown, allowed: readonly T[]): value is T => typeof value === 'string' && (allowed as readonly string[]).includes(value);
@@ -102,7 +101,7 @@ function comparisonsConfig(value: unknown, where: string): ComparisonConfig[] {
         const baseline = scopeConfig(entry.baseline, `${at} baseline`, false);
         const target = scopeConfig(entry.target, `${at} target`, true);
         if (sameScope(baseline, target)) {
-            throw new ConfigError(`${at} compares ${spellScope(baseline)} with itself`);
+            throw new ConfigError(`${at} compares ${spellScope(baseline.connection, baseline.schema)} with itself`);
         }
         const { limit = DEFAULT_COMPARISON_LIMIT, overrides = [] } = entry;
         if (typeof limit !== 'number' || !Number.isSafeInteger(limit) || limit < 0) {
@@ -138,7 +137,7 @@ export function comparisonOption(value: string, limit: number = DEFAULT_COMPARIS
     const baseline = scopeOption(value.slice(0, separator), false);
     const target = scopeOption(value.slice(separator + 1), true);
     if (sameScope(baseline, target)) {
-        throw new ConfigError(`A comparison compares two different scopes, not ${spellScope(baseline)} with itself`);
+        throw new ConfigError(`A comparison compares two different scopes, not ${spellScope(baseline.connection, baseline.schema)} with itself`);
     }
     return { baseline, target, limit, overrides: [] };
 }

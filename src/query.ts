@@ -6,7 +6,7 @@
 //
 // Key order is part of the response text. Contract objects are written in python-schema-viewer's field order
 // (pyOrder below), as its serializer writes them, so both packages send the same bytes.
-import type { Comparison, Connection, Diagnostic, SchemaDocument, Scope, Table } from 'laranex-schema-viewer-ui/contract';
+import { spellScope, type Comparison, type Connection, type Diagnostic, type SchemaDocument, type Scope, type Table } from 'laranex-schema-viewer-ui/contract';
 import { loadDocument, revision as documentRevision } from './snapshot.js';
 
 export const MAX_RESPONSE_BYTES = 64 * 1024;
@@ -407,8 +407,7 @@ export class SnapshotQuery {
 
     // A scope as the command line spells it: the connection's name, then ":schema".
     private scopeLabel(scope: Scope): string {
-        const name = this.document.connections.find((c) => c.id === scope.connection)?.name ?? scope.connection;
-        return scope.schema === null ? name : `${name}:${scope.schema}`;
+        return spellScope(this.document.connections.find((c) => c.id === scope.connection)?.name ?? scope.connection, scope.schema);
     }
 
     private scopeFilter(value: string | null, side: 'baseline' | 'target'): Scope | null {

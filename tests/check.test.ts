@@ -138,6 +138,33 @@ describe('check command', () => {
         }
     });
 
+    test('a comparison requested twice, configured or named, exits 2 with the shared message before the snapshot is read', async (t) => {
+        const dir = tempDir(t);
+        const request = { baseline: { connection: 'app', schema: 'tenant_a' }, target: { connection: 'app', schema: '*' } };
+        const message = 'Error: Requested comparison app:tenant_a → app:* is listed more than once.\n';
+        project(dir, { comparisons: [request, { ...request, limit: 3 }, { baseline: { connection: 'app', schema: 'tenant_a' }, target: { connection: 'app', schema: 'tenant_b' } }, request] });
+        for (const args of [[], ['--json'], ['--snapshot', join(dir, 'missing.json')]]) {
+            const configured = await runCli(['check', ...args], { cwd: dir });
+            assert.deepEqual([configured.code, configured.stdout, configured.stderr], [2, '', message], args.join(' '));
+        }
+        // Named comparisons replace the configured ones; named twice, they are a usage error even with connections
+        // the document does not have.
+        for (const named of [['app:tenant_a=app:*', 'app:tenant_a=app:*'], ['nope=app', 'nope=app', 'app=nope:x', 'app=nope:x']]) {
+            const run = await runCli(['check', '--json', ...named], { cwd: dir });
+            assert.equal(run.code, 2, named.join(' '));
+            assert.equal(run.stdout, '');
+            assert.equal(
+                run.stderr,
+                named[0] === 'nope=app'
+                    ? 'Error: Requested comparison app → nope:x is listed more than once.\nRequested comparison nope → app is listed more than once.\n'
+                    : message,
+            );
+        }
+        project(dir, { comparisons: [request] });
+        const once = await runCli(['check', '--json'], { cwd: dir });
+        assert.notEqual(once.stdout, '');
+    });
+
     test('usage, configuration and argument errors exit 2, never 0 or 1, and never echo URLs', async (t) => {
         const dir = tempDir(t);
         project(dir, {});

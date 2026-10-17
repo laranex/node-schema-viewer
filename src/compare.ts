@@ -4,7 +4,7 @@
 // request's limit and overrides, and storeComparisons stores them with their comparison_incomplete diagnostics.
 //
 // Comparisons read only what a document already holds: no database connection, no application import, no subprocess.
-import { compareScopes, expandComparisonRequests, type Comparison, type RequestError, type RequestedComparison, type SchemaDocument, type Scope } from 'laranex-schema-viewer-ui/contract';
+import { compareScopes, expandComparisonRequests, spellScope, type Comparison, type RequestError, type RequestedComparison, type SchemaDocument, type Scope } from 'laranex-schema-viewer-ui/contract';
 import type { ComparisonConfig } from './config.js';
 import { byCodePoint } from './schema/serialize.js';
 
@@ -16,10 +16,9 @@ export class CompareError extends Error {
 
 type Document = Pick<SchemaDocument, 'source' | 'connections'>;
 
-// A scope as the command line spells it: the connection's name, then ":schema".
-export function scopeLabel(document: Document, scope: Scope): string {
-    const name = document.connections.find((c) => c.id === scope.connection)?.name ?? scope.connection;
-    return scope.schema === null ? name : `${name}:${scope.schema}`;
+// A scope as the command line spells it: the connection's name, then ":schema" (the shared spellScope).
+function scopeName(document: Document, scope: Scope): string {
+    return spellScope(document.connections.find((c) => c.id === scope.connection)?.name ?? scope.connection, scope.schema);
 }
 
 // Comparisons as people request them, by connection name and as written ("*" targets unexpanded).
@@ -61,7 +60,7 @@ export function describe(document: Document, comparisons: readonly Comparison[])
         const state = c.complete ? 'complete' : 'incomplete';
         const omitted = c.omitted ? `, ${String(c.omitted)} not listed` : '';
         lines.push(
-            `${scopeLabel(document, c.baseline)} -> ${scopeLabel(document, c.target)} (${state}): ${String(s.missing)} missing, ${String(s.extra)} extra, ${String(s.changed)} changed${omitted}`,
+            `${scopeName(document, c.baseline)} -> ${scopeName(document, c.target)} (${state}): ${String(s.missing)} missing, ${String(s.extra)} extra, ${String(s.changed)} changed${omitted}`,
         );
         for (const d of c.differences) {
             const side = d.baseline ?? d.target;
