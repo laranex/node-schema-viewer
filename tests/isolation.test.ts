@@ -502,9 +502,17 @@ describe('container isolation', { skip: IMAGE === undefined && 'set LSV_TEST_CON
     });
 
     test('a timeout removes the container', async () => {
-        await assert.rejects(isolated('slow.mjs', config({ timeout: 10, env: { LSV_ADVERSARIAL_PID: '/tmp/worker.pid' } })), /within 10 seconds/);
-        const names = spawnSync(RUNTIME, ['ps', '-a', '--filter', 'name=lsv-extract-', '--format', '{{.Names}}'], { encoding: 'utf8' }).stdout.trim();
-        assert.equal(names, '');
+        const error = await isolated('slow.mjs', config({ timeout: 10, env: { LSV_ADVERSARIAL_PID: '/tmp/worker.pid' } })).then(
+            () => assert.fail('the slow extraction finished'),
+            (rejection: unknown) => rejection as Error,
+        );
+        assert.match(error.message, /within 10 seconds; the container nsv-extract-[0-9a-f]{12} was stopped and removed/);
+        // This run's own container, by its exact name: other containers (other runs, python-schema-viewer's) do not count.
+        const name = /nsv-extract-[0-9a-f]{12}/.exec(error.message)?.[0] ?? '';
+        const found = spawnSync(RUNTIME, ['ps', '-a', '--filter', `name=^/?${name}$`, '--format', '{{.Names}}'], { encoding: 'utf8' });
+        assert.equal(found.status, 0, found.stderr);
+        assert.equal(found.stdout.trim(), '');
+        assert.notEqual(spawnSync(RUNTIME, ['container', 'inspect', name], { stdio: 'ignore' }).status, 0);
     });
 
     test('the package is found from the working directory or containerPackagePath, and its worker entry point is checked', async () => {

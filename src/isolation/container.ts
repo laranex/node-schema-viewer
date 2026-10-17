@@ -150,7 +150,8 @@ export async function extractInContainer(request: ExtractRequest, config: Isolat
         throw new IsolationError('allowReads outside the project cannot be mounted into a container on Windows');
     }
     const out = scratchDirectory('lsv-container-');
-    const name = `lsv-extract-${randomBytes(6).toString('hex')}`;
+    // nsv-: distinct from python-schema-viewer's lsv-extract- containers, which may share the Docker daemon.
+    const name = `nsv-extract-${randomBytes(6).toString('hex')}`;
     try {
         const output = join(out, 'out');
         mkdirSync(output, { mode: 0o700 });
@@ -188,11 +189,29 @@ export async function extractInContainer(request: ExtractRequest, config: Isolat
             },
         });
         if (run.timedOut) {
-            spawnSync(runtime, ['rm', '-f', name], { stdio: 'ignore', timeout: 30_000, windowsHide: true });
-            throw new IsolationError(`Extraction did not finish within ${config.timeout} seconds; the container was stopped and removed`);
+            if (!(await removeContainer(runtime, name))) {
+                throw new IsolationError(`Extraction did not finish within ${config.timeout} seconds; the container ${name} was stopped but could not be removed`);
+            }
+            throw new IsolationError(`Extraction did not finish within ${config.timeout} seconds; the container ${name} was stopped and removed`);
         }
         return { document: readResult(join(output, 'result.json'), log), withheld, notices: notice === null ? [] : [notice] };
     } finally {
         rmSync(out, { recursive: true, force: true });
+    }
+}
+
+// Removes a container and waits until the runtime no longer knows it. `rm -f` can return while the removal that
+// `--rm` started is still in progress, so the container is gone only once `inspect` fails.
+async function removeContainer(runtime: string, name: string, timeoutMs = 30_000): Promise<boolean> {
+    const deadline = Date.now() + timeoutMs;
+    for (;;) {
+        spawnSync(runtime, ['rm', '-f', name], { stdio: 'ignore', timeout: 30_000, windowsHide: true });
+        if (spawnSync(runtime, ['container', 'inspect', name], { stdio: 'ignore', timeout: 30_000, windowsHide: true }).status !== 0) {
+            return true;
+        }
+        if (Date.now() >= deadline) {
+            return false;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 250));
     }
 }
