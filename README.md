@@ -45,7 +45,7 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
 
 ## Schema comparison
 
-`compare [BASELINE=TARGET...] [--snapshot PATH] [--limit N] [--json] [--write]` compares scopes of a saved document (`CONNECTION` or `CONNECTION:SCHEMA`; a target `app:*` stands for every inspected schema) with the shared laranex-schema algorithm, prints a summary or the comparison objects, and with `--write` stores them in the document, strictly validated and atomically. It reads only the document and `package.json`. See [docs/comparison.md](docs/comparison.md).
+`compare [BASELINE=TARGET...] [--snapshot PATH] [--limit N] [--json] [--write]` compares scopes of a saved document (`CONNECTION` or `CONNECTION:SCHEMA`; a target `app:*` stands for every inspected schema) with the shared laranex-schema producer algorithms (request expansion, `compareScopes`, override validation, `storeComparisons`), prints a summary or the comparison objects, and with `--write` stores them in the document, strictly validated and atomically. It reads only the document and `package.json`. See [docs/comparison.md](docs/comparison.md).
 
 ## Drift gate
 

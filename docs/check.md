@@ -44,7 +44,7 @@ These are **errors**: the check could not be completed, and the gate exits 2 wha
 
 A target schema `*` is expanded by the gate to every schema the target connection's inspection read except the baseline's own scope, exactly as `compare` expands it. A request that cannot be resolved is a `comparison_not_found` error (exit 2).
 
-Comparisons named on the command line are computed from the saved document as [`compare`](./comparison.md#compare-a-saved-document) computes them (replacing a stored comparison of the same scopes, with `--limit`), and then requested, so the gate checks exactly what was computed. Nothing is written. A named comparison whose connection is unknown, or whose `*` cannot be expanded, is not computed and is reported by the gate as not found; on an invalid document nothing is computed.
+Comparisons named on the command line are computed from the saved document as [`compare`](./comparison.md#compare-a-saved-document) computes them (replacing a stored comparison of the same scopes, with `--limit`), and then requested, so the gate checks exactly what was computed. Nothing is written. Both use the shared `expandComparisonRequests`: a named comparison whose connection is unknown, or whose `*` cannot be expanded or matches no schema, is not computed and is reported by the gate as `comparison_not_found` with the contract's message; the same comparison named twice is an error (exit 2); on an invalid document nothing is computed.
 
 ## Thresholds
 
