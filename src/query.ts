@@ -1,23 +1,22 @@
-// Bounded, read-only queries shared by the MCP tools. A port of python-schema-viewer's query.py (SnapshotQuery and the
-// unified_view projection): the same fields, in the same order, with the same pagination and byte limits, so both
-// packages answer the same tool calls with the same responses (tests/fixtures/conformance/mcp holds the evidence).
-import type {
-    Column,
-    Connection,
-    Coverage,
-    Diagnostic,
-    Drift,
-    Index,
-    Model,
-    Relationship,
-    SchemaDocument,
-    Table,
-} from 'laranex-schema-viewer-ui/contract';
+// Bounded, read-only queries over one saved laranex-schema 2.x document, shared by the MCP tools. A port of
+// python-schema-viewer's query.py; the response format is the shared specification, python-schema-viewer's
+// docs/mcp.md, and tests/fixtures/conformance/mcp holds python-schema-viewer's recorded responses with the exact text
+// its MCP server sends. Items are the document's own contract objects, apart from the overview's table summaries,
+// search hits and foreign-key entries.
+//
+// Key order is part of the response text. Contract objects are written in python-schema-viewer's field order
+// (pyOrder below), as its serializer writes them, so both packages send the same bytes.
+import type { Connection, Diagnostic, SchemaDocument, Table } from 'laranex-schema-viewer-ui/contract';
 import { loadDocument, revision as documentRevision } from './snapshot.js';
 
 export const MAX_RESPONSE_BYTES = 64 * 1024;
-const SCOPES = { declared: 'declared_metadata', database: 'database_metadata', combined: 'combined_metadata' } as const;
-const DIALECTS: Record<string, string> = { pgsql: 'postgresql' };
+// Room kept for nextOffset, which is set after the items that fit are chosen.
+export const RESERVED_BYTES = 128;
+export const SECTIONS = ['columns', 'indexes', 'foreign_keys', 'constraints', 'models', 'relationships', 'links', 'derived_links', 'diagnostics'] as const;
+export const KINDS = ['orm', 'foreign_key'] as const;
+const CATEGORIES = ['extraction', 'inspection', 'reconciliation', 'drift', 'lint'] as const;
+const SEVERITIES = ['error', 'warning', 'info'] as const;
+const CERTAINTIES = ['certain', 'likely'] as const;
 
 type Row = Record<string, unknown>;
 
@@ -34,24 +33,15 @@ export interface Pagination {
 export interface Page extends Row {
     revision: string;
     total: number;
+    offset: number;
+    limit: number;
     items: unknown[];
-    next_offset: number | null;
+    nextOffset: number | null;
 }
 
-// Python truthiness: unlike JavaScript, empty lists and objects are false.
-function truthy(value: unknown): boolean {
-    if (Array.isArray(value)) {
-        return value.length > 0;
-    }
-    if (value !== null && typeof value === 'object') {
-        return Object.keys(value).length > 0;
-    }
-    return Boolean(value);
-}
-
-// Python's zip: pairs up to the shorter list.
-function zip<A, B>(a: readonly A[], b: readonly B[]): [A, B][] {
-    return Array.from({ length: Math.min(a.length, b.length) }, (_, i) => [a[i] as A, b[i] as B]);
+// UTF-8 bytes of compact JSON (no whitespace, non-ASCII unescaped).
+export function size(value: unknown): number {
+    return Buffer.byteLength(JSON.stringify(value), 'utf8');
 }
 
 // Python's str.casefold, closely enough for search: full case folding per code point (ß and ẞ fold to ss, Σ and ς to
@@ -64,312 +54,115 @@ export function casefold(text: string): string {
     return out;
 }
 
-// Python's float repr for the byte count of json.dumps; integers print as JavaScript prints them.
-function pythonNumber(value: number): string {
-    if (Number.isInteger(value) && Math.abs(value) < 1e16) {
-        return String(value);
-    }
-    if (!Number.isFinite(value)) {
-        return Number.isNaN(value) ? 'NaN' : value > 0 ? 'Infinity' : '-Infinity';
-    }
-    const [mantissa = '', exponentText = '0'] = value.toExponential().split('e');
-    const exponent = Number(exponentText);
-    if (exponent < -4 || exponent >= 16) {
-        return `${mantissa}e${exponent < 0 ? '-' : '+'}${String(Math.abs(exponent)).padStart(2, '0')}`;
-    }
-    const digits = mantissa.replace('-', '').replace('.', '');
-    const sign = value < 0 ? '-' : '';
-    if (exponent < 0) {
-        return `${sign}0.${'0'.repeat(-exponent - 1)}${digits}`;
-    }
-    const whole = digits.slice(0, exponent + 1).padEnd(exponent + 1, '0');
-    return `${sign}${whole}.${digits.slice(exponent + 1) || '0'}`;
-}
+// python-schema-viewer's model field order per contract object (its dataclasses), which its serializer follows.
+// Optional fields it leaves out: drift when empty, extensions and dialectOptions when unset, and unset index options.
+type Shape = readonly (string | readonly [string, string])[];
+const SHAPES: Record<string, Shape> = {
+    drift: ['field', 'database', 'declared'],
+    coverage: ['complete', 'schemas', 'features'],
+    connectionCoverage: [['database', 'coverage'], ['declared', 'coverage']],
+    column: [
+        'name', 'type', 'nullable', 'provenance', 'typeName', 'autoIncrement', 'timezone', 'collation', ['enum', 'enumType'],
+        ['default', 'value'], ['ormDefault', 'value'], ['generated', 'generated'], 'comment', 'note', ['drift', 'drift'], 'extensions',
+    ],
+    enumType: ['name', 'values'],
+    value: ['kind', 'value'],
+    generated: ['kind', 'expression'],
+    part: ['column', 'expression', 'order', 'nulls', 'length', 'collation', 'opclass'],
+    backs: ['kind', 'constraint'],
+    indexOptions: ['method', 'predicate', 'included', 'options'],
+    index: [
+        'id', 'name', ['parts', 'part'], 'unique', 'provenance', 'expression', ['backs', 'backs'], 'method', 'partial', 'predicate',
+        'included', ['dialectOptions', 'indexOptions'], ['drift', 'drift'], 'extensions',
+    ],
+    foreignKey: [
+        'id', 'name', 'columns', 'foreignTable', 'foreignColumns', 'provenance', 'onUpdate', 'onDelete', 'deferrable', 'initially',
+        ['drift', 'drift'], 'extensions',
+    ],
+    constraint: ['id', 'kind', 'name', 'provenance', 'columns', 'expression', ['drift', 'drift'], 'extensions'],
+    owner: ['kind', 'package'],
+    table: [
+        'id', 'name', 'provenance', 'schema', 'comment', 'note', ['owner', 'owner'], 'primaryKey', ['columns', 'column'],
+        ['indexes', 'index'], ['foreignKeys', 'foreignKey'], ['constraints', 'constraint'], ['drift', 'drift'], 'extensions',
+    ],
+    source: ['file', 'line'],
+    model: ['id', 'className', 'tables', 'primaryKey', ['source', 'source'], 'extensions'],
+    endpoint: ['table', 'columns'],
+    keys: [['from', 'endpoint'], ['to', 'endpoint']],
+    pivot: ['table', 'parentColumns', 'parentPivotColumns', 'relatedColumns', 'relatedPivotColumns', 'columns'],
+    polymorphic: ['typeColumn', 'idColumn', 'typeValue'],
+    join: ['primary', 'secondary'],
+    relationship: [
+        'id', 'name', 'model', 'table', 'relatedModel', 'relatedTable', 'type', 'cardinality', 'collection', 'readOnly', ['keys', 'keys'],
+        ['pivot', 'pivot'], ['polymorphic', 'polymorphic'], 'through', ['join', 'join'], 'constraints', 'inverse', 'note',
+        ['source', 'source'], 'extensions',
+    ],
+    link: ['id', ['from', 'endpoint'], ['to', 'endpoint'], 'foreignKey', 'relationships', 'state', 'polymorphic', 'note'],
+    derivedLink: ['id', 'from', 'to', 'via', 'relationship'],
+    subject: ['type', 'id', 'columns', 'label'],
+    // The diagnostic id is computed from its content, and written last.
+    diagnostic: ['kind', 'category', 'severity', 'certainty', ['subject', 'subject'], 'message', 'extensions', 'id'],
+    generator: ['name', 'orm'],
+};
 
-// The UTF-8 length of Python's json.dumps(value, ensure_ascii=False): ", " and ": " separators.
-export function pythonJsonBytes(value: unknown): number {
+const camel = (name: string): string => name.replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase());
+const snake = (name: string): string => name.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
+
+// A contract object (or a list of them) in python-schema-viewer's key order, without the properties its model does
+// not have.
+export function pyOrder(kind: string, value: unknown): unknown {
     if (value === null || value === undefined) {
-        return 4;
-    }
-    if (typeof value === 'boolean') {
-        return value ? 4 : 5;
-    }
-    if (typeof value === 'number') {
-        return pythonNumber(value).length;
-    }
-    if (typeof value === 'string') {
-        return Buffer.byteLength(JSON.stringify(value), 'utf8');
+        return null;
     }
     if (Array.isArray(value)) {
-        return value.length ? 2 + value.reduce((n: number, v) => n + pythonJsonBytes(v), 0) + 2 * (value.length - 1) : 2;
+        return value.map((v) => pyOrder(kind, v));
     }
-    const entries = Object.entries(value as Row);
-    let size = 2 + (entries.length ? 2 * (entries.length - 1) : 0);
-    for (const [key, v] of entries) {
-        size += Buffer.byteLength(JSON.stringify(key), 'utf8') + 2 + pythonJsonBytes(v);
-    }
-    return size;
-}
-
-// Contract objects passed through as they are, with only the properties this version defines (as python-schema-viewer
-// reads them), so a later 2.x minor's additions do not leak into responses.
-function pick<T extends object>(value: T | null, keys: readonly (keyof T)[]): Row | null {
-    if (value === null) {
-        return null;
-    }
-    const out: Row = {};
-    for (const key of keys) {
-        out[key as string] = value[key];
-    }
-    return out;
-}
-
-function coverage(value: Coverage | null): Row | null {
-    return pick(value, ['complete', 'schemas', 'features']);
-}
-
-function drift(values: Drift[]): Row[] {
-    return values.map((d) => pick(d, ['field', 'database', 'declared']) as Row);
-}
-
-function physical(entity: { provenance: string[]; drift?: Drift[] }, out: Row): Row {
-    out.provenance = entity.provenance;
-    if (truthy(entity.drift)) {
-        out.drift = drift(entity.drift ?? []);
-    }
-    return out;
-}
-
-function serverDefault(column: Column): Row | null {
-    if (truthy(column.generated)) {
-        return { kind: 'generated', value: column.generated?.expression };
-    }
-    const value = column.default;
-    if (value === null) {
-        return null;
-    }
-    const kinds: Record<string, string> = { literal: 'sql', expression: 'sql', sequence: 'sequence' };
-    return { kind: kinds[value.kind] ?? 'generated', value: value.value };
-}
-
-function ormDefault(column: Column): Row | null {
-    const value = column.ormDefault;
-    if (value === null) {
-        return null;
-    }
-    return { kind: value.kind === 'expression' ? 'sql' : value.kind, value: value.value };
-}
-
-function firstExtension(extensions: Record<string, unknown> | undefined): Row | undefined {
-    const values = Object.values(extensions ?? {});
-    return values.length ? (values[0] as Row) : undefined;
-}
-
-function indexView(i: Index, dialect: string | null): Row {
-    const options = Object.entries(i.dialectOptions ?? {});
-    const predicates: Row = {};
-    const included: Row = {};
-    const methods: Row = {};
-    for (const [d, o] of options) {
-        if (truthy(o.predicate)) predicates[d] = o.predicate;
-    }
-    for (const [d, o] of options) {
-        if (truthy(o.included)) included[d] = o.included;
-    }
-    for (const [d, o] of options) {
-        if (truthy(o.method)) methods[d] = o.method;
-    }
-    if (truthy(dialect) && dialect !== null) {
-        if (truthy(i.predicate) && !(dialect in predicates)) predicates[dialect] = i.predicate;
-        if (truthy(i.included) && !(dialect in included)) included[dialect] = i.included;
-        if (truthy(i.method) && !(dialect in methods)) methods[dialect] = i.method;
-    }
-    return physical(i, {
-        name: i.name,
-        // 2.0 dropped Index.columns and Index.primary; the response keeps them, derived from parts and backs.
-        columns: i.parts.flatMap((p) => (p.column === null ? [] : [p.column])),
-        expressions: i.expression ? i.parts.map((p) => (truthy(p.expression) ? p.expression : p.column)) : [],
-        unique: i.unique,
-        predicates,
-        included_columns: included,
-        methods,
-        id: i.id,
-        parts: i.parts.map((p) => pick(p, ['column', 'expression', 'order', 'nulls', 'length', 'collation', 'opclass'])),
-        primary: i.backs?.kind === 'primary_key',
-        backs: pick(i.backs, ['kind', 'constraint']),
-        partial: i.partial,
-    });
-}
-
-function tableView(t: Table, connection: Connection): Row {
-    const dialect = connection.driver === null ? null : (DIALECTS[connection.driver] ?? connection.driver);
-    const columns = t.columns.map((c) => {
-        const extension = firstExtension(c.extensions)?.autoincrement;
-        return physical(c, {
-            name: c.name,
-            type: c.type,
-            timezone: c.timezone,
-            nullable: c.nullable,
-            primary_key: t.primaryKey.includes(c.name),
-            autoincrement: truthy(extension) ? extension : c.autoIncrement === null ? 'auto' : c.autoIncrement,
-            default: ormDefault(c),
-            server_default: serverDefault(c),
-            comment: c.comment,
-            type_name: c.typeName,
-            collation: c.collation,
-            enum: pick(c.enum, ['name', 'values']),
-        });
-    });
-    const foreignKeys = t.foreignKeys.map((fk) => {
-        const raw = firstExtension(fk.extensions) ?? {};
-        return physical(fk, {
-            id: fk.id,
-            name: fk.name,
-            columns: fk.columns,
-            target_table: fk.foreignTable,
-            target_columns: fk.foreignColumns,
-            on_delete: 'onDelete' in raw ? raw.onDelete : fk.onDelete,
-            on_update: 'onUpdate' in raw ? raw.onUpdate : fk.onUpdate,
-            deferrable: fk.deferrable,
-            initially: fk.initially,
-        });
-    });
-    return physical(t, {
-        id: t.id,
-        namespace: connection.name,
-        name: t.name,
-        schema_name: t.schema,
-        comment: t.comment,
-        columns,
-        primary_key: t.primaryKey,
-        indexes: t.indexes.map((i) => indexView(i, dialect)),
-        foreign_keys: foreignKeys,
-        constraints: t.constraints.map((c) =>
-            physical(c, { kind: c.kind, name: c.name, columns: c.columns, expression: c.expression, id: c.id }),
-        ),
-        owner: pick(t.owner, ['kind', 'package']),
-    });
-}
-
-function relationshipView(r: Relationship, relationships: Map<string, Relationship>): Row {
-    let pairs: Row[] = [];
-    if (truthy(r.keys) && r.keys) {
-        const [local, remote] = r.type === 'MANYTOONE' ? [r.keys.from, r.keys.to] : [r.keys.to, r.keys.from];
-        pairs = zip(local.columns, remote.columns).map(([a, b]) => ({
-            local: { table: local.table, column: a },
-            remote: { table: remote.table, column: b },
-        }));
-    } else if (truthy(r.pivot) && r.pivot) {
-        const pivot = r.pivot;
-        pairs = zip(pivot.parentColumns, pivot.parentPivotColumns).map(([a, b]) => ({
-            local: { table: r.table, column: a },
-            remote: { table: pivot.table, column: b },
-        }));
-        pairs.push(
-            ...zip(pivot.relatedColumns, pivot.relatedPivotColumns).map(([a, b]) => ({
-                local: { table: r.relatedTable, column: a },
-                remote: { table: pivot.table, column: b },
-            })),
+    const source = value as Row;
+    if (kind === 'indexOptions') {
+        // A mapping of dialect -> options, each option written only when set.
+        return Object.fromEntries(
+            Object.entries(source).map(([dialect, options]) => [
+                dialect,
+                Object.fromEntries((SHAPES.indexOptions as readonly string[]).flatMap((key) => (options as Row)[key] == null ? [] : [[key, (options as Row)[key]]])),
+            ]),
         );
     }
-    const inverse = truthy(r.inverse) && r.inverse !== null ? relationships.get(r.inverse) : undefined;
-    const join = r.join;
-    return {
-        id: r.id,
-        name: r.name,
-        model: r.model,
-        target_model: r.relatedModel,
-        source_table: r.table,
-        target_table: r.relatedTable,
-        direction: r.type,
-        uselist: r.collection,
-        viewonly: r.readOnly,
-        back_populates: inverse ? inverse.name : null,
-        secondary: truthy(r.pivot) ? (r.pivot?.table ?? null) : null,
-        primary_join: join && truthy(join.primary) ? join.primary : '',
-        secondary_join: join ? join.secondary : null,
-        join_pairs: pairs,
-        cardinality: r.cardinality,
-        polymorphic: pick(r.polymorphic, ['typeColumn', 'idColumn', 'typeValue']),
-        through: r.through,
-        constraints: r.constraints,
-        note: r.note,
-    };
+    const out: Row = {};
+    for (const entry of SHAPES[kind] ?? []) {
+        const [key, nested] = typeof entry === 'string' ? [entry, null] : entry;
+        const item = source[key];
+        if ((key === 'drift' && (!Array.isArray(item) || item.length === 0)) || ((key === 'extensions' || key === 'dialectOptions') && item == null)) {
+            continue;
+        }
+        out[key] = nested === null ? (item ?? null) : pyOrder(nested, item);
+    }
+    if (kind === 'drift') {
+        out.field = camel(snake(String(source.field)));
+    }
+    return out;
 }
 
-function diagnosticView(d: Diagnostic): Row {
-    const subject = d.subject;
-    return {
-        kind: d.kind,
-        subject: truthy(subject.id) ? subject.id : truthy(subject.label) ? subject.label : '',
-        message: d.message,
-        category: d.category,
-        severity: d.severity,
-        certainty: d.certainty,
-        subject_type: subject.type,
-        columns: subject.columns,
-    };
-}
-
-function modelView(m: Model): Row {
-    return {
-        id: m.id,
-        class_name: m.className,
-        table_ids: m.tables,
-        primary_key: m.primaryKey,
-        source: pick(m.source, ['file', 'line']),
-    };
-}
-
-export interface View {
-    scope: string;
-    source: string;
-    connections: Row[];
-    tables: Row[];
-    models: Row[];
-    relationships: Row[];
-    diagnostics: Row[];
-}
-
-// A laranex-schema document in the version 1 response fields, keeping what only the unified contract has.
-export function unifiedView(doc: SchemaDocument): View {
-    const relationships = new Map(doc.relationships.map((r) => [r.id, r]));
-    return {
-        scope: SCOPES[doc.source],
-        source: doc.source,
-        connections: doc.connections.map((c) => ({
-            id: c.id,
-            name: c.name,
-            driver: c.driver,
-            default_schema: c.defaultSchema,
-            coverage: { database: coverage(c.coverage.database), declared: coverage(c.coverage.declared) },
-        })),
-        tables: doc.connections.flatMap((c) => c.tables.map((t) => tableView(t, c))),
-        models: doc.models.map(modelView),
-        relationships: doc.relationships.map((r) => relationshipView(r, relationships)),
-        diagnostics: doc.diagnostics.map(diagnosticView),
-    };
-}
-
-const list = (row: Row, key: string) => row[key] as Row[];
-const text = (row: Row, key: string) => row[key] as string;
-
-// One validated snapshot and revision, pinned for a server's lifetime.
 export class SnapshotQuery {
-    readonly view: View;
+    readonly document: SchemaDocument;
     readonly revision: string;
-    readonly tables: Map<string, Row>;
-    readonly models: Map<string, Row>;
+    readonly tables: Map<string, Table>;
+    readonly models: Map<string, SchemaDocument['models'][number]>;
+    private readonly connectionOf: Map<string, Connection>;
 
     constructor(document: SchemaDocument) {
-        this.view = unifiedView(document);
+        this.document = document;
         this.revision = documentRevision(document);
-        this.tables = new Map(this.view.tables.map((t) => [text(t, 'id'), t]));
-        this.models = new Map(this.view.models.map((m) => [text(m, 'id'), m]));
+        this.connectionOf = new Map(document.connections.flatMap((c) => c.tables.map((t) => [t.id, c] as const)));
+        this.tables = new Map(this.allTables().map((t) => [t.id, t]));
+        this.models = new Map(document.models.map((m) => [m.id, m]));
     }
 
     static fromFile(path: string): SnapshotQuery {
         return new SnapshotQuery(loadDocument(path));
+    }
+
+    private allTables(): Table[] {
+        return this.document.connections.flatMap((c) => c.tables);
     }
 
     page(items: unknown[], { limit = 25, offset = 0, revision = null }: Pagination = {}, context: Row = {}): Page {
@@ -380,54 +173,106 @@ export class SnapshotQuery {
             throw new QueryError('offset must be a nonnegative integer');
         }
         if (revision !== null && revision !== this.revision) {
-            throw new QueryError('Snapshot revision differs; restart pagination without revision');
+            throw new QueryError('Document revision differs; restart pagination without revision');
         }
-        const result: Page = { ...context, revision: this.revision, total: items.length, items: [], next_offset: null };
-        // Python measures the whole result after each item; the same total, computed incrementally.
-        let size = pythonJsonBytes(result);
+        const result: Page = { ...context, revision: this.revision, total: items.length, offset, limit, items: [], nextOffset: null };
         for (const item of items.slice(offset, offset + limit)) {
-            const grown = size + pythonJsonBytes(item) + (result.items.length ? 2 : 0);
-            if (grown > MAX_RESPONSE_BYTES - 128) {
-                if (!result.items.length) {
+            result.items.push(item);
+            if (size(result) > MAX_RESPONSE_BYTES - RESERVED_BYTES) {
+                result.items.pop();
+                if (result.items.length === 0) {
                     throw new QueryError('One result exceeds the response byte limit');
                 }
                 break;
             }
-            result.items.push(item);
-            size = grown;
         }
         const end = offset + result.items.length;
-        result.next_offset = end < items.length ? end : null;
-        if (pythonJsonBytes(result) > MAX_RESPONSE_BYTES) {
+        result.nextOffset = end < items.length ? end : null;
+        if (size(result) > MAX_RESPONSE_BYTES) {
             throw new QueryError('Response metadata exceeds the response byte limit');
         }
         return result;
     }
 
     overview(pagination: Pagination = {}): Page {
-        const view = this.view;
-        const tables = view.tables;
-        const sum = (key: string) => tables.reduce((n, t) => n + list(t, key).length, 0);
-        const counts: Row = {
+        const doc = this.document;
+        const tables = this.allTables();
+        const drifted = (entities: { drift?: unknown[] }[]): number => entities.filter((e) => (e.drift?.length ?? 0) > 0).length;
+        const physical = tables.flatMap((t) => [t, ...t.columns, ...t.indexes, ...t.foreignKeys, ...t.constraints]);
+        const sum = (f: (t: Table) => number): number => tables.reduce((n, t) => n + f(t), 0);
+        const counts = {
+            connections: doc.connections.length,
             tables: tables.length,
-            models: view.models.length,
-            columns: sum('columns'),
-            indexes: sum('indexes'),
-            foreign_keys: sum('foreign_keys'),
-            relationships: view.relationships.length,
-            diagnostics: view.diagnostics.length,
-            drift: view.diagnostics.filter((d) => d.category === 'drift').length,
+            columns: sum((t) => t.columns.length),
+            indexes: sum((t) => t.indexes.length),
+            foreignKeys: sum((t) => t.foreignKeys.length),
+            constraints: sum((t) => t.constraints.length),
+            models: doc.models.length,
+            relationships: doc.relationships.length,
+            links: doc.links.length,
+            derivedLinks: doc.derivedLinks.length,
+            diagnostics: doc.diagnostics.length,
+            drift: drifted(physical),
+            comparisons: doc.comparisons.length,
+            migrations: doc.migrations.length,
+            inferredAssociations: doc.inferredAssociations.length,
         };
-        const items = tables.map((t) => ({
-            id: t.id,
-            namespace: t.namespace,
-            schema_name: t.schema_name,
-            name: t.name,
-            columns: list(t, 'columns').length,
-            foreign_keys: list(t, 'foreign_keys').length,
-            provenance: t.provenance,
+        const by = (name: 'category' | 'severity' | 'certainty', values: readonly string[]): Row =>
+            Object.fromEntries(values.map((value) => [value, doc.diagnostics.filter((d) => d[name] === value).length]));
+        const connections = doc.connections.map((c) => ({
+            id: c.id,
+            name: c.name,
+            driver: c.driver,
+            defaultSchema: c.defaultSchema,
+            coverage: pyOrder('connectionCoverage', c.coverage),
+            tables: c.tables.length,
         }));
-        return this.page(items, pagination, { counts, scope: view.scope, source: view.source, connections: view.connections });
+        return this.page(
+            tables.map((t) => this.summary(t)),
+            pagination,
+            {
+                version: doc.version,
+                source: doc.source,
+                generator: pyOrder('generator', doc.generator),
+                note: doc.note,
+                connections,
+                counts,
+                diagnosticCounts: { category: by('category', CATEGORIES), severity: by('severity', SEVERITIES), certainty: by('certainty', CERTAINTIES) },
+            },
+        );
+    }
+
+    private summary(table: Table): Row {
+        const entities: { drift?: unknown[] }[] = [table, ...table.columns, ...table.indexes, ...table.foreignKeys, ...table.constraints];
+        return {
+            id: table.id,
+            connection: this.connectionOf.get(table.id)?.id,
+            name: table.name,
+            schema: table.schema,
+            provenance: [...table.provenance],
+            counts: {
+                columns: table.columns.length,
+                indexes: table.indexes.length,
+                foreignKeys: table.foreignKeys.length,
+                constraints: table.constraints.length,
+                drift: entities.filter((e) => (e.drift?.length ?? 0) > 0).length,
+                diagnostics: this.tableDiagnostics(table).length,
+            },
+        };
+    }
+
+    // Diagnostics about the table, its columns, or its indexes, foreign keys and constraints.
+    private tableDiagnostics(table: Table): Diagnostic[] {
+        const own = new Set([table.id, ...table.indexes.map((x) => x.id), ...table.foreignKeys.map((x) => x.id), ...table.constraints.map((x) => x.id)]);
+        const types = new Set(['table', 'column', 'index', 'foreignKey', 'constraint']);
+        return this.document.diagnostics.filter((d) => types.has(d.subject.type) && d.subject.id !== null && own.has(d.subject.id));
+    }
+
+    // Relationships declared from, to, through or over a pivot of the table.
+    private tableRelationships(table: string): SchemaDocument['relationships'] {
+        return this.document.relationships.filter(
+            (r) => r.table === table || r.relatedTable === table || r.pivot?.table === table || (r.through ?? []).includes(table),
+        );
     }
 
     getTable(table: string, section = 'columns', pagination: Pagination = {}): Page {
@@ -435,32 +280,33 @@ export class SnapshotQuery {
         if (value === undefined) {
             throw new QueryError('Unknown table ID; use schema_overview or schema_search');
         }
-        const sections: Record<string, unknown[]> = {
-            columns: list(value, 'columns'),
-            indexes: list(value, 'indexes'),
-            foreign_keys: list(value, 'foreign_keys'),
-            constraints: list(value, 'constraints'),
-            models: this.view.models.filter((m) => (m.table_ids as string[]).includes(table)),
-            relationships: this.view.relationships.filter((r) => table === r.source_table || table === r.target_table),
-        };
-        const items = Object.hasOwn(sections, section) ? sections[section] : undefined;
-        if (items === undefined) {
+        if (!(SECTIONS as readonly string[]).includes(section)) {
             throw new QueryError(`Unknown table section: ${section}`);
         }
-        const summary: Row = {
-            id: value.id,
-            name: value.name,
-            namespace: value.namespace,
-            schema_name: value.schema_name,
-            primary_key: value.primary_key,
+        const doc = this.document;
+        const sections: Record<(typeof SECTIONS)[number], unknown[]> = {
+            columns: pyOrder('column', value.columns) as unknown[],
+            indexes: pyOrder('index', value.indexes) as unknown[],
+            foreign_keys: pyOrder('foreignKey', value.foreignKeys) as unknown[],
+            constraints: pyOrder('constraint', value.constraints) as unknown[],
+            models: pyOrder('model', doc.models.filter((m) => m.tables.includes(table))) as unknown[],
+            relationships: pyOrder('relationship', this.tableRelationships(table)) as unknown[],
+            links: pyOrder('link', doc.links.filter((l) => l.from.table === table || l.to.table === table)) as unknown[],
+            derived_links: pyOrder('derivedLink', doc.derivedLinks.filter((l) => l.from === table || l.to === table || l.via.includes(table))) as unknown[],
+            diagnostics: pyOrder('diagnostic', this.tableDiagnostics(value)) as unknown[],
         };
-        for (const key of ['provenance', 'drift', 'owner']) {
-            if (key in value) {
-                summary[key] = value[key];
-            }
+        const header = pyOrder('table', value) as Row;
+        for (const key of ['columns', 'indexes', 'foreignKeys', 'constraints']) {
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- the four fixed sections
+            delete header[key];
         }
-        const counts = Object.fromEntries(Object.entries(sections).map(([key, entries]) => [key, entries.length]));
-        return this.page(items, pagination, { table: summary, section, counts });
+        const connection = this.connectionOf.get(table);
+        return this.page(sections[section as (typeof SECTIONS)[number]], pagination, {
+            table: header,
+            connection: { id: connection?.id, name: connection?.name, driver: connection?.driver, defaultSchema: connection?.defaultSchema },
+            section,
+            counts: Object.fromEntries(Object.entries(sections).map(([key, items]) => [key, items.length])),
+        });
     }
 
     getModel(model: string, pagination: Pagination = {}): Page {
@@ -468,61 +314,69 @@ export class SnapshotQuery {
         if (value === undefined) {
             throw new QueryError('Unknown model ID; use schema_search');
         }
-        return this.page(
-            this.view.relationships.filter((r) => r.model === model),
-            pagination,
-            { model: value },
-        );
+        const items = pyOrder('relationship', this.document.relationships.filter((r) => r.model === model)) as unknown[];
+        return this.page(items, pagination, { model: pyOrder('model', value) });
     }
 
     relationships(table: string | null = null, kind = 'orm', pagination: Pagination = {}): Page {
         if (table !== null && !this.tables.has(table)) {
             throw new QueryError('Unknown table ID');
         }
-        let items: Row[];
+        let items: unknown[];
         if (kind === 'orm') {
-            items = this.view.relationships.filter((r) => table === null || table === r.source_table || table === r.target_table);
+            items = pyOrder('relationship', table === null ? this.document.relationships : this.tableRelationships(table)) as unknown[];
         } else if (kind === 'foreign_key') {
-            items = this.view.tables.flatMap((t) =>
-                list(t, 'foreign_keys')
-                    .filter((fk) => table === null || table === t.id || table === fk.target_table)
-                    .map((fk) => ({ source_table: t.id, ...fk })),
+            items = this.allTables().flatMap((t) =>
+                t.foreignKeys
+                    .filter((fk) => table === null || table === t.id || table === fk.foreignTable)
+                    .map((fk) => ({ table: t.id, foreignKey: pyOrder('foreignKey', fk) })),
             );
         } else {
             throw new QueryError('kind must be orm or foreign_key');
         }
-        return this.page(items, pagination, { kind });
+        return this.page(items, pagination, { kind, table });
     }
 
     search(query: string, pagination: Pagination = {}): Page {
-        const length = typeof query === 'string' ? Array.from(query).length : 0;
+        // Python counts code points: a surrogate pair is one character.
+        const length = typeof query === 'string' ? query.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '.').length : 0;
         if (length < 1 || length > 200) {
             throw new QueryError('query must contain 1 to 200 characters');
         }
         const needle = casefold(query);
         const items: Row[] = [];
-        for (const table of this.view.tables) {
-            const name = `${text(table, 'namespace')}.${truthy(table.schema_name) ? text(table, 'schema_name') : ''}.${text(table, 'name')}`;
-            if (casefold(name).includes(needle)) {
-                items.push({ kind: 'table', id: table.id, name: table.name });
+        const hit = (kind: string, id: string | null, table: string | null, name: string): void => {
+            items.push({ kind, id, table, name });
+        };
+        for (const table of this.allTables()) {
+            // Python's ".".join(filter(None, ...)): empty and null parts are left out.
+            const qualified = [this.connectionOf.get(table.id)?.name, table.schema, table.name].filter((p): p is string => Boolean(p)).join('.');
+            if (casefold(qualified).includes(needle)) {
+                hit('table', table.id, table.id, table.name);
             }
-            for (const column of list(table, 'columns')) {
-                if (casefold(text(column, 'name')).includes(needle)) {
-                    items.push({ kind: 'column', table: table.id, name: column.name });
+            for (const column of table.columns) {
+                if (casefold(column.name).includes(needle)) {
+                    hit('column', null, table.id, column.name);
+                }
+            }
+            for (const [kind, entities] of [['index', table.indexes], ['foreignKey', table.foreignKeys], ['constraint', table.constraints]] as const) {
+                for (const entity of entities) {
+                    if (entity.name !== null && casefold(entity.name).includes(needle)) {
+                        hit(kind, entity.id, table.id, entity.name);
+                    }
                 }
             }
         }
-        for (const model of this.view.models) {
-            if (casefold(text(model, 'class_name')).includes(needle)) {
-                items.push({ kind: 'model', id: model.id, name: model.class_name });
+        for (const model of this.document.models) {
+            if (casefold(model.className).includes(needle)) {
+                hit('model', model.id, null, model.className);
             }
         }
-        for (const relation of this.view.relationships) {
-            if (casefold(`${text(relation, 'name')} ${text(relation, 'direction')}`).includes(needle)) {
-                items.push({ kind: 'relationship', id: relation.id, name: relation.name });
+        for (const r of this.document.relationships) {
+            if (casefold(`${r.name} ${r.type}`).includes(needle)) {
+                hit('relationship', r.id, r.table, r.name);
             }
         }
-        return this.page(items, pagination);
+        return this.page(items, pagination, { query });
     }
 }
-

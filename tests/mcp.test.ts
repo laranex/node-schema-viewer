@@ -1,14 +1,21 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { after, before, describe, test } from 'node:test';
 import { Client } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
-import { CLI, COMBINED, DOCUMENTS, EXPECTED, runCli, tempDir } from './helpers.js';
-import { pendingMcp } from './pending.js';
+import { CLI, COMBINED, DECLARED, recordings, runCli, schemaRejected, scratchDir, tempDir } from './helpers.js';
 
-const SECTIONS = ['columns', 'indexes', 'foreign_keys', 'constraints', 'models', 'relationships'];
+const SECTIONS = ['columns', 'indexes', 'foreign_keys', 'constraints', 'models', 'relationships', 'links', 'derived_links', 'diagnostics'];
+// python-schema-viewer's tool descriptions, as its MCP server lists them.
+const DESCRIPTIONS: Record<string, string> = {
+    schema_overview: 'Document source, connections with coverage, counts, and paginated table summaries with opaque IDs.',
+    schema_search: 'Literal case-insensitive search of table, column, index, foreign key, constraint, model and relationship\nnames; returns hits with opaque IDs.',
+    schema_get_table: "Read one section of a table, as the document's own objects, by the table's exact opaque ID.",
+    schema_get_model: 'Read a model and the ORM relationships it declares, by exact model ID.',
+    schema_get_relationships: 'Read declared ORM relationships (kind orm) or physical foreign keys (kind foreign_key), never mixed.',
+};
 const TOOLS = ['schema_get_model', 'schema_get_relationships', 'schema_get_table', 'schema_overview', 'schema_search'];
 
 interface Text {
@@ -47,7 +54,8 @@ describe('mcp over stdio', () => {
         assert.deepEqual(tools.map((t) => t.name).sort(), TOOLS);
         for (const tool of tools) {
             assert.deepEqual(tool.annotations, { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, tool.name);
-            assert.ok(tool.description);
+            assert.equal(tool.description, DESCRIPTIONS[tool.name]);
+            assert.equal(tool.outputSchema, undefined);
             const properties = tool.inputSchema.properties as Record<string, Record<string, unknown>>;
             assert.equal(properties.limit?.minimum, 1);
             assert.equal(properties.limit.maximum, 100);
@@ -62,7 +70,7 @@ describe('mcp over stdio', () => {
         assert.deepEqual(byName.get('schema_get_model')?.inputSchema.required, ['model']);
         assert.deepEqual(byName.get('schema_get_relationships')?.inputSchema.required ?? [], []);
         const section = (byName.get('schema_get_table')?.inputSchema.properties as Record<string, { enum?: string[] }>).section;
-        assert.deepEqual(section?.enum, ['columns', 'indexes', 'foreign_keys', 'constraints', 'models', 'relationships']);
+        assert.deepEqual(section?.enum, SECTIONS);
     });
 
     test('rejects invalid arguments as tool errors', async () => {
@@ -89,50 +97,44 @@ describe('mcp over stdio', () => {
         const model = await session.client.callTool({ name: 'schema_get_model', arguments: { model: 'nope' } });
         assert.match(text(model), /Unknown model ID/);
         const stale = await session.client.callTool({ name: 'schema_overview', arguments: { revision: '0'.repeat(64) } });
-        assert.match(text(stale), /Snapshot revision differs/);
+        assert.equal(text(stale), 'Error executing tool schema_overview: Document revision differs; restart pagination without revision');
         const missing = await session.client.callTool({ name: 'schema_drop_table', arguments: {} }).catch(() => ({ isError: true }));
         assert.equal(missing.isError, true);
     });
 });
 
 describe('mcp conformance over stdio with python-schema-viewer', () => {
-    for (const name of readdirSync(EXPECTED).filter((file) => file.endsWith('.json'))) {
-        test(name, { skip: pendingMcp(name) }, async () => {
-            const expected = JSON.parse(readFileSync(join(EXPECTED, name), 'utf8')) as {
-                python_revision: string;
-                raw_revision: string;
-                calls: { tool: string; arguments: Record<string, unknown>; text?: string; error?: string }[];
-            };
-            const session = await connect(join(DOCUMENTS, name));
+    let calls = 0;
+    let byteEqual = 0;
+
+    for (const recording of recordings(scratchDir())) {
+        test(recording.name, async () => {
+            const session = await connect(recording.snapshot);
             try {
-                let compared = 0;
-                for (const recorded of expected.calls) {
-                    // Python hashes a later minor without the properties it does not know (see CHANGELOG).
-                    const call = JSON.parse(JSON.stringify(recorded).replaceAll(expected.python_revision, expected.raw_revision)) as typeof recorded;
-                    const result = await session.client.callTool({ name: call.tool, arguments: call.arguments });
+                for (const [n, call] of recording.calls.entries()) {
                     const label = `${call.tool} ${JSON.stringify(call.arguments)}`;
-                    const schemaInvalid =
-                        (call.arguments.section !== undefined && !SECTIONS.includes(call.arguments.section as string)) ||
-                        (call.arguments.kind !== undefined && !['orm', 'foreign_key'].includes(call.arguments.kind as string));
-                    if (schemaInvalid) {
-                        // Both SDKs reject values outside the declared enums before the query runs, each with its own message.
-                        assert.equal(result.isError, true, label);
-                    } else if (call.error !== undefined) {
-                        assert.equal(result.isError, true, label);
-                        assert.equal(text(result), `Error executing tool ${call.tool}: ${call.error}`, label);
-                    } else {
-                        assert.notEqual(result.isError, true, label);
-                        assert.equal(text(result), call.text, label);
+                    const sent = recording.texts[n];
+                    assert.ok(sent, label);
+                    const result = await session.client.callTool({ name: call.tool, arguments: call.arguments });
+                    calls++;
+                    assert.equal(result.isError === true, sent.isError, label);
+                    if (schemaRejected(call)) {
+                        // Both SDKs reject values outside the input schema before the query runs, each in its own words.
+                        continue;
                     }
-                    compared++;
+                    assert.equal(text(result), sent.text, label);
+                    byteEqual++;
                 }
-                assert.equal(compared, expected.calls.length);
-                assert.ok(TOOLS.every((tool) => expected.calls.some((c) => c.tool === tool)));
             } finally {
                 await session.client.close();
             }
         });
     }
+
+    test('compares every recorded call end to end', () => {
+        assert.equal(calls, 1470);
+        assert.equal(byteEqual, 1405);
+    });
 });
 
 describe('mcp startup', () => {
@@ -142,9 +144,11 @@ describe('mcp startup', () => {
         assert.equal(missing.code, 1);
         assert.equal(missing.stdout, '');
         assert.match(missing.stderr, /Snapshot not found/);
-        const invalid = await runCli(['mcp', '--snapshot', join(DOCUMENTS, '..', '..', '..', '..', 'package.json')]);
+        writeFileSync(join(dir, 'other.json'), JSON.stringify({ name: 'not-a-schema' }));
+        const invalid = await runCli(['mcp', '--snapshot', join(dir, 'other.json')]);
         // 1.x is refused with one clear error; nothing converts it.
-        const v1 = await runCli(['mcp', '--snapshot', join(DOCUMENTS, 'combined-drift.json')]);
+        writeFileSync(join(dir, 'v1.json'), JSON.stringify({ ...(JSON.parse(readFileSync(DECLARED, 'utf8')) as object), version: '1.0' }));
+        const v1 = await runCli(['mcp', '--snapshot', join(dir, 'v1.json')]);
         assert.equal(v1.code, 1);
         assert.equal(v1.stdout, '');
         assert.match(v1.stderr, /Unsupported laranex-schema version "1\.0"; this reader supports 2\.x\. Rebuild the snapshot/);

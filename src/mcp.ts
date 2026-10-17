@@ -1,9 +1,10 @@
 // Read-only MCP tools over stdio (official TypeScript SDK, v2). Only the configured, pinned snapshot is accessible.
-// A port of python-schema-viewer's mcp.py: the same tools, arguments, annotations, descriptions and response text.
+// A port of python-schema-viewer's mcp.py: the same tools, arguments, annotations, descriptions and response text
+// (the response format is python-schema-viewer's docs/mcp.md; query.ts implements it).
 import { McpServer, type CallToolResult } from '@modelcontextprotocol/server';
 import { serveStdio, type StdioServerHandle } from '@modelcontextprotocol/server/stdio';
 import { z } from 'zod';
-import { QueryError, SnapshotQuery, type Page, type Pagination } from './query.js';
+import { KINDS, QueryError, SECTIONS, SnapshotQuery, type Page, type Pagination } from './query.js';
 import { VERSION } from './version.js';
 
 export const SERVER_NAME = 'Laranex Schema Viewer';
@@ -12,10 +13,9 @@ export const ANNOTATIONS = { readOnlyHint: true, destructiveHint: false, idempot
 const limit = z.number().int().min(1).max(100).default(25);
 const offset = z.number().int().min(0).default(0);
 const revision = z.string().nullable().default(null);
-const SECTIONS = ['columns', 'indexes', 'foreign_keys', 'constraints', 'models', 'relationships'] as const;
 
-// The same text as the Python SDK writes for a dict result (two-space JSON, key order kept, nothing escaped that need
-// not be), and the same "Error executing tool" prefix for query errors.
+// The same text as the Python SDK writes for a dict result (pydantic_core.to_json with indent=2: two-space JSON, key
+// order kept, non-ASCII unescaped), and its "Error executing tool NAME: " prefix for query errors.
 function respond(name: string, run: () => Page): CallToolResult {
     try {
         return { content: [{ type: 'text', text: JSON.stringify(run(), null, 2) }] };
@@ -39,7 +39,7 @@ export function createMcpServer(query: SnapshotQuery): McpServer {
     server.registerTool(
         'schema_overview',
         {
-            description: 'Schema counts and paginated table IDs. Reads a pinned saved snapshot only.',
+            description: 'Document source, connections with coverage, counts, and paginated table summaries with opaque IDs.',
             inputSchema: z.object({ limit, offset, revision }),
             annotations: ANNOTATIONS,
         },
@@ -48,7 +48,8 @@ export function createMcpServer(query: SnapshotQuery): McpServer {
     server.registerTool(
         'schema_search',
         {
-            description: 'Literal substring search of table, column, model and declared relationship names.',
+            description:
+                'Literal case-insensitive search of table, column, index, foreign key, constraint, model and relationship\nnames; returns hits with opaque IDs.',
             inputSchema: z.object({ query_text: z.string(), limit, offset, revision }),
             annotations: ANNOTATIONS,
         },
@@ -57,7 +58,7 @@ export function createMcpServer(query: SnapshotQuery): McpServer {
     server.registerTool(
         'schema_get_table',
         {
-            description: 'Read a table section using its exact opaque ID from overview/search.',
+            description: "Read one section of a table, as the document's own objects, by the table's exact opaque ID.",
             inputSchema: z.object({ table: z.string(), section: z.enum(SECTIONS).default('columns'), limit, offset, revision }),
             annotations: ANNOTATIONS,
         },
@@ -66,7 +67,7 @@ export function createMcpServer(query: SnapshotQuery): McpServer {
     server.registerTool(
         'schema_get_model',
         {
-            description: 'Read model metadata and its paginated declared ORM relationships by exact model ID.',
+            description: 'Read a model and the ORM relationships it declares, by exact model ID.',
             inputSchema: z.object({ model: z.string(), limit, offset, revision }),
             annotations: ANNOTATIONS,
         },
@@ -75,10 +76,10 @@ export function createMcpServer(query: SnapshotQuery): McpServer {
     server.registerTool(
         'schema_get_relationships',
         {
-            description: 'Read declared ORM relationships or physical foreign keys as separate collections.',
+            description: 'Read declared ORM relationships (kind orm) or physical foreign keys (kind foreign_key), never mixed.',
             inputSchema: z.object({
                 table: z.string().nullable().default(null),
-                kind: z.enum(['orm', 'foreign_key']).default('orm'),
+                kind: z.enum(KINDS).default('orm'),
                 limit,
                 offset,
                 revision,
