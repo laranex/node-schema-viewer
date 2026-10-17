@@ -1,0 +1,19 @@
+# Disposable databases for the introspection integration tests. Synthetic schemas only; the passwords below are
+# throwaway values for these containers, which listen on loopback.
+name: lsv-test-databases
+services:
+  postgres:
+    image: postgres:17.6
+    environment: {POSTGRES_PASSWORD: lsv-admin, POSTGRES_DB: lsv}
+    ports: ["127.0.0.1:55432:5432"]
+    tmpfs: [/var/lib/postgresql/data]
+  mysql:
+    image: mysql:8.4.6
+    environment: {MYSQL_ROOT_PASSWORD: lsv-admin, MYSQL_DATABASE: lsv}
+    ports: ["127.0.0.1:53306:3306"]
+    tmpfs: [/var/lib/mysql]
+  mariadb:
+    image: mariadb:11.4.8
+    environment: {MARIADB_ROOT_PASSWORD: lsv-admin, MARIADB_DATABASE: lsv}
+    ports: ["127.0.0.1:53307:3306"]
+    tmpfs: [/var/lib/mysql]

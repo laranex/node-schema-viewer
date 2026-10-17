@@ -1,0 +1,991 @@
+{
+  "format": "laranex-schema",
+  "version": "1.0",
+  "source": "database",
+  "generator": {
+    "name": "python-schema-viewer",
+    "orm": null
+  },
+  "note": null,
+  "connections": [
+    {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "mariadb",
+      "defaultSchema": "<database>",
+      "coverage": {
+        "database": {
+          "complete": true,
+          "schemas": [
+            "<database>"
+          ],
+          "features": {
+            "tables": "complete",
+            "columns": "complete",
+            "columnTypes": "complete",
+            "defaults": "complete",
+            "comments": "complete",
+            "primaryKeys": "complete",
+            "foreignKeys": "complete",
+            "referentialActions": "complete",
+            "indexes": "complete",
+            "indexExpressions": "not_applicable",
+            "indexPredicates": "not_applicable",
+            "includedColumns": "not_applicable",
+            "uniqueConstraints": "complete",
+            "checkConstraints": "complete",
+            "models": "not_applicable",
+            "relationships": "not_applicable"
+          }
+        },
+        "declared": null
+      },
+      "tables": [
+        {
+          "provenance": [
+            "database"
+          ],
+          "id": "[\"default\",null,\"accounts\"]",
+          "name": "accounts",
+          "schema": "<database>",
+          "comment": "Customer accounts",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "columns": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "id",
+              "type": "bigint(20) unsigned",
+              "typeName": "bigint",
+              "nullable": false,
+              "autoIncrement": true,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "email",
+              "type": "varchar(320)",
+              "typeName": "varchar",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": "Login address",
+              "note": null
+            }
+          ],
+          "indexes": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"accounts\"]:index:PRIMARY",
+              "name": "PRIMARY",
+              "parts": [
+                {
+                  "column": "id",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "unique": true,
+              "primary": true,
+              "backs": {
+                "kind": "primary_key",
+                "constraint": null
+              },
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"accounts\"]:index:accounts_email_unique",
+              "name": "accounts_email_unique",
+              "parts": [
+                {
+                  "column": "email",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "email"
+              ],
+              "expression": false,
+              "unique": true,
+              "primary": false,
+              "backs": null,
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            }
+          ],
+          "foreignKeys": [],
+          "constraints": []
+        },
+        {
+          "provenance": [
+            "database"
+          ],
+          "id": "[\"default\",null,\"order_lines\"]",
+          "name": "order_lines",
+          "schema": "<database>",
+          "comment": null,
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "account_id",
+            "order_number",
+            "line_no"
+          ],
+          "columns": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "account_id",
+              "type": "bigint(20) unsigned",
+              "typeName": "bigint",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "order_number",
+              "type": "int(11)",
+              "typeName": "int",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "line_no",
+              "type": "smallint(6)",
+              "typeName": "smallint",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "product_id",
+              "type": "int(10) unsigned",
+              "typeName": "int",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            }
+          ],
+          "indexes": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"order_lines\"]:index:PRIMARY",
+              "name": "PRIMARY",
+              "parts": [
+                {
+                  "column": "account_id",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                },
+                {
+                  "column": "order_number",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                },
+                {
+                  "column": "line_no",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "account_id",
+                "order_number",
+                "line_no"
+              ],
+              "expression": false,
+              "unique": true,
+              "primary": true,
+              "backs": {
+                "kind": "primary_key",
+                "constraint": null
+              },
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"order_lines\"]:index:order_lines_product_fk",
+              "name": "order_lines_product_fk",
+              "parts": [
+                {
+                  "column": "product_id",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "product_id"
+              ],
+              "expression": false,
+              "unique": false,
+              "primary": false,
+              "backs": null,
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            }
+          ],
+          "foreignKeys": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"order_lines\\\"]\",\"order_lines_order_fk\",\"[\\\"account_id\\\",\\\"order_number\\\"]\",\"[\\\"default\\\",null,\\\"orders\\\"]\",\"[\\\"account_id\\\",\\\"number\\\"]\"]",
+              "name": "order_lines_order_fk",
+              "columns": [
+                "account_id",
+                "order_number"
+              ],
+              "foreignTable": "[\"default\",null,\"orders\"]",
+              "foreignColumns": [
+                "account_id",
+                "number"
+              ],
+              "onUpdate": "CASCADE",
+              "onDelete": "NO ACTION",
+              "deferrable": null,
+              "initially": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"order_lines\\\"]\",\"order_lines_product_fk\",\"[\\\"product_id\\\"]\",\"[\\\"default\\\",null,\\\"products\\\"]\",\"[\\\"id\\\"]\"]",
+              "name": "order_lines_product_fk",
+              "columns": [
+                "product_id"
+              ],
+              "foreignTable": "[\"default\",null,\"products\"]",
+              "foreignColumns": [
+                "id"
+              ],
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION",
+              "deferrable": null,
+              "initially": null
+            }
+          ],
+          "constraints": []
+        },
+        {
+          "provenance": [
+            "database"
+          ],
+          "id": "[\"default\",null,\"orders\"]",
+          "name": "orders",
+          "schema": "<database>",
+          "comment": null,
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "account_id",
+            "number"
+          ],
+          "columns": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "account_id",
+              "type": "bigint(20) unsigned",
+              "typeName": "bigint",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "number",
+              "type": "int(11)",
+              "typeName": "int",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "placed_at",
+              "type": "datetime",
+              "typeName": "datetime",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": false,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            }
+          ],
+          "indexes": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"orders\"]:index:PRIMARY",
+              "name": "PRIMARY",
+              "parts": [
+                {
+                  "column": "account_id",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                },
+                {
+                  "column": "number",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "account_id",
+                "number"
+              ],
+              "expression": false,
+              "unique": true,
+              "primary": true,
+              "backs": {
+                "kind": "primary_key",
+                "constraint": null
+              },
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            }
+          ],
+          "foreignKeys": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"orders\\\"]\",\"orders_account_fk\",\"[\\\"account_id\\\"]\",\"[\\\"default\\\",null,\\\"accounts\\\"]\",\"[\\\"id\\\"]\"]",
+              "name": "orders_account_fk",
+              "columns": [
+                "account_id"
+              ],
+              "foreignTable": "[\"default\",null,\"accounts\"]",
+              "foreignColumns": [
+                "id"
+              ],
+              "onUpdate": "NO ACTION",
+              "onDelete": "CASCADE",
+              "deferrable": null,
+              "initially": null
+            }
+          ],
+          "constraints": []
+        },
+        {
+          "provenance": [
+            "database"
+          ],
+          "id": "[\"default\",null,\"products\"]",
+          "name": "products",
+          "schema": "<database>",
+          "comment": null,
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "columns": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "id",
+              "type": "int(10) unsigned",
+              "typeName": "int",
+              "nullable": false,
+              "autoIncrement": true,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "sku",
+              "type": "varchar(32)",
+              "typeName": "varchar",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "name",
+              "type": "varchar(255)",
+              "typeName": "varchar",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": "utf8mb4_bin",
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "description",
+              "type": "text",
+              "typeName": "text",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "location",
+              "type": "point",
+              "typeName": "point",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "status",
+              "type": "enum('draft','live')",
+              "typeName": "enum",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": {
+                "name": null,
+                "values": [
+                  "draft",
+                  "live"
+                ]
+              },
+              "default": {
+                "kind": "literal",
+                "value": "'draft'"
+              },
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "price",
+              "type": "decimal(10,2)",
+              "typeName": "decimal",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": null,
+              "enum": null,
+              "default": {
+                "kind": "literal",
+                "value": "0.00"
+              },
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "created_at",
+              "type": "datetime",
+              "typeName": "datetime",
+              "nullable": false,
+              "autoIncrement": false,
+              "timezone": false,
+              "collation": null,
+              "enum": null,
+              "default": {
+                "kind": "expression",
+                "value": "current_timestamp()"
+              },
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "name": "attributes",
+              "type": "longtext",
+              "typeName": "longtext",
+              "nullable": true,
+              "autoIncrement": false,
+              "timezone": null,
+              "collation": "utf8mb4_bin",
+              "enum": null,
+              "default": null,
+              "ormDefault": null,
+              "generated": null,
+              "comment": null,
+              "note": null
+            }
+          ],
+          "indexes": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"products\"]:index:PRIMARY",
+              "name": "PRIMARY",
+              "parts": [
+                {
+                  "column": "id",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "unique": true,
+              "primary": true,
+              "backs": {
+                "kind": "primary_key",
+                "constraint": null
+              },
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"products\"]:index:products_description_fulltext",
+              "name": "products_description_fulltext",
+              "parts": [
+                {
+                  "column": "description",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "description"
+              ],
+              "expression": false,
+              "unique": false,
+              "primary": false,
+              "backs": null,
+              "method": "fulltext",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"products\"]:index:products_location_spatial",
+              "name": "products_location_spatial",
+              "parts": [
+                {
+                  "column": "location",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "location"
+              ],
+              "expression": false,
+              "unique": false,
+              "primary": false,
+              "backs": null,
+              "method": "spatial",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"products\"]:index:products_name_prefix",
+              "name": "products_name_prefix",
+              "parts": [
+                {
+                  "column": "name",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": 10,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "name"
+              ],
+              "expression": false,
+              "unique": false,
+              "primary": false,
+              "backs": null,
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"products\"]:index:products_sku_unique",
+              "name": "products_sku_unique",
+              "parts": [
+                {
+                  "column": "sku",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "sku"
+              ],
+              "expression": false,
+              "unique": true,
+              "primary": false,
+              "backs": null,
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            },
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"products\"]:index:products_status_created",
+              "name": "products_status_created",
+              "parts": [
+                {
+                  "column": "status",
+                  "expression": null,
+                  "order": null,
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                },
+                {
+                  "column": "created_at",
+                  "expression": null,
+                  "order": "desc",
+                  "nulls": null,
+                  "length": null,
+                  "collation": null,
+                  "opclass": null
+                }
+              ],
+              "columns": [
+                "status",
+                "created_at"
+              ],
+              "expression": false,
+              "unique": false,
+              "primary": false,
+              "backs": null,
+              "method": "btree",
+              "partial": false,
+              "predicate": null,
+              "included": []
+            }
+          ],
+          "foreignKeys": [],
+          "constraints": [
+            {
+              "provenance": [
+                "database"
+              ],
+              "id": "[\"default\",null,\"products\"]:constraint:products_price_positive",
+              "kind": "check",
+              "name": "products_price_positive",
+              "columns": [
+                "price"
+              ],
+              "expression": "`price` >= 0"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "models": [],
+  "relationships": [],
+  "links": [
+    {
+      "id": "l5e6e8b8c80a75971",
+      "from": {
+        "table": "[\"default\",null,\"order_lines\"]",
+        "columns": [
+          "product_id"
+        ]
+      },
+      "to": {
+        "table": "[\"default\",null,\"products\"]",
+        "columns": [
+          "id"
+        ]
+      },
+      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"order_lines\\\"]\",\"order_lines_product_fk\",\"[\\\"product_id\\\"]\",\"[\\\"default\\\",null,\\\"products\\\"]\",\"[\\\"id\\\"]\"]",
+      "relationships": [],
+      "state": "foreign_key",
+      "polymorphic": false,
+      "note": null
+    },
+    {
+      "id": "lc96e308146dfc96a",
+      "from": {
+        "table": "[\"default\",null,\"order_lines\"]",
+        "columns": [
+          "account_id",
+          "order_number"
+        ]
+      },
+      "to": {
+        "table": "[\"default\",null,\"orders\"]",
+        "columns": [
+          "account_id",
+          "number"
+        ]
+      },
+      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"order_lines\\\"]\",\"order_lines_order_fk\",\"[\\\"account_id\\\",\\\"order_number\\\"]\",\"[\\\"default\\\",null,\\\"orders\\\"]\",\"[\\\"account_id\\\",\\\"number\\\"]\"]",
+      "relationships": [],
+      "state": "foreign_key",
+      "polymorphic": false,
+      "note": null
+    },
+    {
+      "id": "ld67eaec68c524a80",
+      "from": {
+        "table": "[\"default\",null,\"orders\"]",
+        "columns": [
+          "account_id"
+        ]
+      },
+      "to": {
+        "table": "[\"default\",null,\"accounts\"]",
+        "columns": [
+          "id"
+        ]
+      },
+      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"orders\\\"]\",\"orders_account_fk\",\"[\\\"account_id\\\"]\",\"[\\\"default\\\",null,\\\"accounts\\\"]\",\"[\\\"id\\\"]\"]",
+      "relationships": [],
+      "state": "foreign_key",
+      "polymorphic": false,
+      "note": null
+    }
+  ],
+  "derivedLinks": [],
+  "diagnostics": []
+}
