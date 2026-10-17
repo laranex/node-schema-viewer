@@ -12,7 +12,7 @@ import { workerEnvironment } from '../src/isolation/env.js';
 import { checkPolicy, extract, IsolationError, isolationConfig, type ExtractRequest, type ExtractResult, type IsolationConfig } from '../src/isolation/index.js';
 import { readResult, runWorker } from '../src/isolation/runner.js';
 import { VERSION } from '../src/version.js';
-import { ROOT } from './helpers.js';
+import { DECLARED, ROOT, VALID } from './helpers.js';
 
 const MAJOR = Number(process.versions.node.split('.')[0]);
 const PROCESS_SUPPORTED = MAJOR >= 26;
@@ -204,6 +204,21 @@ describe('result validation', () => {
     test('an invalid document is refused', (t) => {
         const log = join(outside(t), 'log');
         assert.throws(() => readResult(write(t, JSON.stringify({ ok: true, document: { format: 'laranex-schema' } })), log), /invalid document/);
+    });
+
+    test('only a strictly valid laranex-schema 2.0 declared document is accepted', (t) => {
+        const log = join(outside(t), 'log');
+        const declared = JSON.parse(readFileSync(DECLARED, 'utf8')) as Record<string, unknown>;
+        assert.equal(readResult(write(t, JSON.stringify({ ok: true, document: declared })), log).version, '2.0');
+        const result = (document: unknown) => write(t, JSON.stringify({ ok: true, document }));
+        assert.throws(() => readResult(result({ ...declared, version: '1.0' }), log), /invalid document: Unsupported laranex-schema version "1\.0"/);
+        assert.throws(() => readResult(result({ ...declared, version: '2.1' }), log), /strict validation is for version 2\.0/);
+        assert.throws(() => readResult(result({ ...declared, futureField: 1 }), log), /unknown property futureField/);
+        const missing = { ...declared };
+        delete missing.inferredAssociations;
+        assert.throws(() => readResult(result(missing), log), /inferredAssociations/);
+        const database = JSON.parse(readFileSync(join(VALID, 'database-sqlite-indexes.json'), 'utf8')) as unknown;
+        assert.throws(() => readResult(result(database), log), /expected "declared"/);
     });
 });
 
@@ -421,6 +436,7 @@ describe('process isolation', { skip: !PROCESS_SUPPORTED && `process isolation i
     test('invalid, non-declared and oversized documents from the worker are refused', async () => {
         await assert.rejects(isolated('codegen.mjs', {}, { mode: 'invalid' }), /invalid document/);
         await assert.rejects(isolated('codegen.mjs', {}, { mode: 'database' }), /expected "declared"/);
+        await assert.rejects(isolated('codegen.mjs', {}, { mode: 'v1' }), /invalid document: Unsupported laranex-schema version "1\.0"/);
         await assert.rejects(isolated('codegen.mjs', {}, { mode: 'huge' }), /32 MiB/);
     });
 
@@ -486,9 +502,17 @@ describe('container isolation', { skip: IMAGE === undefined && 'set LSV_TEST_CON
     });
 
     test('a timeout removes the container', async () => {
-        await assert.rejects(isolated('slow.mjs', config({ timeout: 10, env: { LSV_ADVERSARIAL_PID: '/tmp/worker.pid' } })), /within 10 seconds/);
-        const names = spawnSync(RUNTIME, ['ps', '-a', '--filter', 'name=lsv-extract-', '--format', '{{.Names}}'], { encoding: 'utf8' }).stdout.trim();
-        assert.equal(names, '');
+        const error = await isolated('slow.mjs', config({ timeout: 10, env: { LSV_ADVERSARIAL_PID: '/tmp/worker.pid' } })).then(
+            () => assert.fail('the slow extraction finished'),
+            (rejection: unknown) => rejection as Error,
+        );
+        assert.match(error.message, /within 10 seconds; the container nsv-extract-[0-9a-f]{12} was stopped and removed/);
+        // This run's own container, by its exact name: other containers (other runs, python-schema-viewer's) do not count.
+        const name = /nsv-extract-[0-9a-f]{12}/.exec(error.message)?.[0] ?? '';
+        const found = spawnSync(RUNTIME, ['ps', '-a', '--filter', `name=^/?${name}$`, '--format', '{{.Names}}'], { encoding: 'utf8' });
+        assert.equal(found.status, 0, found.stderr);
+        assert.equal(found.stdout.trim(), '');
+        assert.notEqual(spawnSync(RUNTIME, ['container', 'inspect', name], { stdio: 'ignore' }).status, 0);
     });
 
     test('the package is found from the working directory or containerPackagePath, and its worker entry point is checked', async () => {

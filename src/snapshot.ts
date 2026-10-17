@@ -1,11 +1,14 @@
-// Bounded loading, canonical serialization, revisions and atomic writes of laranex-schema 1.x documents.
+// Bounded loading, canonical serialization, revisions and atomic writes of laranex-schema 2.x documents. 1.x is
+// rejected with one clear error: nothing reads or converts it.
 // The contract (validation, canonical JSON, revision) comes from laranex-schema-viewer-ui; nothing here duplicates it.
 import { randomBytes } from 'node:crypto';
 import { closeSync, fsyncSync, mkdirSync, openSync, readSync, renameSync, rmSync, writeSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { assertDocument, canonicalJson, documentRevision, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
+import { assertDocument, canonicalJson, documentRevision, UnsupportedDocumentError, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
 
 export const MAX_SNAPSHOT_BYTES = 32 * 1024 * 1024;
+
+const REBUILD = '. Rebuild the snapshot with a producer that writes laranex-schema 2.0; nothing converts older documents';
 
 export class SnapshotError extends Error {
     override name = 'SnapshotError';
@@ -43,11 +46,11 @@ export function parseDocument(data: Uint8Array, label: string): SchemaDocument {
     try {
         return assertDocument(parsed);
     } catch (error) {
-        throw new SnapshotError(`${label}: ${(error as Error).message}`);
+        throw new SnapshotError(`${label}: ${(error as Error).message}${error instanceof UnsupportedDocumentError ? REBUILD : ''}`);
     }
 }
 
-// A laranex-schema 1.x document, validated leniently as a reader: later 1.x minors' unknown properties are ignored.
+// A laranex-schema 2.x document, validated leniently as a reader: later 2.x minors' unknown properties are ignored.
 export function loadDocument(path: string): SchemaDocument {
     let data: Buffer;
     try {

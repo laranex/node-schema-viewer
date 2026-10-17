@@ -1,27 +1,9 @@
 // SQLite catalogs, read as python-schema-viewer reads them: SQLAlchemy's SQLite Inspector (PRAGMAs plus parsing of the
 // CREATE TABLE text, ported below from sqlalchemy/dialects/sqlite/base.py) and its own index PRAGMAs and CREATE INDEX
 // parsing (introspection/catalog.py).
-import {
-    action,
-    column,
-    findMatchingParen,
-    identifier,
-    indexEntry,
-    owner,
-    part,
-    pyStrip,
-    referencedColumns,
-    splitTopLevel,
-    str,
-    text,
-    type ColumnFacts,
-    type Constraint,
-    type ForeignKey,
-    type Index,
-    type Part,
-    type Row,
-    type Table,
-} from './common.js';
+import { constraintId, foreignKeyId } from '../schema/ids.js';
+import type { ConstraintModel, ForeignKeyModel, IndexModel, KeyPartModel, TableModel } from '../schema/model.js';
+import { action, column, findMatchingParen, indexEntry, owner, part, pyStrip, referencedColumns, splitTopLevel, str, text, type ColumnFacts, type Row } from './common.js';
 import type { Session } from './readonly.js';
 
 const TIME_TYPES = new Set(['DATETIME', 'DATETIME_CHAR', 'TIME', 'TIME_CHAR', 'TIMESTAMP']);
@@ -119,11 +101,11 @@ export class SQLiteReader {
         return this.sqlCache.get(table) ?? null;
     }
 
-    async tables(): Promise<Table[]> {
+    async tables(): Promise<TableModel[]> {
         const names = (await this.rows("SELECT name FROM main.sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite~_%' ESCAPE '~' ORDER BY name")).map((r) =>
             str(r[0]),
         );
-        const tables: Table[] = [];
+        const tables: TableModel[] = [];
         for (const name of names) {
             tables.push(await this.table(name));
         }
@@ -289,7 +271,7 @@ export class SQLiteReader {
         });
     }
 
-    private async table(name: string): Promise<Table> {
+    private async table(name: string): Promise<TableModel> {
         const tid = this.tableId(null, name);
         const natives = new Map<string, string>();
         for (const row of await this.rows(`PRAGMA table_xinfo(${quoteSqlite(name)})`)) {
@@ -315,39 +297,35 @@ export class SQLiteReader {
             computed: c.computed,
             comment: null,
         }));
-        const foreignKeys: ForeignKey[] = (await this.foreignKeys(name)).map((fk) => {
+        const foreignKeys: ForeignKeyModel[] = (await this.foreignKeys(name)).map((fk) => {
             const target = this.tableId(null, fk.table);
             const options = { ...fk.options, ...actions.get(JSON.stringify(fk.columns)) };
             return {
-                id: identifier('foreign_key', tid, fk.name, identifier(...fk.columns), target, identifier(...fk.referred)),
+                id: foreignKeyId(tid, fk.name, fk.columns, target, fk.referred),
                 name: fk.name,
                 columns: fk.columns,
-                foreignTable: target,
-                foreignColumns: fk.referred,
+                referencedTable: target,
+                referencedColumns: fk.referred,
                 onUpdate: action(options.onupdate || 'NO ACTION'),
                 onDelete: action(options.ondelete || 'NO ACTION'),
                 deferrable: options.deferrable ?? false,
-                initially: (options.initially || 'IMMEDIATE').toUpperCase(),
-                provenance: ['database'],
+                initially: (options.initially || 'IMMEDIATE').toUpperCase() === 'DEFERRED' ? 'DEFERRED' : 'IMMEDIATE',
             };
         });
         const names = facts.map((c) => c.name);
-        const constraints: Constraint[] = [
-            ...uniques.map((u, n): Constraint => ({
-                id: `${tid}:constraint:${u.name ? u.name : String(n)}`,
+        const constraints: ConstraintModel[] = [
+            ...uniques.map((u, n): ConstraintModel => ({
                 kind: 'unique',
+                id: constraintId(tid, u.name ? u.name : String(n)),
                 name: u.name,
                 columns: u.columns,
-                expression: null,
-                provenance: ['database'],
             })),
-            ...checks.map((ck, n): Constraint => ({
-                id: `${tid}:constraint:${ck.name ? ck.name : `check${String(n)}`}`,
+            ...checks.map((ck, n): ConstraintModel => ({
                 kind: 'check',
+                id: constraintId(tid, ck.name ? ck.name : `check${String(n)}`),
                 name: ck.name,
-                columns: referencedColumns(ck.sqltext, names),
                 expression: ck.sqltext,
-                provenance: ['database'],
+                columns: referencedColumns(ck.sqltext, names),
             })),
         ];
         return {
@@ -355,14 +333,12 @@ export class SQLiteReader {
             name,
             schema: null,
             comment: null,
-            note: null,
-            owner: owner(name),
+            ownership: owner(name),
             primaryKey: pk,
             columns: facts.map((c) => column(c, pk.length === 1 && pk[0] === c.name && c.native.toUpperCase() === 'INTEGER')),
             indexes: await this.indexes(name, tid, uniques),
             foreignKeys,
             constraints,
-            provenance: ['database'],
         };
     }
 
@@ -381,9 +357,9 @@ export class SQLiteReader {
         return out;
     }
 
-    private async indexes(table: string, tid: string, uniques: { name: string | null; columns: string[] }[]): Promise<Index[]> {
+    private async indexes(table: string, tid: string, uniques: { name: string | null; columns: string[] }[]): Promise<IndexModel[]> {
         const uniqueByColumns = new Map(uniques.map((u) => [JSON.stringify(u.columns), u]));
-        const out: Index[] = [];
+        const out: IndexModel[] = [];
         for (const row of await this.rows(`PRAGMA index_list(${quoteSqlite(table)})`)) {
             const name = str(row[1]);
             const origin = str(row[3]);
@@ -396,7 +372,7 @@ export class SQLiteReader {
                     ({ keys: texts, predicate } = indexSql(sql));
                 }
             }
-            const parts: Part[] = keys.map((key, n) => {
+            const parts: KeyPartModel[] = keys.map((key, n) => {
                 const cid = Number(key[1]);
                 let expression: string | null = null;
                 if (cid === -2) {
@@ -407,16 +383,16 @@ export class SQLiteReader {
                 const explicit = n < texts.length ? /\bCOLLATE\s+(\w+)/i.exec(texts[n] ?? '') : null;
                 return part(cid !== -2 ? text(key[2]) : null, expression, { order: Number(key[3]) ? 'desc' : null, collation: explicit?.[1] ?? null });
             });
-            let backs: Index['backs'] = null;
+            let enforces: IndexModel['enforces'] = null;
             if (origin === 'pk') {
-                backs = { kind: 'primary_key', constraint: null };
+                enforces = { kind: 'primary_key' };
             } else if (origin === 'u') {
                 const constraint = uniqueByColumns.get(JSON.stringify(parts.map((p) => p.column)));
                 if (constraint?.name) {
-                    backs = { kind: 'unique_constraint', constraint: `${tid}:constraint:${constraint.name}` };
+                    enforces = { kind: 'unique_constraint', constraint: constraintId(tid, constraint.name) };
                 }
             }
-            out.push(indexEntry(tid, name, parts, { unique: Boolean(Number(row[2])), primary: origin === 'pk', backs, predicate: Number(row[4]) ? predicate : null }));
+            out.push(indexEntry(tid, name, parts, { unique: Boolean(Number(row[2])), enforces, predicate: Number(row[4]) ? predicate : null }));
         }
         return out;
     }

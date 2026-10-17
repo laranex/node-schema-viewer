@@ -1,98 +1,11 @@
-// Shared pieces of the catalog readers: the contract shapes python-schema-viewer's introspection/catalog.py writes,
-// with the same ids, normalization and text parsing. Worker-side; imports nothing outside this directory.
+// Shared pieces of the catalog readers: the internal model entities (../schema/model.ts) with python-schema-viewer's
+// ids, normalization and text parsing (introspection/catalog.py). Worker-side; imports only this directory and
+// ../schema/. Nothing here knows the document's field names.
+import { indexId } from '../schema/ids.js';
+import type { ColumnModel, IndexModel, JsonScalar, KeyPartModel, ReferentialAction, TableModel } from '../schema/model.js';
 
-export type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
+
 export type Row = unknown[];
-
-export interface Part {
-    column: string | null;
-    expression: string | null;
-    order: 'desc' | null;
-    nulls: 'first' | 'last' | null;
-    length: number | null;
-    collation: string | null;
-    opclass: string | null;
-}
-
-export interface Index {
-    id: string;
-    name: string;
-    parts: Part[];
-    columns: string[];
-    expression: boolean;
-    unique: boolean;
-    primary: boolean;
-    backs: { kind: 'primary_key' | 'unique_constraint'; constraint: string | null } | null;
-    method: string | null;
-    partial: boolean;
-    predicate: string | null;
-    included: string[];
-    provenance: ['database'];
-    dialectOptions?: Record<string, { options: Record<string, Json> }>;
-}
-
-export interface Column {
-    name: string;
-    type: string;
-    typeName: string;
-    nullable: boolean;
-    autoIncrement: boolean;
-    timezone: boolean | null;
-    collation: string | null;
-    enum: { name: string | null; values: string[] } | null;
-    default: { kind: 'literal' | 'expression' | 'sequence' | 'identity'; value: string } | null;
-    ormDefault: null;
-    generated: { kind: 'stored' | 'virtual' | null; expression: string } | null;
-    comment: string | null;
-    note: null;
-    provenance: ['database'];
-}
-
-export interface ForeignKey {
-    id: string;
-    name: string | null;
-    columns: string[];
-    foreignTable: string;
-    foreignColumns: string[];
-    onUpdate: string | null;
-    onDelete: string | null;
-    deferrable: boolean | null;
-    initially: string | null;
-    provenance: ['database'];
-}
-
-export interface Constraint {
-    id: string;
-    kind: 'unique' | 'check';
-    name: string | null;
-    columns: string[];
-    expression: string | null;
-    provenance: ['database'];
-}
-
-export interface Table {
-    id: string;
-    name: string;
-    schema: string | null;
-    comment: string | null;
-    note: null;
-    owner: { kind: string; package: string | null };
-    primaryKey: string[];
-    columns: Column[];
-    indexes: Index[];
-    foreignKeys: ForeignKey[];
-    constraints: Constraint[];
-    provenance: ['database'];
-}
-
-export interface Diagnostic {
-    kind: string;
-    category: 'inspection';
-    severity: 'warning';
-    certainty: 'certain';
-    subject: { type: 'connection'; id: string; columns: null; label: string };
-    message: string;
-}
 
 // The parts a reflected column needs, before the contract shape.
 export interface ColumnFacts {
@@ -111,15 +24,6 @@ export interface ColumnFacts {
     comment: string | null;
 }
 
-// Python's json.dumps(parts, ensure_ascii=False, separators=(",", ":")).
-export function identifier(...parts: (string | null)[]): string {
-    return JSON.stringify(parts);
-}
-
-export function connectionId(name: string): string {
-    return `connection:${name}`;
-}
-
 const LITERAL = /^(?:'(?:[^']|'')*'(?:::[\w .[\]"]+)?|\(?-?\d+(?:\.\d+)?\)?(?:::[\w ."]+)?|true|false|null)$/i;
 const TYPE_NAMES: Readonly<Record<string, string>> = {
     'character varying': 'varchar',
@@ -136,7 +40,7 @@ const OWNERS: Readonly<Record<string, [string, string]>> = {
     django_migrations: ['framework', 'django'],
     aerich: ['package', 'aerich'],
 };
-const ACTIONS = new Set(['CASCADE', 'SET NULL', 'SET DEFAULT', 'RESTRICT', 'NO ACTION']);
+const ACTIONS = new Set<string>(['CASCADE', 'SET NULL', 'SET DEFAULT', 'RESTRICT', 'NO ACTION']);
 
 export function typeName(native: string, isEnum: boolean): string {
     if (isEnum || native.toLowerCase().startsWith('enum(')) {
@@ -150,99 +54,86 @@ export function typeName(native: string, isEnum: boolean): string {
     return TYPE_NAMES[base] ?? base;
 }
 
-export function defaultValue(text: string | null): Column['default'] {
+export function defaultValue(text: string | null): ColumnModel['serverDefault'] {
     if (text === null) {
         return null;
     }
-    const value = text.trim();
-    if (value.toLowerCase().startsWith('nextval(')) {
-        return { kind: 'sequence', value };
+    const sql = text.trim();
+    if (sql.toLowerCase().startsWith('nextval(')) {
+        return { kind: 'sequence', sql };
     }
-    return { kind: LITERAL.test(value) ? 'literal' : 'expression', value };
+    return { kind: LITERAL.test(sql) ? 'literal' : 'expression', sql };
 }
 
-// A referential action as the contract spells it, or null when it is not an SQL action.
-export function action(value: string): string | null {
+// A referential action in SQL spelling, or null when it is not an SQL action.
+export function action(value: string): ReferentialAction | null {
     const normal = value.trim().toUpperCase().replace(/_/g, ' ');
-    return ACTIONS.has(normal) ? normal : null;
+    return ACTIONS.has(normal) ? (normal as ReferentialAction) : null;
 }
 
-export function owner(table: string): Table['owner'] {
+export function owner(table: string): TableModel['ownership'] {
     const found = Object.hasOwn(OWNERS, table) ? OWNERS[table] : undefined;
-    return found === undefined ? { kind: 'application', package: null } : { kind: found[0], package: found[1] };
+    return found === undefined ? { kind: 'application', package: null } : { kind: found[0] as 'framework' | 'package', package: found[1] };
 }
 
-export function part(column: string | null, expression: string | null = null, extra: Partial<Part> = {}): Part {
+export function part(column: string | null, expression: string | null = null, extra: Partial<KeyPartModel> = {}): KeyPartModel {
     return {
         column,
         expression,
         order: extra.order ?? null,
         nulls: extra.nulls ?? null,
-        length: extra.length ?? null,
+        prefixLength: extra.prefixLength ?? null,
         collation: extra.collation ?? null,
-        opclass: extra.opclass ?? null,
+        operatorClass: extra.operatorClass ?? null,
     };
 }
 
 export function indexEntry(
     tid: string,
     name: string,
-    parts: Part[],
+    keyParts: KeyPartModel[],
     options: {
         unique: boolean;
-        primary?: boolean;
-        backs?: Index['backs'];
+        enforces?: IndexModel['enforces'];
         method?: string | null;
         predicate?: string | null;
         included?: string[];
-        dialectOptions?: Index['dialectOptions'] | null;
+        dialectOptions?: Record<string, Record<string, JsonScalar>> | null;
     },
-): Index {
-    const predicate = options.predicate ?? null;
-    const entry: Index = {
-        id: `${tid}:index:${name}`,
+): IndexModel {
+    return {
+        id: indexId(tid, name),
         name,
-        parts,
-        columns: parts.flatMap((p) => (p.column === null ? [] : [p.column])),
-        expression: parts.some((p) => p.expression !== null),
+        keyParts,
         unique: options.unique,
-        primary: options.primary ?? false,
-        backs: options.backs ?? null,
+        enforces: options.enforces ?? null,
         method: options.method ?? null,
-        partial: predicate !== null,
-        predicate,
-        included: options.included ?? [],
-        provenance: ['database'],
+        predicate: options.predicate ?? null,
+        includedColumns: options.included ?? [],
+        dialectOptions: options.dialectOptions ?? {},
     };
-    if (options.dialectOptions) {
-        entry.dialectOptions = options.dialectOptions;
-    }
-    return entry;
 }
 
-export function column(c: ColumnFacts, rowid: boolean): Column {
-    let defaultEntry = c.computed === null ? defaultValue(c.default) : null;
+export function column(c: ColumnFacts, rowid: boolean): ColumnModel {
+    let serverDefault = c.computed === null ? defaultValue(c.default) : null;
     if (c.identity !== null) {
-        defaultEntry = { kind: 'identity', value: `GENERATED ${c.identity.always ? 'ALWAYS' : 'BY DEFAULT'} AS IDENTITY` };
+        serverDefault = { kind: 'identity', sql: `GENERATED ${c.identity.always ? 'ALWAYS' : 'BY DEFAULT'} AS IDENTITY` };
     }
     return {
         name: c.name,
-        type: c.native,
-        typeName: typeName(c.native, c.isEnum),
+        nativeType: c.native,
+        baseType: typeName(c.native, c.isEnum),
         nullable: c.nullable,
         autoIncrement: rowid || c.autoIncrement,
         timezone: c.timezone,
         collation: c.collation,
-        enum: c.isEnum ? { name: c.enumName, values: c.enumValues } : null,
-        default: defaultEntry,
-        ormDefault: null,
+        enumeration: c.isEnum ? { namedType: c.enumName, values: c.enumValues } : null,
+        serverDefault,
         generated:
             c.computed === null
                 ? null
-                : { kind: c.computed.persisted === null ? null : c.computed.persisted ? 'stored' : 'virtual', expression: c.computed.sqltext },
+                : { storage: c.computed.persisted === null ? null : c.computed.persisted ? 'stored' : 'virtual', expression: c.computed.sqltext },
         comment: c.comment,
-        note: null,
-        provenance: ['database'],
     };
 }
 
@@ -346,24 +237,4 @@ export function text(value: unknown): string | null {
 
 export function str(value: unknown): string {
     return text(value) ?? '';
-}
-
-export function byId<T extends { id: string }>(items: T[]): T[] {
-    return items.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
-}
-
-export function sortDiagnostics(diagnostics: Diagnostic[]): Diagnostic[] {
-    const key = (d: Diagnostic): string[] => [d.category, d.kind, d.subject.type, d.subject.id, d.message];
-    return diagnostics.sort((a, b) => {
-        const x = key(a);
-        const y = key(b);
-        for (let i = 0; i < x.length; i += 1) {
-            const p = x[i] ?? '';
-            const q = y[i] ?? '';
-            if (p !== q) {
-                return p < q ? -1 : 1;
-            }
-        }
-        return 0;
-    });
 }

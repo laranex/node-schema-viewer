@@ -16,7 +16,7 @@ import { createServer, type Server as NetServer, type Socket } from 'node:net';
 import { join } from 'node:path';
 import { after, before, describe, test, type TestContext } from 'node:test';
 import type { SchemaDocument } from 'laranex-schema-viewer-ui/contract';
-import { validateDocument } from 'laranex-schema-viewer-ui/contract';
+import { diagnosticId, validateDocument } from 'laranex-schema-viewer-ui/contract';
 import { scratchDirectory } from '../src/isolation/runner.js';
 import { introspect, introspectAll, IntrospectionError, type DatabaseRequest } from '../src/introspection/index.js';
 import { openSession, serverVersion, type Session } from '../src/introspection/readonly.js';
@@ -24,7 +24,7 @@ import { parseUrl, scrub } from '../src/introspection/request.js';
 import { buildInvocation, type Invocation } from '../src/introspection/runner.js';
 import { mysqlGrantProblems, STATEMENT } from '../src/introspection/statements.js';
 import { adminUrl, serverDatabase, sqliteDatabase, type Disposable, type Server, type SqliteFile } from './databases.js';
-import { ROOT, tempDir } from './helpers.js';
+import { assertProducerDocument, ROOT, tempDir } from './helpers.js';
 
 type Table = SchemaDocument['connections'][number]['tables'][number];
 
@@ -151,7 +151,7 @@ describe('SQLite introspection', () => {
     });
 
     test('is a strictly valid database document', () => {
-        assert.deepEqual(validateDocument(document, { strict: true }).errors, []);
+        assertProducerDocument(document);
         assert.equal(document.source, 'database');
         const connection = document.connections[0];
         assert.equal(connection?.driver, 'sqlite');
@@ -185,7 +185,8 @@ describe('SQLite introspection', () => {
         assert.equal(indexes.notes_active_title.parts[0]?.collation, null);
         assert.equal(indexes.sqlite_autoindex_notes_1?.backs?.kind, 'unique_constraint');
         const primary = byName(tables(document).tags?.indexes ?? []).sqlite_autoindex_tags_1;
-        assert.deepEqual([primary?.primary, primary?.columns], [true, ['note_id', 'name']]);
+        assert.deepEqual([primary?.backs?.kind, primary?.parts.map((p) => p.column)], ['primary_key', ['note_id', 'name']]);
+        assert.ok(!('primary' in (primary ?? {})) && !('columns' in (primary ?? {})));
     });
 
     test('columns and constraints', () => {
@@ -397,7 +398,7 @@ function serverSuite(server: Server, title: string, files: string[], scope: Part
         });
 
         test('the read-only role needs no consent', () => {
-            assert.deepEqual(validateDocument(document, { strict: true }).errors, []);
+            assertProducerDocument(document);
             assert.ok(!document.diagnostics.some((d) => d.kind === 'write_privileges'));
         });
 
@@ -412,6 +413,8 @@ function serverSuite(server: Server, title: string, files: string[], scope: Part
             const diagnostic = accepted.diagnostics.find((d) => d.kind === 'write_privileges');
             assert.equal(diagnostic?.category, 'inspection');
             assert.match(diagnostic.message, /the session was read-only/);
+            assert.equal(diagnostic.id, diagnosticId(diagnostic));
+            assertProducerDocument(accepted);
         });
 
         test('sessions are read-only even for an admin', async () => {
@@ -556,7 +559,7 @@ describe('several connections', { skip: adminUrl('postgres') === undefined || ad
                 Object.entries(urls).map(([connection, url]) => ({ url, connection })),
                 { observe: (i) => seen.push(i) },
             );
-            assert.deepEqual(document.connections.map((c) => [c.name, c.driver]), [['analytics', 'mysql'], ['default', 'pgsql'], ['local', 'sqlite']]);
+            assert.deepEqual(document.connections.map((c) => [c.name, c.driver]), [['analytics', 'mysql'], ['default', 'postgresql'], ['local', 'sqlite']]);
             const users = document.connections.flatMap((c) => c.tables.filter((t) => t.name === 'users').map((t) => t.id));
             assert.deepEqual(users, ['["analytics",null,"users"]', '["default",null,"users"]', '["local",null,"users"]']);
             assert.equal(seen.length, 3);

@@ -1,21 +1,20 @@
-"""Record python-schema-viewer's database introspection documents for the synthetic schemas in tests/databases/.
+"""Record python-schema-viewer's laranex-schema 2.0 introspection documents for the synthetic schemas in tests/databases/.
 
-Read-only use of the Python package. Run with cwd = a python-schema-viewer checkout and its environment (SQLAlchemy,
+Read-only use of a python-schema-viewer checkout that writes laranex-schema 2.0, with its environment (SQLAlchemy,
 psycopg, PyMySQL), against disposable servers (tests/databases/compose.yaml):
 
     export LSV_TEST_POSTGRES_URL=postgresql+psycopg://postgres:lsv-admin@127.0.0.1:55432/lsv
     export LSV_TEST_MYSQL_URL=mysql+pymysql://root:lsv-admin@127.0.0.1:53306/lsv
     export LSV_TEST_MARIADB_URL=mysql+pymysql://root:lsv-admin@127.0.0.1:53307/lsv
-    python -B <node-repo>/scripts/record-database-conformance.py <node-repo>
+    PYTHONPATH=<python-schema-viewer>/src python -B <node-repo>/scripts/record-database-conformance.py <node-repo>
 
 For every case it creates a database and a read-only role with random names and a random password, loads the
 case's DDL, inspects it with python-schema-viewer's introspection worker as that role, and drops both. The random
 MySQL/MariaDB database name (the default schema) is replaced by "<database>". Writes only into
-<node-repo>/tests/fixtures/conformance/database/. tests/introspection-conformance.test.ts compares the Node.js
-documents with these after normalizing the generator. Regenerate only for an intended change on both sides.
+<node-repo>/tests/fixtures/conformance/database/, canonically. tests/introspection-conformance.test.ts compares the
+Node.js documents with these after normalizing the generator. Regenerate only for an intended change on both sides.
 """
 
-import json
 import os
 import secrets
 import sqlite3
@@ -27,6 +26,7 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
 
+from laranex_schema_viewer.contract import canonical_json, document_to_json
 from laranex_schema_viewer.introspection import DatabaseRequest
 from laranex_schema_viewer.introspection.runner import introspect, introspect_all
 
@@ -126,11 +126,12 @@ def placeholder(value, name: str):
     return value
 
 
-def write(name: str, document: dict, names: list[str]) -> None:
+def write(name: str, document, names: list[str]) -> None:
+    data = document_to_json(document)
     for database_name in names:
-        document = placeholder(document, database_name)
+        data = placeholder(data, database_name)
     path = OUT / f"{name}.json"
-    path.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n")
+    path.write_text(canonical_json(data), encoding="utf-8")
     print(f"wrote {path.relative_to(NODE)}")
 
 

@@ -1,5 +1,5 @@
 // Database introspection compared with python-schema-viewer: tests/fixtures/conformance/database/*.json are Python's
-// documents for the synthetic schemas in tests/databases/ (scripts/record-database-conformance.py). The Node.js
+// own laranex-schema 2.0 documents for the synthetic schemas in tests/databases/ (scripts/record-database-conformance.py). The Node.js
 // documents must be equal after normalizing only the generator and the random MySQL/MariaDB database name.
 // SQLite cases always run; server cases need LSV_TEST_POSTGRES_URL, LSV_TEST_MYSQL_URL, LSV_TEST_MARIADB_URL.
 import assert from 'node:assert/strict';

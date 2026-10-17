@@ -6,7 +6,8 @@
 // the URL and its password before it leaves the worker.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { defaultSchema, inspectDatabase } from './catalog.js';
-import { connectionId, type Diagnostic } from './common.js';
+import { connectionId } from '../schema/ids.js';
+import type { DiagnosticModel } from '../schema/model.js';
 import { openSession, privilegeProblems } from './readonly.js';
 import { IntrospectionError, scrub } from './request.js';
 
@@ -27,7 +28,7 @@ async function run(request: WorkerRequest): Promise<unknown> {
             schemas = current === null ? [] : [current];
         }
         const problems = await privilegeProblems(session, schemas);
-        const diagnostics: Diagnostic[] = [];
+        const diagnostics: DiagnosticModel[] = [];
         if (problems.length > 0 && !request.allowWritePrivileges) {
             throw new IntrospectionError(
                 `The database role can change the schema or data: ${problems.join('; ')}. Inspect with a read-only role ` +

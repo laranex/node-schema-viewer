@@ -1,5 +1,5 @@
-// Test-only extractor (never shipped): imports each hostile module and returns a minimal valid declared document with
-// one table per module, whose comment carries the module's `outcome` export as JSON.
+// Test-only extractor (never shipped): imports each hostile module and returns a minimal valid laranex-schema 2.0
+// declared document with one table per module, whose comment carries the module's `outcome` export as JSON.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -12,7 +12,7 @@ export async function extract(context) {
     }
     const document = {
         format: 'laranex-schema',
-        version: '1.0',
+        version: '2.0',
         source: 'declared',
         generator: { name: 'node-schema-viewer-tests', orm: 'adversarial' },
         note: null,
@@ -31,13 +31,21 @@ export async function extract(context) {
         links: [],
         derivedLinks: [],
         diagnostics: [],
+        comparisons: [],
+        migrations: [],
+        inferredAssociations: [],
     };
     const mode = context.options.mode;
     if (mode === 'invalid') {
         document.connections[0].tables.push({ name: 'broken' });
     } else if (mode === 'database') {
-        const path = join(context.projectRoot, 'tests', 'fixtures', 'conformance', 'documents', 'database-sqlite-indexes.json');
+        // A valid 2.0 document, but not a declared one: the shared fixture from the installed contract package.
+        const path = join(context.projectRoot, 'node_modules', 'laranex-schema-viewer-ui', 'contract', 'fixtures', 'valid', 'database-sqlite-indexes.json');
         return JSON.parse(readFileSync(path, 'utf8'));
+    } else if (mode === 'v1') {
+        // A 1.0 document: refused, never converted.
+        const { comparisons, migrations, inferredAssociations, ...v1 } = document;
+        return { ...v1, version: '1.0' };
     } else if (mode === 'huge') {
         document.note = 'x'.repeat(33 * 1024 * 1024);
     }

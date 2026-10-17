@@ -73,7 +73,7 @@ export interface ExtractRequest {
 }
 
 export interface ExtractResult {
-    // A laranex-schema 1.x document with source "declared", strictly validated.
+    // A laranex-schema 2.0 document with source "declared", strictly validated.
     document: import('laranex-schema-viewer-ui/contract').SchemaDocument;
     // How many of the parent's environment variables the worker did not get; names and values are never reported.
     withheld: number;

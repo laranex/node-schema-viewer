@@ -1,55 +1,160 @@
 {
-  "format": "laranex-schema",
-  "version": "1.0",
-  "source": "database",
-  "generator": {
-    "name": "python-schema-viewer",
-    "orm": null
-  },
-  "note": null,
+  "comparisons": [],
   "connections": [
     {
-      "id": "connection:default",
-      "name": "default",
-      "driver": "pgsql",
-      "defaultSchema": "public",
       "coverage": {
         "database": {
           "complete": true,
+          "features": {
+            "checkConstraints": "complete",
+            "columnTypes": "complete",
+            "columns": "complete",
+            "comments": "complete",
+            "defaults": "complete",
+            "foreignKeys": "complete",
+            "includedColumns": "complete",
+            "indexExpressions": "complete",
+            "indexPredicates": "complete",
+            "indexes": "complete",
+            "models": "not_applicable",
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
           "schemas": [
             "public",
             "billing"
-          ],
-          "features": {
-            "tables": "complete",
-            "columns": "complete",
-            "columnTypes": "complete",
-            "defaults": "complete",
-            "comments": "complete",
-            "primaryKeys": "complete",
-            "foreignKeys": "complete",
-            "referentialActions": "complete",
-            "indexes": "complete",
-            "indexExpressions": "complete",
-            "indexPredicates": "complete",
-            "includedColumns": "complete",
-            "uniqueConstraints": "complete",
-            "checkConstraints": "complete",
-            "models": "not_applicable",
-            "relationships": "not_applicable"
-          }
+          ]
         },
         "declared": null
       },
+      "defaultSchema": "public",
+      "driver": "postgresql",
+      "id": "connection:default",
+      "name": "default",
       "tables": [
         {
-          "provenance": [
-            "database"
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "invoice_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "line_no",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "smallint",
+              "typeName": "smallint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "amount",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(12,2)",
+              "typeName": "numeric"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "invoice_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"default\",\"billing\",\"invoices\"]",
+              "id": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoice_lines\\\"]\",\"invoice_lines_invoice_id_fkey\",\"[\\\"invoice_id\\\"]\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoices\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "invoice_lines_invoice_id_fkey",
+              "onDelete": "NO ACTION",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
           ],
           "id": "[\"default\",\"billing\",\"invoice_lines\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",\"billing\",\"invoice_lines\"]:index:invoice_lines_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "invoice_lines_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "invoice_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "line_no",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
           "name": "invoice_lines",
-          "schema": "billing",
-          "comment": null,
           "note": null,
           "owner": {
             "kind": "application",
@@ -59,353 +164,206 @@
             "invoice_id",
             "line_no"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "invoice_id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "line_no",
-              "type": "smallint",
-              "typeName": "smallint",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "amount",
-              "type": "numeric(12,2)",
-              "typeName": "numeric",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",\"billing\",\"invoice_lines\"]:index:invoice_lines_pkey",
-              "name": "invoice_lines_pkey",
-              "parts": [
-                {
-                  "column": "invoice_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "line_no",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "invoice_id",
-                "line_no"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoice_lines\\\"]\",\"invoice_lines_invoice_id_fkey\",\"[\\\"invoice_id\\\"]\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoices\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": "invoice_lines_invoice_id_fkey",
-              "columns": [
-                "invoice_id"
-              ],
-              "foreignTable": "[\"default\",\"billing\",\"invoices\"]",
-              "foreignColumns": [
-                "id"
-              ],
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
-            }
-          ],
-          "constraints": []
-        },
-        {
           "provenance": [
             "database"
           ],
-          "id": "[\"default\",\"billing\",\"invoices\"]",
-          "name": "invoices",
-          "schema": "billing",
-          "comment": null,
-          "note": null,
-          "owner": {
-            "kind": "application",
-            "package": null
-          },
-          "primaryKey": [
-            "id"
-          ],
+          "schema": "billing"
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "sequence",
                 "value": "nextval('billing.invoices_id_seq'::regclass)"
               },
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "account_id",
-              "type": "bigint",
-              "typeName": "bigint",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
               "enum": null,
-              "default": null,
-              "ormDefault": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "number",
+              "timezone": null,
               "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "typeName": "integer"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "account_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "total",
-              "type": "numeric(12,2)",
-              "typeName": "numeric",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "number",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "total",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(12,2)",
+              "typeName": "numeric"
             }
           ],
-          "indexes": [
+          "comment": null,
+          "constraints": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",\"billing\",\"invoices\"]:index:invoices_account_id_number_key",
-              "name": "invoices_account_id_number_key",
-              "parts": [
-                {
-                  "column": "account_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "number",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
               "columns": [
                 "account_id",
                 "number"
               ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": {
-                "kind": "unique_constraint",
-                "constraint": "[\"default\",\"billing\",\"invoices\"]:constraint:invoices_account_id_number_key"
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
+              "expression": null,
+              "id": "[\"default\",\"billing\",\"invoices\"]:constraint:invoices_account_id_number_key",
+              "kind": "unique",
+              "name": "invoices_account_id_number_key",
               "provenance": [
                 "database"
-              ],
-              "id": "[\"default\",\"billing\",\"invoices\"]:index:invoices_pkey",
-              "name": "invoices_pkey",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
+              ]
+            },
+            {
               "columns": [
-                "id"
+                "total"
               ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
+              "expression": "total >= 0::numeric",
+              "id": "[\"default\",\"billing\",\"invoices\"]:constraint:invoices_total_check",
+              "kind": "check",
+              "name": "invoices_total_check",
+              "provenance": [
+                "database"
+              ]
             }
           ],
           "foreignKeys": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoices\\\"]\",\"invoices_account_id_fkey\",\"[\\\"account_id\\\"]\",\"[\\\"default\\\",null,\\\"accounts\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": "invoices_account_id_fkey",
               "columns": [
                 "account_id"
               ],
-              "foreignTable": "[\"default\",null,\"accounts\"]",
+              "deferrable": false,
               "foreignColumns": [
                 "id"
               ],
-              "onUpdate": "NO ACTION",
+              "foreignTable": "[\"default\",null,\"accounts\"]",
+              "id": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoices\\\"]\",\"invoices_account_id_fkey\",\"[\\\"account_id\\\"]\",\"[\\\"default\\\",null,\\\"accounts\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "invoices_account_id_fkey",
               "onDelete": "CASCADE",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
             }
           ],
-          "constraints": [
+          "id": "[\"default\",\"billing\",\"invoices\"]",
+          "indexes": [
             {
+              "backs": {
+                "constraint": "[\"default\",\"billing\",\"invoices\"]:constraint:invoices_account_id_number_key",
+                "kind": "unique_constraint"
+              },
+              "expression": false,
+              "id": "[\"default\",\"billing\",\"invoices\"]:index:invoices_account_id_number_key",
+              "included": [],
+              "method": "btree",
+              "name": "invoices_account_id_number_key",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "account_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "number",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
               "provenance": [
                 "database"
               ],
-              "id": "[\"default\",\"billing\",\"invoices\"]:constraint:invoices_account_id_number_key",
-              "kind": "unique",
-              "name": "invoices_account_id_number_key",
-              "columns": [
-                "account_id",
-                "number"
-              ],
-              "expression": null
+              "unique": true
             },
             {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",\"billing\",\"invoices\"]:index:invoices_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "invoices_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
               "provenance": [
                 "database"
               ],
-              "id": "[\"default\",\"billing\",\"invoices\"]:constraint:invoices_total_check",
-              "kind": "check",
-              "name": "invoices_total_check",
-              "columns": [
-                "total"
-              ],
-              "expression": "total >= 0::numeric"
+              "unique": true
             }
-          ]
-        },
-        {
-          "provenance": [
-            "database"
           ],
-          "id": "[\"default\",\"billing\",\"line_notes\"]",
-          "name": "line_notes",
-          "schema": "billing",
-          "comment": null,
+          "name": "invoices",
           "note": null,
           "owner": {
             "kind": "application",
@@ -414,149 +372,145 @@
           "primaryKey": [
             "id"
           ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "sequence",
                 "value": "nextval('billing.line_notes_id_seq'::regclass)"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "invoice_id",
+              "timezone": null,
               "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "typeName": "integer"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "invoice_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
               "name": "line_no",
-              "type": "smallint",
-              "typeName": "smallint",
+              "note": null,
               "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
               "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "smallint",
+              "typeName": "smallint"
             },
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "body",
-              "type": "character varying(500)",
-              "typeName": "varchar",
-              "nullable": true,
               "autoIncrement": false,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "body",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "id": "[\"default\",\"billing\",\"line_notes\"]:index:line_notes_pkey",
-              "name": "line_notes_pkey",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
+              "timezone": null,
+              "type": "character varying(500)",
+              "typeName": "varchar"
             }
           ],
+          "comment": null,
+          "constraints": [],
           "foreignKeys": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"line_notes\\\"]\",\"line_notes_line_fkey\",\"[\\\"invoice_id\\\",\\\"line_no\\\"]\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoice_lines\\\"]\",\"[\\\"invoice_id\\\",\\\"line_no\\\"]\"]",
-              "name": "line_notes_line_fkey",
               "columns": [
                 "invoice_id",
                 "line_no"
               ],
-              "foreignTable": "[\"default\",\"billing\",\"invoice_lines\"]",
+              "deferrable": true,
               "foreignColumns": [
                 "invoice_id",
                 "line_no"
               ],
-              "onUpdate": "CASCADE",
+              "foreignTable": "[\"default\",\"billing\",\"invoice_lines\"]",
+              "id": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"line_notes\\\"]\",\"line_notes_line_fkey\",\"[\\\"invoice_id\\\",\\\"line_no\\\"]\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoice_lines\\\"]\",\"[\\\"invoice_id\\\",\\\"line_no\\\"]\"]",
+              "initially": "DEFERRED",
+              "name": "line_notes_line_fkey",
               "onDelete": "NO ACTION",
-              "deferrable": true,
-              "initially": "DEFERRED"
+              "onUpdate": "CASCADE",
+              "provenance": [
+                "database"
+              ]
             }
           ],
-          "constraints": []
-        },
-        {
-          "provenance": [
-            "database"
+          "id": "[\"default\",\"billing\",\"line_notes\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",\"billing\",\"line_notes\"]:index:line_notes_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "line_notes_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
           ],
-          "id": "[\"default\",null,\"accounts\"]",
-          "name": "accounts",
-          "schema": "public",
-          "comment": "Customer accounts",
+          "name": "line_notes",
           "note": null,
           "owner": {
             "kind": "application",
@@ -565,75 +519,78 @@
           "primaryKey": [
             "id"
           ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "bigint",
-              "typeName": "bigint",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "identity",
                 "value": "GENERATED BY DEFAULT AS IDENTITY"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "email",
-              "type": "text",
-              "typeName": "text",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": "Login address",
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "external_ref",
-              "type": "uuid",
-              "typeName": "uuid",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
               "default": null,
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "status",
-              "type": "account_status",
-              "typeName": "enum",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "external_ref",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "uuid",
+              "typeName": "uuid"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "'trial'::account_status"
+              },
               "enum": {
                 "name": "account_status",
                 "values": [
@@ -642,517 +599,507 @@
                   "closed"
                 ]
               },
-              "default": {
-                "kind": "literal",
-                "value": "'trial'::account_status"
-              },
-              "ormDefault": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "tags",
-              "type": "text[]",
-              "typeName": "text[]",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "account_status",
+              "typeName": "enum"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "literal",
                 "value": "'{}'::text[]"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "tags",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "data",
-              "type": "jsonb",
-              "typeName": "jsonb",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "text[]",
+              "typeName": "text[]"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "literal",
                 "value": "'{}'::jsonb"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "data",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "created_at",
-              "type": "timestamp with time zone",
-              "typeName": "timestamptz",
-              "nullable": false,
+              "timezone": null,
+              "type": "jsonb",
+              "typeName": "jsonb"
+            },
+            {
               "autoIncrement": false,
-              "timezone": true,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "expression",
                 "value": "now()"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "deleted_at",
-              "type": "timestamp with time zone",
-              "typeName": "timestamptz",
-              "nullable": true,
-              "autoIncrement": false,
               "timezone": true,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "timestamp with time zone",
+              "typeName": "timestamptz"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "deleted_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "search",
-              "type": "tsvector",
-              "typeName": "tsvector",
-              "nullable": true,
+              "timezone": true,
+              "type": "timestamp with time zone",
+              "typeName": "timestamptz"
+            },
+            {
               "autoIncrement": false,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": {
-                "kind": "stored",
-                "expression": "to_tsvector('simple'::regconfig, email)"
-              },
               "comment": null,
-              "note": null
+              "default": null,
+              "enum": null,
+              "generated": {
+                "expression": "to_tsvector('simple'::regconfig, email)",
+                "kind": "stored"
+              },
+              "name": "search",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "tsvector",
+              "typeName": "tsvector"
             }
           ],
+          "comment": "Customer accounts",
+          "constraints": [
+            {
+              "columns": [
+                "email"
+              ],
+              "expression": null,
+              "id": "[\"default\",null,\"accounts\"]:constraint:accounts_email_key",
+              "kind": "unique",
+              "name": "accounts_email_key",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [],
+          "id": "[\"default\",null,\"accounts\"]",
           "indexes": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"accounts\"]:index:accounts_created_at_idx",
-              "name": "accounts_created_at_idx",
-              "parts": [
-                {
-                  "column": "created_at",
-                  "expression": null,
-                  "order": "desc",
-                  "nulls": "last",
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "created_at"
-              ],
-              "expression": false,
-              "unique": false,
-              "primary": false,
               "backs": null,
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
+              "expression": false,
+              "id": "[\"default\",null,\"accounts\"]:index:accounts_created_at_idx",
               "included": [
                 "status"
-              ]
-            },
-            {
+              ],
+              "method": "btree",
+              "name": "accounts_created_at_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "created_at",
+                  "expression": null,
+                  "length": null,
+                  "nulls": "last",
+                  "opclass": null,
+                  "order": "desc"
+                }
+              ],
+              "predicate": null,
               "provenance": [
                 "database"
               ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "expression": false,
               "id": "[\"default\",null,\"accounts\"]:index:accounts_data_idx",
+              "included": [],
+              "method": "gin",
               "name": "accounts_data_idx",
+              "partial": false,
               "parts": [
                 {
+                  "collation": null,
                   "column": "data",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": "jsonb_path_ops"
+                  "nulls": null,
+                  "opclass": "jsonb_path_ops",
+                  "order": null
                 }
               ],
-              "columns": [
-                "data"
-              ],
-              "expression": false,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": "gin",
-              "partial": false,
               "predicate": null,
-              "included": []
-            },
-            {
               "provenance": [
                 "database"
               ],
-              "id": "[\"default\",null,\"accounts\"]:index:accounts_email_key",
-              "name": "accounts_email_key",
-              "parts": [
-                {
-                  "column": "email",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "email"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
+              "unique": false
+            },
+            {
               "backs": {
-                "kind": "unique_constraint",
-                "constraint": "[\"default\",null,\"accounts\"]:constraint:accounts_email_key"
+                "constraint": "[\"default\",null,\"accounts\"]:constraint:accounts_email_key",
+                "kind": "unique_constraint"
               },
+              "expression": false,
+              "id": "[\"default\",null,\"accounts\"]:index:accounts_email_key",
+              "included": [],
               "method": "btree",
+              "name": "accounts_email_key",
               "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"accounts\"]:index:accounts_email_pattern_idx",
-              "name": "accounts_email_pattern_idx",
               "parts": [
                 {
+                  "collation": null,
                   "column": "email",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": "C",
-                  "opclass": "text_pattern_ops"
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 }
               ],
-              "columns": [
-                "email"
-              ],
-              "expression": false,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
               "predicate": null,
-              "included": []
-            },
-            {
               "provenance": [
                 "database"
               ],
-              "id": "[\"default\",null,\"accounts\"]:index:accounts_external_ref_key",
-              "name": "accounts_external_ref_key",
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"default\",null,\"accounts\"]:index:accounts_email_pattern_idx",
+              "included": [],
+              "method": "btree",
+              "name": "accounts_email_pattern_idx",
+              "partial": false,
               "parts": [
                 {
-                  "column": "external_ref",
+                  "collation": "C",
+                  "column": "email",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": "text_pattern_ops",
+                  "order": null
                 }
               ],
-              "columns": [
-                "external_ref"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
               "predicate": null,
-              "included": [],
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
               "dialectOptions": {
                 "postgresql": {
                   "options": {
                     "nullsNotDistinct": true
                   }
                 }
-              }
-            },
-            {
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"accounts\"]:index:accounts_external_ref_key",
+              "included": [],
+              "method": "btree",
+              "name": "accounts_external_ref_key",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "external_ref",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
               "provenance": [
                 "database"
               ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
               "id": "[\"default\",null,\"accounts\"]:index:accounts_live_email_idx",
+              "included": [],
+              "method": "btree",
               "name": "accounts_live_email_idx",
+              "partial": true,
               "parts": [
                 {
+                  "collation": null,
                   "column": "email",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 }
               ],
-              "columns": [
-                "email"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": true,
               "predicate": "(deleted_at IS NULL)",
-              "included": []
-            },
-            {
               "provenance": [
                 "database"
               ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": true,
               "id": "[\"default\",null,\"accounts\"]:index:accounts_lower_email_idx",
+              "included": [],
+              "method": "btree",
               "name": "accounts_lower_email_idx",
+              "partial": false,
               "parts": [
                 {
+                  "collation": null,
                   "column": null,
                   "expression": "lower(email)",
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 }
               ],
-              "columns": [],
-              "expression": true,
-              "unique": true,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
               "predicate": null,
-              "included": []
-            },
-            {
               "provenance": [
                 "database"
               ],
+              "unique": true
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
               "id": "[\"default\",null,\"accounts\"]:index:accounts_pkey",
+              "included": [],
+              "method": "btree",
               "name": "accounts_pkey",
+              "partial": false,
               "parts": [
                 {
+                  "collation": null,
                   "column": "id",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 }
               ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
               "predicate": null,
-              "included": []
-            },
-            {
               "provenance": [
                 "database"
               ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": true,
               "id": "[\"default\",null,\"accounts\"]:index:accounts_status_created_idx",
+              "included": [],
+              "method": "btree",
               "name": "accounts_status_created_idx",
+              "partial": false,
               "parts": [
                 {
+                  "collation": null,
                   "column": "status",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 },
                 {
+                  "collation": null,
                   "column": null,
                   "expression": "date_trunc('day'::text, (created_at AT TIME ZONE 'UTC'::text))",
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 }
               ],
-              "columns": [
-                "status"
-              ],
-              "expression": true,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
               "predicate": null,
-              "included": []
+              "provenance": [
+                "database"
+              ],
+              "unique": false
             },
             {
-              "provenance": [
-                "database"
-              ],
+              "backs": null,
+              "expression": false,
               "id": "[\"default\",null,\"accounts\"]:index:accounts_tags_idx",
+              "included": [],
+              "method": "gin",
               "name": "accounts_tags_idx",
+              "partial": false,
               "parts": [
                 {
+                  "collation": null,
                   "column": "tags",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 }
               ],
-              "columns": [
-                "tags"
-              ],
-              "expression": false,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": "gin",
-              "partial": false,
               "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": [
-            {
               "provenance": [
                 "database"
               ],
-              "id": "[\"default\",null,\"accounts\"]:constraint:accounts_email_key",
-              "kind": "unique",
-              "name": "accounts_email_key",
-              "columns": [
-                "email"
-              ],
-              "expression": null
+              "unique": false
             }
-          ]
+          ],
+          "name": "accounts",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
         }
       ]
     }
   ],
-  "models": [],
-  "relationships": [],
+  "derivedLinks": [],
+  "diagnostics": [],
+  "format": "laranex-schema",
+  "generator": {
+    "name": "python-schema-viewer",
+    "orm": null
+  },
+  "inferredAssociations": [],
   "links": [
     {
-      "id": "la43e8b21a9ee5106",
-      "from": {
-        "table": "[\"default\",\"billing\",\"line_notes\"]",
-        "columns": [
-          "invoice_id",
-          "line_no"
-        ]
-      },
-      "to": {
-        "table": "[\"default\",\"billing\",\"invoice_lines\"]",
-        "columns": [
-          "invoice_id",
-          "line_no"
-        ]
-      },
       "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"line_notes\\\"]\",\"line_notes_line_fkey\",\"[\\\"invoice_id\\\",\\\"line_no\\\"]\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoice_lines\\\"]\",\"[\\\"invoice_id\\\",\\\"line_no\\\"]\"]",
+      "from": {
+        "columns": [
+          "invoice_id",
+          "line_no"
+        ],
+        "table": "[\"default\",\"billing\",\"line_notes\"]"
+      },
+      "id": "la43e8b21a9ee5106",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "invoice_id",
+          "line_no"
+        ],
+        "table": "[\"default\",\"billing\",\"invoice_lines\"]"
+      }
     },
     {
-      "id": "lb7f51328e7aa7adb",
+      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoices\\\"]\",\"invoices_account_id_fkey\",\"[\\\"account_id\\\"]\",\"[\\\"default\\\",null,\\\"accounts\\\"]\",\"[\\\"id\\\"]\"]",
       "from": {
-        "table": "[\"default\",\"billing\",\"invoices\"]",
         "columns": [
           "account_id"
-        ]
+        ],
+        "table": "[\"default\",\"billing\",\"invoices\"]"
       },
-      "to": {
-        "table": "[\"default\",null,\"accounts\"]",
-        "columns": [
-          "id"
-        ]
-      },
-      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoices\\\"]\",\"invoices_account_id_fkey\",\"[\\\"account_id\\\"]\",\"[\\\"default\\\",null,\\\"accounts\\\"]\",\"[\\\"id\\\"]\"]",
+      "id": "lb7f51328e7aa7adb",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"default\",null,\"accounts\"]"
+      }
     },
     {
-      "id": "lc6b8c185558a8242",
+      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoice_lines\\\"]\",\"invoice_lines_invoice_id_fkey\",\"[\\\"invoice_id\\\"]\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoices\\\"]\",\"[\\\"id\\\"]\"]",
       "from": {
-        "table": "[\"default\",\"billing\",\"invoice_lines\"]",
         "columns": [
           "invoice_id"
-        ]
+        ],
+        "table": "[\"default\",\"billing\",\"invoice_lines\"]"
       },
-      "to": {
-        "table": "[\"default\",\"billing\",\"invoices\"]",
-        "columns": [
-          "id"
-        ]
-      },
-      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoice_lines\\\"]\",\"invoice_lines_invoice_id_fkey\",\"[\\\"invoice_id\\\"]\",\"[\\\"default\\\",\\\"billing\\\",\\\"invoices\\\"]\",\"[\\\"id\\\"]\"]",
+      "id": "lc6b8c185558a8242",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"default\",\"billing\",\"invoices\"]"
+      }
     }
   ],
-  "derivedLinks": [],
-  "diagnostics": []
+  "migrations": [],
+  "models": [],
+  "note": null,
+  "relationships": [],
+  "source": "database",
+  "version": "2.0"
 }

@@ -1,292 +1,250 @@
 {
-  "format": "laranex-schema",
-  "version": "1.0",
-  "source": "database",
-  "generator": {
-    "name": "python-schema-viewer",
-    "orm": null
-  },
-  "note": null,
+  "comparisons": [],
   "connections": [
     {
-      "id": "connection:default",
-      "name": "default",
-      "driver": "sqlite",
-      "defaultSchema": null,
       "coverage": {
         "database": {
           "complete": false,
-          "schemas": null,
           "features": {
-            "tables": "complete",
-            "columns": "complete",
+            "checkConstraints": "partial",
             "columnTypes": "complete",
-            "defaults": "complete",
+            "columns": "complete",
             "comments": "not_applicable",
-            "primaryKeys": "complete",
+            "defaults": "complete",
             "foreignKeys": "complete",
-            "referentialActions": "complete",
-            "indexes": "complete",
+            "includedColumns": "not_applicable",
             "indexExpressions": "complete",
             "indexPredicates": "complete",
-            "includedColumns": "not_applicable",
-            "uniqueConstraints": "complete",
-            "checkConstraints": "partial",
+            "indexes": "complete",
             "models": "not_applicable",
-            "relationships": "not_applicable"
-          }
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": null
         },
         "declared": null
       },
+      "defaultSchema": null,
+      "driver": "sqlite",
+      "id": "connection:default",
+      "name": "default",
       "tables": [
         {
-          "provenance": [
-            "database"
-          ],
-          "id": "[\"default\",null,\"notes\"]",
-          "name": "notes",
-          "schema": null,
-          "comment": null,
-          "note": null,
-          "owner": {
-            "kind": "application",
-            "package": null
-          },
-          "primaryKey": [
-            "id"
-          ],
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": true,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
-            },
-            {
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "title",
-              "type": "TEXT",
-              "typeName": "text",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "slug",
-              "type": "TEXT",
-              "typeName": "text",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "archived",
               "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": false,
+              "typeName": "integer"
+            },
+            {
               "autoIncrement": false,
-              "timezone": null,
               "collation": null,
+              "comment": null,
+              "default": null,
               "enum": null,
+              "generated": null,
+              "name": "title",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "TEXT",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "slug",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "TEXT",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
               "default": {
                 "kind": "literal",
                 "value": "0"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
+              "name": "archived",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
             }
           ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"notes\"]:index:notes_active_title",
-              "name": "notes_active_title",
-              "parts": [
-                {
-                  "column": "title",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "title"
-              ],
-              "expression": false,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": null,
-              "partial": true,
-              "predicate": "archived = 0",
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"notes\"]:index:notes_lower_title",
-              "name": "notes_lower_title",
-              "parts": [
-                {
-                  "column": null,
-                  "expression": "lower(title)",
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [],
-              "expression": true,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": null,
-              "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"notes\"]:index:notes_title_nocase",
-              "name": "notes_title_nocase",
-              "parts": [
-                {
-                  "column": "title",
-                  "expression": null,
-                  "order": "desc",
-                  "nulls": null,
-                  "length": null,
-                  "collation": "NOCASE",
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "title"
-              ],
-              "expression": false,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": null,
-              "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"notes\"]:index:sqlite_autoindex_notes_1",
-              "name": "sqlite_autoindex_notes_1",
-              "parts": [
-                {
-                  "column": "slug",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "slug"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": {
-                "kind": "unique_constraint",
-                "constraint": "[\"default\",null,\"notes\"]:constraint:notes_slug"
-              },
-              "method": null,
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
+          "comment": null,
           "constraints": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"notes\"]:constraint:notes_archived_flag",
-              "kind": "check",
-              "name": "notes_archived_flag",
               "columns": [
                 "archived"
               ],
-              "expression": "archived IN (0, 1)"
-            },
-            {
+              "expression": "archived IN (0, 1)",
+              "id": "[\"default\",null,\"notes\"]:constraint:notes_archived_flag",
+              "kind": "check",
+              "name": "notes_archived_flag",
               "provenance": [
                 "database"
-              ],
-              "id": "[\"default\",null,\"notes\"]:constraint:notes_slug",
-              "kind": "unique",
-              "name": "notes_slug",
+              ]
+            },
+            {
               "columns": [
                 "slug"
               ],
-              "expression": null
+              "expression": null,
+              "id": "[\"default\",null,\"notes\"]:constraint:notes_slug",
+              "kind": "unique",
+              "name": "notes_slug",
+              "provenance": [
+                "database"
+              ]
             }
-          ]
-        },
-        {
-          "provenance": [
-            "database"
           ],
-          "id": "[\"default\",null,\"tag_links\"]",
-          "name": "tag_links",
-          "schema": null,
-          "comment": null,
+          "foreignKeys": [],
+          "id": "[\"default\",null,\"notes\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"default\",null,\"notes\"]:index:notes_active_title",
+              "included": [],
+              "method": null,
+              "name": "notes_active_title",
+              "partial": true,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "title",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": "archived = 0",
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "expression": true,
+              "id": "[\"default\",null,\"notes\"]:index:notes_lower_title",
+              "included": [],
+              "method": null,
+              "name": "notes_lower_title",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": null,
+                  "expression": "lower(title)",
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"default\",null,\"notes\"]:index:notes_title_nocase",
+              "included": [],
+              "method": null,
+              "name": "notes_title_nocase",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": "NOCASE",
+                  "column": "title",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": "desc"
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": "[\"default\",null,\"notes\"]:constraint:notes_slug",
+                "kind": "unique_constraint"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"notes\"]:index:sqlite_autoindex_notes_1",
+              "included": [],
+              "method": null,
+              "name": "sqlite_autoindex_notes_1",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "slug",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "notes",
           "note": null,
           "owner": {
             "kind": "application",
@@ -295,95 +253,210 @@
           "primaryKey": [
             "id"
           ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": true,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
-            },
-            {
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "note_id",
+              "timezone": null,
               "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "typeName": "integer"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "note_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "tag",
-              "type": "TEXT",
-              "typeName": "text",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "tag",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "TEXT",
+              "typeName": "text"
             }
           ],
-          "indexes": [],
+          "comment": null,
+          "constraints": [],
           "foreignKeys": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"tag_links\\\"]\",null,\"[\\\"note_id\\\",\\\"tag\\\"]\",\"[\\\"default\\\",null,\\\"tags\\\"]\",\"[\\\"note_id\\\",\\\"name\\\"]\"]",
-              "name": null,
               "columns": [
                 "note_id",
                 "tag"
               ],
-              "foreignTable": "[\"default\",null,\"tags\"]",
+              "deferrable": true,
               "foreignColumns": [
                 "note_id",
                 "name"
               ],
-              "onUpdate": "NO ACTION",
+              "foreignTable": "[\"default\",null,\"tags\"]",
+              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"tag_links\\\"]\",null,\"[\\\"note_id\\\",\\\"tag\\\"]\",\"[\\\"default\\\",null,\\\"tags\\\"]\",\"[\\\"note_id\\\",\\\"name\\\"]\"]",
+              "initially": "DEFERRED",
+              "name": null,
               "onDelete": "NO ACTION",
-              "deferrable": true,
-              "initially": "DEFERRED"
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
             }
           ],
-          "constraints": []
-        },
-        {
+          "id": "[\"default\",null,\"tag_links\"]",
+          "indexes": [],
+          "name": "tag_links",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
           "provenance": [
             "database"
           ],
-          "id": "[\"default\",null,\"tags\"]",
-          "name": "tags",
-          "schema": null,
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "note_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "TEXT",
+              "typeName": "text"
+            }
+          ],
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "note_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"default\",null,\"notes\"]",
+              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"tags\\\"]\",null,\"[\\\"note_id\\\"]\",\"[\\\"default\\\",null,\\\"notes\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": null,
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"default\",null,\"tags\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"tags\"]:index:sqlite_autoindex_tags_1",
+              "included": [],
+              "method": null,
+              "name": "sqlite_autoindex_tags_1",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "note_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "name",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "tags",
           "note": null,
           "owner": {
             "kind": "application",
@@ -393,159 +466,70 @@
             "note_id",
             "name"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "note_id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "name",
-              "type": "TEXT",
-              "typeName": "text",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
+          "provenance": [
+            "database"
           ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"tags\"]:index:sqlite_autoindex_tags_1",
-              "name": "sqlite_autoindex_tags_1",
-              "parts": [
-                {
-                  "column": "note_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "name",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "note_id",
-                "name"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": null,
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"tags\\\"]\",null,\"[\\\"note_id\\\"]\",\"[\\\"default\\\",null,\\\"notes\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": null,
-              "columns": [
-                "note_id"
-              ],
-              "foreignTable": "[\"default\",null,\"notes\"]",
-              "foreignColumns": [
-                "id"
-              ],
-              "onUpdate": "NO ACTION",
-              "onDelete": "CASCADE",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
-            }
-          ],
-          "constraints": []
+          "schema": null
         }
       ]
     }
   ],
-  "models": [],
-  "relationships": [],
+  "derivedLinks": [],
+  "diagnostics": [],
+  "format": "laranex-schema",
+  "generator": {
+    "name": "python-schema-viewer",
+    "orm": null
+  },
+  "inferredAssociations": [],
   "links": [
     {
-      "id": "l4cb0b105039476bf",
+      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"tags\\\"]\",null,\"[\\\"note_id\\\"]\",\"[\\\"default\\\",null,\\\"notes\\\"]\",\"[\\\"id\\\"]\"]",
       "from": {
-        "table": "[\"default\",null,\"tags\"]",
         "columns": [
           "note_id"
-        ]
+        ],
+        "table": "[\"default\",null,\"tags\"]"
       },
-      "to": {
-        "table": "[\"default\",null,\"notes\"]",
-        "columns": [
-          "id"
-        ]
-      },
-      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"tags\\\"]\",null,\"[\\\"note_id\\\"]\",\"[\\\"default\\\",null,\\\"notes\\\"]\",\"[\\\"id\\\"]\"]",
+      "id": "l4cb0b105039476bf",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"default\",null,\"notes\"]"
+      }
     },
     {
-      "id": "l81bdb742b1a5e780",
+      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"tag_links\\\"]\",null,\"[\\\"note_id\\\",\\\"tag\\\"]\",\"[\\\"default\\\",null,\\\"tags\\\"]\",\"[\\\"note_id\\\",\\\"name\\\"]\"]",
       "from": {
-        "table": "[\"default\",null,\"tag_links\"]",
         "columns": [
           "note_id",
           "tag"
-        ]
+        ],
+        "table": "[\"default\",null,\"tag_links\"]"
       },
+      "id": "l81bdb742b1a5e780",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
       "to": {
-        "table": "[\"default\",null,\"tags\"]",
         "columns": [
           "note_id",
           "name"
-        ]
-      },
-      "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"tag_links\\\"]\",null,\"[\\\"note_id\\\",\\\"tag\\\"]\",\"[\\\"default\\\",null,\\\"tags\\\"]\",\"[\\\"note_id\\\",\\\"name\\\"]\"]",
-      "relationships": [],
-      "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+        ],
+        "table": "[\"default\",null,\"tags\"]"
+      }
     }
   ],
-  "derivedLinks": [],
-  "diagnostics": []
+  "migrations": [],
+  "models": [],
+  "note": null,
+  "relationships": [],
+  "source": "database",
+  "version": "2.0"
 }

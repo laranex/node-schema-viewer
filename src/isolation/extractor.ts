@@ -1,5 +1,5 @@
 // The interface between the extraction worker and an ORM adapter. The worker imports the adapter, which imports the
-// application's modules through the context and returns what they declare as a laranex-schema 1.0 document with
+// application's modules through the context and returns what they declare as a laranex-schema 2.0 document with
 // source "declared". The parent validates the document strictly before using it.
 
 export interface ExtractContext {

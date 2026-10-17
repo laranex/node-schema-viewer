@@ -1,0 +1,3885 @@
+{
+  "calls": [
+    {
+      "arguments": {
+        "limit": 100
+      },
+      "result": {
+        "connections": [
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "public"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "public",
+            "driver": "postgresql",
+            "id": "connection:primary",
+            "name": "primary",
+            "tables": 2
+          },
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "shop"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "shop",
+            "driver": "mysql",
+            "id": "connection:replica",
+            "name": "replica",
+            "tables": 2
+          }
+        ],
+        "counts": {
+          "columns": 16,
+          "comparisons": 1,
+          "connections": 2,
+          "constraints": 0,
+          "derivedLinks": 0,
+          "diagnostics": 0,
+          "drift": 0,
+          "foreignKeys": 2,
+          "indexes": 6,
+          "inferredAssociations": 0,
+          "links": 2,
+          "migrations": 0,
+          "models": 0,
+          "relationships": 0,
+          "tables": 4
+        },
+        "diagnosticCounts": {
+          "category": {
+            "drift": 0,
+            "extraction": 0,
+            "inspection": 0,
+            "lint": 0,
+            "reconciliation": 0
+          },
+          "certainty": {
+            "certain": 0,
+            "likely": 0
+          },
+          "severity": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          }
+        },
+        "generator": {
+          "name": "laranex-schema-viewer",
+          "orm": null
+        },
+        "items": [
+          {
+            "connection": "connection:primary",
+            "counts": {
+              "columns": 6,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "primary:public.customers",
+            "name": "customers",
+            "provenance": [
+              "database"
+            ],
+            "schema": "public"
+          },
+          {
+            "connection": "connection:primary",
+            "counts": {
+              "columns": 2,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 1,
+              "indexes": 2
+            },
+            "id": "primary:public.orders",
+            "name": "orders",
+            "provenance": [
+              "database"
+            ],
+            "schema": "public"
+          },
+          {
+            "connection": "connection:replica",
+            "counts": {
+              "columns": 6,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "replica:customers",
+            "name": "customers",
+            "provenance": [
+              "database"
+            ],
+            "schema": null
+          },
+          {
+            "connection": "connection:replica",
+            "counts": {
+              "columns": 2,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 1,
+              "indexes": 2
+            },
+            "id": "replica:orders",
+            "name": "orders",
+            "provenance": [
+              "database"
+            ],
+            "schema": null
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "note": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "source": "database",
+        "total": 4,
+        "version": "2.0"
+      },
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {},
+      "result": {
+        "connections": [
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "public"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "public",
+            "driver": "postgresql",
+            "id": "connection:primary",
+            "name": "primary",
+            "tables": 2
+          },
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "shop"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "shop",
+            "driver": "mysql",
+            "id": "connection:replica",
+            "name": "replica",
+            "tables": 2
+          }
+        ],
+        "counts": {
+          "columns": 16,
+          "comparisons": 1,
+          "connections": 2,
+          "constraints": 0,
+          "derivedLinks": 0,
+          "diagnostics": 0,
+          "drift": 0,
+          "foreignKeys": 2,
+          "indexes": 6,
+          "inferredAssociations": 0,
+          "links": 2,
+          "migrations": 0,
+          "models": 0,
+          "relationships": 0,
+          "tables": 4
+        },
+        "diagnosticCounts": {
+          "category": {
+            "drift": 0,
+            "extraction": 0,
+            "inspection": 0,
+            "lint": 0,
+            "reconciliation": 0
+          },
+          "certainty": {
+            "certain": 0,
+            "likely": 0
+          },
+          "severity": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          }
+        },
+        "generator": {
+          "name": "laranex-schema-viewer",
+          "orm": null
+        },
+        "items": [
+          {
+            "connection": "connection:primary",
+            "counts": {
+              "columns": 6,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "primary:public.customers",
+            "name": "customers",
+            "provenance": [
+              "database"
+            ],
+            "schema": "public"
+          },
+          {
+            "connection": "connection:primary",
+            "counts": {
+              "columns": 2,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 1,
+              "indexes": 2
+            },
+            "id": "primary:public.orders",
+            "name": "orders",
+            "provenance": [
+              "database"
+            ],
+            "schema": "public"
+          },
+          {
+            "connection": "connection:replica",
+            "counts": {
+              "columns": 6,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "replica:customers",
+            "name": "customers",
+            "provenance": [
+              "database"
+            ],
+            "schema": null
+          },
+          {
+            "connection": "connection:replica",
+            "counts": {
+              "columns": 2,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 1,
+              "indexes": 2
+            },
+            "id": "replica:orders",
+            "name": "orders",
+            "provenance": [
+              "database"
+            ],
+            "schema": null
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "note": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "source": "database",
+        "total": 4,
+        "version": "2.0"
+      },
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "limit": 1
+      },
+      "result": {
+        "connections": [
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "public"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "public",
+            "driver": "postgresql",
+            "id": "connection:primary",
+            "name": "primary",
+            "tables": 2
+          },
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "shop"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "shop",
+            "driver": "mysql",
+            "id": "connection:replica",
+            "name": "replica",
+            "tables": 2
+          }
+        ],
+        "counts": {
+          "columns": 16,
+          "comparisons": 1,
+          "connections": 2,
+          "constraints": 0,
+          "derivedLinks": 0,
+          "diagnostics": 0,
+          "drift": 0,
+          "foreignKeys": 2,
+          "indexes": 6,
+          "inferredAssociations": 0,
+          "links": 2,
+          "migrations": 0,
+          "models": 0,
+          "relationships": 0,
+          "tables": 4
+        },
+        "diagnosticCounts": {
+          "category": {
+            "drift": 0,
+            "extraction": 0,
+            "inspection": 0,
+            "lint": 0,
+            "reconciliation": 0
+          },
+          "certainty": {
+            "certain": 0,
+            "likely": 0
+          },
+          "severity": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          }
+        },
+        "generator": {
+          "name": "laranex-schema-viewer",
+          "orm": null
+        },
+        "items": [
+          {
+            "connection": "connection:primary",
+            "counts": {
+              "columns": 6,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 0,
+              "indexes": 1
+            },
+            "id": "primary:public.customers",
+            "name": "customers",
+            "provenance": [
+              "database"
+            ],
+            "schema": "public"
+          }
+        ],
+        "limit": 1,
+        "nextOffset": 1,
+        "note": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "source": "database",
+        "total": 4,
+        "version": "2.0"
+      },
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "limit": 1,
+        "offset": 1,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9"
+      },
+      "result": {
+        "connections": [
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "public"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "public",
+            "driver": "postgresql",
+            "id": "connection:primary",
+            "name": "primary",
+            "tables": 2
+          },
+          {
+            "coverage": {
+              "database": {
+                "complete": true,
+                "features": {
+                  "checkConstraints": "complete",
+                  "columnTypes": "complete",
+                  "columns": "complete",
+                  "comments": "complete",
+                  "defaults": "complete",
+                  "foreignKeys": "complete",
+                  "includedColumns": "complete",
+                  "indexExpressions": "complete",
+                  "indexPredicates": "complete",
+                  "indexes": "complete",
+                  "models": "not_applicable",
+                  "primaryKeys": "complete",
+                  "referentialActions": "complete",
+                  "relationships": "not_applicable",
+                  "tables": "complete",
+                  "uniqueConstraints": "complete"
+                },
+                "schemas": [
+                  "shop"
+                ]
+              },
+              "declared": null
+            },
+            "defaultSchema": "shop",
+            "driver": "mysql",
+            "id": "connection:replica",
+            "name": "replica",
+            "tables": 2
+          }
+        ],
+        "counts": {
+          "columns": 16,
+          "comparisons": 1,
+          "connections": 2,
+          "constraints": 0,
+          "derivedLinks": 0,
+          "diagnostics": 0,
+          "drift": 0,
+          "foreignKeys": 2,
+          "indexes": 6,
+          "inferredAssociations": 0,
+          "links": 2,
+          "migrations": 0,
+          "models": 0,
+          "relationships": 0,
+          "tables": 4
+        },
+        "diagnosticCounts": {
+          "category": {
+            "drift": 0,
+            "extraction": 0,
+            "inspection": 0,
+            "lint": 0,
+            "reconciliation": 0
+          },
+          "certainty": {
+            "certain": 0,
+            "likely": 0
+          },
+          "severity": {
+            "error": 0,
+            "info": 0,
+            "warning": 0
+          }
+        },
+        "generator": {
+          "name": "laranex-schema-viewer",
+          "orm": null
+        },
+        "items": [
+          {
+            "connection": "connection:primary",
+            "counts": {
+              "columns": 2,
+              "constraints": 0,
+              "diagnostics": 0,
+              "drift": 0,
+              "foreignKeys": 1,
+              "indexes": 2
+            },
+            "id": "primary:public.orders",
+            "name": "orders",
+            "provenance": [
+              "database"
+            ],
+            "schema": "public"
+          }
+        ],
+        "limit": 1,
+        "nextOffset": 2,
+        "note": null,
+        "offset": 1,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "source": "database",
+        "total": 4,
+        "version": "2.0"
+      },
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "query_text": "id"
+      },
+      "result": {
+        "items": [
+          {
+            "id": null,
+            "kind": "column",
+            "name": "id",
+            "table": "primary:public.customers"
+          },
+          {
+            "id": null,
+            "kind": "column",
+            "name": "id",
+            "table": "primary:public.orders"
+          },
+          {
+            "id": null,
+            "kind": "column",
+            "name": "customer_id",
+            "table": "primary:public.orders"
+          },
+          {
+            "id": "primary:public.orders:index:orders_customer_id_idx",
+            "kind": "index",
+            "name": "orders_customer_id_idx",
+            "table": "primary:public.orders"
+          },
+          {
+            "id": "primary:public.orders:fk:orders_customer_id_fkey",
+            "kind": "foreignKey",
+            "name": "orders_customer_id_fkey",
+            "table": "primary:public.orders"
+          },
+          {
+            "id": null,
+            "kind": "column",
+            "name": "id",
+            "table": "replica:customers"
+          },
+          {
+            "id": null,
+            "kind": "column",
+            "name": "id",
+            "table": "replica:orders"
+          },
+          {
+            "id": null,
+            "kind": "column",
+            "name": "customer_id",
+            "table": "replica:orders"
+          },
+          {
+            "id": "replica:orders:index:orders_customer_id_foreign",
+            "kind": "index",
+            "name": "orders_customer_id_foreign",
+            "table": "replica:orders"
+          },
+          {
+            "id": "replica:orders:fk:orders_customer_id_foreign",
+            "kind": "foreignKey",
+            "name": "orders_customer_id_foreign",
+            "table": "replica:orders"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "query": "id",
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "total": 10
+      },
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "query_text": "USER"
+      },
+      "result": {
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "query": "USER",
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "total": 0
+      },
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "query_text": "_at"
+      },
+      "result": {
+        "items": [
+          {
+            "id": null,
+            "kind": "column",
+            "name": "created_at",
+            "table": "primary:public.customers"
+          },
+          {
+            "id": null,
+            "kind": "column",
+            "name": "created_at",
+            "table": "replica:customers"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "query": "_at",
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "total": 2
+      },
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "query_text": "zzz-no-match"
+      },
+      "result": {
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "query": "zzz-no-match",
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "total": 0
+      },
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "columns",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": true,
+            "collation": null,
+            "comment": null,
+            "default": {
+              "kind": "identity",
+              "value": "GENERATED BY DEFAULT AS IDENTITY"
+            },
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint",
+            "typeName": "bigint"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "email",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "character varying(255)",
+            "typeName": "varchar"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": {
+              "kind": "literal",
+              "value": "true"
+            },
+            "enum": null,
+            "generated": null,
+            "name": "active",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "boolean",
+            "typeName": "boolean"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "score",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "double precision",
+            "typeName": "double precision"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "created_at",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": true,
+            "type": "timestamp with time zone",
+            "typeName": "timestamptz"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "bio",
+            "note": null,
+            "nullable": true,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "text",
+            "typeName": "text"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 6
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "indexes",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "backs": {
+              "constraint": null,
+              "kind": "primary_key"
+            },
+            "expression": false,
+            "id": "primary:public.customers:index:customers_pkey",
+            "included": [],
+            "method": "btree",
+            "name": "customers_pkey",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": true
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "indexes",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "foreign_keys",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "foreign_keys",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "constraints",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "constraints",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "models",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "models",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "relationships",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "relationships",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "links",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "foreignKey": "primary:public.orders:fk:orders_customer_id_fkey",
+            "from": {
+              "columns": [
+                "customer_id"
+              ],
+              "table": "primary:public.orders"
+            },
+            "id": "l6201f673adf5b6f9",
+            "note": null,
+            "polymorphic": false,
+            "relationships": [],
+            "state": "foreign_key",
+            "to": {
+              "columns": [
+                "id"
+              ],
+              "table": "primary:public.customers"
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "links",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "derived_links",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "derived_links",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "diagnostics",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "diagnostics",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100,
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": "primary:public.customers",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100,
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "items": [
+          {
+            "foreignKey": {
+              "columns": [
+                "customer_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "primary:public.customers",
+              "id": "primary:public.orders:fk:orders_customer_id_fkey",
+              "initially": null,
+              "name": "orders_customer_id_fkey",
+              "onDelete": "RESTRICT",
+              "onUpdate": null,
+              "provenance": [
+                "database"
+              ]
+            },
+            "table": "primary:public.orders"
+          }
+        ],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": "primary:public.customers",
+        "total": 1
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "columns",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint",
+            "typeName": "bigint"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "customer_id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint",
+            "typeName": "bigint"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 2
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "indexes",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "backs": {
+              "constraint": null,
+              "kind": "primary_key"
+            },
+            "expression": false,
+            "id": "primary:public.orders:index:orders_pkey",
+            "included": [],
+            "method": "btree",
+            "name": "orders_pkey",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": true
+          },
+          {
+            "backs": null,
+            "expression": false,
+            "id": "primary:public.orders:index:orders_customer_id_idx",
+            "included": [],
+            "method": "btree",
+            "name": "orders_customer_id_idx",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "customer_id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": false
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "indexes",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 2
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "foreign_keys",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "columns": [
+              "customer_id"
+            ],
+            "deferrable": null,
+            "foreignColumns": [
+              "id"
+            ],
+            "foreignTable": "primary:public.customers",
+            "id": "primary:public.orders:fk:orders_customer_id_fkey",
+            "initially": null,
+            "name": "orders_customer_id_fkey",
+            "onDelete": "RESTRICT",
+            "onUpdate": null,
+            "provenance": [
+              "database"
+            ]
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "foreign_keys",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "constraints",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "constraints",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "models",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "models",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "relationships",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "relationships",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "links",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "foreignKey": "primary:public.orders:fk:orders_customer_id_fkey",
+            "from": {
+              "columns": [
+                "customer_id"
+              ],
+              "table": "primary:public.orders"
+            },
+            "id": "l6201f673adf5b6f9",
+            "note": null,
+            "polymorphic": false,
+            "relationships": [],
+            "state": "foreign_key",
+            "to": {
+              "columns": [
+                "id"
+              ],
+              "table": "primary:public.customers"
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "links",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "derived_links",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "derived_links",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "diagnostics",
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "diagnostics",
+        "table": {
+          "comment": null,
+          "id": "primary:public.orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100,
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": "primary:public.orders",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100,
+        "table": "primary:public.orders"
+      },
+      "result": {
+        "items": [
+          {
+            "foreignKey": {
+              "columns": [
+                "customer_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "primary:public.customers",
+              "id": "primary:public.orders:fk:orders_customer_id_fkey",
+              "initially": null,
+              "name": "orders_customer_id_fkey",
+              "onDelete": "RESTRICT",
+              "onUpdate": null,
+              "provenance": [
+                "database"
+              ]
+            },
+            "table": "primary:public.orders"
+          }
+        ],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": "primary:public.orders",
+        "total": 1
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "columns",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": true,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint unsigned",
+            "typeName": "bigint"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "email",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "varchar(255)",
+            "typeName": "varchar"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": {
+              "kind": "literal",
+              "value": "1"
+            },
+            "enum": null,
+            "generated": null,
+            "name": "active",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "tinyint(1)",
+            "typeName": "tinyint"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "score",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "double",
+            "typeName": "double"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "created_at",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "datetime",
+            "typeName": "datetime"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "bio",
+            "note": null,
+            "nullable": true,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "longtext",
+            "typeName": "longtext"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 6
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "indexes",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "backs": {
+              "constraint": null,
+              "kind": "primary_key"
+            },
+            "expression": false,
+            "id": "replica:customers:index:PRIMARY",
+            "included": [],
+            "method": "btree",
+            "name": "PRIMARY",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": true
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "indexes",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "foreign_keys",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "foreign_keys",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "constraints",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "constraints",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "models",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "models",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "relationships",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "relationships",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "links",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "foreignKey": "replica:orders:fk:orders_customer_id_foreign",
+            "from": {
+              "columns": [
+                "customer_id"
+              ],
+              "table": "replica:orders"
+            },
+            "id": "l234949db56db59b9",
+            "note": null,
+            "polymorphic": false,
+            "relationships": [],
+            "state": "foreign_key",
+            "to": {
+              "columns": [
+                "id"
+              ],
+              "table": "replica:customers"
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "links",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "derived_links",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "derived_links",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "diagnostics",
+        "table": "replica:customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "diagnostics",
+        "table": {
+          "comment": null,
+          "id": "replica:customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100,
+        "table": "replica:customers"
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": "replica:customers",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100,
+        "table": "replica:customers"
+      },
+      "result": {
+        "items": [
+          {
+            "foreignKey": {
+              "columns": [
+                "customer_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "replica:customers",
+              "id": "replica:orders:fk:orders_customer_id_foreign",
+              "initially": null,
+              "name": "orders_customer_id_foreign",
+              "onDelete": "RESTRICT",
+              "onUpdate": null,
+              "provenance": [
+                "database"
+              ]
+            },
+            "table": "replica:orders"
+          }
+        ],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": "replica:customers",
+        "total": 1
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "columns",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint unsigned",
+            "typeName": "bigint"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "customer_id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint unsigned",
+            "typeName": "bigint"
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 2
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "indexes",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "backs": {
+              "constraint": null,
+              "kind": "primary_key"
+            },
+            "expression": false,
+            "id": "replica:orders:index:PRIMARY",
+            "included": [],
+            "method": "btree",
+            "name": "PRIMARY",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": true
+          },
+          {
+            "backs": null,
+            "expression": false,
+            "id": "replica:orders:index:orders_customer_id_foreign",
+            "included": [],
+            "method": "btree",
+            "name": "orders_customer_id_foreign",
+            "partial": false,
+            "parts": [
+              {
+                "collation": null,
+                "column": "customer_id",
+                "expression": null,
+                "length": null,
+                "nulls": null,
+                "opclass": null,
+                "order": null
+              }
+            ],
+            "predicate": null,
+            "provenance": [
+              "database"
+            ],
+            "unique": false
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "indexes",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 2
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "foreign_keys",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "columns": [
+              "customer_id"
+            ],
+            "deferrable": null,
+            "foreignColumns": [
+              "id"
+            ],
+            "foreignTable": "replica:customers",
+            "id": "replica:orders:fk:orders_customer_id_foreign",
+            "initially": null,
+            "name": "orders_customer_id_foreign",
+            "onDelete": "RESTRICT",
+            "onUpdate": null,
+            "provenance": [
+              "database"
+            ]
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "foreign_keys",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "constraints",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "constraints",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "models",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "models",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "relationships",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "relationships",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "links",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "foreignKey": "replica:orders:fk:orders_customer_id_foreign",
+            "from": {
+              "columns": [
+                "customer_id"
+              ],
+              "table": "replica:orders"
+            },
+            "id": "l234949db56db59b9",
+            "note": null,
+            "polymorphic": false,
+            "relationships": [],
+            "state": "foreign_key",
+            "to": {
+              "columns": [
+                "id"
+              ],
+              "table": "replica:customers"
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "links",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 1
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "derived_links",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "derived_links",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "diagnostics",
+        "table": "replica:orders"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "shop",
+          "driver": "mysql",
+          "id": "connection:replica",
+          "name": "replica"
+        },
+        "counts": {
+          "columns": 2,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 1,
+          "indexes": 2,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "diagnostics",
+        "table": {
+          "comment": null,
+          "id": "replica:orders",
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        "total": 0
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100,
+        "table": "replica:orders"
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": "replica:orders",
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100,
+        "table": "replica:orders"
+      },
+      "result": {
+        "items": [
+          {
+            "foreignKey": {
+              "columns": [
+                "customer_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "replica:customers",
+              "id": "replica:orders:fk:orders_customer_id_foreign",
+              "initially": null,
+              "name": "orders_customer_id_foreign",
+              "onDelete": "RESTRICT",
+              "onUpdate": null,
+              "provenance": [
+                "database"
+              ]
+            },
+            "table": "replica:orders"
+          }
+        ],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": "replica:orders",
+        "total": 1
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": true,
+            "collation": null,
+            "comment": null,
+            "default": {
+              "kind": "identity",
+              "value": "GENERATED BY DEFAULT AS IDENTITY"
+            },
+            "enum": null,
+            "generated": null,
+            "name": "id",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "bigint",
+            "typeName": "bigint"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "email",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "character varying(255)",
+            "typeName": "varchar"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": {
+              "kind": "literal",
+              "value": "true"
+            },
+            "enum": null,
+            "generated": null,
+            "name": "active",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "boolean",
+            "typeName": "boolean"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "score",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "double precision",
+            "typeName": "double precision"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "created_at",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": true,
+            "type": "timestamp with time zone",
+            "typeName": "timestamptz"
+          },
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "bio",
+            "note": null,
+            "nullable": true,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "text",
+            "typeName": "text"
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 6
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "limit": 1,
+        "offset": 1,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "columns",
+        "table": "primary:public.customers"
+      },
+      "result": {
+        "connection": {
+          "defaultSchema": "public",
+          "driver": "postgresql",
+          "id": "connection:primary",
+          "name": "primary"
+        },
+        "counts": {
+          "columns": 6,
+          "constraints": 0,
+          "derived_links": 0,
+          "diagnostics": 0,
+          "foreign_keys": 0,
+          "indexes": 1,
+          "links": 1,
+          "models": 0,
+          "relationships": 0
+        },
+        "items": [
+          {
+            "autoIncrement": false,
+            "collation": null,
+            "comment": null,
+            "default": null,
+            "enum": null,
+            "generated": null,
+            "name": "email",
+            "note": null,
+            "nullable": false,
+            "ormDefault": null,
+            "provenance": [
+              "database"
+            ],
+            "timezone": null,
+            "type": "character varying(255)",
+            "typeName": "varchar"
+          }
+        ],
+        "limit": 1,
+        "nextOffset": 2,
+        "offset": 1,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "columns",
+        "table": {
+          "comment": null,
+          "id": "primary:public.customers",
+          "name": "customers",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        "total": 6
+      },
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "limit": 100
+      },
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": null,
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "foreign_key",
+        "limit": 100
+      },
+      "result": {
+        "items": [
+          {
+            "foreignKey": {
+              "columns": [
+                "customer_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "primary:public.customers",
+              "id": "primary:public.orders:fk:orders_customer_id_fkey",
+              "initially": null,
+              "name": "orders_customer_id_fkey",
+              "onDelete": "RESTRICT",
+              "onUpdate": null,
+              "provenance": [
+                "database"
+              ]
+            },
+            "table": "primary:public.orders"
+          },
+          {
+            "foreignKey": {
+              "columns": [
+                "customer_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "replica:customers",
+              "id": "replica:orders:fk:orders_customer_id_foreign",
+              "initially": null,
+              "name": "orders_customer_id_foreign",
+              "onDelete": "RESTRICT",
+              "onUpdate": null,
+              "provenance": [
+                "database"
+              ]
+            },
+            "table": "replica:orders"
+          }
+        ],
+        "kind": "foreign_key",
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": null,
+        "total": 2
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {},
+      "result": {
+        "items": [],
+        "kind": "orm",
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "table": null,
+        "total": 0
+      },
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "limit": 0
+      },
+      "error": "limit must be an integer from 1 to 100",
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "limit": 101
+      },
+      "error": "limit must be an integer from 1 to 100",
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "offset": -1
+      },
+      "error": "offset must be a nonnegative integer",
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "revision": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "error": "Document revision differs; restart pagination without revision",
+      "tool": "schema_overview"
+    },
+    {
+      "arguments": {
+        "query_text": ""
+      },
+      "error": "query must contain 1 to 200 characters",
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "query_text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "error": "query must contain 1 to 200 characters",
+      "tool": "schema_search"
+    },
+    {
+      "arguments": {
+        "table": "../../.env"
+      },
+      "error": "Unknown table ID; use schema_overview or schema_search",
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "section": "rows",
+        "table": "primary:public.customers"
+      },
+      "error": "Unknown table section: rows",
+      "tool": "schema_get_table"
+    },
+    {
+      "arguments": {
+        "model": "missing"
+      },
+      "error": "Unknown model ID; use schema_search",
+      "tool": "schema_get_model"
+    },
+    {
+      "arguments": {
+        "kind": "orm",
+        "table": "missing"
+      },
+      "error": "Unknown table ID",
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "kind": "sql"
+      },
+      "error": "kind must be orm or foreign_key",
+      "tool": "schema_get_relationships"
+    }
+  ],
+  "document": "tests/fixtures/contract/fixtures/valid/comparison-multi-connection.json",
+  "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9"
+}

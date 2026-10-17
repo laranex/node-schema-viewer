@@ -1,6 +1,8 @@
 # Database introspection
 
-Node Schema Viewer can read a live database's catalogs into a [laranex-schema 1.0](https://laranex.github.io/schema-viewer-ui/contract) document with `source: "database"`. It is a port of python-schema-viewer's introspection: same ids, same normalization and the same read-only rules, checked against documents recorded from python-schema-viewer.
+Node Schema Viewer can read a live database's catalogs into a [laranex-schema 2.0](https://laranex.github.io/schema-viewer-ui/contract) document with `source: "database"`. It is a port of python-schema-viewer's introspection: same ids, same normalization and the same read-only rules, checked against documents recorded from python-schema-viewer.
+
+The catalog readers fill a normalized internal schema model (`src/schema/model.ts`) that does not use the document's field names; one serializer (`src/schema/serialize.ts`) writes it as a canonical 2.0 document, builds the links with the contract's shared graph builder, gives each diagnostic its rule-based id, and validates the result strictly. Several connections are merged as serialized documents by the same module.
 
 > Introspection is a programmatic API for now. The `build` command, its configuration and the comparison with declared models come in a later milestone; see [Planned configuration](#planned-configuration).
 
@@ -26,7 +28,7 @@ const merged = await introspectAll([
 ]);
 ```
 
-Both return a document that passed the contract's strict validation, or throw `IntrospectionError`. A failure is reported as such; nothing falls back to declared metadata. With `introspectAll`, one failing connection fails the whole inspection, and connection names must be distinct.
+Both return a laranex-schema 2.0 document that passed the contract's strict validation, or throw `IntrospectionError`. A failure is reported as such; nothing falls back to declared metadata. With `introspectAll`, one failing connection fails the whole inspection, and connection names must be distinct.
 
 ### URLs
 
@@ -87,7 +89,7 @@ Every statement first passes an allowlist (`SELECT`, `WITH`, `SHOW`, session `SE
 - **Indexes:** parts (column or expression, order, nulls order, prefix length, collation, operator class), method, uniqueness, the primary key or unique constraint each backs, partial predicates, included columns, and `dialectOptions` for PostgreSQL `NULLS NOT DISTINCT` and MySQL invisible or MariaDB ignored indexes.
 - **Ownership:** `alembic_version`, `django_migrations` and `aerich` tables are marked as framework or package tables, as python-schema-viewer marks them.
 
-Ids are python-schema-viewer's: tables `["<connection>", <schema or null for the default schema>, "<table>"]`, foreign keys `["foreign_key", <table id>, <name>, <columns>, <target id>, <target columns>]`, indexes `<table id>:index:<name>`, constraints `<table id>:constraint:<name>`. Drivers are `pgsql`, `mysql`, `mariadb` and `sqlite`.
+Ids are python-schema-viewer's: tables `["<connection>", <schema or null for the default schema>, "<table>"]`, foreign keys `["foreign_key", <table id>, <name>, <columns>, <target id>, <target columns>]`, indexes `<table id>:index:<name>`, constraints `<table id>:constraint:<name>`. Drivers have the contract's canonical names: `postgresql`, `mysql`, `mariadb` and `sqlite`. Indexes carry `parts` and `backs` (the primary key's index has `backs.kind` `primary_key`); 2.0 has no `Index.columns` or `Index.primary`. The 2.0 arrays `comparisons`, `migrations` and `inferredAssociations` are empty: introspection does not compare scopes, read migration history or infer associations yet.
 
 Coverage records what each database can express: MySQL and MariaDB have no partial indexes or included columns (`not_applicable`), MariaDB and MySQL before 8.0.13 have no functional key parts, SQLite has no comments or included columns, and its check constraints are parsed from the table SQL (`partial`).
 
@@ -95,13 +97,22 @@ A foreign key into a schema (or MySQL database) that is not inspected makes the 
 
 ## Conformance with python-schema-viewer
 
-`tests/fixtures/conformance/database/*.json` are python-schema-viewer's documents for the synthetic schemas in `tests/databases/` (PostgreSQL with and without explicit schemas, MySQL, MariaDB, SQLite, the drift schemas on every database, and a PostgreSQL + MySQL + SQLite multi-connection document), recorded read-only with `scripts/record-database-conformance.py`. `tests/introspection-conformance.test.ts` requires the Node.js documents to be equal after replacing only the `generator` (`node-schema-viewer` instead of `python-schema-viewer`) and the random MySQL database name. They are.
+`tests/fixtures/conformance/database/*.json` are python-schema-viewer's laranex-schema 2.0 documents for the synthetic schemas in `tests/databases/` (PostgreSQL with and without explicit schemas, MySQL, MariaDB, SQLite, the drift schemas on every database, and a PostgreSQL + MySQL + SQLite multi-connection document), recorded read-only with `scripts/record-database-conformance.py`. `tests/introspection-conformance.test.ts` requires the Node.js documents to be equal after replacing only the `generator` (`node-schema-viewer` instead of `python-schema-viewer`) and the random MySQL database name. They are.
+
+They are python-schema-viewer's own laranex-schema 2.0 documents (recorded from its `feat/contract-2` branch at 7339d3b), run read-only against the same throwaway databases.
 
 Known, deliberate differences that the fixtures do not exercise:
 
 - PostgreSQL foreign keys name the referenced table's actual schema. SQLAlchemy infers it from `pg_get_constraintdef`, which leaves out schemas on the `search_path`, so python-schema-viewer reports the default schema when a referenced table lives in another schema that is on the `search_path`.
 - PostgreSQL foreign keys that partitions inherit from a partitioned parent (`conparentid <> 0`) are left out; they point at partitions, which are not listed.
 - SQLite sessions use SQLite's default busy handling instead of python-schema-viewer's 5-second timeout.
+
+## Migration status and inferred associations
+
+laranex-schema 2.0 defines migration tracks and inferred associations. This package writes both arrays empty for now; when they are filled, they mean exactly what the contract says:
+
+- **`diverged`** is a migration status: one current revision recorded in the version table is an ancestor of another current revision, i.e. the version table has overlapping entries. It is not branch divergence. A history with several heads (unmerged branches) is a separate fact, reported as the `migration_multiple_heads` diagnostic, and a database at every head is `up_to_date`, not `diverged`.
+- **Inferred associations** are what an uncovered foreign key implies between two ORM models that declare no relationship over it. Their `confidence` (`high`, `medium`, `low`) is a heuristic about the inference and never means an ORM attribute or relationship exists; viewers show them as "inferred, no ORM attribute declared".
 
 ## Tests
 

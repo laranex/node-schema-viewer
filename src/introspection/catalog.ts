@@ -1,7 +1,11 @@
-// A database's catalogs as a laranex-schema 1.0 document (source: database), a port of python-schema-viewer's
-// introspection/catalog.py inspect_database and coverage. Runs in the introspection worker on one read-only session.
-import { buildGraph, FEATURES, VERSION, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
-import { byId, connectionId, identifier, sortDiagnostics, str, type Diagnostic, type Table } from './common.js';
+// A database's catalogs as the internal model (source: database), serialized to a laranex-schema 2.0 document; a port
+// of python-schema-viewer's introspection/catalog.py inspect_database and coverage. Runs in the introspection worker
+// on one read-only session.
+import { tableId } from '../schema/ids.js';
+import type { ConnectionModel, DiagnosticModel, Feature, FeatureLevel, TableModel } from '../schema/model.js';
+import { serialize } from '../schema/serialize.js';
+import { FEATURES, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
+import { str } from './common.js';
 import { MySQLReader } from './mysql.js';
 import { PostgreSQLReader } from './postgresql.js';
 import type { Session } from './readonly.js';
@@ -19,16 +23,16 @@ export async function defaultSchema(session: Session): Promise<string | null> {
     return value === null || value === undefined ? null : str(value);
 }
 
-export async function inspectDatabase(session: Session, name: string, schemas: readonly string[], diagnostics: Diagnostic[]): Promise<SchemaDocument> {
+export async function inspectConnection(session: Session, name: string, schemas: readonly string[]): Promise<ConnectionModel> {
     const fallback = await defaultSchema(session);
-    const tableId = (schema: string | null, table: string): string => identifier(name, schema === null || schema === fallback ? null : schema, table);
-    const tables: Table[] = [];
+    const id = (schema: string | null, table: string): string => tableId(name, schema === null || schema === fallback ? null : schema, table);
+    const tables: TableModel[] = [];
     let selected: (string | null)[] = [null];
     if (session.dialect === 'sqlite') {
-        tables.push(...(await new SQLiteReader(session, tableId).tables()));
+        tables.push(...(await new SQLiteReader(session, id).tables()));
     } else {
         selected = schemas.length > 0 ? [...schemas] : [fallback];
-        const reader = session.dialect === 'postgresql' ? new PostgreSQLReader(session, tableId) : new MySQLReader(session, tableId);
+        const reader = session.dialect === 'postgresql' ? new PostgreSQLReader(session, id) : new MySQLReader(session, id);
         if (reader instanceof PostgreSQLReader) {
             await reader.load();
         }
@@ -40,39 +44,22 @@ export async function inspectDatabase(session: Session, name: string, schemas: r
             tables.push(...(await reader.tables(schema)));
         }
     }
-    for (const table of tables) {
-        byId(table.indexes);
-        byId(table.foreignKeys);
-        byId(table.constraints);
-    }
-    const driver = session.mariadb ? 'mariadb' : session.dialect === 'postgresql' ? 'pgsql' : session.dialect;
-    const document = {
-        format: 'laranex-schema',
-        version: VERSION,
-        source: 'database',
-        generator: { name: GENERATOR, orm: null },
-        note: null,
-        connections: [
-            {
-                id: connectionId(name),
-                name,
-                driver,
-                defaultSchema: fallback,
-                coverage: { database: coverage(session, session.dialect === 'sqlite' ? null : (selected as string[])), declared: null },
-                tables: byId(tables),
-            },
-        ],
-        models: [],
-        relationships: [],
-        links: [],
-        derivedLinks: [],
-        diagnostics: sortDiagnostics(diagnostics),
-    } as unknown as SchemaDocument;
-    return { ...document, ...buildGraph(document) };
+    return {
+        name,
+        dialect: session.mariadb ? 'mariadb' : session.dialect,
+        defaultSchema: fallback,
+        read: { schemas: session.dialect === 'sqlite' ? null : (selected as string[]), features: coverage(session) },
+        tables,
+    };
 }
 
-function coverage(session: Session, schemas: string[] | null): { complete: boolean; schemas: string[] | null; features: Record<string, string> } {
-    const features: Record<string, string> = Object.fromEntries(FEATURES.map((f) => [f, 'complete']));
+export async function inspectDatabase(session: Session, name: string, schemas: readonly string[], diagnostics: DiagnosticModel[]): Promise<SchemaDocument> {
+    const connection = await inspectConnection(session, name, schemas);
+    return serialize({ source: 'database', producer: GENERATOR, orm: null, connections: [connection], diagnostics });
+}
+
+function coverage(session: Session): Partial<Record<Feature, FeatureLevel>> {
+    const features: Partial<Record<Feature, FeatureLevel>> = Object.fromEntries(FEATURES.map((f) => [f, 'complete']));
     Object.assign(features, { models: 'not_applicable', relationships: 'not_applicable' });
     if (session.dialect === 'mysql') {
         Object.assign(features, { includedColumns: 'not_applicable', indexPredicates: 'not_applicable' });
@@ -84,8 +71,7 @@ function coverage(session: Session, schemas: string[] | null): { complete: boole
     } else if (session.dialect === 'sqlite') {
         Object.assign(features, { comments: 'not_applicable', includedColumns: 'not_applicable', checkConstraints: 'partial' });
     }
-    const complete = Object.values(features).every((v) => v === 'complete' || v === 'not_applicable');
-    return { complete, schemas, features };
+    return features;
 }
 
 // Python's repr() of a str (or None), as python-schema-viewer's messages show schema names.

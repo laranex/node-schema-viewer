@@ -4,10 +4,10 @@
 import { existsSync, mkdirSync, readFileSync, realpathSync, rmSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { assertDocument, buildGraph, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
+import { assertDocument, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
 import { introspectionEnvironment } from '../isolation/env.js';
 import { fileSystemFlags, packageRoot, readResultFile, runWorker, scratchDirectory } from '../isolation/runner.js';
-import { codePoints } from './statements.js';
+import { merge as mergeDocuments } from '../schema/serialize.js';
 import { IntrospectionError, parseUrl, scrub, type DatabaseRequest } from './request.js';
 import type { WorkerRequest } from './worker.js';
 
@@ -159,7 +159,7 @@ export function buildInvocation(scratch: string, request: WorkerRequest, worker 
     return { command: process.execPath, args, cwd, env, input: JSON.stringify(request) };
 }
 
-// One connection as a laranex-schema 1.0 document (source: database), or IntrospectionError. Never falls back to
+// One connection as a strictly validated laranex-schema 2.0 document (source: database), or IntrospectionError. Never falls back to
 // declared metadata.
 export async function introspect(request: DatabaseRequest, options: RunnerOptions = {}): Promise<SchemaDocument> {
     const normalized = normalize(request);
@@ -217,31 +217,14 @@ export async function introspectAll(requests: readonly DatabaseRequest[], option
     return merge(documents);
 }
 
-// Database documents with distinct connection names as one document.
+// Database documents with distinct connection names as one document: the connections side by side, the diagnostics
+// together, the links rebuilt by the shared graph builder, strictly validated.
 export function merge(documents: readonly SchemaDocument[]): SchemaDocument {
-    const [first] = documents;
-    if (first === undefined) {
+    if (documents.length === 0) {
         throw new IntrospectionError('Nothing to merge');
     }
-    const diagnostics = documents.flatMap((d) => d.diagnostics);
-    const key = (d: SchemaDocument['diagnostics'][number]): string[] => [d.category, d.kind, d.subject.type, d.subject.id ?? '', d.message];
-    diagnostics.sort((a, b) => {
-        const x = key(a);
-        const y = key(b);
-        for (let i = 0; i < x.length; i += 1) {
-            const order = codePoints(x[i] ?? '', y[i] ?? '');
-            if (order !== 0) {
-                return order;
-            }
-        }
-        return 0;
-    });
-    const document: SchemaDocument = {
-        ...first,
-        connections: documents.flatMap((d) => d.connections).sort((a, b) => codePoints(a.name, b.name)),
-        diagnostics,
-        links: [],
-        derivedLinks: [],
-    };
-    return assertDocument({ ...document, ...buildGraph(document) }, { strict: true });
+    if (documents.some((d) => d.source !== 'database')) {
+        throw new IntrospectionError('Only database documents can be merged');
+    }
+    return mergeDocuments(documents);
 }

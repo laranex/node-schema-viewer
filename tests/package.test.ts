@@ -1,9 +1,9 @@
-// Packs the package, installs the tarball into an empty project and runs the installed binary.
-// Needs the npm registry (or a warm npm cache) for the dependencies.
+// Packs the package, installs the tarball into an empty project and runs the installed binary, and reports the release
+// guard (scripts/check-release.mjs). Needs the npm registry (or a warm npm cache) for the dependencies.
 import assert from 'node:assert/strict';
-import { execFileSync, spawn } from 'node:child_process';
-import { mkdirSync, readdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { describe, test } from 'node:test';
 import { Client } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
@@ -11,6 +11,53 @@ import { adminUrl, serverDatabase, sqliteDatabase } from './databases.js';
 import { COMBINED, ROOT, tempDir } from './helpers.js';
 
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const GUARD = join(ROOT, 'scripts', 'check-release.mjs');
+
+// Dependencies this checkout takes from a local tarball (vendor/), which an installed copy cannot resolve on its own:
+// the temporary project overrides them with the same tarball. A release has none (see the release guard).
+function localOverrides(): Record<string, string> {
+    const manifest = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { dependencies: Record<string, string> };
+    return Object.fromEntries(
+        Object.entries(manifest.dependencies)
+            .filter(([, spec]) => spec.startsWith('file:'))
+            .map(([name, spec]) => [name, `file:${resolve(ROOT, spec.slice('file:'.length))}`]),
+    );
+}
+
+function guard(directory: string): { code: number | null; output: string } {
+    const run = spawnSync(process.execPath, [GUARD, directory], { encoding: 'utf8' });
+    return { code: run.status, output: `${run.stdout}${run.stderr}` };
+}
+
+describe('release guard', () => {
+    // Reported, not failed, while a dependency is vendored, so that local development and CI keep running; `npm publish`
+    // runs the guard itself (prepublishOnly) and fails.
+    test('this checkout depends only on exact registry versions', (t) => {
+        const result = guard(ROOT);
+        if (result.code !== 0) {
+            assert.match(result.output, /laranex-schema-viewer-ui: "file:vendor\/laranex-schema-viewer-ui-0\.3\.0-dev\.0\.tgz" is not an exact registry version/);
+            t.todo(`not releasable yet: ${result.output.trim()}`);
+        }
+    });
+
+    test('accepts exact registry versions and refuses tarballs, paths, ranges, tags and unlocked versions', (t) => {
+        const dir = tempDir(t);
+        const check = (dependencies: Record<string, string>, packages: Record<string, unknown>): number | null => {
+            writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'x', dependencies }));
+            writeFileSync(join(dir, 'package-lock.json'), JSON.stringify({ packages }));
+            return guard(dir).code;
+        };
+        const registry = (version: string) => ({ version, resolved: `https://registry.npmjs.org/a/-/a-${version}.tgz` });
+        assert.equal(check({ a: '1.2.3' }, { 'node_modules/a': registry('1.2.3') }), 0);
+        assert.equal(check({ a: '0.3.0-rc.1' }, { 'node_modules/a': registry('0.3.0-rc.1') }), 0);
+        for (const spec of ['file:vendor/a-1.0.0.tgz', '^1.2.3', '~1.2.3', 'latest', '1.x', 'github:laranex/a', '../a', '>=1.2.3']) {
+            assert.equal(check({ a: spec }, { 'node_modules/a': registry('1.2.3') }), 1, spec);
+        }
+        assert.equal(check({ a: '1.2.3' }, {}), 1);
+        assert.equal(check({ a: '1.2.3' }, { 'node_modules/a': registry('1.2.4') }), 1);
+        assert.equal(check({ a: '1.2.3' }, { 'node_modules/a': { version: '1.2.3', resolved: 'file:vendor/a-1.2.3.tgz' } }), 1);
+    });
+});
 
 describe('package', { timeout: 300_000 }, () => {
     test('the packed tarball installs and runs', async (t) => {
@@ -22,14 +69,14 @@ describe('package', { timeout: 300_000 }, () => {
         const tarball = packed[0];
         assert.ok(tarball);
         const files = tarball.files.map((f) => f.path).sort();
-        for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js', 'dist/isolation/worker.js', 'dist/introspection/worker.js']) {
+        for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js', 'dist/isolation/worker.js', 'dist/introspection/worker.js', 'dist/schema/serialize.js']) {
             assert.ok(files.includes(required), required);
         }
-        assert.deepEqual(files.filter((f) => !/^(dist\/(isolation\/|introspection\/)?[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
+        assert.deepEqual(files.filter((f) => !/^(dist\/(isolation\/|introspection\/|schema\/)?[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
 
         const project = join(dir, 'project');
         mkdirSync(project);
-        writeFileSync(join(project, 'package.json'), JSON.stringify({ name: 'packaging-test', private: true }));
+        writeFileSync(join(project, 'package.json'), JSON.stringify({ name: 'packaging-test', private: true, overrides: localOverrides() }));
         execFileSync(npm, ['install', '--no-audit', '--no-fund', '--prefer-offline', join(dir, tarball.filename)], { cwd: project, stdio: ['ignore', 'ignore', 'inherit'] });
         const bin = join(project, 'node_modules', '.bin', 'node-schema-viewer');
         assert.ok(readdirSync(join(project, 'node_modules', 'node-schema-viewer', 'dist')).includes('cli.js'));
@@ -69,7 +116,7 @@ describe('package', { timeout: 300_000 }, () => {
                 'console.log(out.join(" "));';
             const urls = [sqlite.url, ...(postgres === null ? [] : [postgres.url('reader')])];
             const output = execFileSync(process.execPath, ['--input-type=module', '-e', script, JSON.stringify(urls)], { cwd: project, encoding: 'utf8' });
-            assert.equal(output.trim(), ['sqlite:3', ...(postgres === null ? [] : ['pgsql:6'])].join(' '));
+            assert.equal(output.trim(), ['sqlite:3', ...(postgres === null ? [] : ['postgresql:6'])].join(' '));
         } finally {
             sqlite.drop();
             await postgres?.drop();
