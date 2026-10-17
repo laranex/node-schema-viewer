@@ -1,6 +1,9 @@
 # Test image for the container isolation tests: Node.js 24, whose Permission Model does not restrict the network (so
-# the tests show the container doing it), and this package installed globally from a locally packed tarball. No
-# application code and no credentials.
+# the tests show the container doing it), and this package installed from a locally packed tarball into /opt/lsv (not
+# globally), the image's working directory, where the build resolves it. No application code and no credentials.
 FROM node:24-slim
 COPY laranex-schema-viewer-*.tgz /tmp/
-RUN npm install --global --no-audit --no-fund /tmp/laranex-schema-viewer-*.tgz && rm /tmp/laranex-schema-viewer-*.tgz
+RUN mkdir /opt/lsv \
+    && npm install --prefix /opt/lsv --no-audit --no-fund /tmp/laranex-schema-viewer-*.tgz \
+    && rm /tmp/laranex-schema-viewer-*.tgz
+WORKDIR /opt/lsv

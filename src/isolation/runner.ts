@@ -322,7 +322,7 @@ async function extractInProcess(request: ExtractRequest, config: IsolationConfig
         if (run.timedOut) {
             throw new IsolationError(`Extraction did not finish within ${config.timeout} seconds; the worker and its process group were stopped`);
         }
-        return { document: readResult(result, log), withheld };
+        return { document: readResult(result, log), withheld, notices: [] };
     } finally {
         rmSync(scratch, { recursive: true, force: true });
     }

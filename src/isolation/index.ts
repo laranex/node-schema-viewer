@@ -35,6 +35,11 @@ export interface IsolationConfig {
     // docker or podman; by default docker, then podman.
     containerRuntime: string | null;
     containerMemory: string;
+    // Where this package is installed inside the image (absolute path of its directory). By default it is resolved
+    // from the image's working directory, as `require.resolve('laranex-schema-viewer/package.json')` would.
+    containerPackagePath: string | null;
+    // Opt-in: let the container runtime pull a missing image. Off by default: every run uses --pull never.
+    pullImage: boolean;
     // Opt-out: let application code use eval and new Function (blocked by default).
     allowCodeGeneration: boolean;
 }
@@ -49,6 +54,8 @@ export const DEFAULT_ISOLATION: IsolationConfig = {
     containerImage: null,
     containerRuntime: null,
     containerMemory: '1g',
+    containerPackagePath: null,
+    pullImage: false,
     allowCodeGeneration: false,
 };
 
@@ -70,6 +77,8 @@ export interface ExtractResult {
     document: import('laranex-schema-viewer-ui/contract').SchemaDocument;
     // How many of the parent's environment variables the worker did not get; names and values are never reported.
     withheld: number;
+    // Advice for the user about how the extraction ran, such as a pull of an image not pinned by digest.
+    notices: string[];
 }
 
 export function isolationConfig(overrides: Partial<IsolationConfig> = {}): IsolationConfig {

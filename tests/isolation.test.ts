@@ -7,9 +7,9 @@ import { createServer, type Server, type Socket } from 'node:net';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, test, type TestContext } from 'node:test';
-import { checkImage } from '../src/isolation/container.js';
+import { baseArguments, checkImage, pullNotice } from '../src/isolation/container.js';
 import { workerEnvironment } from '../src/isolation/env.js';
-import { checkPolicy, extract, IsolationError, type ExtractRequest, type ExtractResult, type IsolationConfig } from '../src/isolation/index.js';
+import { checkPolicy, extract, IsolationError, isolationConfig, type ExtractRequest, type ExtractResult, type IsolationConfig } from '../src/isolation/index.js';
 import { readResult, runWorker } from '../src/isolation/runner.js';
 import { VERSION } from '../src/version.js';
 import { ROOT } from './helpers.js';
@@ -217,12 +217,64 @@ describe('failing closed', () => {
         );
     });
 
-    test('an image with another version of the package, or an old Node.js, is refused', () => {
-        assert.throws(() => checkImage('img', { node: '24.0.0', root: '/usr/lib/node_modules/laranex-schema-viewer', version: '0.0.1' }), /must have laranex-schema-viewer/);
-        assert.throws(() => checkImage('img', { node: '24.0.0', root: null, version: null }), /found: nothing/);
-        assert.throws(() => checkImage('img', { node: '22.12.0', root: '/x', version: VERSION }), /22\.13 or later/);
-        assert.throws(() => checkImage('img', null, 'Unable to find image'), /Cannot run image/);
-        assert.equal(checkImage('img', { node: '22.13.0', root: '/x', version: VERSION }), '/x');
+    test('an image with another package or version, an old Node.js, or no working worker entry point is refused', () => {
+        assert.throws(() => {
+            checkImage('img', { name: 'laranex-schema-viewer', version: '0.0.1', node: '24.0.0' });
+        }, /must have laranex-schema-viewer .* \(found: laranex-schema-viewer 0\.0\.1\)/);
+        assert.throws(() => {
+            checkImage('img', { name: 'something-else', version: VERSION, node: '24.0.0' });
+        }, /must have laranex-schema-viewer/);
+        assert.throws(() => {
+            checkImage('img', { name: 'laranex-schema-viewer', version: VERSION, node: '22.12.0' });
+        }, /22\.13 or later/);
+        assert.throws(() => {
+            checkImage('img', null, 'Cannot find module /opt/lsv/dist/isolation/worker.js');
+        }, /entry point in image img is missing or does not run: Cannot find module/);
+        checkImage('img', { name: 'laranex-schema-viewer', version: VERSION, node: '22.13.0' });
+    });
+
+    test('images are never pulled unless pullImage opts in, and a pull of an unpinned image comes with a notice', () => {
+        const pull = (config: Partial<IsolationConfig>): string | undefined => {
+            const args = baseArguments(isolationConfig(config));
+            return args[args.indexOf('--pull') + 1];
+        };
+        assert.equal(pull({}), 'never');
+        assert.equal(pull({ pullImage: true }), 'missing');
+        assert.equal(pullNotice('app:latest', isolationConfig({})), null);
+        assert.match(pullNotice('app:latest', isolationConfig({ pullImage: true })) ?? '', /not pinned by digest.*image@sha256/);
+        assert.equal(pullNotice(`app@sha256:${'a'.repeat(64)}`, isolationConfig({ pullImage: true })), null);
+    });
+
+    describe('with a stand-in container runtime', { skip: !POSIX && 'uses a shell script' }, () => {
+        // Records its arguments, reports a running daemon, knows no image, and fails every run.
+        function fakeRuntime(t: TestContext): { runtime: string; calls: () => string[] } {
+            const directory = outside(t);
+            const log = join(directory, 'calls.log');
+            const runtime = join(directory, 'fake-runtime');
+            writeFileSync(log, '');
+            writeFileSync(runtime, `#!/bin/sh\necho "$*" >> '${log}'\ncase "$1" in info) exit 0;; image) exit 1;; *) echo 'no such image' >&2; exit 125;; esac\n`, { mode: 0o755 });
+            return { runtime, calls: () => readFileSync(log, 'utf8').trim().split('\n') };
+        }
+
+        test('a missing image fails without a pull', async (t) => {
+            const { runtime, calls } = fakeRuntime(t);
+            await assert.rejects(
+                extract(request('codegen.mjs'), { level: 'container', containerImage: 'app:missing', containerRuntime: runtime }),
+                /Image app:missing is not available locally, and pulling is disabled\. Build it .* or pull it yourself .*pullImage/,
+            );
+            assert.deepEqual(calls(), ['info', 'image inspect app:missing']);
+        });
+
+        test('with pullImage, every run lets the runtime pull a missing image', async (t) => {
+            const { runtime, calls } = fakeRuntime(t);
+            await assert.rejects(
+                extract(request('codegen.mjs'), { level: 'container', containerImage: 'app:missing', containerRuntime: runtime, pullImage: true }),
+                /Cannot find laranex-schema-viewer from the working directory of image app:missing/,
+            );
+            const runs = calls().filter((call) => call.startsWith('run '));
+            assert.equal(runs.length, 1);
+            assert.ok(runs.every((call) => call.startsWith('run --rm --pull missing --network none ')));
+        });
     });
 });
 
@@ -439,8 +491,25 @@ describe('container isolation', { skip: IMAGE === undefined && 'set LSV_TEST_CON
         assert.equal(names, '');
     });
 
-    test('images without this package version, or missing images, are refused', async () => {
-        await assert.rejects(isolated('codegen.mjs', config({ containerImage: 'node:24-slim' })), /must have laranex-schema-viewer/);
-        await assert.rejects(isolated('codegen.mjs', config({ containerImage: 'lsv-no-such-image:missing' })), /Cannot run image/);
+    test('the package is found from the working directory or containerPackagePath, and its worker entry point is checked', async () => {
+        const found = await isolated('codegen.mjs', config({ containerPackagePath: '/opt/lsv/node_modules/laranex-schema-viewer' }));
+        assert.deepEqual(found.notices, []);
+        await assert.rejects(isolated('codegen.mjs', config({ containerPackagePath: '/opt/elsewhere' })), /entry point in image .* is missing or does not run/);
+        await assert.rejects(isolated('codegen.mjs', config({ containerImage: 'node:24-slim' })), /Cannot find laranex-schema-viewer from the working directory/);
+    });
+
+    test('an image with another version of the package is refused', async (t) => {
+        const derived = `${image.split(':')[0] ?? image}-mismatch:${process.pid}`;
+        const dockerfile = `FROM ${image}\nUSER root\nRUN sed -i 's/"version": "${VERSION}"/"version": "0.0.0-mismatch"/' node_modules/laranex-schema-viewer/package.json\n`;
+        const built = spawnSync(RUNTIME, ['build', '--pull=false', '-q', '-t', derived, '-'], { input: dockerfile, encoding: 'utf8' });
+        assert.equal(built.status, 0, built.stderr);
+        t.after(() => spawnSync(RUNTIME, ['rmi', '-f', derived], { stdio: 'ignore' }));
+        await assert.rejects(isolated('codegen.mjs', config({ containerImage: derived })), /must have laranex-schema-viewer .* \(found: laranex-schema-viewer 0\.0\.0-mismatch\)/);
+    });
+
+    test('a missing image is refused without being pulled', async () => {
+        const missing = `lsv-no-such-image:missing-${process.pid}`;
+        await assert.rejects(isolated('codegen.mjs', config({ containerImage: missing })), /is not available locally, and pulling is disabled/);
+        assert.notEqual(spawnSync(RUNTIME, ['image', 'inspect', missing], { stdio: 'ignore' }).status, 0);
     });
 });

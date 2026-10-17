@@ -1,7 +1,7 @@
 // Container isolation: the extraction worker runs in Docker or Podman with no network, a read-only root filesystem and
 // project mount, all capabilities dropped, no new privileges and limited processes and memory. The Permission Model
 // flags of the process level apply inside as well. A missing runtime, a missing image or an image with another
-// version of this package stops the build.
+// version of this package stops the build. Images are never pulled unless pullImage opts in.
 import { spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, realpathSync, rmSync } from 'node:fs';
@@ -13,18 +13,9 @@ import { allowedWrites, checkExtractor, containerPath, permissionFlags, readResu
 
 const MOUNT = '/project';
 const MIN_NODE = [22, 13];
-
-// Prints what the image provides: its Node.js version and where (and which version of) this package is installed,
-// found through the laranex-schema-viewer executable on PATH.
-const PROBE = `
-const fs = require('fs'), path = require('path');
-let root = null, version = null;
-for (const dir of (process.env.PATH || '').split(':')) {
-    try { root = path.dirname(path.dirname(fs.realpathSync(path.join(dir, 'laranex-schema-viewer')))); break; } catch {}
-}
-try { const data = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')); if (data.name === 'laranex-schema-viewer') version = data.version; } catch {}
-console.log(JSON.stringify({ node: process.versions.node, root, version }));
-`;
+const DIGEST = /@sha256:[0-9a-f]{64}$/;
+// Where the package is, resolved from the image's working directory when containerPackagePath is not set.
+const LOCATE = "process.stdout.write(require('path').dirname(require.resolve('laranex-schema-viewer/package.json')))";
 
 export function containerRuntime(config: IsolationConfig): string {
     const candidates = config.containerRuntime !== null ? [config.containerRuntime] : ['docker', 'podman'];
@@ -39,59 +30,107 @@ export function containerRuntime(config: IsolationConfig): string {
     );
 }
 
+// Every run, the probes included, uses --pull never unless pullImage opts in to pulling a missing image.
 export function baseArguments(config: IsolationConfig): string[] {
-    const args = ['run', '--rm', '--network', 'none', '--read-only', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
-        '--pids-limit', '256', '--memory', config.containerMemory, '--tmpfs', '/tmp:rw,nosuid,nodev,size=128m'];
+    const args = ['run', '--rm', '--pull', config.pullImage ? 'missing' : 'never', '--network', 'none', '--read-only', '--cap-drop', 'ALL',
+        '--security-opt', 'no-new-privileges', '--pids-limit', '256', '--memory', config.containerMemory, '--tmpfs', '/tmp:rw,nosuid,nodev,size=128m'];
     if (process.platform !== 'win32' && typeof process.getuid === 'function' && typeof process.getgid === 'function') {
         args.push('--user', `${process.getuid()}:${process.getgid()}`);
     }
     return args;
 }
 
-export interface ImageProbe {
-    node: string;
-    root: string | null;
-    version: string | null;
+// A pull is only reproducible for a digest-pinned reference.
+export function pullNotice(image: string, config: IsolationConfig): string | null {
+    return config.pullImage && !DIGEST.test(image)
+        ? `pullImage is enabled for ${image}, which is not pinned by digest; the runtime may pull a different image than the one you tested. ` +
+              'Prefer a digest-pinned reference (image@sha256:...).'
+        : null;
 }
 
-// Refuses an image whose Node.js is too old for the Permission Model flags, or whose laranex-schema-viewer is
-// missing or another version.
-export function checkImage(image: string, probe: ImageProbe | null, detail = ''): string {
-    if (probe === null) {
-        throw new IsolationError(`Cannot run image ${image} to check it${detail === '' ? '' : `: ${detail.slice(-300)}`}`);
-    }
-    const [major = 0, minor = 0] = probe.node.split('.').map(Number);
-    if (major < (MIN_NODE[0] ?? 0) || (major === MIN_NODE[0] && minor < (MIN_NODE[1] ?? 0))) {
-        throw new IsolationError(`Image ${image} has Node.js ${probe.node}; container isolation needs Node.js 22.13 or later in the image`);
-    }
-    if (probe.root === null || probe.version !== VERSION) {
+function ensureImage(runtime: string, image: string, config: IsolationConfig): void {
+    const inspect = spawnSync(runtime, ['image', 'inspect', image], { stdio: 'ignore', timeout: 30_000, windowsHide: true });
+    if (inspect.status !== 0 && !config.pullImage) {
         throw new IsolationError(
-            `Image ${image} must have laranex-schema-viewer ${VERSION} installed globally (found: ${probe.version ?? 'nothing'})`,
+            `Image ${image} is not available locally, and pulling is disabled. Build it (${runtime} build -t ${image} .) or pull it ` +
+                `yourself (${runtime} pull ${image}, ideally by digest), or set pullImage to let the build pull it.`,
         );
     }
-    return probe.root;
 }
 
-function probeImage(runtime: string, image: string, config: IsolationConfig): string {
-    const probe = spawnSync(runtime, [...baseArguments(config), image, 'node', '-e', PROBE], { encoding: 'utf8', timeout: 120_000, windowsHide: true });
+export interface ImageProbe {
+    name: unknown;
+    version: unknown;
+    node: unknown;
+}
+
+// Refuses an image whose worker entry point did not answer, whose Node.js is too old for the Permission Model flags,
+// or whose package is not laranex-schema-viewer at exactly the host's version.
+export function checkImage(image: string, probe: ImageProbe | null, detail = ''): void {
+    if (probe === null) {
+        throw new IsolationError(
+            `The isolated worker entry point in image ${image} is missing or does not run${detail === '' ? '' : `: ${detail.trim().slice(-300)}`}`,
+        );
+    }
+    const [major = 0, minor = 0] = String(probe.node).split('.').map(Number);
+    if (major < (MIN_NODE[0] ?? 0) || (major === MIN_NODE[0] && minor < (MIN_NODE[1] ?? 0))) {
+        throw new IsolationError(`Image ${image} has Node.js ${String(probe.node)}; container isolation needs Node.js 22.13 or later in the image`);
+    }
+    if (probe.name !== 'laranex-schema-viewer' || probe.version !== VERSION) {
+        throw new IsolationError(
+            `Image ${image} must have laranex-schema-viewer ${VERSION} (found: ${typeof probe.name === 'string' ? probe.name : 'nothing'}` +
+                `${typeof probe.version === 'string' ? ` ${probe.version}` : ''})`,
+        );
+    }
+}
+
+function packageDirectory(runtime: string, image: string, config: IsolationConfig): string {
+    if (config.containerPackagePath !== null) {
+        if (!posix.isAbsolute(config.containerPackagePath)) {
+            throw new IsolationError('containerPackagePath must be an absolute path inside the image');
+        }
+        return posix.normalize(config.containerPackagePath);
+    }
+    const located = spawnSync(runtime, [...baseArguments(config), image, 'node', '-e', LOCATE], { encoding: 'utf8', timeout: 120_000, windowsHide: true });
+    const path = located.status === 0 ? located.stdout.trim() : '';
+    if (!posix.isAbsolute(path)) {
+        throw new IsolationError(
+            `Cannot find laranex-schema-viewer from the working directory of image ${image}; install it there (npm install --prefix) ` +
+                `or set containerPackagePath${located.stderr ? `: ${located.stderr.trim().slice(-300)}` : ''}`,
+        );
+    }
+    return path;
+}
+
+// Runs the worker entry point itself, under the Permission Model, with --probe.
+function probeImage(runtime: string, image: string, packageDir: string, config: IsolationConfig): void {
+    const entry = posix.join(packageDir, 'dist', 'isolation', 'worker.js');
+    const probe = spawnSync(runtime, [...baseArguments(config), image, 'node', '--permission', `--allow-fs-read=${packageDir}`, entry, '--probe'], {
+        encoding: 'utf8',
+        timeout: 120_000,
+        windowsHide: true,
+    });
     let parsed: ImageProbe | null;
     try {
         parsed = probe.status === 0 ? (JSON.parse(probe.stdout.trim().split('\n').pop() ?? '') as ImageProbe) : null;
     } catch {
         parsed = null;
     }
-    return checkImage(image, parsed, probe.stderr);
+    checkImage(image, parsed, probe.stderr);
 }
 
 export async function extractInContainer(request: ExtractRequest, config: IsolationConfig): Promise<ExtractResult> {
     const image = config.containerImage;
     if (image === null || image === '') {
         throw new IsolationError(
-            `Container isolation needs containerImage: an image with the project's runtime and laranex-schema-viewer ${VERSION} installed`,
+            `Container isolation needs containerImage: an image with Node.js and laranex-schema-viewer ${VERSION} installed`,
         );
     }
     const runtime = containerRuntime(config);
-    const packageDir = probeImage(runtime, image, config);
+    ensureImage(runtime, image, config);
+    const notice = pullNotice(image, config);
+    const packageDir = packageDirectory(runtime, image, config);
+    probeImage(runtime, image, packageDir, config);
     const projectRoot = realpathSync.native(request.projectRoot);
     // A workspace package is mounted with its workspace, so that linked packages and hoisted dependencies resolve.
     const tree = workspaceRoot(projectRoot) ?? projectRoot;
@@ -152,7 +191,7 @@ export async function extractInContainer(request: ExtractRequest, config: Isolat
             spawnSync(runtime, ['rm', '-f', name], { stdio: 'ignore', timeout: 30_000, windowsHide: true });
             throw new IsolationError(`Extraction did not finish within ${config.timeout} seconds; the container was stopped and removed`);
         }
-        return { document: readResult(join(output, 'result.json'), log), withheld };
+        return { document: readResult(join(output, 'result.json'), log), withheld, notices: notice === null ? [] : [notice] };
     } finally {
         rmSync(out, { recursive: true, force: true });
     }

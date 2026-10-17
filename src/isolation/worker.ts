@@ -7,8 +7,8 @@
 // imported here, so the worker needs no dependency of the package.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { isAbsolute, join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { EXTRACTOR_NAME, EXTRACTORS, type ExtractContext, type Extractor } from './extractor.js';
 import { installTypeScriptHooks, typeScriptHooksAvailable } from './typescript.js';
 
@@ -76,7 +76,31 @@ async function run(request: Request): Promise<unknown> {
     return await extractor.extract(context);
 }
 
+// `worker.js --probe` prints the name and version of the package the worker belongs to, read from its own
+// package.json, and the Node.js version, so that a container image can be checked before it runs application code.
+function probe(): void {
+    let directory = dirname(fileURLToPath(import.meta.url));
+    let found: { name?: unknown; version?: unknown } = {};
+    for (;;) {
+        try {
+            found = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as typeof found;
+            break;
+        } catch {
+            const parent = dirname(directory);
+            if (parent === directory) {
+                break;
+            }
+            directory = parent;
+        }
+    }
+    process.stdout.write(`${stringify({ name: found.name ?? null, version: found.version ?? null, node: process.versions.node })}\n`);
+}
+
 async function main(): Promise<void> {
+    if (process.argv.includes('--probe')) {
+        probe();
+        return;
+    }
     const result = resultPath(process.argv.slice(2));
     let outcome: Record<string, unknown>;
     try {
