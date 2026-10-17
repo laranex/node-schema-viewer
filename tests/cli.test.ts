@@ -46,7 +46,7 @@ describe('cli', () => {
         const help = await runCli(['--help']);
         assert.equal(help.code, 0);
         assert.match(help.stdout, /Usage: node-schema-viewer <command>/);
-        for (const command of ['init', 'serve', 'mcp', 'compare', 'build']) {
+        for (const command of ['init', 'serve', 'mcp', 'compare', 'check', 'build']) {
             assert.match(help.stdout, new RegExp(`\\n  ${command}`));
         }
     });

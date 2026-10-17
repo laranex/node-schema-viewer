@@ -2,6 +2,7 @@
 // Command line entry point. Commands import their modules lazily, so serve never loads the MCP SDK and mcp never
 // loads the HTTP server. In mcp mode stdout carries only the protocol.
 import { parseArgs, type ParseArgsConfig } from 'node:util';
+import type { GateThresholds } from 'laranex-schema-viewer-ui/contract';
 import { VERSION } from './version.js';
 
 const USAGE = `Usage: node-schema-viewer <command> [options]
@@ -17,6 +18,11 @@ Commands:
                      Compare scopes of a saved document, without a database; each scope is CONNECTION or
                      CONNECTION:SCHEMA (target schema * for every inspected schema); default: the configured
                      comparisons. --write stores them in the document
+  check [BASELINE=TARGET...] [--snapshot PATH] [--severity error|warning|info] [--certainty certain|likely]
+        [--limit N] [--json] [--output FILE]
+                     Schema drift gate for CI: exit 0 passed, 1 a finding meets the thresholds, 2 the check could
+                     not be completed (invalid document or arguments, a requested comparison not found, an
+                     incomplete comparison or inspection)
   build              Not available yet
 
 Options:
@@ -55,6 +61,13 @@ function integer(value: string | undefined, option: string): number | undefined 
         throw new UsageError(`${option} must be an integer`);
     }
     return Number(value);
+}
+
+function choice<T extends string>(value: string | undefined, option: string, allowed: readonly T[]): T | undefined {
+    if (value !== undefined && !(allowed as readonly string[]).includes(value)) {
+        throw new UsageError(`${option} must be one of ${allowed.join(', ')}`);
+    }
+    return value as T | undefined;
 }
 
 function port(value: string | undefined): number {
@@ -174,6 +187,67 @@ async function compare(args: string[]): Promise<void> {
     }
 }
 
+// The drift gate. Returns its exit code: 0 passed, 1 qualifying findings, 2 for anything that kept the check from
+// completing, including invalid arguments, configuration and documents. Never 0 or 1 on a failure.
+async function check(args: string[]): Promise<number> {
+    try {
+        const { values, positionals } = parseWithPositionals(args, {
+            snapshot: { type: 'string' },
+            severity: { type: 'string' },
+            certainty: { type: 'string' },
+            limit: { type: 'string' },
+            json: { type: 'boolean' },
+            output: { type: 'string' },
+        });
+        if (values.help) {
+            process.stdout.write(USAGE);
+            return 0;
+        }
+        const { CERTAINTIES, loadConfig, resolveSnapshot, SEVERITIES } = await import('./config.js');
+        const severity = choice(values.severity as string | undefined, '--severity', SEVERITIES);
+        const certainty = choice(values.certainty as string | undefined, '--certainty', CERTAINTIES);
+        const limit = integer(values.limit as string | undefined, '--limit');
+        const { run, summary } = await import('./check.js');
+        const { canonicalJson } = await import('laranex-schema-viewer-ui/contract');
+        const { writeAtomically } = await import('./snapshot.js');
+        const config = loadConfig(process.cwd());
+        // Flags over configuration; the gate supplies the shared defaults for what neither sets.
+        const thresholds: Partial<GateThresholds> = {};
+        const chosenSeverity = severity ?? config.check.severity;
+        const chosenCertainty = certainty ?? config.check.certainty;
+        if (chosenSeverity !== null) {
+            thresholds.severity = chosenSeverity;
+        }
+        if (chosenCertainty !== null) {
+            thresholds.certainty = chosenCertainty;
+        }
+        if (limit !== undefined && !positionals.length) {
+            throw new Error('--limit applies to comparisons named on the command line');
+        }
+        const adHoc = positionals.length ? await comparisonSpecs(positionals, limit, []) : [];
+        const paths = await import('node:path');
+        // Relative to the working directory when inside it: the path appears in notes on stderr.
+        let path = resolveSnapshot(values.snapshot as string | undefined, process.cwd());
+        const inside = paths.relative(process.cwd(), path);
+        if (inside && !inside.startsWith('..') && !paths.isAbsolute(inside)) {
+            path = inside;
+        }
+        const { report, notes } = run(path, thresholds, config.comparisons, adHoc);
+        const text = canonicalJson(report);
+        if (values.output !== undefined) {
+            writeAtomically(Buffer.from(text, 'utf8'), values.output as string);
+        }
+        for (const note of notes) {
+            process.stderr.write(`${note}\n`);
+        }
+        process.stdout.write(values.json ? text : `${summary(report)}\n`);
+        return report.exitCode;
+    } catch (error) {
+        process.stderr.write(error instanceof UsageError ? `Error: ${error.message}\n\n${USAGE}` : `Error: ${(error as Error).message || String(error)}\n`);
+        return 2;
+    }
+}
+
 async function main(argv: string[]): Promise<number> {
     const [command, ...rest] = argv;
     try {
@@ -190,6 +264,8 @@ async function main(argv: string[]): Promise<number> {
             case 'compare':
                 await compare(rest);
                 break;
+            case 'check':
+                return await check(rest);
             case 'build':
                 process.stderr.write('Error: build is not available yet in node-schema-viewer for Node.js; serve and mcp read a saved laranex-schema document\n');
                 return 1;
