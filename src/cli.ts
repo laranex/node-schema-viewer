@@ -165,8 +165,8 @@ async function compare(args: string[]): Promise<void> {
     }
     const limit = integer(values.limit as string | undefined, '--limit');
     const { DEFAULT_SNAPSHOT, loadConfig } = await import('./config.js');
-    const { compute, describe, store } = await import('./compare.js');
-    const { canonicalJson, VERSION } = await import('laranex-schema-viewer-ui/contract');
+    const { CompareError, compute, describe } = await import('./compare.js');
+    const { canonicalJson, storeComparisons, VERSION } = await import('laranex-schema-viewer-ui/contract');
     const { loadDocument, writeDocument } = await import('./snapshot.js');
     const config = loadConfig(process.cwd());
     const specs = await comparisonSpecs(positionals, limit, config.comparisons);
@@ -179,10 +179,14 @@ async function compare(args: string[]): Promise<void> {
     if (values.write && document.version !== VERSION) {
         throw new Error(`${path} is laranex-schema ${document.version}; --write rewrites only ${VERSION} documents, so nothing a newer version added is lost`);
     }
-    const { comparisons, diagnostics } = compute(document, specs);
-    process.stdout.write(values.json ? canonicalJson(comparisons) : `${describe(document, comparisons) || 'No scope pairs to compare'}\n`);
+    // Every request the shared expansion cannot resolve is a configuration error, and then nothing is compared.
+    const { comparisons, errors } = compute(document, specs);
+    if (errors.length) {
+        throw new CompareError(errors.map((e) => e.message).join('\n'));
+    }
+    process.stdout.write(values.json ? canonicalJson(comparisons) : `${describe(document, comparisons)}\n`);
     if (values.write) {
-        writeDocument(store(document, comparisons, diagnostics), path);
+        writeDocument(storeComparisons(document, comparisons), path);
         (values.json ? process.stderr : process.stdout).write(`Stored ${String(comparisons.length)} comparisons in ${path}\n`);
     }
 }

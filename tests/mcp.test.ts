@@ -140,6 +140,7 @@ describe('mcp conformance over stdio with python-schema-viewer', () => {
     }
 
     test('compares every recorded call end to end', () => {
+        // 1801 recorded calls; 1633 byte-equal (input-schema rejections compare the error only).
         assert.equal(calls, 1801);
         assert.equal(byteEqual, 1633);
     });

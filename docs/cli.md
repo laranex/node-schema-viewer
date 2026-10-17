@@ -76,7 +76,7 @@ Compares scopes of a saved document without a database or application imports, a
 | `--json` | Off |
 | `--write` | Off |
 
-Exit code 0 when it could compare, 1 on an error, 2 on invalid usage.
+Exit code 0 when it could compare, 1 on an error (a request that cannot be resolved, such as an unknown connection, a `*` that matches no schema or a comparison named twice; an invalid document or configuration; a failed write, which leaves the document as it was), 2 on invalid usage.
 
 ## check
 
@@ -94,7 +94,7 @@ The CI schema drift gate, a thin layer over the shared reference gate (`gateDocu
 | `--certainty LEVEL` | Config `check.certainty`, else `certain` (`certain`, `likely`) |
 | `--limit N` | `500`, for comparisons named on the command line |
 | `--json` | Off |
-| `--output FILE` | None |
+| `--output FILE` | None; written atomically (a failed write exits 2 and leaves an existing file as it was) |
 
 Exit code 0 passed, 1 a finding meets the thresholds, 2 the check is incomplete or invalid (an invalid or unreadable document, a requested comparison not found, an incomplete comparison or database inspection, a failed inspection, an unknown migration status, invalid arguments or configuration); 2 wins over 1.
 
@@ -114,6 +114,6 @@ npx node-schema-viewer --version
 `compare` and `check` follow python-schema-viewer's commands: the same arguments, summaries, JSON output, `--write` behaviour and exit codes, checked byte for byte in `tests/parity.test.ts`. Intentional differences:
 
 - Configuration is camelCase JSON in `package.json` (`objectType` in overrides) instead of TOML in `pyproject.toml`.
-- Usage errors are worded by this CLI, not by argparse (both exit 2), and configuration errors name `package.json` keys.
+- Usage errors are worded by this CLI, not by argparse (both exit 2), and configuration errors name `package.json` keys: an override error reads `PATH/package.json "node-schema-viewer" comparisons[0] overrides[1].objectType must be one of …` where python-schema-viewer writes `[[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[1].object_type must be one of …`; the rest of the message is the shared validator's.
 - Connection names follow python-schema-viewer's pattern, with Unicode letters and digits matched as JavaScript's `\p{L}` and `\p{N}`.
 - A file that cannot be read is described with the operating system's message as libuv words it (stderr only).

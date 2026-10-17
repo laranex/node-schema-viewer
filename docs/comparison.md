@@ -14,7 +14,16 @@ A scope is a connection, by name, and optionally a schema of it, spelled `CONNEC
 | `app` | The connection's unqualified tables and those in its default schema (PostgreSQL `public`, the MySQL database) |
 | `app:*` (target only) | One comparison per schema the connection's inspection read (its coverage `schemas`, sorted), except the baseline's own scope |
 
-Tables match by name, so a schema name is never part of a difference: `tenant_a.orders` and `tenant_b.orders` are the same table. A `*` target needs a connection whose coverage lists its schemas; otherwise it is an error. A pair named explicitly takes precedence over the same pair from a `*` expansion; naming one pair twice otherwise is an error.
+Tables match by name, so a schema name is never part of a difference: `tenant_a.orders` and `tenant_b.orders` are the same table. A pair named explicitly takes precedence over the same pair from a `*` expansion, with its own `limit` and `overrides`.
+
+Requests are resolved with the shared `expandComparisonRequests` ([requested comparisons](https://laranex.github.io/schema-viewer-ui/contract#requested-comparisons)). Each request it cannot resolve is an error, nothing is compared, and the message is the contract's:
+
+| Error | Message |
+| --- | --- |
+| A connection the document does not have | `Requested comparison app → nope names connection nope, which the document does not have.` |
+| A `*` target whose connection's coverage lists no schemas | `Requested comparison app → app:* cannot be expanded: the inspection of connection app lists no schemas.` |
+| A `*` target with no schema left once the baseline's own scope is out | `Requested comparison app:public → app:* matches no schema.` |
+| The same request (same names and schemas) more than once | `Requested comparison app:tenant_a → app:* is listed more than once.` |
 
 ## Configure comparisons
 
@@ -47,9 +56,9 @@ Comparisons are configured in the static `"node-schema-viewer"` key of `package.
 | `limit` | Differences listed in the document, default **500**; the rest are counted in `summary` and `omitted`, and the comparison is incomplete. `0` keeps only the counts |
 | `overrides` | Severities for `(objectType, change)`, or for one `field` of a `changed` difference. A field override wins over a general one, and a changed difference takes its most severe field |
 
-`objectType` is `table`, `column`, `primaryKey`, `index`, `foreignKey` or `constraint`; `change` is `missing` (in the baseline only), `extra` (in the target only) or `changed`; `severity` is `error`, `warning` or `info`. The fields each object type can list are the contract's: `comment` (table); `collation`, `comment`, `default`, `enum`, `generated`, `nullable`, `type` (column); `columns` (primary key); `included`, `method`, `name`, `parts`, `predicate`, `unique` (index); `columns`, `deferrable`, `foreignColumns`, `foreignTable`, `initially`, `name`, `onDelete`, `onUpdate` (foreign key); `columns`, `expression`, `name` (constraint).
+`objectType` is `table`, `column`, `primaryKey`, `index`, `foreignKey` or `constraint`; `change` is `missing` (in the baseline only), `extra` (in the target only) or `changed`; `severity` is `error`, `warning` or `info`. A `field` applies only to `changed`, and two overrides for one `(objectType, change, field)` are an error. The fields each object type can list are the contract's (`DIFFERENCE_FIELDS`): `comment` (table); `collation`, `comment`, `default`, `enum`, `generated`, `nullable`, `type` (column); `columns` (primary key); `included`, `method`, `name`, `parts`, `predicate`, `unique` (index); `columns`, `deferrable`, `foreignColumns`, `foreignTable`, `initially`, `name`, `onDelete`, `onUpdate` (foreign key); `columns`, `expression`, `name` (constraint).
 
-Unknown keys, values and fields are errors, as are a baseline compared with itself, a `*` baseline, a negative or fractional limit, and anything that looks like a URL (a `scheme://` value, a schema with `@` or `//`, or a key such as `url` or `databaseUrl`); the error never repeats the value. These are python-schema-viewer's comparison rules, spelled in this package's camelCase JSON instead of its `pyproject.toml` TOML.
+Overrides are checked with the shared `validateSeverityOverrides`, and its messages are reported after the entry's location, for example `package.json "node-schema-viewer" comparisons[0] overrides[1].field must be one of comment for objectType table` ([severity](https://laranex.github.io/schema-viewer-ui/contract#severity) lists them). Unknown keys, values and fields are errors, as are a baseline compared with itself, a `*` baseline, a negative or fractional limit, and anything that looks like a URL (a `scheme://` value, a schema with `@` or `//`, or a key such as `url` or `databaseUrl`); the error never repeats the value. These are python-schema-viewer's comparison rules, spelled in this package's camelCase JSON instead of its `pyproject.toml` TOML.
 
 Default severities (the contract's):
 
@@ -85,9 +94,9 @@ app:tenant_template -> app:tenant_initech (complete): 3 missing, 2 extra, 5 chan
   warning likely  changed constraint tenant_template.orders.orders_total_check  expression "total >= 0::numeric" -> "total > 0::numeric"
 ```
 
-`--write` rewrites only laranex-schema 2.0 documents, so nothing a newer 2.x minor added is lost, and prints `Stored N comparisons in PATH` (on stderr with `--json`). An incomplete comparison gets a `comparison_incomplete` diagnostic (category `inspection`, severity `warning`) that says why: how many differences the limit left out, and which side's coverage is not complete for a compared feature or did not read the scope's schema.
+`--write` rewrites only laranex-schema 2.0 documents, so nothing a newer 2.x minor added is lost, and prints `Stored N comparisons in PATH` (on stderr with `--json`). Comparisons are stored with the shared `storeComparisons`: an incomplete comparison gets a `comparison_incomplete` diagnostic (category `inspection`, severity `warning`, built by `comparisonDiagnostics`) that says why, for example `Comparison app:tenant_template=app:tenant_initech is incomplete: 9 of 10 differences are left out by the limit of 1` or `Comparison app:tenant_b=app:tenant_a is incomplete: the baseline app:tenant_b is not completely covered (checkConstraints unavailable); the target app:tenant_a is not completely covered (checkConstraints unavailable)`: how many differences the limit left out, then each side's [coverage gaps](https://laranex.github.io/schema-viewer-ui/contract#coverage-gaps). A complete comparison gets none. Storing the comparisons a document already holds leaves it unchanged.
 
-`compare` exits 0 when it could compare, 1 on an error (an unknown connection, a `*` that cannot be expanded, a pair named twice, an unreadable or invalid document, invalid configuration) and 2 on invalid usage. To fail CI on differences, use the [`check` drift gate](./check.md).
+`compare` exits 0 when it could compare, 1 on an error (any request error above, an unreadable or invalid document, invalid configuration, a document that cannot be written) and 2 on invalid usage. Writes are atomic: a failed write leaves the document as it was (see [security](./security.md#the-snapshot-only-commands-and-the-workers)). To fail CI on differences, use the [`check` drift gate](./check.md).
 
 ## Reading the result
 
@@ -100,7 +109,7 @@ Each comparison has `baseline`, `target`, a `summary` counting every difference 
 
 ## Conformance
 
-`tests/contract.test.ts` runs the shared comparison conformance cases through `compareScopes`. `tests/parity.test.ts` runs `compare` (summary, `--json`, `--write`, configured comparisons with overrides) on four documents python-schema-viewer built from synthetic databases (tenant schemas, mixed drivers, an omitted comparison, tables named like schemas; `tests/fixtures/conformance/python-intel/`) and requires python-schema-viewer's exact output and written bytes, recorded with:
+`tests/contract.test.ts` runs the shared comparison, requested-comparison, coverage-gap, override, comparison-diagnostic and store conformance cases through `compareScopes`, `expandComparisonRequests`, `coverageGaps`/`scopeCovered`, `validateSeverityOverrides`, `comparisonDiagnostics` and `storeComparisons`, which `compare` and `check` call directly. `tests/parity.test.ts` runs `compare` (summary, `--json`, `--write`, configured comparisons with overrides) on four documents python-schema-viewer built from synthetic databases (tenant schemas, mixed drivers, an omitted comparison, tables named like schemas; `tests/fixtures/conformance/python-intel/`) and requires python-schema-viewer's exact output and written bytes, and for errors (a `*` that matches no schema, a comparison configured or named twice, invalid overrides) its exit code and stderr, where only the configuration location (`[[tool.laranex-schema-viewer.comparisons]] entry 1` there, `package.json "node-schema-viewer" comparisons[0]` here) and the override key's spelling (`object_type`, `objectType`) differ. Recorded with:
 
 ```bash
 PYTHONPATH=<python-schema-viewer>/src python -B scripts/record-python-intel-conformance.py <python-schema-viewer> [--check]

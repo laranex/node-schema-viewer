@@ -177,3 +177,14 @@ with an empty scratch directory as its working directory. The project is never g
 ## Comparison and drift gate
 
 `compare` and `check` read the snapshot (at most 32 MiB) and `package.json` and nothing else: no database connection, no socket, no child process, no application import, no database driver or MCP SDK. Only `compare --write` (the snapshot, strictly validated, atomically) and `check --output` (the report, atomically) write. `tests/gate-security.test.ts` checks this under the Permission Model with reads limited to this package, the contract package and those two project files, and with a preloaded sentinel that fails every network, DNS and child-process call; see [the drift gate](./check.md#security).
+
+### The snapshot-only commands and the workers
+
+The CLI's snapshot-only commands (`serve`, `mcp`, `compare`, `check`) run in your own, trusted process, without the Permission Model: they never load application code, so there is nothing to confine. The Permission Model confines only the extraction and introspection workers (above), and nothing here changes how they run.
+
+Writes are atomic: the CLI writes a temporary file (`.schema-<random>.tmp`) in the destination's directory, flushes it with `fsync`, and renames it over the destination, so a reader sees the previous file or the new one, never a partial one. When a write fails, the temporary file is removed and an existing destination is left as it was. The workers instead write their result file with a plain `writeFileSync` into a scratch directory the parent validates (size, strict contract) before using it.
+
+If you run the CLI under the Permission Model yourself (`node --permission --allow-fs-read=… --allow-fs-write=<the output directory> …/dist/cli.js compare --write`):
+
+- **Grant reads and writes on the output's directory.** Renaming the temporary file needs read access to it as well as write access; a directory outside `--allow-fs-write` is refused with `ERR_ACCESS_DENIED`, the command fails (exit 1 for `compare`, 2 for `check`) and nothing is written.
+- **Durability:** Node.js 22.23+, 24 and 26 refuse `fsync` under the Permission Model even inside `--allow-fs-write` (22.13 allows it). Only under the Permission Model, and only for `ERR_ACCESS_DENIED`, the CLI then renames the temporary file without flushing it first: the write stays atomic for readers, but a power loss or OS crash right after it may leave the previous file or an empty one. Any other `fsync` failure fails the write. `tests/gate-security.test.ts` runs `compare --write` and `check --output` under `--permission` with `--allow-fs-write` limited to the output directory on every tested Node.js version.

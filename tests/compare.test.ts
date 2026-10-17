@@ -1,10 +1,10 @@
 // The compare command and module: scope pairs, wildcard expansion, the shared algorithm's results, --write.
 import assert from 'node:assert/strict';
-import { copyFileSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, copyFileSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
-import { canonicalJson, compareScopes, validateDocument, type Comparison, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
-import { compute, describe as describeComparisons, scopes, store } from '../src/compare.js';
+import { canonicalJson, compareScopes, storeComparisons, validateDocument, type Comparison, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
+import { compute, describe as describeComparisons } from '../src/compare.js';
 import { comparisonOption } from '../src/config.js';
 import { runCli, tempDir, VALID } from './helpers.js';
 
@@ -18,69 +18,83 @@ function project(dir: string, section: unknown): void {
 }
 
 describe('compare module', () => {
-    test('expands a * target to the inspected schemas except the baseline scope', () => {
+    const A = { connection: 'connection:app', schema: 'tenant_a' };
+    const B = { connection: 'connection:app', schema: 'tenant_b' };
+
+    test('expands requests with the shared expansion and reports what it cannot resolve in the contract\'s words', () => {
         const doc = read(TENANTS);
-        assert.deepEqual(scopes(doc, comparisonOption('app:tenant_a=app:*')), [[{ connection: 'connection:app', schema: 'tenant_a' }, { connection: 'connection:app', schema: 'tenant_b' }]]);
+        assert.deepEqual(compute(doc, [comparisonOption('app:tenant_a=app:*')]), { comparisons: [compareScopes(doc, A, B, { limit: 500 })], errors: [] });
         // A null baseline schema stands for the default schema, public, which the inspection did not read.
-        assert.equal(scopes(doc, comparisonOption('app=app:*')).length, 2);
-        assert.throws(() => scopes(doc, comparisonOption('nope=app')), /names connection nope, which the document does not have \(connections: app\)/);
+        assert.equal(compute(doc, [comparisonOption('app=app:*')]).comparisons.length, 2);
+        assert.deepEqual(compute(doc, [comparisonOption('nope=app')]).errors, [
+            { kind: 'unknown_connection', request: { baseline: { connection: 'nope', schema: null }, target: { connection: 'app', schema: null } }, message: 'Requested comparison nope → app names connection nope, which the document does not have.' },
+        ]);
+        const multi = read(MULTI);
+        assert.deepEqual(
+            compute(multi, [comparisonOption('primary=primary:*')]).errors.map((e) => [e.kind, e.message]),
+            [['no_match', 'Requested comparison primary → primary:* matches no schema.']],
+        );
         const declared = read(join(VALID, 'declared-sqlalchemy.json'));
         const name = declared.connections[0]?.name ?? '';
-        assert.throws(() => scopes(declared, comparisonOption(`${name}=${name}:*`)), /needs a connection whose inspection read named schemas/);
-    });
-
-    test('computes with the shared algorithm; an explicit pair wins over a * expansion, a pair named twice is an error', () => {
-        const doc = read(TENANTS);
-        const wildcard = { ...comparisonOption('app:tenant_a=app:*'), limit: 1 };
-        const explicit = comparisonOption('app:tenant_a=app:tenant_b');
-        const expected = compareScopes(doc, { connection: 'connection:app', schema: 'tenant_a' }, { connection: 'connection:app', schema: 'tenant_b' }, { limit: 500, overrides: [] });
-        for (const specs of [[wildcard, explicit], [explicit, wildcard]]) {
-            const { comparisons, diagnostics } = compute(doc, specs);
-            assert.deepEqual(comparisons, [expected]);
-            assert.deepEqual(diagnostics, []);
-        }
-        assert.throws(() => compute(doc, [explicit, explicit]), /Comparison app:tenant_a=app:tenant_b is configured more than once/);
-        assert.throws(() => compute(doc, [wildcard, wildcard]), /configured more than once/);
-    });
-
-    test('applies severity overrides and reports an incomplete comparison', () => {
-        const doc = read(TENANTS);
-        const spec = { ...comparisonOption('app:tenant_a=app:tenant_b'), limit: 2, overrides: [{ objectType: 'table' as const, change: 'extra' as const, field: null, severity: 'info' as const }] };
-        const { comparisons, diagnostics } = compute(doc, [spec]);
-        const [comparison] = comparisons as [Comparison];
-        assert.equal(comparison.complete, false);
-        assert.equal(comparison.differences.length, 2);
-        assert.ok(comparison.differences.filter((d) => d.objectType === 'table' && d.change === 'extra').every((d) => d.severity === 'info'));
-        assert.equal(diagnostics.length, 1);
-        assert.equal(diagnostics[0]?.kind, 'comparison_incomplete');
-        assert.equal(diagnostics[0].message, `Comparison app:tenant_a=app:tenant_b is incomplete: ${String(comparison.omitted)} of ${String(comparison.omitted + 2)} differences are left out by the limit of 2`);
-        const gaps = compute(read(INCOMPLETE), [comparisonOption('app:tenant_a=app:tenant_b')]).diagnostics[0]?.message;
-        assert.equal(
-            gaps,
-            'Comparison app:tenant_a=app:tenant_b is incomplete: the baseline app:tenant_a is not completely covered (checkConstraints unavailable); the target app:tenant_b is not completely covered (checkConstraints unavailable)',
+        assert.deepEqual(
+            compute(declared, [comparisonOption(`${name}=${name}:*`)]).errors.map((e) => [e.kind, e.message]),
+            [['no_schemas', `Requested comparison ${name} → ${name}:* cannot be expanded: the inspection of connection ${name} lists no schemas.`]],
         );
     });
 
-    test('store replaces comparisons of the same scopes and their diagnostics, and keeps the others', () => {
+    test('an explicit pair takes its own limit and overrides over a * expansion; a request named twice is a duplicate', () => {
+        const doc = read(TENANTS);
+        const wildcard = { ...comparisonOption('app:tenant_a=app:*'), limit: 1 };
+        const explicit = { ...comparisonOption('app:tenant_a=app:tenant_b'), limit: 3, overrides: [{ objectType: 'table' as const, change: 'extra' as const, field: null, severity: 'info' as const }] };
+        const expected = compareScopes(doc, A, B, { limit: 3, overrides: explicit.overrides });
+        for (const specs of [[wildcard, explicit], [explicit, wildcard]]) {
+            assert.deepEqual(compute(doc, specs), { comparisons: [expected], errors: [] });
+        }
+        for (const spec of [explicit, wildcard]) {
+            const { comparisons, errors } = compute(doc, [spec, spec, spec]);
+            assert.equal(comparisons.length, 1);
+            assert.deepEqual(errors.map((e) => e.kind), ['duplicate']);
+            assert.match(errors[0]?.message ?? '', /^Requested comparison app:tenant_a → app:(\*|tenant_b) is listed more than once\.$/);
+        }
+    });
+
+    test('stores comparison_incomplete diagnostics for omitted differences, coverage gaps, both, and none when complete', () => {
+        const tenants = read(TENANTS);
+        const incomplete = read(INCOMPLETE);
+        const message = (doc: SchemaDocument, option: string, limit: number) => {
+            const { comparisons } = compute(doc, [comparisonOption(option, limit)]);
+            const empty: SchemaDocument = { ...doc, comparisons: [], diagnostics: [] };
+            return storeComparisons(empty, comparisons).diagnostics.map((d) => [d.kind, d.subject.label, d.message]);
+        };
+        const omitted = compute(tenants, [comparisonOption('app:tenant_a=app:tenant_b', 2)]).comparisons[0] as Comparison;
+        const total = omitted.summary.missing + omitted.summary.extra + omitted.summary.changed;
+        const gaps = 'the baseline app:tenant_a is not completely covered (checkConstraints unavailable); the target app:tenant_b is not completely covered (checkConstraints unavailable)';
+        assert.deepEqual(message(tenants, 'app:tenant_a=app:tenant_b', 2), [
+            ['comparison_incomplete', 'app:tenant_a=app:tenant_b', `Comparison app:tenant_a=app:tenant_b is incomplete: ${String(total - 2)} of ${String(total)} differences are left out by the limit of 2`],
+        ]);
+        assert.deepEqual(message(incomplete, 'app:tenant_a=app:tenant_b', 500), [['comparison_incomplete', 'app:tenant_a=app:tenant_b', `Comparison app:tenant_a=app:tenant_b is incomplete: ${gaps}`]]);
+        const both = message(incomplete, 'app:tenant_a=app:tenant_b', 1);
+        assert.match(both[0]?.[2] ?? '', new RegExp(`^Comparison app:tenant_a=app:tenant_b is incomplete: \\d+ of \\d+ differences are left out by the limit of 1; ${gaps.replace(/[()]/g, '\\$&')}$`));
+        assert.deepEqual(message(tenants, 'app:tenant_a=app:tenant_b', 500), []);
+    });
+
+    test('storing replaces comparisons of the same scopes and their diagnostics, keeps the others, and is idempotent', () => {
         const doc = read(MULTI);
-        const first = compute(doc, [{ ...comparisonOption('primary=replica'), limit: 0 }, comparisonOption('replica:shop=primary')]);
-        const stored = store(doc, first.comparisons, first.diagnostics);
+        const first = compute(doc, [comparisonOption('primary=replica', 0), comparisonOption('replica:shop=primary')]).comparisons;
+        const stored = storeComparisons(doc, first);
         // primary=replica replaces the stored comparison of the same scopes.
         assert.equal(doc.comparisons.length, 1);
         assert.equal(stored.comparisons.length, 2);
         assert.equal(stored.diagnostics.filter((d) => d.kind === 'comparison_incomplete').length, 1);
-        const second = compute(stored, [comparisonOption('primary=replica')]);
-        const restored = store(stored, second.comparisons, second.diagnostics);
+        assert.deepEqual(storeComparisons(stored, first), stored);
+        const second = compute(stored, [comparisonOption('primary=replica')]).comparisons;
+        const restored = storeComparisons(stored, second);
         assert.deepEqual(restored.comparisons.map((c) => c.id), stored.comparisons.map((c) => c.id));
-        const kept = (d: SchemaDocument) => d.comparisons.find((c) => c.id !== second.comparisons[0]?.id);
+        const kept = (d: SchemaDocument) => d.comparisons.find((c) => c.id !== second[0]?.id);
         assert.ok(kept(stored));
         assert.deepEqual(kept(restored), kept(stored));
         assert.equal(restored.diagnostics.filter((d) => d.kind === 'comparison_incomplete').length, 0);
         assert.deepEqual(validateDocument(restored, { strict: true }).errors, []);
-        assert.deepEqual(
-            restored.comparisons.map((c) => c.id),
-            restored.comparisons.map((c) => c.id).sort(),
-        );
     });
 
     test('describes comparisons one line each, then one per listed difference', () => {
@@ -101,9 +115,6 @@ describe('compare command', () => {
         const text = await runCli(['compare', '--snapshot', TENANTS, 'app:tenant_a=app:tenant_b', '--limit', '1']);
         assert.equal(text.code, 0, text.stderr);
         assert.match(text.stdout, /^app:tenant_a -> app:tenant_b \(incomplete\): .* not listed\n {2}\S.*\n$/);
-        const none = await runCli(['compare', '--snapshot', MULTI, 'primary=primary:*']);
-        assert.equal(none.code, 0, none.stderr);
-        assert.equal(none.stdout, 'No scope pairs to compare\n');
     });
 
     test('uses the configured comparisons and output without arguments', async (t) => {
@@ -125,7 +136,7 @@ describe('compare command', () => {
         const written = read(path);
         assert.deepEqual(validateDocument(written, { strict: true }).errors, []);
         assert.equal(readFileSync(path, 'utf8'), canonicalJson(written));
-        assert.deepEqual(written.comparisons, store(read(MULTI), JSON.parse(run.stdout) as Comparison[], []).comparisons);
+        assert.deepEqual(written, storeComparisons(read(MULTI), JSON.parse(run.stdout) as Comparison[]));
         writeFileSync(path, JSON.stringify({ ...read(MULTI), version: '2.1' }));
         const before = readFileSync(path, 'utf8');
         const newer = await runCli(['compare', '--snapshot', path, 'primary=replica', '--write']);
@@ -134,11 +145,31 @@ describe('compare command', () => {
         assert.equal(readFileSync(path, 'utf8'), before);
     });
 
+    test('--write exits 1 when the document cannot be written, leaving it intact and no temporary file', async (t) => {
+        const dir = join(tempDir(t), 'locked');
+        mkdirSync(dir);
+        const path = join(dir, 'schema.json');
+        copyFileSync(MULTI, path);
+        chmodSync(dir, 0o555);
+        try {
+            const run = await runCli(['compare', '--snapshot', path, 'primary=replica', '--write']);
+            assert.equal(run.code, 1);
+            assert.match(run.stderr, /^Error: .*EACCES/);
+            assert.deepEqual(readFileSync(path), readFileSync(MULTI));
+            assert.deepEqual(readdirSync(dir), ['schema.json']);
+        } finally {
+            chmodSync(dir, 0o755);
+        }
+    });
+
     test('errors: nothing to compare, unknown connections, limits, malformed scopes and usage', async (t) => {
         const dir = tempDir(t);
         for (const [args, code, message] of [
             [['compare', '--snapshot', TENANTS], 1, /Name comparisons as BASELINE=TARGET/],
-            [['compare', '--snapshot', TENANTS, 'app=nope'], 1, /names connection nope, which the document does not have/],
+            [['compare', '--snapshot', TENANTS, 'app=nope'], 1, /^Error: Requested comparison app → nope names connection nope, which the document does not have\.\n$/],
+            [['compare', '--snapshot', MULTI, 'primary=primary:*'], 1, /^Error: Requested comparison primary → primary:\* matches no schema\.\n$/],
+            [['compare', '--snapshot', TENANTS, 'app:tenant_a=app:tenant_b', 'app:tenant_a=app:*', 'app:tenant_a=app:*'], 1, /^Error: Requested comparison app:tenant_a → app:\* is listed more than once\.\n$/],
+            [['compare', '--snapshot', TENANTS, 'app=nope', 'nope=app:*'], 1, /^Error: Requested comparison app → nope names .*\.\nRequested comparison nope → app:\* names connection nope, .*\.\n$/],
             [['compare', '--snapshot', TENANTS, '--limit', '3'], 1, /A comparison limit applies to comparisons named on the command line/],
             [['compare', '--snapshot', TENANTS, 'app:tenant_a=app:tenant_b', '--limit=-1'], 1, /nonnegative integer/],
             [['compare', '--snapshot', TENANTS, 'app:tenant_a'], 1, /A comparison is BASELINE=TARGET/],
@@ -150,6 +181,14 @@ describe('compare command', () => {
             assert.equal(run.code, code, args.join(' '));
             assert.match(run.stderr, message, args.join(' '));
         }
+        // A configured duplicate fails compare (exit 1) as a named one does; check exits 2 with the same message.
+        const request = { baseline: { connection: 'app', schema: 'tenant_a' }, target: { connection: 'app', schema: 'tenant_b' } };
+        writeFileSync(join(dir, 'package.json'), JSON.stringify({ 'node-schema-viewer': { comparisons: [request, { ...request, limit: 2 }] } }));
+        const message = 'Error: Requested comparison app:tenant_a → app:tenant_b is listed more than once.\n';
+        const configured = await runCli(['compare', '--snapshot', TENANTS], { cwd: dir });
+        assert.deepEqual([configured.code, configured.stdout, configured.stderr], [1, '', message]);
+        const gated = await runCli(['check', '--snapshot', TENANTS], { cwd: dir });
+        assert.deepEqual([gated.code, gated.stdout, gated.stderr], [2, '', message]);
         const secret = 'postgres://user:hunter2@db/app';
         const url = await runCli(['compare', '--snapshot', TENANTS, `app=${secret}`]);
         assert.equal(url.code, 1);

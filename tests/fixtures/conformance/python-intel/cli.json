@@ -121,6 +121,234 @@
     },
     {
       "args": [
+        "compare",
+        "primary:public=primary:*"
+      ],
+      "config": {},
+      "document": "mixed-drivers",
+      "exitCode": 1,
+      "stderr": "Error: Requested comparison primary:public → primary:* matches no schema.\n",
+      "stdout": ""
+    },
+    {
+      "args": [
+        "check",
+        "--json",
+        "primary:public=primary:*"
+      ],
+      "config": {},
+      "document": "mixed-drivers",
+      "exitCode": 2,
+      "stdout": "{\n  \"comparisons\": [],\n  \"counts\": {\n    \"error\": 0,\n    \"findings\": 0,\n    \"info\": 0,\n    \"qualifying\": 0,\n    \"warning\": 0\n  },\n  \"errors\": [\n    {\n      \"kind\": \"comparison_not_found\",\n      \"message\": \"Requested comparison primary:public → primary:* matches no schema.\"\n    }\n  ],\n  \"exitCode\": 2,\n  \"findings\": [],\n  \"format\": \"laranex-schema-gate\",\n  \"passed\": false,\n  \"requested\": [\n    {\n      \"baseline\": {\n        \"connection\": \"primary\",\n        \"schema\": \"public\"\n      },\n      \"target\": {\n        \"connection\": \"primary\",\n        \"schema\": \"*\"\n      }\n    }\n  ],\n  \"thresholds\": {\n    \"certainty\": \"certain\",\n    \"severity\": \"warning\"\n  },\n  \"version\": \"1.0\"\n}\n"
+    },
+    {
+      "args": [
+        "check",
+        "primary:public=primary:*"
+      ],
+      "config": {},
+      "document": "mixed-drivers",
+      "exitCode": 2,
+      "stdout": "Schema check INCOMPLETE (exit code 2): 0 of 0 findings meet the thresholds (severity warning or above, certain only)\nChecked 0 comparisons (requested: primary:public → primary:*)\nErrors (the check is incomplete and never passes):\n  comparison_not_found: Requested comparison primary:public → primary:* matches no schema.\n"
+    },
+    {
+      "args": [
+        "compare"
+      ],
+      "config": {
+        "comparisons": [
+          {
+            "baseline": {
+              "connection": "primary"
+            },
+            "target": {
+              "connection": "mysql"
+            }
+          },
+          {
+            "baseline": {
+              "connection": "primary"
+            },
+            "limit": 2,
+            "target": {
+              "connection": "mysql"
+            }
+          }
+        ]
+      },
+      "document": "mixed-drivers",
+      "exitCode": 1,
+      "stderr": "Error: Requested comparison primary → mysql is listed more than once.\n",
+      "stdout": ""
+    },
+    {
+      "args": [
+        "check"
+      ],
+      "config": {
+        "comparisons": [
+          {
+            "baseline": {
+              "connection": "primary"
+            },
+            "target": {
+              "connection": "mysql"
+            }
+          },
+          {
+            "baseline": {
+              "connection": "primary"
+            },
+            "limit": 2,
+            "target": {
+              "connection": "mysql"
+            }
+          }
+        ]
+      },
+      "document": "mixed-drivers",
+      "exitCode": 2,
+      "stderr": "Error: Requested comparison primary → mysql is listed more than once.\n",
+      "stdout": ""
+    },
+    {
+      "args": [
+        "check",
+        "--json"
+      ],
+      "config": {
+        "comparisons": [
+          {
+            "baseline": {
+              "connection": "primary"
+            },
+            "target": {
+              "connection": "mysql"
+            }
+          },
+          {
+            "baseline": {
+              "connection": "primary"
+            },
+            "limit": 2,
+            "target": {
+              "connection": "mysql"
+            }
+          }
+        ]
+      },
+      "document": "mixed-drivers",
+      "exitCode": 2,
+      "stderr": "Error: Requested comparison primary → mysql is listed more than once.\n",
+      "stdout": ""
+    },
+    {
+      "args": [
+        "compare",
+        "primary=mysql",
+        "mysql=mariadb",
+        "primary=mysql"
+      ],
+      "config": {},
+      "document": "mixed-drivers",
+      "exitCode": 1,
+      "stderr": "Error: Requested comparison primary → mysql is listed more than once.\n",
+      "stdout": ""
+    },
+    {
+      "args": [
+        "check",
+        "--json",
+        "primary=mysql",
+        "mysql=mariadb",
+        "primary=mysql"
+      ],
+      "config": {},
+      "document": "mixed-drivers",
+      "exitCode": 2,
+      "stderr": "Error: Requested comparison primary → mysql is listed more than once.\n",
+      "stdout": ""
+    },
+    {
+      "args": [
+        "compare"
+      ],
+      "config": {
+        "comparisons": [
+          {
+            "baseline": {
+              "connection": "primary"
+            },
+            "overrides": [
+              {
+                "change": "renamed",
+                "objectType": "index",
+                "severity": "info"
+              },
+              {
+                "change": "changed",
+                "field": "comment",
+                "objectType": "index",
+                "severity": "info"
+              },
+              {
+                "change": "extra",
+                "objectType": "view",
+                "severity": "fatal"
+              }
+            ],
+            "target": {
+              "connection": "mysql"
+            }
+          }
+        ]
+      },
+      "document": "mixed-drivers",
+      "exitCode": 1,
+      "stderr": "Error: [[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[0].change must be one of missing, extra, changed; [[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[1].field must be one of included, method, name, parts, predicate, unique for object_type index; [[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[2].object_type must be one of table, column, primaryKey, index, foreignKey, constraint; [[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[2].severity must be one of error, warning, info\n",
+      "stdout": ""
+    },
+    {
+      "args": [
+        "check"
+      ],
+      "config": {
+        "comparisons": [
+          {
+            "baseline": {
+              "connection": "primary"
+            },
+            "overrides": [
+              {
+                "change": "renamed",
+                "objectType": "index",
+                "severity": "info"
+              },
+              {
+                "change": "changed",
+                "field": "comment",
+                "objectType": "index",
+                "severity": "info"
+              },
+              {
+                "change": "extra",
+                "objectType": "view",
+                "severity": "fatal"
+              }
+            ],
+            "target": {
+              "connection": "mysql"
+            }
+          }
+        ]
+      },
+      "document": "mixed-drivers",
+      "exitCode": 2,
+      "stderr": "Error: [[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[0].change must be one of missing, extra, changed; [[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[1].field must be one of included, method, name, parts, predicate, unique for object_type index; [[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[2].object_type must be one of table, column, primaryKey, index, foreignKey, constraint; [[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[2].severity must be one of error, warning, info\n",
+      "stdout": ""
+    },
+    {
+      "args": [
         "check",
         "--json"
       ],
@@ -422,5 +650,5 @@
       "stdout": "ledger:archive -> ledger:billing (complete): 1 missing, 2 extra, 0 changed\n  error   certain missing table      archive.archive\n  error   certain extra   column     billing.billing.archive\n  warning certain extra   index      billing.billing.archive\n"
     }
   ],
-  "pythonCommit": "195c1a6f6182354b781ba615b2b685e0d463a8db"
+  "pythonCommit": "94ac1343e188d49dbdb38dda1306d045fa601848"
 }

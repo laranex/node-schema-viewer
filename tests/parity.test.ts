@@ -3,10 +3,11 @@
 //   thresholds as flags; `check --json` must print exactly the expected report in canonical form;
 // - python-schema-viewer's output for documents it built from synthetic databases
 //   (tests/fixtures/conformance/python-intel/, recorded by scripts/record-python-intel-conformance.py): the same
-//   arguments and configuration must print the same bytes, exit with the same code and write the same document.
+//   arguments and configuration must print the same bytes, exit with the same code, write the same document and, for
+//   an error, print the same message on stderr (with this package's configuration location and key spelling).
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { copyFileSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, readdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { canonicalJson, type GateOptions, type GateReport } from 'laranex-schema-viewer-ui/contract';
@@ -26,6 +27,7 @@ interface IntelCase {
     args: string[];
     exitCode: number;
     stdout: string;
+    stderr?: string;
     written?: string;
 }
 
@@ -55,13 +57,22 @@ describe('gate conformance through check --json', () => {
     }
 });
 
+// Python's error text as this package spells it: a comparison's location in pyproject.toml
+// ([[tool.laranex-schema-viewer.comparisons]] entry N) is comparisons[N - 1] of "node-schema-viewer" in package.json, and
+// the override key object_type is objectType. Every other word is the shared specification's, so equal.
+function spelledAsNode(stderr: string, packageJson: string): string {
+    return stderr
+        .replace(/\[\[tool\.laranex-schema-viewer\.comparisons\]\] entry (\d+)/g, (_, n: string) => `${packageJson} "node-schema-viewer" comparisons[${String(Number(n) - 1)}]`)
+        .replaceAll('object_type', 'objectType');
+}
+
 describe('python-schema-viewer compare and check output on its own documents', () => {
     const recorded = JSON.parse(readFileSync(join(INTEL, 'cli.json'), 'utf8')) as { pythonCommit: string; cases: IntelCase[] };
 
     test('covers every recorded document', () => {
         const documents = readdirSync(join(INTEL, 'documents')).map((name) => name.replace(/\.json$/, '')).sort();
         assert.deepEqual([...new Set(recorded.cases.map((c) => c.document))].sort(), documents);
-        assert.equal(recorded.cases.length, 29);
+        assert.equal(recorded.cases.length, 39);
     });
 
     for (const c of recorded.cases) {
@@ -73,6 +84,9 @@ describe('python-schema-viewer compare and check output on its own documents', (
             const run = await runCli(c.args, { cwd: dir });
             assert.equal(run.stdout, c.stdout, run.stderr);
             assert.equal(run.code, c.exitCode);
+            if (c.stderr !== undefined) {
+                assert.equal(run.stderr, spelledAsNode(c.stderr, join(realpathSync(dir), 'package.json')));
+            }
             if (c.written !== undefined) {
                 assert.equal(createHash('sha256').update(readFileSync(snapshot)).digest('hex'), c.written);
             }

@@ -150,13 +150,6 @@ describe('config', () => {
             [{ comparisons: [{ ...scope, limit: -1 }] }, /limit must be a nonnegative integer/],
             [{ comparisons: [{ ...scope, limit: 1.5 }] }, /limit must be a nonnegative integer/],
             [{ comparisons: [{ ...scope, limit: true }] }, /limit must be a nonnegative integer/],
-            [{ comparisons: [{ ...scope, overrides: {} }] }, /overrides must be an array of objects/],
-            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'view', change: 'extra', severity: 'info' }] }] }, /objectType must be one of table, column, primaryKey, index, foreignKey, constraint/],
-            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'index', change: 'gone', severity: 'info' }] }] }, /change must be one of missing, extra, changed/],
-            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'index', change: 'extra', severity: 'fatal' }] }] }, /severity must be one of error, warning, info/],
-            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'index', change: 'extra', field: 'name', severity: 'info' }] }] }, /field applies to changed differences/],
-            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'table', change: 'changed', field: 'type', severity: 'info' }] }] }, /a table field is one of comment/],
-            [{ comparisons: [{ ...scope, overrides: [{ object_type: 'table', change: 'changed', severity: 'info' }] }] }, /Unknown .* override keys: object_type/],
             [{ check: [] }, /check must be an object/],
             [{ check: { severity: 'fatal' } }, /check severity must be one of error, warning, info/],
             [{ check: { certainty: 'maybe' } }, /check certainty must be one of certain, likely/],
@@ -164,6 +157,26 @@ describe('config', () => {
         ] as const) {
             project(dir, { 'node-schema-viewer': section });
             assert.throws(() => loadConfig(dir), (error: Error) => error instanceof ConfigError && message.test(error.message), JSON.stringify(section));
+        }
+    });
+
+    test('validates overrides with the shared rules and reports them at their package.json location', (t) => {
+        const dir = tempDir(t);
+        const at = `${join(dir, 'package.json')} "node-schema-viewer" comparisons[1]`;
+        const scope = { baseline: { connection: 'a' }, target: { connection: 'b' } };
+        const general = { objectType: 'column', change: 'changed', severity: 'info' };
+        for (const [overrides, message] of [
+            [{}, `${at} overrides must be an array`],
+            [[1], `${at} overrides[0] must be an object`],
+            [[{ object_type: 'table', change: 'changed', severity: 'info' }], `${at} overrides[0] has unknown keys: object_type; ${at} overrides[0].objectType must be one of table, column, primaryKey, index, foreignKey, constraint`],
+            [[{ objectType: 'view', change: 'gone' }], `${at} overrides[0].objectType must be one of table, column, primaryKey, index, foreignKey, constraint; ${at} overrides[0].change must be one of missing, extra, changed; ${at} overrides[0].severity must be one of error, warning, info`],
+            [[{ ...general, field: 'width' }], `${at} overrides[0].field must be one of collation, comment, default, enum, generated, nullable, type for objectType column`],
+            [[{ objectType: 'index', change: 'extra', field: 'name', severity: 'info' }], `${at} overrides[0].field applies only to changed differences, not extra`],
+            [[{ ...general, field: 1 }], `${at} overrides[0].field must be a string or null`],
+            [[general, { ...general, field: 'type' }, { ...general, field: null, severity: 'error' }], `${at} overrides[2] repeats overrides[0]`],
+        ] as const) {
+            project(dir, { 'node-schema-viewer': { comparisons: [scope, { ...scope, overrides }] } });
+            assert.throws(() => loadConfig(dir), (error: Error) => error instanceof ConfigError && error.message === message, JSON.stringify(overrides));
         }
     });
 

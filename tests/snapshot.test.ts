@@ -1,11 +1,14 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { mkdirSync, readdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { createRequire, syncBuiltinESMExports } from 'node:module';
+import { dirname, join } from 'node:path';
 import { describe, test } from 'node:test';
+import { fileURLToPath } from 'node:url';
 import { canonicalJson } from 'laranex-schema-viewer-ui/contract';
-import { loadDocument, MAX_SNAPSHOT_BYTES, revision, SnapshotError, writeDocument } from '../src/snapshot.js';
-import { CONTRACT, DECLARED, tempDir, VALID } from './helpers.js';
+import { loadDocument, MAX_SNAPSHOT_BYTES, revision, SnapshotError, writeAtomically, writeDocument } from '../src/snapshot.js';
+import { CONTRACT, DECLARED, ROOT, tempDir, VALID } from './helpers.js';
 
 const INVALID = join(CONTRACT, 'fixtures', 'invalid');
 
@@ -101,5 +104,124 @@ describe('snapshot', () => {
         assert.throws(() => {
             writeDocument({ ...document, version: '1.0' }, path);
         }, /Unsupported laranex-schema version "1\.0"/);
+    });
+});
+
+// node:fs as CommonJS: replacing a function there and calling syncBuiltinESMExports() changes the binding that
+// src/snapshot.ts imports, so a failure can be injected at an exact step of a write.
+const fs = createRequire(import.meta.url)('node:fs') as typeof import('node:fs');
+type Patchable = 'fsyncSync' | 'writeSync';
+
+function withPatched<K extends Patchable>(name: K, replacement: (typeof fs)[K], run: () => void): void {
+    const original = fs[name];
+    fs[name] = replacement;
+    syncBuiltinESMExports();
+    try {
+        run();
+    } finally {
+        fs[name] = original;
+        syncBuiltinESMExports();
+    }
+}
+
+const failure = (code: string): Error => Object.assign(new Error(`${code}: simulated`), { code });
+const DATA = Buffer.from('new content\n'.repeat(4096));
+
+describe('atomic writes', () => {
+    test('write the complete file and leave no temporary file', (t) => {
+        const dir = tempDir(t);
+        const path = join(dir, 'out', 'file.json');
+        writeAtomically(DATA, path);
+        assert.deepEqual(readFileSync(path), DATA);
+        writeAtomically(Buffer.from('replaced'), path);
+        assert.equal(readFileSync(path, 'utf8'), 'replaced');
+        assert.deepEqual(readdirSync(join(dir, 'out')), ['file.json']);
+    });
+
+    test('a write that fails midway leaves the existing file intact and no temporary file', (t) => {
+        const dir = tempDir(t);
+        const path = join(dir, 'file.json');
+        writeFileSync(path, 'previous');
+        // The first write stores 100 bytes, the next one fails.
+        const original = fs.writeSync;
+        let calls = 0;
+        const partial = (fd: number, data: Uint8Array, offset: number): number => {
+            calls += 1;
+            if (calls > 1) {
+                throw failure('EIO');
+            }
+            return original(fd, data.subarray(offset, offset + 100));
+        };
+        withPatched('writeSync', partial as typeof fs.writeSync, () => {
+            assert.throws(() => {
+                writeAtomically(DATA, path);
+            }, /EIO: simulated/);
+        });
+        assert.equal(calls, 2);
+        assert.equal(readFileSync(path, 'utf8'), 'previous');
+        assert.deepEqual(readdirSync(dir), ['file.json']);
+    });
+
+    test('an fsync failure fails the write: the existing file stays and no temporary file is left', (t) => {
+        const dir = tempDir(t);
+        const path = join(dir, 'file.json');
+        writeFileSync(path, 'previous');
+        // ERR_ACCESS_DENIED is tolerated only under the Permission Model, which this process does not run under.
+        assert.equal((process as { permission?: unknown }).permission, undefined);
+        for (const code of ['EIO', 'ENOSPC', 'ERR_ACCESS_DENIED']) {
+            withPatched(
+                'fsyncSync',
+                () => {
+                    throw failure(code);
+                },
+                () => {
+                    assert.throws(() => {
+                        writeAtomically(DATA, path);
+                    }, new RegExp(`${code}: simulated`));
+                },
+            );
+            assert.equal(readFileSync(path, 'utf8'), 'previous', code);
+            assert.deepEqual(readdirSync(dir), ['file.json'], code);
+        }
+    });
+
+    test('a failed rename leaves no temporary file', (t) => {
+        const dir = tempDir(t);
+        const path = join(dir, 'taken');
+        mkdirSync(path);
+        assert.throws(() => {
+            writeAtomically(DATA, path);
+        });
+        assert.deepEqual(readdirSync(dir), ['taken']);
+        assert.deepEqual(readdirSync(path), []);
+    });
+
+    test('under the Permission Model, a refused fsync is tolerated and any other fsync error is not', (t) => {
+        const dir = realpathSync(tempDir(t));
+        const ui = dirname(fileURLToPath(import.meta.resolve('laranex-schema-viewer-ui/package.json')));
+        const snapshot = join(ROOT, 'build', 'src', 'snapshot.js');
+        // fsync refused as Node.js 22.23+, 24 and 26 refuse it (22.13 allows it), an injected EIO, and fsync as it is.
+        const script = (fsync: string, name: string) => `
+            import fs from 'node:fs';
+            import { syncBuiltinESMExports } from 'node:module';
+            ${fsync}
+            syncBuiltinESMExports();
+            const { writeAtomically } = await import(${JSON.stringify(snapshot)});
+            writeAtomically(Buffer.from('written'), ${JSON.stringify(join(dir, name))});
+        `;
+        const run = (fsync: string, name: string) =>
+            spawnSync(process.execPath, ['--permission', `--allow-fs-read=${join(ROOT, 'build')}`, `--allow-fs-read=${ui}`, `--allow-fs-read=${dir}`, `--allow-fs-write=${dir}`, '--input-type=module', '-e', script(fsync, name)], {
+                encoding: 'utf8',
+            });
+        const refused = run("fs.fsyncSync = () => { throw Object.assign(new Error('refused'), { code: 'ERR_ACCESS_DENIED' }); };", 'refused.json');
+        assert.equal(refused.status, 0, refused.stderr);
+        const native = run('', 'native.json');
+        assert.equal(native.status, 0, native.stderr);
+        const broken = run("fs.fsyncSync = () => { throw Object.assign(new Error('EIO: simulated'), { code: 'EIO' }); };", 'broken.json');
+        assert.notEqual(broken.status, 0);
+        assert.match(broken.stderr, /EIO: simulated/);
+        assert.equal(readFileSync(join(dir, 'refused.json'), 'utf8'), 'written');
+        assert.equal(readFileSync(join(dir, 'native.json'), 'utf8'), 'written');
+        assert.deepEqual(readdirSync(dir).sort(), ['native.json', 'refused.json']);
     });
 });
