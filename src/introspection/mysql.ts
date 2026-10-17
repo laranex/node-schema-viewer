@@ -1,7 +1,9 @@
 // MySQL and MariaDB catalogs, read as python-schema-viewer reads them: SQLAlchemy's MySQL Inspector parses SHOW CREATE
 // TABLE (ported below from sqlalchemy/dialects/mysql/reflection.py), and information_schema.COLUMNS and STATISTICS
 // supply native types and index key parts (introspection/catalog.py).
-import { action, column, identifier, indexEntry, owner, part, referencedColumns, str, text, type ColumnFacts, type Constraint, type ForeignKey, type Index, type Row, type Table } from './common.js';
+import { constraintId, foreignKeyId } from '../schema/ids.js';
+import type { ConstraintModel, ForeignKeyModel, IndexModel, TableModel } from '../schema/model.js';
+import { action, column, indexEntry, owner, part, referencedColumns, str, text, type ColumnFacts, type Row } from './common.js';
 import { IntrospectionError } from './request.js';
 import type { Session } from './readonly.js';
 
@@ -133,7 +135,7 @@ export class MySQLReader {
         return (await this.session.rows('SHOW schemas')).map((r) => str(r[0]));
     }
 
-    async tables(schema: string): Promise<Table[]> {
+    async tables(schema: string): Promise<TableModel[]> {
         const names = (await this.session.rows(`SHOW FULL TABLES FROM ${quote(schema)}`)).filter((r) => str(r[1]) === 'BASE TABLE').map((r) => str(r[0]));
         const natives = new Map<string, string>();
         for (const row of await this.session.rows('SELECT TABLE_NAME, COLUMN_NAME, COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ?', [schema])) {
@@ -150,44 +152,40 @@ export class MySQLReader {
             const state = parsed.get(name) ?? { columns: [], comment: null, foreignKeys: [], checks: [] };
             const tid = this.tableId(schema, name);
             const facts = state.columns.map((c) => ({ ...c, native: natives.get(`${name}\u0000${c.name}`) ?? '' }));
-            const foreignKeys: ForeignKey[] = state.foreignKeys.map((fk) => {
+            const foreignKeys: ForeignKeyModel[] = state.foreignKeys.map((fk) => {
                 const target = this.tableId(fk.table.length > 1 ? (fk.table[fk.table.length - 2] ?? schema) : schema, fk.table[fk.table.length - 1] ?? '');
                 return {
-                    id: identifier('foreign_key', tid, fk.name, identifier(...fk.local), target, identifier(...fk.foreign)),
+                    id: foreignKeyId(tid, fk.name, fk.local, target, fk.foreign),
                     name: fk.name,
                     columns: fk.local,
-                    foreignTable: target,
-                    foreignColumns: fk.foreign,
+                    referencedTable: target,
+                    referencedColumns: fk.foreign,
                     onUpdate: action(fk.onupdate ?? 'NO ACTION'),
                     onDelete: action(fk.ondelete ?? 'NO ACTION'),
                     deferrable: null,
                     initially: null,
-                    provenance: ['database'],
                 };
             });
             // MySQL and MariaDB unique constraints are unique indexes; listed there.
-            const constraints: Constraint[] = state.checks.map((check, n) => ({
-                id: `${tid}:constraint:${check.name === '' ? `check${String(n)}` : check.name}`,
+            const constraints: ConstraintModel[] = state.checks.map((check, n) => ({
                 kind: 'check',
+                id: constraintId(tid, check.name === '' ? `check${String(n)}` : check.name),
                 name: check.name,
-                columns: referencedColumns(check.sqltext, facts.map((c) => c.name)),
                 expression: check.sqltext,
-                provenance: ['database'],
+                columns: referencedColumns(check.sqltext, facts.map((c) => c.name)),
             }));
             return {
                 id: tid,
                 name,
                 schema,
                 comment: state.comment,
-                note: null,
-                owner: owner(name),
+                ownership: owner(name),
                 primaryKey: primary.get(name) ?? [],
                 columns: facts.map((c) => column(c, false)),
                 indexes: indexes.get(name) ?? [],
                 foreignKeys,
                 constraints,
-                provenance: ['database'],
-            } satisfies Table;
+            } satisfies TableModel;
         });
     }
 
@@ -223,7 +221,7 @@ export class MySQLReader {
         }
     }
 
-    private async indexes(schema: string): Promise<{ indexes: Map<string, Index[]>; primary: Map<string, string[]> }> {
+    private async indexes(schema: string): Promise<{ indexes: Map<string, IndexModel[]>; primary: Map<string, string[]> }> {
         const available = new Set(
             (
                 await this.session.rows(
@@ -242,7 +240,7 @@ export class MySQLReader {
             const key = `${str(row[0])}\u0000${str(row[1])}`;
             grouped.set(key, [...(grouped.get(key) ?? []), row]);
         }
-        const indexes = new Map<string, Index[]>();
+        const indexes = new Map<string, IndexModel[]>();
         const primary = new Map<string, string[]>();
         for (const rows of grouped.values()) {
             const first = rows[0] ?? [];
@@ -256,7 +254,7 @@ export class MySQLReader {
                 const length = r[6] === null || r[6] === undefined ? 0 : Number(r[6]);
                 return part(columnName, columnName !== null ? null : str(r[4]).split("\\'").join("'") || null, {
                     order: text(r[5]) === 'D' ? 'desc' : null,
-                    length: length && method !== 'spatial' ? length : null,
+                    prefixLength: length && method !== 'spatial' ? length : null,
                 });
             });
             const options: Record<string, boolean> = {};
@@ -274,10 +272,9 @@ export class MySQLReader {
                 ...(indexes.get(table) ?? []),
                 indexEntry(tid, name, parts, {
                     unique: !Number(first[2]),
-                    primary: isPrimary,
-                    backs: isPrimary ? { kind: 'primary_key', constraint: null } : null,
+                    enforces: isPrimary ? { kind: 'primary_key' } : null,
                     method,
-                    dialectOptions: Object.keys(options).length > 0 ? { mysql: { options } } : null,
+                    dialectOptions: Object.keys(options).length > 0 ? { mysql: options } : null,
                 }),
             ]);
         }

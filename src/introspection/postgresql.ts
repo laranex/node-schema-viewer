@@ -1,24 +1,8 @@
 // PostgreSQL catalogs, read as python-schema-viewer reads them through SQLAlchemy's PostgreSQL Inspector plus its own
 // pg_index query (introspection/catalog.py), with the SQL written out here.
-import {
-    action,
-    column,
-    identifier,
-    indexEntry,
-    owner,
-    part,
-    referencedColumns,
-    str,
-    stripOuterParens,
-    text,
-    type ColumnFacts,
-    type Constraint,
-    type ForeignKey,
-    type Index,
-    type Part,
-    type Row,
-    type Table,
-} from './common.js';
+import { constraintId, foreignKeyId } from '../schema/ids.js';
+import type { ConstraintModel, ForeignKeyModel, IndexModel, KeyPartModel, TableModel } from '../schema/model.js';
+import { action, column, indexEntry, owner, part, referencedColumns, str, stripOuterParens, text, type ColumnFacts, type Row } from './common.js';
 import type { Session } from './readonly.js';
 
 // format_type() names SQLAlchemy recognizes, with what python-schema-viewer reads from the reflected type: the
@@ -113,7 +97,7 @@ export class PostgreSQLReader {
         return (await this.session.rows("SELECT nspname::text FROM pg_namespace WHERE nspname NOT LIKE 'pg\\_%' ORDER BY 1")).map((r) => str(r[0]));
     }
 
-    async tables(schema: string): Promise<Table[]> {
+    async tables(schema: string): Promise<TableModel[]> {
         const rows = (sql: string): Promise<Row[]> => this.session.rows(sql, [schema]);
         const relations = "n.nspname = $1 AND c.relkind IN ('r', 'p') AND c.relpersistence <> 't'";
         const names = (await rows(`SELECT c.relname::text FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE ${relations} AND NOT c.relispartition`)).map(
@@ -181,41 +165,37 @@ export class PostgreSQLReader {
             const tid = this.tableId(schema, name);
             const facts = (columns.get(name) ?? []).map((row) => this.column(row, schema));
             const pk = primary.get(name)?.columns ?? [];
-            const constraints: Constraint[] = (uniques.get(name) ?? []).map((row) => ({
-                id: `${tid}:constraint:${str(row[1])}`,
+            const constraints: ConstraintModel[] = (uniques.get(name) ?? []).map((row) => ({
                 kind: 'unique',
+                id: constraintId(tid, str(row[1])),
                 name: str(row[1]),
                 columns: row[2] as string[],
-                expression: null,
-                provenance: ['database'],
             }));
             for (const row of checks.get(name) ?? []) {
                 const match = CHECK.exec(str(row[2]));
                 const expression = match === null ? '' : stripOuterParens(match[1] ?? '');
                 constraints.push({
-                    id: `${tid}:constraint:${str(row[1])}`,
                     kind: 'check',
+                    id: constraintId(tid, str(row[1])),
                     name: str(row[1]),
-                    columns: referencedColumns(expression, facts.map((c) => c.name)),
                     expression,
-                    provenance: ['database'],
+                    columns: referencedColumns(expression, facts.map((c) => c.name)),
                 });
             }
-            const foreignKeys: ForeignKey[] = (foreign.get(name) ?? []).map((row) => {
+            const foreignKeys: ForeignKeyModel[] = (foreign.get(name) ?? []).map((row) => {
                 const target = this.tableId(str(row[2]), str(row[3]));
                 const columnNames = row[4] as string[];
                 const targetColumns = row[5] as string[];
                 return {
-                    id: identifier('foreign_key', tid, str(row[1]), identifier(...columnNames), target, identifier(...targetColumns)),
+                    id: foreignKeyId(tid, str(row[1]), columnNames, target, targetColumns),
                     name: str(row[1]),
                     columns: columnNames,
-                    foreignTable: target,
-                    foreignColumns: targetColumns,
+                    referencedTable: target,
+                    referencedColumns: targetColumns,
                     onUpdate: action(ACTION_CODES[str(row[6])] ?? 'NO ACTION'),
                     onDelete: row[10] === true ? null : action(ACTION_CODES[str(row[7])] ?? 'NO ACTION'),
                     deferrable: row[8] === true,
                     initially: row[9] === true ? 'DEFERRED' : 'IMMEDIATE',
-                    provenance: ['database'],
                 };
             });
             return {
@@ -223,15 +203,13 @@ export class PostgreSQLReader {
                 name,
                 schema,
                 comment: comments.get(name) ?? null,
-                note: null,
-                owner: owner(name),
+                ownership: owner(name),
                 primaryKey: pk,
                 columns: facts.map((c) => column(c, false)),
                 indexes: indexes.get(name) ?? [],
                 foreignKeys,
                 constraints,
-                provenance: ['database'],
-            } satisfies Table;
+            } satisfies TableModel;
         });
     }
 
@@ -311,7 +289,7 @@ export class PostgreSQLReader {
         };
     }
 
-    private async indexes(schema: string, primary: Map<string, { name: string; columns: string[] }>): Promise<Map<string, Index[]>> {
+    private async indexes(schema: string, primary: Map<string, { name: string; columns: string[] }>): Promise<Map<string, IndexModel[]>> {
         const nullsNotDistinct = this.version(15) ? 'i.indnullsnotdistinct' : 'false';
         const rows = await this.session.rows(
             'SELECT t.relname::text, c.relname::text, i.indisprimary, i.indisunique, con.conrelid IS NOT NULL, ' +
@@ -336,8 +314,8 @@ export class PostgreSQLReader {
             [schema],
         );
         const methods = new Map<string, string>();
-        const out = new Map<string, Index[]>();
-        const add = (table: string, index: Index): void => {
+        const out = new Map<string, IndexModel[]>();
+        const add = (table: string, index: IndexModel): void => {
             out.set(table, [...(out.get(table) ?? []), index]);
         };
         for (const row of rows) {
@@ -379,14 +357,14 @@ export class PostgreSQLReader {
                     sorting.set(elements[n] ?? null, found);
                 }
             });
-            const parts: Part[] = columnNames.map((columnName, n) => {
+            const parts: KeyPartModel[] = columnNames.map((columnName, n) => {
                 const key = elements[n] ?? null;
                 const flags = sorting.get(key) ?? [];
                 return part(columnName, columnName === null ? key : null, {
                     order: flags.includes('desc') ? 'desc' : null,
                     nulls: flags.includes('nulls_last') ? 'last' : flags.includes('nulls_first') ? 'first' : null,
                     collation: collations[n] ?? null,
-                    opclass: ops.get(key) ?? null,
+                    operatorClass: ops.get(key) ?? null,
                 });
             });
             const predicate = text(row[7]);
@@ -394,11 +372,11 @@ export class PostgreSQLReader {
                 table,
                 indexEntry(tid, name, parts, {
                     unique: row[3] === true,
-                    backs: row[4] === true ? { kind: 'unique_constraint', constraint: `${tid}:constraint:${name}` } : null,
+                    enforces: row[4] === true ? { kind: 'unique_constraint', constraint: constraintId(tid, name) } : null,
                     method: str(row[6]),
                     predicate: predicate === '' ? null : predicate,
                     included,
-                    dialectOptions: row[9] === true ? { postgresql: { options: { nullsNotDistinct: true } } } : null,
+                    dialectOptions: row[9] === true ? { postgresql: { nullsNotDistinct: true } } : null,
                 }),
             );
         }
@@ -411,7 +389,7 @@ export class PostgreSQLReader {
                         tid,
                         pk.name,
                         pk.columns.map((c) => part(c)),
-                        { unique: true, primary: true, backs: { kind: 'primary_key', constraint: null }, method: methods.get(`${table}\u0000${pk.name}`) ?? 'btree' },
+                        { unique: true, enforces: { kind: 'primary_key' }, method: methods.get(`${table}\u0000${pk.name}`) ?? 'btree' },
                     ),
                 );
             }

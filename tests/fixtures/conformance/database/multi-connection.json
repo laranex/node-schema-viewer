@@ -1,54 +1,113 @@
 {
-  "format": "laranex-schema",
-  "version": "1.0",
-  "source": "database",
-  "generator": {
-    "name": "python-schema-viewer",
-    "orm": null
-  },
-  "note": null,
+  "comparisons": [],
   "connections": [
     {
-      "id": "connection:analytics",
-      "name": "analytics",
-      "driver": "mysql",
-      "defaultSchema": "<database>",
       "coverage": {
         "database": {
           "complete": true,
-          "schemas": [
-            "<database>"
-          ],
           "features": {
-            "tables": "complete",
-            "columns": "complete",
+            "checkConstraints": "complete",
             "columnTypes": "complete",
-            "defaults": "complete",
+            "columns": "complete",
             "comments": "complete",
-            "primaryKeys": "complete",
+            "defaults": "complete",
             "foreignKeys": "complete",
-            "referentialActions": "complete",
-            "indexes": "complete",
+            "includedColumns": "not_applicable",
             "indexExpressions": "complete",
             "indexPredicates": "not_applicable",
-            "includedColumns": "not_applicable",
-            "uniqueConstraints": "complete",
-            "checkConstraints": "complete",
+            "indexes": "complete",
             "models": "not_applicable",
-            "relationships": "not_applicable"
-          }
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": [
+            "<database>"
+          ]
         },
         "declared": null
       },
+      "defaultSchema": "<database>",
+      "driver": "mysql",
+      "id": "connection:analytics",
+      "name": "analytics",
       "tables": [
         {
-          "provenance": [
-            "database"
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "int",
+              "typeName": "int"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "payload",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "json",
+              "typeName": "json"
+            }
           ],
-          "id": "[\"analytics\",null,\"audit_log\"]",
-          "name": "audit_log",
-          "schema": "<database>",
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"analytics\",null,\"audit_log\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"analytics\",null,\"audit_log\"]:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "audit_log",
           "note": null,
           "owner": {
             "kind": "application",
@@ -57,258 +116,316 @@
           "primaryKey": [
             "id"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
-              "autoIncrement": true,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "payload",
-              "type": "json",
-              "typeName": "json",
-              "nullable": true,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
+          "provenance": [
+            "database"
           ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"analytics\",null,\"audit_log\"]:index:PRIMARY",
-              "name": "PRIMARY",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": []
+          "schema": "<database>"
         },
         {
-          "provenance": [
-            "database"
-          ],
-          "id": "[\"analytics\",null,\"line_notes\"]",
-          "name": "line_notes",
-          "schema": "<database>",
-          "comment": null,
-          "note": null,
-          "owner": {
-            "kind": "application",
-            "package": null
-          },
-          "primaryKey": [
-            "id"
-          ],
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
-            },
-            {
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
+              "timezone": null,
+              "type": "int",
+              "typeName": "int"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
               "name": "order_id",
-              "type": "int",
-              "typeName": "int",
+              "note": null,
               "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
               "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
               "provenance": [
                 "database"
               ],
-              "name": "line_no",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "int",
+              "typeName": "int"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "line_no",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "int",
+              "typeName": "int"
             }
           ],
-          "indexes": [
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"analytics\",null,\"line_notes\"]:index:PRIMARY",
-              "name": "PRIMARY",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"analytics\",null,\"line_notes\"]:index:line_notes_line_fk",
-              "name": "line_notes_line_fk",
-              "parts": [
-                {
-                  "column": "order_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "line_no",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
               "columns": [
                 "order_id",
                 "line_no"
               ],
-              "expression": false,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"analytics\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
-              "name": "line_notes_line_fk",
-              "columns": [
+              "deferrable": null,
+              "foreignColumns": [
                 "order_id",
                 "line_no"
               ],
               "foreignTable": "[\"analytics\",null,\"order_lines\"]",
-              "foreignColumns": [
-                "order_id",
-                "line_no"
-              ],
-              "onUpdate": "NO ACTION",
+              "id": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"analytics\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
+              "initially": null,
+              "name": "line_notes_line_fk",
               "onDelete": "NO ACTION",
-              "deferrable": null,
-              "initially": null
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
             }
           ],
-          "constraints": []
-        },
-        {
+          "id": "[\"analytics\",null,\"line_notes\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"analytics\",null,\"line_notes\"]:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"analytics\",null,\"line_notes\"]:index:line_notes_line_fk",
+              "included": [],
+              "method": "btree",
+              "name": "line_notes_line_fk",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "order_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "line_no",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "line_notes",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
           "provenance": [
             "database"
           ],
-          "id": "[\"analytics\",null,\"memberships\"]",
-          "name": "memberships",
-          "schema": "<database>",
+          "schema": "<database>"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "int",
+              "typeName": "int"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "team_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "int",
+              "typeName": "int"
+            }
+          ],
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"analytics\",null,\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"memberships\\\"]\",\"memberships_ibfk_1\",\"[\\\"user_id\\\"]\",\"[\\\"analytics\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": null,
+              "name": "memberships_ibfk_1",
+              "onDelete": "NO ACTION",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            },
+            {
+              "columns": [
+                "team_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"analytics\",null,\"teams\"]",
+              "id": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"memberships\\\"]\",\"memberships_ibfk_2\",\"[\\\"team_id\\\"]\",\"[\\\"analytics\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": null,
+              "name": "memberships_ibfk_2",
+              "onDelete": "NO ACTION",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"analytics\",null,\"memberships\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"analytics\",null,\"memberships\"]:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "team_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"analytics\",null,\"memberships\"]:index:team_id",
+              "included": [],
+              "method": "btree",
+              "name": "team_id",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "team_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "memberships",
           "note": null,
           "owner": {
             "kind": "application",
@@ -318,165 +435,112 @@
             "user_id",
             "team_id"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "user_id",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "team_id",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"analytics\",null,\"memberships\"]:index:PRIMARY",
-              "name": "PRIMARY",
-              "parts": [
-                {
-                  "column": "user_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "team_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "user_id",
-                "team_id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"analytics\",null,\"memberships\"]:index:team_id",
-              "name": "team_id",
-              "parts": [
-                {
-                  "column": "team_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "team_id"
-              ],
-              "expression": false,
-              "unique": false,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"memberships\\\"]\",\"memberships_ibfk_1\",\"[\\\"user_id\\\"]\",\"[\\\"analytics\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": "memberships_ibfk_1",
-              "columns": [
-                "user_id"
-              ],
-              "foreignTable": "[\"analytics\",null,\"users\"]",
-              "foreignColumns": [
-                "id"
-              ],
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION",
-              "deferrable": null,
-              "initially": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"memberships\\\"]\",\"memberships_ibfk_2\",\"[\\\"team_id\\\"]\",\"[\\\"analytics\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": "memberships_ibfk_2",
-              "columns": [
-                "team_id"
-              ],
-              "foreignTable": "[\"analytics\",null,\"teams\"]",
-              "foreignColumns": [
-                "id"
-              ],
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION",
-              "deferrable": null,
-              "initially": null
-            }
-          ],
-          "constraints": []
-        },
-        {
           "provenance": [
             "database"
           ],
-          "id": "[\"analytics\",null,\"order_lines\"]",
-          "name": "order_lines",
-          "schema": "<database>",
+          "schema": "<database>"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "order_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "int",
+              "typeName": "int"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "line_no",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "int",
+              "typeName": "int"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "amount",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "decimal(10,2)",
+              "typeName": "decimal"
+            }
+          ],
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"analytics\",null,\"order_lines\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"analytics\",null,\"order_lines\"]:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "order_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "line_no",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "order_lines",
           "note": null,
           "owner": {
             "kind": "application",
@@ -486,237 +550,110 @@
             "order_id",
             "line_no"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "order_id",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "line_no",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "amount",
-              "type": "decimal(10,2)",
-              "typeName": "decimal",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"analytics\",null,\"order_lines\"]:index:PRIMARY",
-              "name": "PRIMARY",
-              "parts": [
-                {
-                  "column": "order_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "line_no",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "order_id",
-                "line_no"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": []
-        },
-        {
           "provenance": [
             "database"
           ],
-          "id": "[\"analytics\",null,\"teams\"]",
-          "name": "teams",
-          "schema": "<database>",
-          "comment": null,
-          "note": null,
-          "owner": {
-            "kind": "application",
-            "package": null
-          },
-          "primaryKey": [
-            "id"
-          ],
+          "schema": "<database>"
+        },
+        {
           "columns": [
             {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "id",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
-              "autoIncrement": true,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "int",
+              "typeName": "int"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "name",
-              "type": "varchar(100)",
-              "typeName": "varchar",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "varchar(100)",
+              "typeName": "varchar"
             }
           ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"analytics\",null,\"teams\"]",
           "indexes": [
             {
-              "provenance": [
-                "database"
-              ],
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
               "id": "[\"analytics\",null,\"teams\"]:index:PRIMARY",
+              "included": [],
+              "method": "btree",
               "name": "PRIMARY",
+              "partial": false,
               "parts": [
                 {
+                  "collation": null,
                   "column": "id",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 }
               ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
               "predicate": null,
-              "included": []
-            },
-            {
               "provenance": [
                 "database"
               ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
               "id": "[\"analytics\",null,\"teams\"]:index:name",
+              "included": [],
+              "method": "btree",
               "name": "name",
+              "partial": false,
               "parts": [
                 {
+                  "collation": null,
                   "column": "name",
                   "expression": null,
-                  "order": null,
-                  "nulls": null,
                   "length": null,
-                  "collation": null,
-                  "opclass": null
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
                 }
               ],
-              "columns": [
-                "name"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
               "predicate": null,
-              "included": []
+              "provenance": [
+                "database"
+              ],
+              "unique": true
             }
           ],
-          "foreignKeys": [],
-          "constraints": []
-        },
-        {
-          "provenance": [
-            "database"
-          ],
-          "id": "[\"analytics\",null,\"users\"]",
-          "name": "users",
-          "schema": "<database>",
-          "comment": null,
+          "name": "teams",
           "note": null,
           "owner": {
             "kind": "application",
@@ -725,244 +662,201 @@
           "primaryKey": [
             "id"
           ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "<database>"
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "int",
-              "typeName": "int",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "email",
-              "type": "varchar(320)",
-              "typeName": "varchar",
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
               "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
               "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
               "provenance": [
                 "database"
               ],
-              "name": "team_id",
+              "timezone": null,
               "type": "int",
-              "typeName": "int",
-              "nullable": true,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "typeName": "int"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "created_at",
-              "type": "datetime",
-              "typeName": "datetime",
-              "nullable": false,
+              "timezone": null,
+              "type": "varchar(320)",
+              "typeName": "varchar"
+            },
+            {
               "autoIncrement": false,
-              "timezone": false,
               "collation": null,
+              "comment": null,
+              "default": null,
               "enum": null,
+              "generated": null,
+              "name": "team_id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "int",
+              "typeName": "int"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
               "default": {
                 "kind": "expression",
                 "value": "CURRENT_TIMESTAMP"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "status",
-              "type": "varchar(20)",
-              "typeName": "varchar",
-              "nullable": false,
+              "timezone": false,
+              "type": "datetime",
+              "typeName": "datetime"
+            },
+            {
               "autoIncrement": false,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "literal",
                 "value": "'archived'"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "legacy_flag",
-              "type": "tinyint(1)",
-              "typeName": "tinyint",
-              "nullable": true,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "varchar(20)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "legacy_flag",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "tinyint(1)",
+              "typeName": "tinyint"
             }
           ],
-          "indexes": [
+          "comment": null,
+          "constraints": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"analytics\",null,\"users\"]:index:PRIMARY",
-              "name": "PRIMARY",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"analytics\",null,\"users\"]:index:ix_users_email",
-              "name": "ix_users_email",
-              "parts": [
-                {
-                  "column": "email",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
               "columns": [
                 "email"
               ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": [
-            {
-              "provenance": [
-                "database"
-              ],
+              "expression": "(length(`email`) > 3)",
               "id": "[\"analytics\",null,\"users\"]:constraint:users_email_length",
               "kind": "check",
               "name": "users_email_length",
-              "columns": [
-                "email"
-              ],
-              "expression": "(length(`email`) > 3)"
+              "provenance": [
+                "database"
+              ]
             }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "connection:default",
-      "name": "default",
-      "driver": "pgsql",
-      "defaultSchema": "public",
-      "coverage": {
-        "database": {
-          "complete": true,
-          "schemas": [
-            "public"
           ],
-          "features": {
-            "tables": "complete",
-            "columns": "complete",
-            "columnTypes": "complete",
-            "defaults": "complete",
-            "comments": "complete",
-            "primaryKeys": "complete",
-            "foreignKeys": "complete",
-            "referentialActions": "complete",
-            "indexes": "complete",
-            "indexExpressions": "complete",
-            "indexPredicates": "complete",
-            "includedColumns": "complete",
-            "uniqueConstraints": "complete",
-            "checkConstraints": "complete",
-            "models": "not_applicable",
-            "relationships": "not_applicable"
-          }
-        },
-        "declared": null
-      },
-      "tables": [
-        {
-          "provenance": [
-            "database"
+          "foreignKeys": [],
+          "id": "[\"analytics\",null,\"users\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"analytics\",null,\"users\"]:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"analytics\",null,\"users\"]:index:ix_users_email",
+              "included": [],
+              "method": "btree",
+              "name": "ix_users_email",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
           ],
-          "id": "[\"default\",null,\"audit_log\"]",
-          "name": "audit_log",
-          "schema": "public",
-          "comment": null,
+          "name": "users",
           "note": null,
           "owner": {
             "kind": "application",
@@ -971,92 +865,123 @@
           "primaryKey": [
             "id"
           ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "<database>"
+        }
+      ]
+    },
+    {
+      "coverage": {
+        "database": {
+          "complete": true,
+          "features": {
+            "checkConstraints": "complete",
+            "columnTypes": "complete",
+            "columns": "complete",
+            "comments": "complete",
+            "defaults": "complete",
+            "foreignKeys": "complete",
+            "includedColumns": "complete",
+            "indexExpressions": "complete",
+            "indexPredicates": "complete",
+            "indexes": "complete",
+            "models": "not_applicable",
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": [
+            "public"
+          ]
+        },
+        "declared": null
+      },
+      "defaultSchema": "public",
+      "driver": "postgresql",
+      "id": "connection:default",
+      "name": "default",
+      "tables": [
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "sequence",
                 "value": "nextval('\"public\".audit_log_id_seq'::regclass)"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "payload",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "payload",
-              "type": "jsonb",
-              "typeName": "jsonb",
-              "nullable": true,
-              "autoIncrement": false,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "jsonb",
+              "typeName": "jsonb"
             }
           ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"default\",null,\"audit_log\"]",
           "indexes": [
             {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"audit_log\"]:index:audit_log_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "audit_log_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
               "provenance": [
                 "database"
               ],
-              "id": "[\"default\",null,\"audit_log\"]:index:audit_log_pkey",
-              "name": "audit_log_pkey",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
+              "unique": true
             }
           ],
-          "foreignKeys": [],
-          "constraints": []
-        },
-        {
-          "provenance": [
-            "database"
-          ],
-          "id": "[\"default\",null,\"line_notes\"]",
-          "name": "line_notes",
-          "schema": "public",
-          "comment": null,
+          "name": "audit_log",
           "note": null,
           "owner": {
             "kind": "application",
@@ -1065,131 +990,260 @@
           "primaryKey": [
             "id"
           ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "sequence",
                 "value": "nextval('\"public\".line_notes_id_seq'::regclass)"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
               "name": "order_id",
-              "type": "integer",
-              "typeName": "integer",
+              "note": null,
               "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
               "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
             },
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "line_no",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
               "autoIncrement": false,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "line_no",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "id": "[\"default\",null,\"line_notes\"]:index:line_notes_pkey",
-              "name": "line_notes_pkey",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
             }
           ],
+          "comment": null,
+          "constraints": [],
           "foreignKeys": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"default\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
-              "name": "line_notes_line_fk",
               "columns": [
+                "order_id",
+                "line_no"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
                 "order_id",
                 "line_no"
               ],
               "foreignTable": "[\"default\",null,\"order_lines\"]",
-              "foreignColumns": [
-                "order_id",
-                "line_no"
-              ],
-              "onUpdate": "NO ACTION",
+              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"default\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "line_notes_line_fk",
               "onDelete": "NO ACTION",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
             }
           ],
-          "constraints": []
-        },
-        {
+          "id": "[\"default\",null,\"line_notes\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"line_notes\"]:index:line_notes_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "line_notes_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "line_notes",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
           "provenance": [
             "database"
           ],
-          "id": "[\"default\",null,\"memberships\"]",
-          "name": "memberships",
-          "schema": "public",
+          "schema": "public"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "team_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            }
+          ],
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "team_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"default\",null,\"teams\"]",
+              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"memberships\\\"]\",\"memberships_team_id_fkey\",\"[\\\"team_id\\\"]\",\"[\\\"default\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "memberships_team_id_fkey",
+              "onDelete": "NO ACTION",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            },
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"default\",null,\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"memberships\\\"]\",\"memberships_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"default\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "memberships_user_id_fkey",
+              "onDelete": "NO ACTION",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"default\",null,\"memberships\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"memberships\"]:index:memberships_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "memberships_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "team_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "memberships",
           "note": null,
           "owner": {
             "kind": "application",
@@ -1199,136 +1253,112 @@
             "user_id",
             "team_id"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "user_id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "team_id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"memberships\"]:index:memberships_pkey",
-              "name": "memberships_pkey",
-              "parts": [
-                {
-                  "column": "user_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "team_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "user_id",
-                "team_id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"memberships\\\"]\",\"memberships_team_id_fkey\",\"[\\\"team_id\\\"]\",\"[\\\"default\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": "memberships_team_id_fkey",
-              "columns": [
-                "team_id"
-              ],
-              "foreignTable": "[\"default\",null,\"teams\"]",
-              "foreignColumns": [
-                "id"
-              ],
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"memberships\\\"]\",\"memberships_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"default\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": "memberships_user_id_fkey",
-              "columns": [
-                "user_id"
-              ],
-              "foreignTable": "[\"default\",null,\"users\"]",
-              "foreignColumns": [
-                "id"
-              ],
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
-            }
-          ],
-          "constraints": []
-        },
-        {
           "provenance": [
             "database"
           ],
-          "id": "[\"default\",null,\"order_lines\"]",
-          "name": "order_lines",
-          "schema": "public",
+          "schema": "public"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "order_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "line_no",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "amount",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(10,2)",
+              "typeName": "numeric"
+            }
+          ],
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"default\",null,\"order_lines\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"order_lines\"]:index:order_lines_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "order_lines_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "order_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "line_no",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "order_lines",
           "note": null,
           "owner": {
             "kind": "application",
@@ -1338,256 +1368,129 @@
             "order_id",
             "line_no"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "order_id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "line_no",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "amount",
-              "type": "numeric(10,2)",
-              "typeName": "numeric",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"order_lines\"]:index:order_lines_pkey",
-              "name": "order_lines_pkey",
-              "parts": [
-                {
-                  "column": "order_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "line_no",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "order_id",
-                "line_no"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": []
-        },
-        {
           "provenance": [
             "database"
           ],
-          "id": "[\"default\",null,\"teams\"]",
-          "name": "teams",
-          "schema": "public",
-          "comment": null,
-          "note": null,
-          "owner": {
-            "kind": "application",
-            "package": null
-          },
-          "primaryKey": [
-            "id"
-          ],
+          "schema": "public"
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "sequence",
                 "value": "nextval('\"public\".teams_id_seq'::regclass)"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "name",
-              "type": "character varying(100)",
-              "typeName": "varchar",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "character varying(100)",
+              "typeName": "varchar"
             }
           ],
-          "indexes": [
+          "comment": null,
+          "constraints": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"teams\"]:index:teams_name_key",
-              "name": "teams_name_key",
-              "parts": [
-                {
-                  "column": "name",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
               "columns": [
                 "name"
               ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": {
-                "kind": "unique_constraint",
-                "constraint": "[\"default\",null,\"teams\"]:constraint:teams_name_key"
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"teams\"]:index:teams_pkey",
-              "name": "teams_pkey",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": [
-            {
-              "provenance": [
-                "database"
-              ],
+              "expression": null,
               "id": "[\"default\",null,\"teams\"]:constraint:teams_name_key",
               "kind": "unique",
               "name": "teams_name_key",
-              "columns": [
-                "name"
-              ],
-              "expression": null
+              "provenance": [
+                "database"
+              ]
             }
-          ]
-        },
-        {
-          "provenance": [
-            "database"
           ],
-          "id": "[\"default\",null,\"users\"]",
-          "name": "users",
-          "schema": "public",
-          "comment": null,
+          "foreignKeys": [],
+          "id": "[\"default\",null,\"teams\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": "[\"default\",null,\"teams\"]:constraint:teams_name_key",
+                "kind": "unique_constraint"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"teams\"]:index:teams_name_key",
+              "included": [],
+              "method": "btree",
+              "name": "teams_name_key",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "name",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"teams\"]:index:teams_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "teams_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "teams",
           "note": null,
           "owner": {
             "kind": "application",
@@ -1596,245 +1499,295 @@
           "primaryKey": [
             "id"
           ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "integer",
-              "typeName": "integer",
-              "nullable": false,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "sequence",
                 "value": "nextval('\"public\".users_id_seq'::regclass)"
               },
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "email",
-              "type": "character varying(320)",
-              "typeName": "varchar",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
               "enum": null,
-              "default": null,
-              "ormDefault": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "team_id",
+              "timezone": null,
               "type": "integer",
-              "typeName": "integer",
-              "nullable": true,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "typeName": "integer"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "created_at",
-              "type": "timestamp without time zone",
-              "typeName": "timestamp",
-              "nullable": false,
+              "timezone": null,
+              "type": "character varying(320)",
+              "typeName": "varchar"
+            },
+            {
               "autoIncrement": false,
-              "timezone": false,
               "collation": null,
+              "comment": null,
+              "default": null,
               "enum": null,
+              "generated": null,
+              "name": "team_id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
               "default": {
                 "kind": "expression",
                 "value": "CURRENT_TIMESTAMP"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "status",
-              "type": "character varying(20)",
-              "typeName": "varchar",
-              "nullable": false,
+              "timezone": false,
+              "type": "timestamp without time zone",
+              "typeName": "timestamp"
+            },
+            {
               "autoIncrement": false,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "literal",
                 "value": "'archived'::character varying"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(20)",
+              "typeName": "varchar"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "legacy_flag",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "legacy_flag",
-              "type": "boolean",
-              "typeName": "boolean",
-              "nullable": true,
-              "autoIncrement": false,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "boolean",
+              "typeName": "boolean"
             }
           ],
-          "indexes": [
+          "comment": null,
+          "constraints": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"users\"]:index:ix_users_email",
-              "name": "ix_users_email",
-              "parts": [
-                {
-                  "column": "email",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
               "columns": [
                 "email"
               ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": null,
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"default\",null,\"users\"]:index:users_pkey",
-              "name": "users_pkey",
-              "parts": [
-                {
-                  "column": "id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": "btree",
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": [
-            {
-              "provenance": [
-                "database"
-              ],
+              "expression": "length(email::text) > 3",
               "id": "[\"default\",null,\"users\"]:constraint:users_email_length",
               "kind": "check",
               "name": "users_email_length",
-              "columns": [
-                "email"
-              ],
-              "expression": "length(email::text) > 3"
+              "provenance": [
+                "database"
+              ]
             }
-          ]
+          ],
+          "foreignKeys": [],
+          "id": "[\"default\",null,\"users\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"default\",null,\"users\"]:index:ix_users_email",
+              "included": [],
+              "method": "btree",
+              "name": "ix_users_email",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"default\",null,\"users\"]:index:users_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "users_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
         }
       ]
     },
     {
-      "id": "connection:local",
-      "name": "local",
-      "driver": "sqlite",
-      "defaultSchema": null,
       "coverage": {
         "database": {
           "complete": false,
-          "schemas": null,
           "features": {
-            "tables": "complete",
-            "columns": "complete",
+            "checkConstraints": "partial",
             "columnTypes": "complete",
-            "defaults": "complete",
+            "columns": "complete",
             "comments": "not_applicable",
-            "primaryKeys": "complete",
+            "defaults": "complete",
             "foreignKeys": "complete",
-            "referentialActions": "complete",
-            "indexes": "complete",
+            "includedColumns": "not_applicable",
             "indexExpressions": "complete",
             "indexPredicates": "complete",
-            "includedColumns": "not_applicable",
-            "uniqueConstraints": "complete",
-            "checkConstraints": "partial",
+            "indexes": "complete",
             "models": "not_applicable",
-            "relationships": "not_applicable"
-          }
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": null
         },
         "declared": null
       },
+      "defaultSchema": null,
+      "driver": "sqlite",
+      "id": "connection:local",
+      "name": "local",
       "tables": [
         {
-          "provenance": [
-            "database"
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "payload",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "TEXT",
+              "typeName": "text"
+            }
           ],
-          "id": "[\"local\",null,\"audit_log\"]",
-          "name": "audit_log",
-          "schema": null,
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"local\",null,\"audit_log\"]",
+          "indexes": [],
+          "name": "audit_log",
           "note": null,
           "owner": {
             "kind": "application",
@@ -1843,153 +1796,228 @@
           "primaryKey": [
             "id"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": true,
-              "autoIncrement": true,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "payload",
-              "type": "TEXT",
-              "typeName": "text",
-              "nullable": true,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
+          "provenance": [
+            "database"
           ],
-          "indexes": [],
-          "foreignKeys": [],
-          "constraints": []
+          "schema": null
         },
         {
-          "provenance": [
-            "database"
-          ],
-          "id": "[\"local\",null,\"line_notes\"]",
-          "name": "line_notes",
-          "schema": null,
-          "comment": null,
-          "note": null,
-          "owner": {
-            "kind": "application",
-            "package": null
-          },
-          "primaryKey": [
-            "id"
-          ],
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": true,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
-            },
-            {
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
               "name": "order_id",
-              "type": "INTEGER",
-              "typeName": "integer",
+              "note": null,
               "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
               "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
               "provenance": [
                 "database"
               ],
-              "name": "line_no",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "line_no",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
             }
           ],
-          "indexes": [],
+          "comment": null,
+          "constraints": [],
           "foreignKeys": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"local\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
-              "name": "line_notes_line_fk",
               "columns": [
                 "order_id",
                 "line_no"
               ],
-              "foreignTable": "[\"local\",null,\"order_lines\"]",
+              "deferrable": false,
               "foreignColumns": [
                 "order_id",
                 "line_no"
               ],
-              "onUpdate": "NO ACTION",
+              "foreignTable": "[\"local\",null,\"order_lines\"]",
+              "id": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"local\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "line_notes_line_fk",
               "onDelete": "NO ACTION",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
             }
           ],
-          "constraints": []
-        },
-        {
+          "id": "[\"local\",null,\"line_notes\"]",
+          "indexes": [],
+          "name": "line_notes",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
           "provenance": [
             "database"
           ],
-          "id": "[\"local\",null,\"memberships\"]",
-          "name": "memberships",
-          "schema": null,
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "team_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            }
+          ],
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "team_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"local\",null,\"teams\"]",
+              "id": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"memberships\\\"]\",null,\"[\\\"team_id\\\"]\",\"[\\\"local\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": null,
+              "onDelete": "NO ACTION",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            },
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"local\",null,\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"memberships\\\"]\",null,\"[\\\"user_id\\\"]\",\"[\\\"local\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": null,
+              "onDelete": "NO ACTION",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"local\",null,\"memberships\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"local\",null,\"memberships\"]:index:sqlite_autoindex_memberships_1",
+              "included": [],
+              "method": null,
+              "name": "sqlite_autoindex_memberships_1",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "team_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "memberships",
           "note": null,
           "owner": {
             "kind": "application",
@@ -1999,136 +2027,112 @@
             "user_id",
             "team_id"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "user_id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "team_id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"local\",null,\"memberships\"]:index:sqlite_autoindex_memberships_1",
-              "name": "sqlite_autoindex_memberships_1",
-              "parts": [
-                {
-                  "column": "user_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "team_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "user_id",
-                "team_id"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": null,
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"memberships\\\"]\",null,\"[\\\"team_id\\\"]\",\"[\\\"local\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": null,
-              "columns": [
-                "team_id"
-              ],
-              "foreignTable": "[\"local\",null,\"teams\"]",
-              "foreignColumns": [
-                "id"
-              ],
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"memberships\\\"]\",null,\"[\\\"user_id\\\"]\",\"[\\\"local\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
-              "name": null,
-              "columns": [
-                "user_id"
-              ],
-              "foreignTable": "[\"local\",null,\"users\"]",
-              "foreignColumns": [
-                "id"
-              ],
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION",
-              "deferrable": false,
-              "initially": "IMMEDIATE"
-            }
-          ],
-          "constraints": []
-        },
-        {
           "provenance": [
             "database"
           ],
-          "id": "[\"local\",null,\"order_lines\"]",
-          "name": "order_lines",
-          "schema": null,
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "order_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "line_no",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "amount",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "NUMERIC(10, 2)",
+              "typeName": "numeric"
+            }
+          ],
           "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"local\",null,\"order_lines\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"local\",null,\"order_lines\"]:index:sqlite_autoindex_order_lines_1",
+              "included": [],
+              "method": null,
+              "name": "sqlite_autoindex_order_lines_1",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "order_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "line_no",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "order_lines",
           "note": null,
           "owner": {
             "kind": "application",
@@ -2138,218 +2142,95 @@
             "order_id",
             "line_no"
           ],
-          "columns": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "order_id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "line_no",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "amount",
-              "type": "NUMERIC(10, 2)",
-              "typeName": "numeric",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            }
-          ],
-          "indexes": [
-            {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"local\",null,\"order_lines\"]:index:sqlite_autoindex_order_lines_1",
-              "name": "sqlite_autoindex_order_lines_1",
-              "parts": [
-                {
-                  "column": "order_id",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                },
-                {
-                  "column": "line_no",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
-              "columns": [
-                "order_id",
-                "line_no"
-              ],
-              "expression": false,
-              "unique": true,
-              "primary": true,
-              "backs": {
-                "kind": "primary_key",
-                "constraint": null
-              },
-              "method": null,
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": []
-        },
-        {
           "provenance": [
             "database"
           ],
-          "id": "[\"local\",null,\"teams\"]",
-          "name": "teams",
-          "schema": null,
-          "comment": null,
-          "note": null,
-          "owner": {
-            "kind": "application",
-            "package": null
-          },
-          "primaryKey": [
-            "id"
-          ],
+          "schema": null
+        },
+        {
           "columns": [
             {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": true,
-              "autoIncrement": true,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "INTEGER",
+              "typeName": "integer"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "name",
-              "type": "VARCHAR(100)",
-              "typeName": "varchar",
-              "nullable": false,
-              "autoIncrement": false,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "VARCHAR(100)",
+              "typeName": "varchar"
             }
           ],
-          "indexes": [
+          "comment": null,
+          "constraints": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"local\",null,\"teams\"]:index:sqlite_autoindex_teams_1",
-              "name": "sqlite_autoindex_teams_1",
-              "parts": [
-                {
-                  "column": "name",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
               "columns": [
                 "name"
               ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": null,
-              "method": null,
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": [
-            {
-              "provenance": [
-                "database"
-              ],
+              "expression": null,
               "id": "[\"local\",null,\"teams\"]:constraint:0",
               "kind": "unique",
               "name": null,
-              "columns": [
-                "name"
-              ],
-              "expression": null
+              "provenance": [
+                "database"
+              ]
             }
-          ]
-        },
-        {
-          "provenance": [
-            "database"
           ],
-          "id": "[\"local\",null,\"users\"]",
-          "name": "users",
-          "schema": null,
-          "comment": null,
+          "foreignKeys": [],
+          "id": "[\"local\",null,\"teams\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"local\",null,\"teams\"]:index:sqlite_autoindex_teams_1",
+              "included": [],
+              "method": null,
+              "name": "sqlite_autoindex_teams_1",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "name",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "teams",
           "note": null,
           "owner": {
             "kind": "application",
@@ -2358,362 +2239,389 @@
           "primaryKey": [
             "id"
           ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
           "columns": [
             {
-              "provenance": [
-                "database"
-              ],
-              "name": "id",
-              "type": "INTEGER",
-              "typeName": "integer",
-              "nullable": true,
               "autoIncrement": true,
-              "timezone": null,
               "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
               "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "email",
-              "type": "VARCHAR(320)",
-              "typeName": "varchar",
-              "nullable": false,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
               "default": null,
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
-              "provenance": [
-                "database"
-              ],
-              "name": "team_id",
-              "type": "INTEGER",
-              "typeName": "integer",
+              "name": "id",
+              "note": null,
               "nullable": true,
-              "autoIncrement": false,
-              "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
               "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
               "provenance": [
                 "database"
               ],
-              "name": "created_at",
-              "type": "DATETIME",
-              "typeName": "datetime",
-              "nullable": false,
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
               "autoIncrement": false,
-              "timezone": false,
               "collation": null,
+              "comment": null,
+              "default": null,
               "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "VARCHAR(320)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "team_id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
               "default": {
                 "kind": "expression",
                 "value": "CURRENT_TIMESTAMP"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
-            },
-            {
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "status",
-              "type": "VARCHAR(20)",
-              "typeName": "varchar",
-              "nullable": false,
+              "timezone": false,
+              "type": "DATETIME",
+              "typeName": "datetime"
+            },
+            {
               "autoIncrement": false,
-              "timezone": null,
               "collation": null,
-              "enum": null,
+              "comment": null,
               "default": {
                 "kind": "literal",
                 "value": "'archived'"
               },
-              "ormDefault": null,
+              "enum": null,
               "generated": null,
-              "comment": null,
-              "note": null
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "VARCHAR(20)",
+              "typeName": "varchar"
             },
             {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "legacy_flag",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
               "provenance": [
                 "database"
               ],
-              "name": "legacy_flag",
-              "type": "BOOLEAN",
-              "typeName": "boolean",
-              "nullable": true,
-              "autoIncrement": false,
               "timezone": null,
-              "collation": null,
-              "enum": null,
-              "default": null,
-              "ormDefault": null,
-              "generated": null,
-              "comment": null,
-              "note": null
+              "type": "BOOLEAN",
+              "typeName": "boolean"
             }
           ],
-          "indexes": [
+          "comment": null,
+          "constraints": [
             {
-              "provenance": [
-                "database"
-              ],
-              "id": "[\"local\",null,\"users\"]:index:ix_users_email",
-              "name": "ix_users_email",
-              "parts": [
-                {
-                  "column": "email",
-                  "expression": null,
-                  "order": null,
-                  "nulls": null,
-                  "length": null,
-                  "collation": null,
-                  "opclass": null
-                }
-              ],
               "columns": [
                 "email"
               ],
-              "expression": false,
-              "unique": true,
-              "primary": false,
-              "backs": null,
-              "method": null,
-              "partial": false,
-              "predicate": null,
-              "included": []
-            }
-          ],
-          "foreignKeys": [],
-          "constraints": [
-            {
-              "provenance": [
-                "database"
-              ],
+              "expression": "length(email) > 3",
               "id": "[\"local\",null,\"users\"]:constraint:users_email_length",
               "kind": "check",
               "name": "users_email_length",
-              "columns": [
-                "email"
-              ],
-              "expression": "length(email) > 3"
+              "provenance": [
+                "database"
+              ]
             }
-          ]
+          ],
+          "foreignKeys": [],
+          "id": "[\"local\",null,\"users\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"local\",null,\"users\"]:index:ix_users_email",
+              "included": [],
+              "method": null,
+              "name": "ix_users_email",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
         }
       ]
     }
   ],
-  "models": [],
-  "relationships": [],
+  "derivedLinks": [],
+  "diagnostics": [],
+  "format": "laranex-schema",
+  "generator": {
+    "name": "python-schema-viewer",
+    "orm": null
+  },
+  "inferredAssociations": [],
   "links": [
     {
-      "id": "l13fb7558f06d6ec9",
-      "from": {
-        "table": "[\"default\",null,\"memberships\"]",
-        "columns": [
-          "team_id"
-        ]
-      },
-      "to": {
-        "table": "[\"default\",null,\"teams\"]",
-        "columns": [
-          "id"
-        ]
-      },
       "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"memberships\\\"]\",\"memberships_team_id_fkey\",\"[\\\"team_id\\\"]\",\"[\\\"default\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "team_id"
+        ],
+        "table": "[\"default\",null,\"memberships\"]"
+      },
+      "id": "l13fb7558f06d6ec9",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"default\",null,\"teams\"]"
+      }
     },
     {
-      "id": "l1b6e154c8fcf5859",
-      "from": {
-        "table": "[\"analytics\",null,\"line_notes\"]",
-        "columns": [
-          "order_id",
-          "line_no"
-        ]
-      },
-      "to": {
-        "table": "[\"analytics\",null,\"order_lines\"]",
-        "columns": [
-          "order_id",
-          "line_no"
-        ]
-      },
       "foreignKey": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"analytics\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
+      "from": {
+        "columns": [
+          "order_id",
+          "line_no"
+        ],
+        "table": "[\"analytics\",null,\"line_notes\"]"
+      },
+      "id": "l1b6e154c8fcf5859",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "order_id",
+          "line_no"
+        ],
+        "table": "[\"analytics\",null,\"order_lines\"]"
+      }
     },
     {
-      "id": "l29df85c1ee066584",
-      "from": {
-        "table": "[\"local\",null,\"line_notes\"]",
-        "columns": [
-          "order_id",
-          "line_no"
-        ]
-      },
-      "to": {
-        "table": "[\"local\",null,\"order_lines\"]",
-        "columns": [
-          "order_id",
-          "line_no"
-        ]
-      },
       "foreignKey": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"local\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
+      "from": {
+        "columns": [
+          "order_id",
+          "line_no"
+        ],
+        "table": "[\"local\",null,\"line_notes\"]"
+      },
+      "id": "l29df85c1ee066584",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "order_id",
+          "line_no"
+        ],
+        "table": "[\"local\",null,\"order_lines\"]"
+      }
     },
     {
-      "id": "l2f8ff07914dcee59",
-      "from": {
-        "table": "[\"local\",null,\"memberships\"]",
-        "columns": [
-          "team_id"
-        ]
-      },
-      "to": {
-        "table": "[\"local\",null,\"teams\"]",
-        "columns": [
-          "id"
-        ]
-      },
       "foreignKey": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"memberships\\\"]\",null,\"[\\\"team_id\\\"]\",\"[\\\"local\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
-      "relationships": [],
-      "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
-    },
-    {
-      "id": "lc106039d5ec858e9",
       "from": {
-        "table": "[\"analytics\",null,\"memberships\"]",
         "columns": [
           "team_id"
-        ]
+        ],
+        "table": "[\"local\",null,\"memberships\"]"
       },
+      "id": "l2f8ff07914dcee59",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
       "to": {
-        "table": "[\"analytics\",null,\"teams\"]",
         "columns": [
           "id"
-        ]
-      },
+        ],
+        "table": "[\"local\",null,\"teams\"]"
+      }
+    },
+    {
       "foreignKey": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"memberships\\\"]\",\"memberships_ibfk_2\",\"[\\\"team_id\\\"]\",\"[\\\"analytics\\\",null,\\\"teams\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "team_id"
+        ],
+        "table": "[\"analytics\",null,\"memberships\"]"
+      },
+      "id": "lc106039d5ec858e9",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
-    },
-    {
-      "id": "ldae2346d394e13d9",
-      "from": {
-        "table": "[\"analytics\",null,\"memberships\"]",
-        "columns": [
-          "user_id"
-        ]
-      },
       "to": {
-        "table": "[\"analytics\",null,\"users\"]",
         "columns": [
           "id"
-        ]
-      },
+        ],
+        "table": "[\"analytics\",null,\"teams\"]"
+      }
+    },
+    {
       "foreignKey": "[\"foreign_key\",\"[\\\"analytics\\\",null,\\\"memberships\\\"]\",\"memberships_ibfk_1\",\"[\\\"user_id\\\"]\",\"[\\\"analytics\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "[\"analytics\",null,\"memberships\"]"
+      },
+      "id": "ldae2346d394e13d9",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"analytics\",null,\"users\"]"
+      }
     },
     {
-      "id": "ldcee497bc53b556e",
-      "from": {
-        "table": "[\"default\",null,\"line_notes\"]",
-        "columns": [
-          "order_id",
-          "line_no"
-        ]
-      },
-      "to": {
-        "table": "[\"default\",null,\"order_lines\"]",
-        "columns": [
-          "order_id",
-          "line_no"
-        ]
-      },
       "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"line_notes\\\"]\",\"line_notes_line_fk\",\"[\\\"order_id\\\",\\\"line_no\\\"]\",\"[\\\"default\\\",null,\\\"order_lines\\\"]\",\"[\\\"order_id\\\",\\\"line_no\\\"]\"]",
+      "from": {
+        "columns": [
+          "order_id",
+          "line_no"
+        ],
+        "table": "[\"default\",null,\"line_notes\"]"
+      },
+      "id": "ldcee497bc53b556e",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
+      "to": {
+        "columns": [
+          "order_id",
+          "line_no"
+        ],
+        "table": "[\"default\",null,\"order_lines\"]"
+      }
     },
     {
-      "id": "lddacc8dc65279524",
-      "from": {
-        "table": "[\"default\",null,\"memberships\"]",
-        "columns": [
-          "user_id"
-        ]
-      },
-      "to": {
-        "table": "[\"default\",null,\"users\"]",
-        "columns": [
-          "id"
-        ]
-      },
       "foreignKey": "[\"foreign_key\",\"[\\\"default\\\",null,\\\"memberships\\\"]\",\"memberships_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"default\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
-      "relationships": [],
-      "state": "foreign_key",
-      "polymorphic": false,
-      "note": null
-    },
-    {
-      "id": "le850ef687fde6a7e",
       "from": {
-        "table": "[\"local\",null,\"memberships\"]",
         "columns": [
           "user_id"
-        ]
+        ],
+        "table": "[\"default\",null,\"memberships\"]"
       },
-      "to": {
-        "table": "[\"local\",null,\"users\"]",
-        "columns": [
-          "id"
-        ]
-      },
-      "foreignKey": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"memberships\\\"]\",null,\"[\\\"user_id\\\"]\",\"[\\\"local\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "id": "lddacc8dc65279524",
+      "note": null,
+      "polymorphic": false,
       "relationships": [],
       "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"default\",null,\"users\"]"
+      }
+    },
+    {
+      "foreignKey": "[\"foreign_key\",\"[\\\"local\\\",null,\\\"memberships\\\"]\",null,\"[\\\"user_id\\\"]\",\"[\\\"local\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "[\"local\",null,\"memberships\"]"
+      },
+      "id": "le850ef687fde6a7e",
+      "note": null,
       "polymorphic": false,
-      "note": null
+      "relationships": [],
+      "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"local\",null,\"users\"]"
+      }
     }
   ],
-  "derivedLinks": [],
-  "diagnostics": []
+  "migrations": [],
+  "models": [],
+  "note": null,
+  "relationships": [],
+  "source": "database",
+  "version": "2.0"
 }
