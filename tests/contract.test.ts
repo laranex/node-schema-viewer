@@ -9,16 +9,27 @@ import {
     buildGraph,
     canonicalJson,
     compareScopes,
+    comparisonDiagnostics,
+    coverageGaps,
+    coverageGapText,
+    expandComparisonRequests,
     gateDocument,
     inferAssociations,
     migrationHistory,
     migrationState,
+    scopeCovered,
+    storeComparisons,
     validateDocument,
     validateGateReport,
+    validateSeverityOverrides,
+    type Comparison,
     type CompareOptions,
+    type CoverageGap,
     type GateOptions,
     type GateReport,
     type MigrationRevision,
+    type RequestedComparison,
+    type SchemaDocument,
     type Scope,
 } from 'laranex-schema-viewer-ui/contract';
 import { loadDocument, snapshotBytes, writeDocument } from '../src/snapshot.js';
@@ -46,6 +57,11 @@ describe('shared valid fixtures', () => {
             assert.deepEqual(doc.inferredAssociations, inferAssociations(doc));
         });
 
+        test(`${name} is unchanged by storing the comparisons it holds`, () => {
+            const doc = loadDocument(join(VALID, name));
+            assert.deepEqual(storeComparisons(doc, doc.comparisons), doc);
+        });
+
         test(`${name} round-trips to identical canonical bytes`, (t) => {
             const bytes = readFileSync(join(VALID, name));
             const doc = loadDocument(join(VALID, name));
@@ -59,8 +75,9 @@ describe('shared valid fixtures', () => {
 });
 
 // Exactly the package's own fixture directories (the gate-report fixtures in fixtures/gate are a separate format, not
-// documents). laranex-schema-viewer-ui 0.3.0-dev.0 (cc11407) ships 14 valid and 53 invalid document fixtures, 6 valid
-// and 13 invalid gate report fixtures and 23 gate conformance cases.
+// documents). laranex-schema-viewer-ui 0.3.0-dev.0 (d9db852) ships 14 valid and 53 invalid document fixtures, 6 valid
+// and 13 invalid gate report fixtures, 23 gate conformance cases and 43 producer cases (13 request, 11 coverage-gap,
+// 9 override, 6 comparison-diagnostic and 4 store cases).
 describe('shared fixture inventory', () => {
     test('the installed package has 14 valid and 53 invalid document fixtures', () => {
         assert.equal(cases('fixtures/valid').length, 14);
@@ -71,6 +88,11 @@ describe('shared fixture inventory', () => {
         assert.equal(cases('fixtures/gate/valid').length, 6);
         assert.equal(cases('fixtures/gate/invalid').length, 13);
         assert.equal(cases('conformance/gate').length, 23);
+    });
+
+    test('the installed package has 43 request, coverage-gap, override, comparison-diagnostic and store cases', () => {
+        const counts = ['requests', 'coverage-gaps', 'overrides', 'comparison-diagnostics', 'store'].map((d) => cases(`conformance/${d}`).length);
+        assert.deepEqual(counts, [13, 11, 9, 6, 4]);
     });
 });
 
@@ -153,6 +175,56 @@ describe('gate conformance', () => {
             const report = gateDocument(c.input.document, { thresholds: c.input.thresholds, requested: c.input.requested });
             assert.deepEqual(report, c.expected);
             assert.equal(canonicalJson(report), canonicalJson(c.expected));
+        });
+    }
+});
+
+describe('requested comparison conformance', () => {
+    type Input = { document: Parameters<typeof expandComparisonRequests>[0]; requests: RequestedComparison[] };
+    for (const [name, c] of cases<Case<Input, unknown>>('conformance/requests')) {
+        test(`${name}: ${c.description}`, () => {
+            assert.deepEqual(expandComparisonRequests(c.input.document, c.input.requests), c.expected);
+        });
+    }
+});
+
+describe('coverage gap conformance', () => {
+    type Input = { document: Parameters<typeof coverageGaps>[0]; scope: Scope };
+    for (const [name, c] of cases<Case<Input, { gaps: CoverageGap[]; covered: boolean }>>('conformance/coverage-gaps')) {
+        test(`${name}: ${c.description}`, () => {
+            const { document, scope } = c.input;
+            const connection = document.connections.find((x) => x.id === scope.connection);
+            assert.ok(connection);
+            const coverage = document.source === 'declared' ? connection.coverage.declared : connection.coverage.database;
+            assert.deepEqual({ gaps: coverageGaps(document, scope), covered: scopeCovered(coverage, connection, scope.schema) }, c.expected);
+            assert.ok(c.expected.gaps.every((gap) => coverageGapText(gap).length > 0));
+        });
+    }
+});
+
+describe('severity override conformance', () => {
+    for (const [name, c] of cases<Case<{ overrides: unknown }, { errors: string[] }>>('conformance/overrides')) {
+        test(`${name}: ${c.description}`, () => {
+            assert.deepEqual(validateSeverityOverrides(c.input.overrides), c.expected.errors);
+        });
+    }
+});
+
+describe('comparison diagnostic conformance', () => {
+    type Input = { document: Parameters<typeof comparisonDiagnostics>[0]; comparison: Comparison };
+    for (const [name, c] of cases<Case<Input, { diagnostics: unknown }>>('conformance/comparison-diagnostics')) {
+        test(`${name}: ${c.description}`, () => {
+            assert.deepEqual(comparisonDiagnostics(c.input.document, c.input.comparison), c.expected.diagnostics);
+        });
+    }
+});
+
+describe('store conformance', () => {
+    type Input = { document: SchemaDocument; comparisons: Comparison[] };
+    for (const [name, c] of cases<Case<Input, { document: SchemaDocument }>>('conformance/store')) {
+        test(`${name}: ${c.description}`, () => {
+            assert.deepEqual(storeComparisons(c.input.document, c.input.comparisons), c.expected.document);
+            assert.deepEqual(validateDocument(c.expected.document, { strict: true }).errors, []);
         });
     }
 });
