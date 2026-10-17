@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
-import { addConfig, ConfigError, loadConfig, resolveSnapshot } from '../src/config.js';
+import { addConfig, comparisonOption, ConfigError, loadConfig, resolveSnapshot } from '../src/config.js';
 import { tempDir } from './helpers.js';
 
 function project(dir: string, data: unknown, text?: string): string {
@@ -11,19 +11,21 @@ function project(dir: string, data: unknown, text?: string): string {
     return path;
 }
 
+const NONE = { comparisons: [], check: { severity: null, certainty: null } };
+
 describe('config', () => {
     test('no package.json or no key means no configured output', (t) => {
         const dir = tempDir(t);
-        assert.deepEqual(loadConfig(dir), { output: null });
+        assert.deepEqual(loadConfig(dir), { output: null, ...NONE });
         project(dir, { name: 'app' });
-        assert.deepEqual(loadConfig(dir), { output: null });
+        assert.deepEqual(loadConfig(dir), { output: null, ...NONE });
         assert.equal(resolveSnapshot(undefined, dir), join(dir, 'schema-viewer.json'));
     });
 
     test('output resolves against the project root; an explicit snapshot wins', (t) => {
         const dir = tempDir(t);
         project(dir, { name: 'app', 'node-schema-viewer': { output: 'docs/schema.json' } });
-        assert.deepEqual(loadConfig(dir), { output: join(dir, 'docs', 'schema.json') });
+        assert.deepEqual(loadConfig(dir), { output: join(dir, 'docs', 'schema.json'), ...NONE });
         assert.equal(resolveSnapshot(undefined, dir), join(dir, 'docs', 'schema.json'));
         assert.equal(resolveSnapshot('/elsewhere/x.json', dir), '/elsewhere/x.json');
     });
@@ -73,7 +75,7 @@ describe('config', () => {
             text,
             '{\n    "name": "app",\n    "scripts": {\n        "test": "node --test"\n    },\n    "private": true,\n    "node-schema-viewer": {\n        "output": "docs/schema.json"\n    }\n}\n',
         );
-        assert.deepEqual(loadConfig(dir), { output: join(dir, 'docs', 'schema.json') });
+        assert.deepEqual(loadConfig(dir), { output: join(dir, 'docs', 'schema.json'), ...NONE });
     });
 
     test('init keeps tabs and the absence of a final newline', (t) => {
@@ -92,5 +94,107 @@ describe('config', () => {
         assert.equal(readFileSync(path, 'utf8'), before);
         project(dir, { name: 'app' });
         assert.throws(() => addConfig(dir, 'mysql://root@localhost/db'), /must not contain a URL/);
+    });
+
+    test('comparisons and check thresholds', (t) => {
+        const dir = tempDir(t);
+        project(dir, {
+            'node-schema-viewer': {
+                comparisons: [
+                    {
+                        baseline: { connection: 'app', schema: 'tenant_template' },
+                        target: { connection: 'app', schema: '*' },
+                        limit: 0,
+                        overrides: [
+                            { objectType: 'index', change: 'extra', severity: 'info' },
+                            { objectType: 'column', change: 'changed', field: 'comment', severity: 'warning' },
+                        ],
+                    },
+                    { baseline: { connection: 'primary' }, target: { connection: 'replica', schema: null } },
+                ],
+                check: { severity: 'error', certainty: 'likely' },
+            },
+        });
+        assert.deepEqual(loadConfig(dir), {
+            output: null,
+            comparisons: [
+                {
+                    baseline: { connection: 'app', schema: 'tenant_template' },
+                    target: { connection: 'app', schema: '*' },
+                    limit: 0,
+                    overrides: [
+                        { objectType: 'index', change: 'extra', field: null, severity: 'info' },
+                        { objectType: 'column', change: 'changed', field: 'comment', severity: 'warning' },
+                    ],
+                },
+                { baseline: { connection: 'primary', schema: null }, target: { connection: 'replica', schema: null }, limit: 500, overrides: [] },
+            ],
+            check: { severity: 'error', certainty: 'likely' },
+        });
+    });
+
+    test('rejects invalid comparisons and thresholds', (t) => {
+        const dir = tempDir(t);
+        const scope = { baseline: { connection: 'a' }, target: { connection: 'b' } };
+        for (const [section, message] of [
+            [{ comparisons: {} }, /comparisons must be an array of objects/],
+            [{ comparisons: [1] }, /comparisons must be an array of objects/],
+            [{ comparisons: [{ ...scope, extra: 1 }] }, /Unknown .*comparisons\[0\] keys: extra/],
+            [{ comparisons: [{ target: { connection: 'b' } }] }, /comparisons\[0\] baseline must be an object/],
+            [{ comparisons: [{ ...scope, baseline: { connection: 'a b' } }] }, /baseline needs connection, a connection name/],
+            [{ comparisons: [{ ...scope, baseline: { connection: 'a', schema: '*' } }] }, /baseline schema cannot be "\*"/],
+            [{ comparisons: [{ ...scope, target: { connection: 'b', schema: '' } }] }, /target schema must be a schema name \(never a URL\)/],
+            [{ comparisons: [{ ...scope, target: { connection: 'b', schema: 'u@h' } }] }, /target schema must be a schema name \(never a URL\)/],
+            [{ comparisons: [{ ...scope, target: { connection: 'b', port: 1 } }] }, /Unknown .*target keys: port/],
+            [{ comparisons: [{ baseline: { connection: 'a' }, target: { connection: 'a' } }] }, /compares a with itself/],
+            [{ comparisons: [{ ...scope, limit: -1 }] }, /limit must be a nonnegative integer/],
+            [{ comparisons: [{ ...scope, limit: 1.5 }] }, /limit must be a nonnegative integer/],
+            [{ comparisons: [{ ...scope, limit: true }] }, /limit must be a nonnegative integer/],
+            [{ comparisons: [{ ...scope, overrides: {} }] }, /overrides must be an array of objects/],
+            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'view', change: 'extra', severity: 'info' }] }] }, /objectType must be one of table, column, primaryKey, index, foreignKey, constraint/],
+            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'index', change: 'gone', severity: 'info' }] }] }, /change must be one of missing, extra, changed/],
+            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'index', change: 'extra', severity: 'fatal' }] }] }, /severity must be one of error, warning, info/],
+            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'index', change: 'extra', field: 'name', severity: 'info' }] }] }, /field applies to changed differences/],
+            [{ comparisons: [{ ...scope, overrides: [{ objectType: 'table', change: 'changed', field: 'type', severity: 'info' }] }] }, /a table field is one of comment/],
+            [{ comparisons: [{ ...scope, overrides: [{ object_type: 'table', change: 'changed', severity: 'info' }] }] }, /Unknown .* override keys: object_type/],
+            [{ check: [] }, /check must be an object/],
+            [{ check: { severity: 'fatal' } }, /check severity must be one of error, warning, info/],
+            [{ check: { certainty: 'maybe' } }, /check certainty must be one of certain, likely/],
+            [{ check: { fail: true } }, /Unknown .*check keys: fail/],
+        ] as const) {
+            project(dir, { 'node-schema-viewer': section });
+            assert.throws(() => loadConfig(dir), (error: Error) => error instanceof ConfigError && message.test(error.message), JSON.stringify(section));
+        }
+    });
+
+    test('comparisons never accept a URL, and errors never echo one', (t) => {
+        const dir = tempDir(t);
+        const secret = 'postgres://user:hunter2@db.internal/app';
+        for (const scope of [{ connection: secret }, { connection: 'a', schema: secret }, { connection: 'a', schema: 'user:hunter2@db' }, { connection: 'a', url: 'x' }]) {
+            project(dir, { 'node-schema-viewer': { comparisons: [{ baseline: scope, target: { connection: 'b' } }] } });
+            assert.throws(() => loadConfig(dir), (error: Error) => error instanceof ConfigError && !error.message.includes('hunter2'), JSON.stringify(scope));
+        }
+        for (const option of [secret, `a=${secret}`, `${secret}=b`, 'a=b:user:hunter2@db', 'a=b://hunter2']) {
+            assert.throws(() => comparisonOption(option), (error: Error) => error instanceof ConfigError && !error.message.includes('hunter2'), option);
+        }
+    });
+
+    test('BASELINE=TARGET options', () => {
+        assert.deepEqual(comparisonOption('app:tenant_a=app:*', 7), {
+            baseline: { connection: 'app', schema: 'tenant_a' },
+            target: { connection: 'app', schema: '*' },
+            limit: 7,
+            overrides: [],
+        });
+        assert.deepEqual(comparisonOption('primary=replica').target, { connection: 'replica', schema: null });
+        for (const [option, message] of [
+            ['app', /A comparison is BASELINE=TARGET/],
+            ['app:=b', /A comparison is BASELINE=TARGET/],
+            ['=b', /A comparison is BASELINE=TARGET/],
+            ['app:*=b', /Only a comparison target's schema can be "\*"/],
+            ['app:x=app:x', /not app:x with itself/],
+        ] as const) {
+            assert.throws(() => comparisonOption(option), message, option);
+        }
     });
 });
