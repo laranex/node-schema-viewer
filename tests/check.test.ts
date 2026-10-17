@@ -1,7 +1,7 @@
 // The check command (drift gate): request derivation, thresholds, exit codes, the summary, --output and failures.
 // Byte equality with the shared gate conformance cases and with python-schema-viewer is in parity.test.ts.
 import assert from 'node:assert/strict';
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, copyFileSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { canonicalJson, gateDocument, validateGateReport, type GateReport } from 'laranex-schema-viewer-ui/contract';
@@ -123,6 +123,19 @@ describe('check command', () => {
         assert.equal(failed.code, 2);
         assert.equal(failed.stdout, '');
         assert.match(failed.stderr, /^Error: /);
+        // A report that cannot be written exits 2 and leaves the previous one intact, with no temporary file.
+        const locked = join(dir, 'reports');
+        chmodSync(locked, 0o555);
+        try {
+            const denied = await runCli(['check', '--output', 'reports/gate.json'], { cwd: dir });
+            assert.equal(denied.code, 2);
+            assert.equal(denied.stdout, '');
+            assert.match(denied.stderr, /^Error: .*EACCES/);
+            assert.equal(readFileSync(join(locked, 'gate.json'), 'utf8'), json.stdout);
+            assert.deepEqual(readdirSync(locked), ['gate.json']);
+        } finally {
+            chmodSync(locked, 0o755);
+        }
     });
 
     test('usage, configuration and argument errors exit 2, never 0 or 1, and never echo URLs', async (t) => {

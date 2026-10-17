@@ -1,6 +1,6 @@
 // The compare command and module: scope pairs, wildcard expansion, the shared algorithm's results, --write.
 import assert from 'node:assert/strict';
-import { copyFileSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, copyFileSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { canonicalJson, compareScopes, storeComparisons, validateDocument, type Comparison, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
@@ -143,6 +143,23 @@ describe('compare command', () => {
         assert.equal(newer.code, 1);
         assert.match(newer.stderr, /is laranex-schema 2\.1; --write rewrites only 2\.0 documents/);
         assert.equal(readFileSync(path, 'utf8'), before);
+    });
+
+    test('--write exits 1 when the document cannot be written, leaving it intact and no temporary file', async (t) => {
+        const dir = join(tempDir(t), 'locked');
+        mkdirSync(dir);
+        const path = join(dir, 'schema.json');
+        copyFileSync(MULTI, path);
+        chmodSync(dir, 0o555);
+        try {
+            const run = await runCli(['compare', '--snapshot', path, 'primary=replica', '--write']);
+            assert.equal(run.code, 1);
+            assert.match(run.stderr, /^Error: .*EACCES/);
+            assert.deepEqual(readFileSync(path), readFileSync(MULTI));
+            assert.deepEqual(readdirSync(dir), ['schema.json']);
+        } finally {
+            chmodSync(dir, 0o755);
+        }
     });
 
     test('errors: nothing to compare, unknown connections, limits, malformed scopes and usage', async (t) => {
