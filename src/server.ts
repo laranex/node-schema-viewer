@@ -151,10 +151,6 @@ export function createViewerServer(options: ServeOptions): Server {
         const asset = routes.get(route);
         if (asset !== undefined) {
             send(response, 200, asset.body, asset.type, head);
-        } else if (route === '/favicon.ico') {
-            // Browsers ask for it unprompted; without one in the viewer build, 204 avoids a console error.
-            response.writeHead(204, COMMON_HEADERS);
-            response.end();
         } else {
             sendError(response, 404, 'Not found', head);
         }

@@ -180,11 +180,16 @@ describe('viewer server', () => {
         assert.match(missing, /^HTTP\/1\.1 403/);
     });
 
-    test('favicon.ico is 204 when the viewer build has none', async () => {
-        assert.ok(!manifest.files.some((f) => f.path === 'favicon.ico'));
-        const response = await request(port, '/favicon.ico');
-        assert.equal(response.status, 204);
-        assert.equal(response.body.length, 0);
+    test('serves the viewer build\'s favicon from its manifest', async () => {
+        for (const [path, type] of [['favicon.ico', 'image/x-icon'], ['favicon.svg', 'image/svg+xml']] as const) {
+            const entry = manifest.files.find((f) => f.path === path);
+            assert.ok(entry, `${path} is listed in the viewer manifest`);
+            const response = await request(port, `/${path}`);
+            assert.equal(response.status, 200);
+            assert.equal(response.headers['content-type'], type);
+            assert.equal(createHash('sha256').update(response.body).digest('hex'), entry.sha256);
+            assertSecurityHeaders(response, path);
+        }
     });
 
     test('the snapshot is re-read on each request: 503 while invalid', async () => {
@@ -229,21 +234,17 @@ describe('viewer server startup', () => {
         }
     });
 
-    test('serves favicon.ico from the manifest when the viewer build lists one', async (t) => {
+    test('favicon.ico is 404 when a viewer build has none, as in python-schema-viewer', async (t) => {
         const viewer = viewerCopy(tempDir(t));
-        const icon = Buffer.from([0, 0, 1, 0, 1, 0]);
-        writeFileSync(join(viewer, 'favicon.ico'), icon);
-        const data = JSON.parse(readFileSync(join(viewer, 'manifest.json'), 'utf8')) as { files: object[] };
-        data.files.push({ path: 'favicon.ico', size: icon.length, sha256: createHash('sha256').update(icon).digest('hex') });
+        const data = JSON.parse(readFileSync(join(viewer, 'manifest.json'), 'utf8')) as { files: { path: string }[] };
+        data.files = data.files.filter((f) => !f.path.startsWith('favicon.'));
         writeFileSync(join(viewer, 'manifest.json'), JSON.stringify(data));
         const server = createViewerServer({ snapshot: COMBINED, viewerDirectory: viewer });
         const port = await listen(server);
         try {
             const response = await request(port, '/favicon.ico');
-            assert.equal(response.status, 200);
-            assert.equal(response.headers['content-type'], 'image/x-icon');
-            assert.deepEqual(response.body, icon);
-            assertSecurityHeaders(response, 'favicon');
+            assert.equal(response.status, 404);
+            assertSecurityHeaders(response, 'favicon 404');
         } finally {
             server.closeAllConnections();
             await new Promise((resolve) => server.close(resolve));
