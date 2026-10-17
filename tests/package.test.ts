@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { Client } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
+import { adminUrl, serverDatabase, sqliteDatabase } from './databases.js';
 import { COMBINED, ROOT, tempDir } from './helpers.js';
 
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
@@ -21,10 +22,10 @@ describe('package', { timeout: 300_000 }, () => {
         const tarball = packed[0];
         assert.ok(tarball);
         const files = tarball.files.map((f) => f.path).sort();
-        for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js', 'dist/isolation/worker.js']) {
+        for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js', 'dist/isolation/worker.js', 'dist/introspection/worker.js']) {
             assert.ok(files.includes(required), required);
         }
-        assert.deepEqual(files.filter((f) => !/^(dist\/(isolation\/)?[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
+        assert.deepEqual(files.filter((f) => !/^(dist\/(isolation\/|introspection\/)?[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
 
         const project = join(dir, 'project');
         mkdirSync(project);
@@ -55,6 +56,23 @@ describe('package', { timeout: 300_000 }, () => {
             assert.equal(((await (await fetch(`${url}/snapshot.json`)).json()) as { source: string }).source, 'combined');
         } finally {
             child.kill('SIGTERM');
+        }
+
+        // Introspection from the installed layout, where the drivers are hoisted into the project's node_modules and
+        // the worker may read only their directories, never the project.
+        const sqlite = sqliteDatabase(['sqlite.sql']);
+        const postgres = adminUrl('postgres') === undefined ? null : await serverDatabase('postgres', ['drift-postgresql.sql']);
+        try {
+            const script =
+                "import { introspect } from 'node-schema-viewer'; const urls = JSON.parse(process.argv[1]); const out = [];" +
+                'for (const url of urls) { const d = await introspect({ url }); out.push(d.connections[0].driver + ":" + d.connections[0].tables.length); }' +
+                'console.log(out.join(" "));';
+            const urls = [sqlite.url, ...(postgres === null ? [] : [postgres.url('reader')])];
+            const output = execFileSync(process.execPath, ['--input-type=module', '-e', script, JSON.stringify(urls)], { cwd: project, encoding: 'utf8' });
+            assert.equal(output.trim(), ['sqlite:3', ...(postgres === null ? [] : ['pgsql:6'])].join(' '));
+        } finally {
+            sqlite.drop();
+            await postgres?.drop();
         }
 
         const client = new Client({ name: 'packaging-test', version: '0.0.0' });
