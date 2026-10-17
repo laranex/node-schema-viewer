@@ -54,6 +54,15 @@ describe('shared valid fixtures', () => {
     }
 });
 
+// Exactly the package's own fixture directories (the gate-report fixtures in fixtures/gate are a separate format, not
+// documents). laranex-schema-viewer-ui 0.3.0-dev.0 (bc80f0e) ships 13 valid and 52 invalid document fixtures.
+describe('shared fixture inventory', () => {
+    test('the installed package has 13 valid and 52 invalid document fixtures', () => {
+        assert.equal(cases('fixtures/valid').length, 13);
+        assert.equal(cases('fixtures/invalid').length, 52);
+    });
+});
+
 describe('shared invalid fixtures', () => {
     for (const [name, fixture] of cases<{ description: string; document: unknown; errors: string[]; strict: boolean }>('fixtures/invalid')) {
         test(`${name}: ${fixture.description}`, () => {
