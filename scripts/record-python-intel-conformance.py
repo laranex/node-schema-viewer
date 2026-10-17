@@ -9,8 +9,11 @@ databases (tenant schemas, mixed drivers, an omitted comparison, tables named li
 For every case below, the document is copied to schema-viewer.json in an empty temporary directory, with a
 pyproject.toml holding the case's configuration (given here in this package's camelCase JSON form), and
 `python -m laranex_schema_viewer ARGS` runs there. python-intel/cli.json records {pythonCommit, cases}: per case the
-document, configuration, arguments, exit code, stdout and, for --write, the SHA-256 of the rewritten document.
-tests/parity.test.ts runs node-schema-viewer the same way (configuration in package.json) and requires the same bytes.
+document, configuration, arguments, exit code, stdout, for an error (nothing on stdout) its stderr, and, for --write,
+the SHA-256 of the rewritten document. tests/parity.test.ts runs node-schema-viewer the same way (configuration in
+package.json) and requires the same bytes; in configuration errors, only the location (pyproject.toml's
+[[tool.laranex-schema-viewer.comparisons]] entry N, package.json's comparisons[N - 1]) and the override key's
+spelling (object_type, objectType) differ.
 
 Writes only python-intel/cli.json in this repository. --check fails when it would change.
 """
@@ -32,6 +35,13 @@ OUT = DIRECTORY / "cli.json"
 CHECK = "--check" in sys.argv
 
 TENANTS = {"baseline": {"connection": "app", "schema": "tenant_template"}, "target": {"connection": "app", "schema": "*"}}
+PRIMARY_MYSQL = {"baseline": {"connection": "primary"}, "target": {"connection": "mysql"}}
+DUPLICATED = {"comparisons": [PRIMARY_MYSQL, {**PRIMARY_MYSQL, "limit": 2}]}
+INVALID_OVERRIDES = {"comparisons": [{**PRIMARY_MYSQL, "overrides": [
+    {"objectType": "index", "change": "renamed", "severity": "info"},
+    {"objectType": "index", "change": "changed", "field": "comment", "severity": "info"},
+    {"objectType": "view", "change": "extra", "severity": "fatal"},
+]}]}
 OVERRIDES = [
     {"objectType": "index", "change": "extra", "severity": "info"},
     {"objectType": "column", "change": "changed", "field": "comment", "severity": "warning"},
@@ -49,6 +59,19 @@ CASES = [
     ("mixed-drivers", {}, ["compare", "mysql=mariadb"]),
     ("mixed-drivers", {}, ["compare", "--json", "primary=mariadb", "--limit", "3"]),
     ("mixed-drivers", {}, ["compare", "--write", "--json", "primary=mariadb", "--limit", "3"]),
+    # A "*" target that matches no schema: a configuration error for compare, comparison_not_found for check.
+    ("mixed-drivers", {}, ["compare", "primary:public=primary:*"]),
+    ("mixed-drivers", {}, ["check", "--json", "primary:public=primary:*"]),
+    ("mixed-drivers", {}, ["check", "primary:public=primary:*"]),
+    # A comparison requested twice, configured or named: compare exits 1, check 2, both with the shared message.
+    ("mixed-drivers", DUPLICATED, ["compare"]),
+    ("mixed-drivers", DUPLICATED, ["check"]),
+    ("mixed-drivers", DUPLICATED, ["check", "--json"]),
+    ("mixed-drivers", {}, ["compare", "primary=mysql", "mysql=mariadb", "primary=mysql"]),
+    ("mixed-drivers", {}, ["check", "--json", "primary=mysql", "mysql=mariadb", "primary=mysql"]),
+    # Invalid overrides: the shared validator's messages behind each configuration's own location.
+    ("mixed-drivers", INVALID_OVERRIDES, ["compare"]),
+    ("mixed-drivers", INVALID_OVERRIDES, ["check"]),
     ("postgresql-multi-tenant", {}, ["check", "--json"]),
     ("postgresql-multi-tenant", {}, ["check"]),
     ("postgresql-multi-tenant", {}, ["check", "--json", "app:tenant_template=app:*"]),
@@ -115,10 +138,13 @@ def run(document: str, config: dict, args: list[str]) -> dict:
         result = subprocess.run([sys.executable, "-B", "-m", "laranex_schema_viewer", *args], cwd=cwd,
                                 capture_output=True, env={"PYTHONPATH": str(PYTHON / "src"), "PATH": "/usr/bin:/bin",
                                                           "PYTHONDONTWRITEBYTECODE": "1", "LANG": "C.UTF-8"})
-        if result.returncode not in (0, 1, 2) or (result.returncode != 0 and not result.stdout):
+        error = result.returncode != 0 and not result.stdout
+        if result.returncode not in (0, 1, 2) or (error and not result.stderr.startswith(b"Error: ")):
             raise SystemExit(f"{document} {args}: exit {result.returncode}: {result.stderr.decode()}")
         case = {"document": document, "config": config, "args": args, "exitCode": result.returncode,
                 "stdout": result.stdout.decode("utf-8")}
+        if error:
+            case["stderr"] = result.stderr.decode("utf-8")
         if "--write" in args:
             case["written"] = hashlib.sha256(snapshot.read_bytes()).hexdigest()
         return case
