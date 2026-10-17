@@ -1,0 +1,14 @@
+Laranex Schema Viewer for Node.js is licensed under the MIT License.
+
+The viewer it serves is the prebuilt dist/viewer of Laranex Schema Viewer UI
+(laranex-schema-viewer-ui, https://github.com/laranex/schema-viewer-ui), MIT
+licensed, installed as an npm dependency and not copied into this package. Its
+NOTICE lists the fonts (SIL Open Font License 1.1), elkjs (Eclipse Public
+License 2.0) and other bundled packages.
+
+The laranex-schema contract (validation, canonical JSON, revisions and the
+graph builder) is also used from laranex-schema-viewer-ui, not duplicated.
+
+The read-only MCP query layer is a port of python-schema-viewer's query.py and
+mcp.py (MIT, Copyright (c) Laranex). tests/fixtures/conformance/documents
+contains contract fixtures from laranex-schema-viewer-ui (MIT).

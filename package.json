@@ -1,0 +1,60 @@
+{
+  "name": "laranex-schema-viewer",
+  "version": "0.1.0",
+  "description": "Serve the Laranex Schema Viewer and read-only MCP tools from saved laranex-schema documents.",
+  "license": "MIT",
+  "author": "Laranex",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laranex/node-schema-viewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/laranex/node-schema-viewer/issues"
+  },
+  "keywords": [
+    "erd",
+    "schema",
+    "database",
+    "mcp",
+    "laranex"
+  ],
+  "type": "module",
+  "bin": {
+    "laranex-schema-viewer": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "node scripts/clean.mjs dist && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "npm run build && node scripts/clean.mjs build && tsc -p tsconfig.test.json && node --test --test-concurrency=4 \"build/tests/**/*.test.js\"",
+    "test:package": "npm run build && node --test build/tests/package.test.js",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
+    "laranex-schema-viewer-ui": "0.1.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@modelcontextprotocol/client": "2.3.1",
+    "@types/node": "22.20.5",
+    "eslint": "10.13.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2"
+  }
+}
