@@ -15,8 +15,10 @@ const DESCRIPTIONS: Record<string, string> = {
     schema_get_table: "Read one section of a table, as the document's own objects, by the table's exact opaque ID.",
     schema_get_model: 'Read a model and the ORM relationships it declares, by exact model ID.',
     schema_get_relationships: 'Read declared ORM relationships (kind orm) or physical foreign keys (kind foreign_key), never mixed.',
+    schema_compare:
+        'Read the schema comparisons stored in the document (section comparisons) or their differences (section\ndifferences), by comparison ID or by baseline/target scope (CONNECTION or CONNECTION:SCHEMA), and filter\ndifferences by object_type, change, severity and certainty. Never computes or connects.',
 };
-const TOOLS = ['schema_get_model', 'schema_get_relationships', 'schema_get_table', 'schema_overview', 'schema_search'];
+const TOOLS = ['schema_compare', 'schema_get_model', 'schema_get_relationships', 'schema_get_table', 'schema_overview', 'schema_search'];
 
 interface Text {
     type: string;
@@ -49,7 +51,7 @@ describe('mcp over stdio', () => {
         await session.client.close();
     });
 
-    test('lists the five read-only tools with Python-compatible inputs', async () => {
+    test('lists the six read-only tools with Python-compatible inputs', async () => {
         const { tools } = await session.client.listTools();
         assert.deepEqual(tools.map((t) => t.name).sort(), TOOLS);
         for (const tool of tools) {
@@ -71,6 +73,9 @@ describe('mcp over stdio', () => {
         assert.deepEqual(byName.get('schema_get_relationships')?.inputSchema.required ?? [], []);
         const section = (byName.get('schema_get_table')?.inputSchema.properties as Record<string, { enum?: string[] }>).section;
         assert.deepEqual(section?.enum, SECTIONS);
+        const compare = byName.get('schema_compare')?.inputSchema;
+        assert.deepEqual(compare?.required ?? [], []);
+        assert.deepEqual(Object.keys(compare?.properties ?? {}), ['section', 'comparison', 'baseline', 'target', 'object_type', 'change', 'severity', 'certainty', 'limit', 'offset', 'revision']);
     });
 
     test('rejects invalid arguments as tool errors', async () => {
@@ -86,6 +91,9 @@ describe('mcp over stdio', () => {
             ['schema_get_table', { table: 'x', section: 'rows' }],
             ['schema_get_model', {}],
             ['schema_get_relationships', { kind: 'both' }],
+            ['schema_compare', { section: 'tables' }],
+            ['schema_compare', { section: 'differences', object_type: 'view' }],
+            ['schema_compare', { section: 'differences', severity: 'fatal' }],
         ];
         for (const [name, args] of invalid) {
             const result = await session.client.callTool({ name, arguments: args }).catch((error: unknown) => ({ isError: true, thrown: error }));
@@ -132,8 +140,8 @@ describe('mcp conformance over stdio with python-schema-viewer', () => {
     }
 
     test('compares every recorded call end to end', () => {
-        assert.equal(calls, 1470);
-        assert.equal(byteEqual, 1405);
+        assert.equal(calls, 1801);
+        assert.equal(byteEqual, 1633);
     });
 });
 

@@ -1,0 +1,3012 @@
+{
+  "comparisons": [
+    {
+      "baseline": {
+        "connection": "connection:app",
+        "schema": "tenant_template"
+      },
+      "complete": true,
+      "differences": [],
+      "id": "c1586f6a9817a6af2",
+      "omitted": 0,
+      "summary": {
+        "changed": 0,
+        "extra": 0,
+        "missing": 0
+      },
+      "target": {
+        "connection": "connection:app",
+        "schema": "public"
+      }
+    },
+    {
+      "baseline": {
+        "connection": "connection:app",
+        "schema": "tenant_template"
+      },
+      "complete": true,
+      "differences": [],
+      "id": "c4741bf073a445ff6",
+      "omitted": 0,
+      "summary": {
+        "changed": 0,
+        "extra": 0,
+        "missing": 0
+      },
+      "target": {
+        "connection": "connection:app",
+        "schema": "tenant_acme"
+      }
+    },
+    {
+      "baseline": {
+        "connection": "connection:app",
+        "schema": "tenant_template"
+      },
+      "complete": true,
+      "differences": [
+        {
+          "baseline": {
+            "id": null,
+            "label": "tenant_template.audit_log",
+            "table": "[\"app\",\"tenant_template\",\"audit_log\"]"
+          },
+          "certainty": "certain",
+          "change": "missing",
+          "fields": [],
+          "id": "xeecedbfce27359f5",
+          "key": [
+            "audit_log"
+          ],
+          "objectType": "table",
+          "severity": "error",
+          "target": null
+        },
+        {
+          "baseline": null,
+          "certainty": "certain",
+          "change": "extra",
+          "fields": [],
+          "id": "xdd8277c26188c626",
+          "key": [
+            "coupons"
+          ],
+          "objectType": "table",
+          "severity": "error",
+          "target": {
+            "id": null,
+            "label": "tenant_initech.coupons",
+            "table": "[\"app\",\"tenant_initech\",\"coupons\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": null,
+            "label": "tenant_template.orders.status",
+            "table": "[\"app\",\"tenant_template\",\"orders\"]"
+          },
+          "certainty": "likely",
+          "change": "changed",
+          "fields": [
+            {
+              "baseline": {
+                "kind": "literal",
+                "value": "'new'::character varying"
+              },
+              "field": "default",
+              "target": {
+                "kind": "literal",
+                "value": "'pending'::character varying"
+              }
+            }
+          ],
+          "id": "x5342d643d148775f",
+          "key": [
+            "orders",
+            "status"
+          ],
+          "objectType": "column",
+          "severity": "warning",
+          "target": {
+            "id": null,
+            "label": "tenant_initech.orders.status",
+            "table": "[\"app\",\"tenant_initech\",\"orders\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": null,
+            "label": "tenant_template.orders.total",
+            "table": "[\"app\",\"tenant_template\",\"orders\"]"
+          },
+          "certainty": "certain",
+          "change": "changed",
+          "fields": [
+            {
+              "baseline": "numeric(10,2)",
+              "field": "type",
+              "target": "numeric(12,2)"
+            }
+          ],
+          "id": "xb52d285438d94b66",
+          "key": [
+            "orders",
+            "total"
+          ],
+          "objectType": "column",
+          "severity": "warning",
+          "target": {
+            "id": null,
+            "label": "tenant_initech.orders.total",
+            "table": "[\"app\",\"tenant_initech\",\"orders\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": null,
+            "label": "tenant_template.users.name",
+            "table": "[\"app\",\"tenant_template\",\"users\"]"
+          },
+          "certainty": "certain",
+          "change": "changed",
+          "fields": [
+            {
+              "baseline": true,
+              "field": "nullable",
+              "target": false
+            }
+          ],
+          "id": "x1331bdc55bf21a00",
+          "key": [
+            "users",
+            "name"
+          ],
+          "objectType": "column",
+          "severity": "warning",
+          "target": {
+            "id": null,
+            "label": "tenant_initech.users.name",
+            "table": "[\"app\",\"tenant_initech\",\"users\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": "[\"app\",\"tenant_template\",\"orders\"]:index:orders_open_idx",
+            "label": "tenant_template.orders.orders_open_idx",
+            "table": "[\"app\",\"tenant_template\",\"orders\"]"
+          },
+          "certainty": "certain",
+          "change": "missing",
+          "fields": [],
+          "id": "xcb6fe2f6c34b2c8d",
+          "key": [
+            "orders",
+            "name",
+            "orders_open_idx"
+          ],
+          "objectType": "index",
+          "severity": "warning",
+          "target": null
+        },
+        {
+          "baseline": null,
+          "certainty": "certain",
+          "change": "extra",
+          "fields": [],
+          "id": "x43be44f5d05a1078",
+          "key": [
+            "orders",
+            "name",
+            "orders_status_idx"
+          ],
+          "objectType": "index",
+          "severity": "info",
+          "target": {
+            "id": "[\"app\",\"tenant_initech\",\"orders\"]:index:orders_status_idx",
+            "label": "tenant_initech.orders.orders_status_idx",
+            "table": "[\"app\",\"tenant_initech\",\"orders\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_template\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_template\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+            "label": "tenant_template.orders.orders_user_id_fkey",
+            "table": "[\"app\",\"tenant_template\",\"orders\"]"
+          },
+          "certainty": "certain",
+          "change": "changed",
+          "fields": [
+            {
+              "baseline": "CASCADE",
+              "field": "onDelete",
+              "target": "RESTRICT"
+            }
+          ],
+          "id": "x9e03cf9976b662a0",
+          "key": [
+            "orders",
+            "references",
+            "user_id->users(id)"
+          ],
+          "objectType": "foreignKey",
+          "severity": "warning",
+          "target": {
+            "id": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_initech\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_initech\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+            "label": "tenant_initech.orders.orders_user_id_fkey",
+            "table": "[\"app\",\"tenant_initech\",\"orders\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": "[\"app\",\"tenant_template\",\"orders\"]:constraint:orders_total_check",
+            "label": "tenant_template.orders.orders_total_check",
+            "table": "[\"app\",\"tenant_template\",\"orders\"]"
+          },
+          "certainty": "likely",
+          "change": "changed",
+          "fields": [
+            {
+              "baseline": "total >= 0::numeric",
+              "field": "expression",
+              "target": "total > 0::numeric"
+            }
+          ],
+          "id": "xedc2e8dd71f8c223",
+          "key": [
+            "orders",
+            "check",
+            "name",
+            "orders_total_check"
+          ],
+          "objectType": "constraint",
+          "severity": "warning",
+          "target": {
+            "id": "[\"app\",\"tenant_initech\",\"orders\"]:constraint:orders_total_check",
+            "label": "tenant_initech.orders.orders_total_check",
+            "table": "[\"app\",\"tenant_initech\",\"orders\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": "[\"app\",\"tenant_template\",\"users\"]:constraint:users_email_key",
+            "label": "tenant_template.users.users_email_key",
+            "table": "[\"app\",\"tenant_template\",\"users\"]"
+          },
+          "certainty": "certain",
+          "change": "missing",
+          "fields": [],
+          "id": "xf215a032141826fb",
+          "key": [
+            "users",
+            "unique",
+            "name",
+            "users_email_key"
+          ],
+          "objectType": "constraint",
+          "severity": "warning",
+          "target": null
+        }
+      ],
+      "id": "c4f74239e95eae7dd",
+      "omitted": 0,
+      "summary": {
+        "changed": 5,
+        "extra": 2,
+        "missing": 3
+      },
+      "target": {
+        "connection": "connection:app",
+        "schema": "tenant_initech"
+      }
+    },
+    {
+      "baseline": {
+        "connection": "connection:app",
+        "schema": "tenant_template"
+      },
+      "complete": true,
+      "differences": [
+        {
+          "baseline": {
+            "id": null,
+            "label": "tenant_template.orders",
+            "table": "[\"app\",\"tenant_template\",\"orders\"]"
+          },
+          "certainty": "certain",
+          "change": "changed",
+          "fields": [
+            {
+              "baseline": null,
+              "field": "comment",
+              "target": "Orders of Globex"
+            }
+          ],
+          "id": "xd27d385368b888ed",
+          "key": [
+            "orders"
+          ],
+          "objectType": "table",
+          "severity": "info",
+          "target": {
+            "id": null,
+            "label": "tenant_globex.orders",
+            "table": "[\"app\",\"tenant_globex\",\"orders\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": null,
+            "label": "tenant_template.users.email",
+            "table": "[\"app\",\"tenant_template\",\"users\"]"
+          },
+          "certainty": "certain",
+          "change": "changed",
+          "fields": [
+            {
+              "baseline": "character varying(255)",
+              "field": "type",
+              "target": "character varying(320)"
+            }
+          ],
+          "id": "x124a228e350d0e68",
+          "key": [
+            "users",
+            "email"
+          ],
+          "objectType": "column",
+          "severity": "warning",
+          "target": {
+            "id": null,
+            "label": "tenant_globex.users.email",
+            "table": "[\"app\",\"tenant_globex\",\"users\"]"
+          }
+        },
+        {
+          "baseline": null,
+          "certainty": "certain",
+          "change": "extra",
+          "fields": [],
+          "id": "x06a72ef2230fc5dd",
+          "key": [
+            "users",
+            "name",
+            "users_created_at_idx"
+          ],
+          "objectType": "index",
+          "severity": "info",
+          "target": {
+            "id": "[\"app\",\"tenant_globex\",\"users\"]:index:users_created_at_idx",
+            "label": "tenant_globex.users.users_created_at_idx",
+            "table": "[\"app\",\"tenant_globex\",\"users\"]"
+          }
+        }
+      ],
+      "id": "c80e22355e5dd1b45",
+      "omitted": 0,
+      "summary": {
+        "changed": 2,
+        "extra": 1,
+        "missing": 0
+      },
+      "target": {
+        "connection": "connection:app",
+        "schema": "tenant_globex"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "coverage": {
+        "database": {
+          "complete": true,
+          "features": {
+            "checkConstraints": "complete",
+            "columnTypes": "complete",
+            "columns": "complete",
+            "comments": "complete",
+            "defaults": "complete",
+            "foreignKeys": "complete",
+            "includedColumns": "complete",
+            "indexExpressions": "complete",
+            "indexPredicates": "complete",
+            "indexes": "complete",
+            "models": "not_applicable",
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": [
+            "public",
+            "tenant_template",
+            "tenant_acme",
+            "tenant_globex",
+            "tenant_initech"
+          ]
+        },
+        "declared": null
+      },
+      "defaultSchema": "public",
+      "driver": "postgresql",
+      "id": "connection:app",
+      "name": "app",
+      "tables": [
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_acme.audit_log_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "message",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"app\",\"tenant_acme\",\"audit_log\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_acme\",\"audit_log\"]:index:audit_log_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "audit_log_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "audit_log",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_acme"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_acme.orders_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "0"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "total",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(10,2)",
+              "typeName": "numeric"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "'new'::character varying"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(20)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "total"
+              ],
+              "expression": "total >= 0::numeric",
+              "id": "[\"app\",\"tenant_acme\",\"orders\"]:constraint:orders_total_check",
+              "kind": "check",
+              "name": "orders_total_check",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"app\",\"tenant_acme\",\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_acme\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_acme\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "orders_user_id_fkey",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"app\",\"tenant_acme\",\"orders\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_acme\",\"orders\"]:index:orders_open_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_open_idx",
+              "partial": true,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": "((status)::text <> 'closed'::text)",
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_acme\",\"orders\"]:index:orders_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "orders_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_acme\",\"orders\"]:index:orders_user_id_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_user_id_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_acme"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_acme.users_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "expression",
+                "value": "now()"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": true,
+              "type": "timestamp with time zone",
+              "typeName": "timestamptz"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "email"
+              ],
+              "expression": null,
+              "id": "[\"app\",\"tenant_acme\",\"users\"]:constraint:users_email_key",
+              "kind": "unique",
+              "name": "users_email_key",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [],
+          "id": "[\"app\",\"tenant_acme\",\"users\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": "[\"app\",\"tenant_acme\",\"users\"]:constraint:users_email_key",
+                "kind": "unique_constraint"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_acme\",\"users\"]:index:users_email_key",
+              "included": [],
+              "method": "btree",
+              "name": "users_email_key",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": true,
+              "id": "[\"app\",\"tenant_acme\",\"users\"]:index:users_lower_email_idx",
+              "included": [],
+              "method": "btree",
+              "name": "users_lower_email_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": null,
+                  "expression": "lower(email::text)",
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_acme\",\"users\"]:index:users_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "users_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_acme"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_globex.audit_log_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "message",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"app\",\"tenant_globex\",\"audit_log\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_globex\",\"audit_log\"]:index:audit_log_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "audit_log_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "audit_log",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_globex"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_globex.orders_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "0"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "total",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(10,2)",
+              "typeName": "numeric"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "'new'::character varying"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(20)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": "Orders of Globex",
+          "constraints": [
+            {
+              "columns": [
+                "total"
+              ],
+              "expression": "total >= 0::numeric",
+              "id": "[\"app\",\"tenant_globex\",\"orders\"]:constraint:orders_total_check",
+              "kind": "check",
+              "name": "orders_total_check",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"app\",\"tenant_globex\",\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_globex\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_globex\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "orders_user_id_fkey",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"app\",\"tenant_globex\",\"orders\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_globex\",\"orders\"]:index:orders_open_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_open_idx",
+              "partial": true,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": "((status)::text <> 'closed'::text)",
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_globex\",\"orders\"]:index:orders_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "orders_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_globex\",\"orders\"]:index:orders_user_id_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_user_id_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_globex"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_globex.users_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(320)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "expression",
+                "value": "now()"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": true,
+              "type": "timestamp with time zone",
+              "typeName": "timestamptz"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "email"
+              ],
+              "expression": null,
+              "id": "[\"app\",\"tenant_globex\",\"users\"]:constraint:users_email_key",
+              "kind": "unique",
+              "name": "users_email_key",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [],
+          "id": "[\"app\",\"tenant_globex\",\"users\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_globex\",\"users\"]:index:users_created_at_idx",
+              "included": [],
+              "method": "btree",
+              "name": "users_created_at_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "created_at",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": "[\"app\",\"tenant_globex\",\"users\"]:constraint:users_email_key",
+                "kind": "unique_constraint"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_globex\",\"users\"]:index:users_email_key",
+              "included": [],
+              "method": "btree",
+              "name": "users_email_key",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": true,
+              "id": "[\"app\",\"tenant_globex\",\"users\"]:index:users_lower_email_idx",
+              "included": [],
+              "method": "btree",
+              "name": "users_lower_email_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": null,
+                  "expression": "lower(email::text)",
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_globex\",\"users\"]:index:users_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "users_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_globex"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "code",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(40)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"app\",\"tenant_initech\",\"coupons\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_initech\",\"coupons\"]:index:coupons_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "coupons_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "code",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "coupons",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "code"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_initech"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_initech.orders_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "0"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "total",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(12,2)",
+              "typeName": "numeric"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "'pending'::character varying"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(20)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "total"
+              ],
+              "expression": "total > 0::numeric",
+              "id": "[\"app\",\"tenant_initech\",\"orders\"]:constraint:orders_total_check",
+              "kind": "check",
+              "name": "orders_total_check",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"app\",\"tenant_initech\",\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_initech\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_initech\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "orders_user_id_fkey",
+              "onDelete": "RESTRICT",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"app\",\"tenant_initech\",\"orders\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_initech\",\"orders\"]:index:orders_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "orders_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_initech\",\"orders\"]:index:orders_status_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_status_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "status",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_initech\",\"orders\"]:index:orders_user_id_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_user_id_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_initech"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_initech.users_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "expression",
+                "value": "now()"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": true,
+              "type": "timestamp with time zone",
+              "typeName": "timestamptz"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"app\",\"tenant_initech\",\"users\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": true,
+              "id": "[\"app\",\"tenant_initech\",\"users\"]:index:users_lower_email_idx",
+              "included": [],
+              "method": "btree",
+              "name": "users_lower_email_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": null,
+                  "expression": "lower(email::text)",
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_initech\",\"users\"]:index:users_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "users_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_initech"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_template.audit_log_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "message",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"app\",\"tenant_template\",\"audit_log\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_template\",\"audit_log\"]:index:audit_log_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "audit_log_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "audit_log",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_template"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_template.orders_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "0"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "total",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(10,2)",
+              "typeName": "numeric"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "'new'::character varying"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(20)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "total"
+              ],
+              "expression": "total >= 0::numeric",
+              "id": "[\"app\",\"tenant_template\",\"orders\"]:constraint:orders_total_check",
+              "kind": "check",
+              "name": "orders_total_check",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"app\",\"tenant_template\",\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_template\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_template\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "orders_user_id_fkey",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"app\",\"tenant_template\",\"orders\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_template\",\"orders\"]:index:orders_open_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_open_idx",
+              "partial": true,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": "((status)::text <> 'closed'::text)",
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_template\",\"orders\"]:index:orders_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "orders_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",\"tenant_template\",\"orders\"]:index:orders_user_id_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_user_id_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_template"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('tenant_template.users_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "expression",
+                "value": "now()"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": true,
+              "type": "timestamp with time zone",
+              "typeName": "timestamptz"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "email"
+              ],
+              "expression": null,
+              "id": "[\"app\",\"tenant_template\",\"users\"]:constraint:users_email_key",
+              "kind": "unique",
+              "name": "users_email_key",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [],
+          "id": "[\"app\",\"tenant_template\",\"users\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": "[\"app\",\"tenant_template\",\"users\"]:constraint:users_email_key",
+                "kind": "unique_constraint"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_template\",\"users\"]:index:users_email_key",
+              "included": [],
+              "method": "btree",
+              "name": "users_email_key",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": true,
+              "id": "[\"app\",\"tenant_template\",\"users\"]:index:users_lower_email_idx",
+              "included": [],
+              "method": "btree",
+              "name": "users_lower_email_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": null,
+                  "expression": "lower(email::text)",
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",\"tenant_template\",\"users\"]:index:users_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "users_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "tenant_template"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('\"public\".audit_log_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "message",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"app\",null,\"audit_log\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",null,\"audit_log\"]:index:audit_log_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "audit_log_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "audit_log",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('\"public\".orders_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "0"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "total",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(10,2)",
+              "typeName": "numeric"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "'new'::character varying"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(20)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "total"
+              ],
+              "expression": "total >= 0::numeric",
+              "id": "[\"app\",null,\"orders\"]:constraint:orders_total_check",
+              "kind": "check",
+              "name": "orders_total_check",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"app\",null,\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"app\\\",null,\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "orders_user_id_fkey",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"app\",null,\"orders\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",null,\"orders\"]:index:orders_open_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_open_idx",
+              "partial": true,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": "((status)::text <> 'closed'::text)",
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",null,\"orders\"]:index:orders_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "orders_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"app\",null,\"orders\"]:index:orders_user_id_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_user_id_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('\"public\".users_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "expression",
+                "value": "now()"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": true,
+              "type": "timestamp with time zone",
+              "typeName": "timestamptz"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "email"
+              ],
+              "expression": null,
+              "id": "[\"app\",null,\"users\"]:constraint:users_email_key",
+              "kind": "unique",
+              "name": "users_email_key",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [],
+          "id": "[\"app\",null,\"users\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": "[\"app\",null,\"users\"]:constraint:users_email_key",
+                "kind": "unique_constraint"
+              },
+              "expression": false,
+              "id": "[\"app\",null,\"users\"]:index:users_email_key",
+              "included": [],
+              "method": "btree",
+              "name": "users_email_key",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": true,
+              "id": "[\"app\",null,\"users\"]:index:users_lower_email_idx",
+              "included": [],
+              "method": "btree",
+              "name": "users_lower_email_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": null,
+                  "expression": "lower(email::text)",
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"app\",null,\"users\"]:index:users_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "users_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        }
+      ]
+    }
+  ],
+  "derivedLinks": [],
+  "diagnostics": [],
+  "format": "laranex-schema",
+  "generator": {
+    "name": "python-schema-viewer",
+    "orm": null
+  },
+  "inferredAssociations": [],
+  "links": [
+    {
+      "foreignKey": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_initech\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_initech\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "[\"app\",\"tenant_initech\",\"orders\"]"
+      },
+      "id": "l11c5810f1915f528",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"app\",\"tenant_initech\",\"users\"]"
+      }
+    },
+    {
+      "foreignKey": "[\"foreign_key\",\"[\\\"app\\\",null,\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "[\"app\",null,\"orders\"]"
+      },
+      "id": "l24a7bb5cd2d21f09",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"app\",null,\"users\"]"
+      }
+    },
+    {
+      "foreignKey": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_template\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_template\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "[\"app\",\"tenant_template\",\"orders\"]"
+      },
+      "id": "l4d0a1152cec4a2ab",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"app\",\"tenant_template\",\"users\"]"
+      }
+    },
+    {
+      "foreignKey": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_acme\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_acme\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "[\"app\",\"tenant_acme\",\"orders\"]"
+      },
+      "id": "l8e1ac57e95edc783",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"app\",\"tenant_acme\",\"users\"]"
+      }
+    },
+    {
+      "foreignKey": "[\"foreign_key\",\"[\\\"app\\\",\\\"tenant_globex\\\",\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"app\\\",\\\"tenant_globex\\\",\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "[\"app\",\"tenant_globex\",\"orders\"]"
+      },
+      "id": "l9119a218d759a0cb",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"app\",\"tenant_globex\",\"users\"]"
+      }
+    }
+  ],
+  "migrations": [],
+  "models": [],
+  "note": null,
+  "relationships": [],
+  "source": "database",
+  "version": "2.0"
+}

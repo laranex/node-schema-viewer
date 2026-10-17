@@ -9,11 +9,15 @@ import {
     buildGraph,
     canonicalJson,
     compareScopes,
+    gateDocument,
     inferAssociations,
     migrationHistory,
     migrationState,
     validateDocument,
+    validateGateReport,
     type CompareOptions,
+    type GateOptions,
+    type GateReport,
     type MigrationRevision,
     type Scope,
 } from 'laranex-schema-viewer-ui/contract';
@@ -55,11 +59,18 @@ describe('shared valid fixtures', () => {
 });
 
 // Exactly the package's own fixture directories (the gate-report fixtures in fixtures/gate are a separate format, not
-// documents). laranex-schema-viewer-ui 0.3.0-dev.0 (0902ccb) ships 14 valid and 53 invalid document fixtures.
+// documents). laranex-schema-viewer-ui 0.3.0-dev.0 (cc11407) ships 14 valid and 53 invalid document fixtures, 6 valid
+// and 13 invalid gate report fixtures and 23 gate conformance cases.
 describe('shared fixture inventory', () => {
     test('the installed package has 14 valid and 53 invalid document fixtures', () => {
         assert.equal(cases('fixtures/valid').length, 14);
         assert.equal(cases('fixtures/invalid').length, 53);
+    });
+
+    test('the installed package has 6 valid and 13 invalid gate reports and 23 gate conformance cases', () => {
+        assert.equal(cases('fixtures/gate/valid').length, 6);
+        assert.equal(cases('fixtures/gate/invalid').length, 13);
+        assert.equal(cases('conformance/gate').length, 23);
     });
 });
 
@@ -110,6 +121,38 @@ describe('inference conformance', () => {
         test(`${name}: ${c.description}`, () => {
             assert.deepEqual(c.input.links, buildGraph(c.input).links);
             assert.deepEqual(inferAssociations(c.input), c.expected.inferredAssociations);
+        });
+    }
+});
+
+describe('gate report fixtures', () => {
+    for (const [name, report] of cases<unknown>('fixtures/gate/valid')) {
+        test(`${name} passes strict gate report validation`, () => {
+            assert.deepEqual(validateGateReport(report, { strict: true }).errors, []);
+        });
+    }
+    for (const [name, fixture] of cases<{ description: string; report: unknown; errors: string[] }>('fixtures/gate/invalid')) {
+        test(`${name}: ${fixture.description}`, () => {
+            const result = validateGateReport(fixture.report, { strict: true });
+            assert.equal(result.ok, false);
+            for (const message of fixture.errors) {
+                assert.ok(
+                    result.errors.some((e) => e.includes(message)),
+                    `expected "${message}" in ${JSON.stringify(result.errors)}`,
+                );
+            }
+        });
+    }
+});
+
+describe('gate conformance', () => {
+    type Input = { document: unknown; thresholds: GateOptions['thresholds']; requested: GateOptions['requested'] };
+    for (const [name, c] of cases<Case<Input, GateReport>>('conformance/gate')) {
+        test(`${name}: ${c.description}`, () => {
+            assert.deepEqual(validateGateReport(c.expected, { strict: true }).errors, []);
+            const report = gateDocument(c.input.document, { thresholds: c.input.thresholds, requested: c.input.requested });
+            assert.deepEqual(report, c.expected);
+            assert.equal(canonicalJson(report), canonicalJson(c.expected));
         });
     }
 });

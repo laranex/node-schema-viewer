@@ -8,7 +8,7 @@ import { describe, test } from 'node:test';
 import { Client } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
 import { adminUrl, serverDatabase, sqliteDatabase } from './databases.js';
-import { COMBINED, ROOT, tempDir } from './helpers.js';
+import { COMBINED, ROOT, tempDir, VALID } from './helpers.js';
 
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const GUARD = join(ROOT, 'scripts', 'check-release.mjs');
@@ -69,7 +69,7 @@ describe('package', { timeout: 300_000 }, () => {
         const tarball = packed[0];
         assert.ok(tarball);
         const files = tarball.files.map((f) => f.path).sort();
-        for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js', 'dist/isolation/worker.js', 'dist/introspection/worker.js', 'dist/schema/serialize.js']) {
+        for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js', 'dist/compare.js', 'dist/check.js', 'dist/isolation/worker.js', 'dist/introspection/worker.js', 'dist/schema/serialize.js']) {
             assert.ok(files.includes(required), required);
         }
         assert.deepEqual(files.filter((f) => !/^(dist\/(isolation\/|introspection\/|schema\/)?[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
@@ -105,6 +105,15 @@ describe('package', { timeout: 300_000 }, () => {
             child.kill('SIGTERM');
         }
 
+        // compare and check from the installed layout, on a stored comparison.
+        const tenants = join(VALID, 'comparison-tenant-schemas.json');
+        const compared = spawnSync(bin, ['compare', '--snapshot', tenants, 'app:tenant_a=app:*', '--json'], { cwd: project, encoding: 'utf8' });
+        assert.equal(compared.status, 0, compared.stderr);
+        assert.equal((JSON.parse(compared.stdout) as unknown[]).length, 1);
+        const checked = spawnSync(bin, ['check', '--snapshot', tenants, '--json'], { cwd: project, encoding: 'utf8' });
+        assert.equal(checked.status, 1, checked.stderr);
+        assert.equal((JSON.parse(checked.stdout) as { format: string }).format, 'laranex-schema-gate');
+
         // Introspection from the installed layout, where the drivers are hoisted into the project's node_modules and
         // the worker may read only their directories, never the project.
         const sqlite = sqliteDatabase(['sqlite.sql']);
@@ -126,7 +135,7 @@ describe('package', { timeout: 300_000 }, () => {
         await client.connect(new StdioClientTransport({ command: bin, args: ['mcp', '--snapshot', COMBINED], cwd: project, stderr: 'ignore' }));
         try {
             const { tools } = await client.listTools();
-            assert.equal(tools.length, 5);
+            assert.equal(tools.length, 6);
             const result = await client.callTool({ name: 'schema_overview', arguments: { limit: 1 } });
             assert.notEqual(result.isError, true);
         } finally {

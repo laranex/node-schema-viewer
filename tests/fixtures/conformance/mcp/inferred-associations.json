@@ -11850,6 +11850,144 @@
       },
       "error": "kind must be orm or foreign_key",
       "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {},
+      "result": {
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "b50ede92432d9b4fdcaf8a86ea2adce6f86133cd7e17892336f2d7866f9e57d9",
+        "section": "comparisons",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 0,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "b50ede92432d9b4fdcaf8a86ea2adce6f86133cd7e17892336f2d7866f9e57d9",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "section": "tables"
+      },
+      "error": "section must be comparisons or differences",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "missing"
+      },
+      "error": "Unknown comparison ID; use schema_compare",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "missing"
+      },
+      "error": "Unknown baseline connection; use schema_overview",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "target": "app:"
+      },
+      "error": "target must be CONNECTION or CONNECTION:SCHEMA",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "object_type": "view",
+        "section": "differences"
+      },
+      "error": "object_type must be one of table, column, primaryKey, index, foreignKey, constraint",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "gone",
+        "section": "differences"
+      },
+      "error": "change must be one of missing, extra, changed",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "section": "differences",
+        "severity": "fatal"
+      },
+      "error": "severity must be one of error, warning, info",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "maybe",
+        "section": "differences"
+      },
+      "error": "certainty must be one of certain, likely",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "severity": "error"
+      },
+      "error": "object_type, change, severity and certainty filter differences; use section differences",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "app",
+        "limit": 0
+      },
+      "error": "limit must be an integer from 1 to 100",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "offset": -1
+      },
+      "error": "offset must be a nonnegative integer",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "revision": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "error": "Document revision differs; restart pagination without revision",
+      "tool": "schema_compare"
     }
   ],
   "document": "tests/fixtures/contract/fixtures/valid/inferred-associations.json",

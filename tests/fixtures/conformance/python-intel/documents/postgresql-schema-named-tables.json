@@ -1,0 +1,976 @@
+{
+  "comparisons": [
+    {
+      "baseline": {
+        "connection": "connection:ledger",
+        "schema": "billing"
+      },
+      "complete": true,
+      "differences": [
+        {
+          "baseline": null,
+          "certainty": "certain",
+          "change": "extra",
+          "fields": [],
+          "id": "x77d2bb38d48b7f61",
+          "key": [
+            "archive"
+          ],
+          "objectType": "table",
+          "severity": "error",
+          "target": {
+            "id": null,
+            "label": "archive.archive",
+            "table": "[\"ledger\",\"archive\",\"archive\"]"
+          }
+        },
+        {
+          "baseline": {
+            "id": null,
+            "label": "billing.billing.archive",
+            "table": "[\"ledger\",\"billing\",\"billing\"]"
+          },
+          "certainty": "certain",
+          "change": "missing",
+          "fields": [],
+          "id": "xf0d2fe86566e9696",
+          "key": [
+            "billing",
+            "archive"
+          ],
+          "objectType": "column",
+          "severity": "error",
+          "target": null
+        },
+        {
+          "baseline": {
+            "id": "[\"ledger\",\"billing\",\"billing\"]:index:archive",
+            "label": "billing.billing.archive",
+            "table": "[\"ledger\",\"billing\",\"billing\"]"
+          },
+          "certainty": "certain",
+          "change": "missing",
+          "fields": [],
+          "id": "x236a3712a56f0aef",
+          "key": [
+            "billing",
+            "name",
+            "archive"
+          ],
+          "objectType": "index",
+          "severity": "warning",
+          "target": null
+        }
+      ],
+      "id": "c9ff18bcf1370bef2",
+      "omitted": 0,
+      "summary": {
+        "changed": 0,
+        "extra": 1,
+        "missing": 2
+      },
+      "target": {
+        "connection": "connection:ledger",
+        "schema": "archive"
+      }
+    },
+    {
+      "baseline": {
+        "connection": "connection:ledger",
+        "schema": "archive"
+      },
+      "complete": true,
+      "differences": [
+        {
+          "baseline": {
+            "id": null,
+            "label": "archive.archive",
+            "table": "[\"ledger\",\"archive\",\"archive\"]"
+          },
+          "certainty": "certain",
+          "change": "missing",
+          "fields": [],
+          "id": "x8a7e47fd2c20ce06",
+          "key": [
+            "archive"
+          ],
+          "objectType": "table",
+          "severity": "error",
+          "target": null
+        },
+        {
+          "baseline": null,
+          "certainty": "certain",
+          "change": "extra",
+          "fields": [],
+          "id": "xef3782458090c23f",
+          "key": [
+            "billing",
+            "archive"
+          ],
+          "objectType": "column",
+          "severity": "error",
+          "target": {
+            "id": null,
+            "label": "billing.billing.archive",
+            "table": "[\"ledger\",\"billing\",\"billing\"]"
+          }
+        },
+        {
+          "baseline": null,
+          "certainty": "certain",
+          "change": "extra",
+          "fields": [],
+          "id": "x263f44b8bd53a483",
+          "key": [
+            "billing",
+            "name",
+            "archive"
+          ],
+          "objectType": "index",
+          "severity": "warning",
+          "target": {
+            "id": "[\"ledger\",\"billing\",\"billing\"]:index:archive",
+            "label": "billing.billing.archive",
+            "table": "[\"ledger\",\"billing\",\"billing\"]"
+          }
+        }
+      ],
+      "id": "cf975d09e8e24a1f6",
+      "omitted": 0,
+      "summary": {
+        "changed": 0,
+        "extra": 2,
+        "missing": 1
+      },
+      "target": {
+        "connection": "connection:ledger",
+        "schema": "billing"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "coverage": {
+        "database": {
+          "complete": true,
+          "features": {
+            "checkConstraints": "complete",
+            "columnTypes": "complete",
+            "columns": "complete",
+            "comments": "complete",
+            "defaults": "complete",
+            "foreignKeys": "complete",
+            "includedColumns": "complete",
+            "indexExpressions": "complete",
+            "indexPredicates": "complete",
+            "indexes": "complete",
+            "models": "not_applicable",
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": [
+            "public",
+            "billing",
+            "archive"
+          ]
+        },
+        "declared": null
+      },
+      "defaultSchema": "public",
+      "driver": "postgresql",
+      "id": "connection:ledger",
+      "name": "ledger",
+      "tables": [
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"ledger\",\"archive\",\"archive\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"ledger\",\"archive\",\"archive\"]:index:archive_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "archive_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "archive",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"ledger\",\"archive\",\"billing\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"ledger\",\"archive\",\"billing\"]:index:billing_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "billing_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "archive"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "archive",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"ledger\",\"billing\",\"billing\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"ledger\",\"billing\",\"billing\"]:index:archive",
+              "included": [],
+              "method": "btree",
+              "name": "archive",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "archive",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"ledger\",\"billing\",\"billing\"]:index:billing_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "billing_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "billing",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "billing"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('\"public\".audit_log_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "message",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "[\"ledger\",null,\"audit_log\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"ledger\",null,\"audit_log\"]:index:audit_log_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "audit_log_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "audit_log",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('\"public\".orders_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "0"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "total",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "numeric(10,2)",
+              "typeName": "numeric"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "'new'::character varying"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(20)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "total"
+              ],
+              "expression": "total >= 0::numeric",
+              "id": "[\"ledger\",null,\"orders\"]:constraint:orders_total_check",
+              "kind": "check",
+              "name": "orders_total_check",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": false,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "[\"ledger\",null,\"users\"]",
+              "id": "[\"foreign_key\",\"[\\\"ledger\\\",null,\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"ledger\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+              "initially": "IMMEDIATE",
+              "name": "orders_user_id_fkey",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "[\"ledger\",null,\"orders\"]",
+          "indexes": [
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"ledger\",null,\"orders\"]:index:orders_open_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_open_idx",
+              "partial": true,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": "((status)::text <> 'closed'::text)",
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"ledger\",null,\"orders\"]:index:orders_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "orders_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": false,
+              "id": "[\"ledger\",null,\"orders\"]:index:orders_user_id_idx",
+              "included": [],
+              "method": "btree",
+              "name": "orders_user_id_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "orders",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "sequence",
+                "value": "nextval('\"public\".users_id_seq'::regclass)"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "character varying(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "expression",
+                "value": "now()"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": true,
+              "type": "timestamp with time zone",
+              "typeName": "timestamptz"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "email"
+              ],
+              "expression": null,
+              "id": "[\"ledger\",null,\"users\"]:constraint:users_email_key",
+              "kind": "unique",
+              "name": "users_email_key",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [],
+          "id": "[\"ledger\",null,\"users\"]",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": "[\"ledger\",null,\"users\"]:constraint:users_email_key",
+                "kind": "unique_constraint"
+              },
+              "expression": false,
+              "id": "[\"ledger\",null,\"users\"]:index:users_email_key",
+              "included": [],
+              "method": "btree",
+              "name": "users_email_key",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "expression": true,
+              "id": "[\"ledger\",null,\"users\"]:index:users_lower_email_idx",
+              "included": [],
+              "method": "btree",
+              "name": "users_lower_email_idx",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": null,
+                  "expression": "lower(email::text)",
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "expression": false,
+              "id": "[\"ledger\",null,\"users\"]:index:users_pkey",
+              "included": [],
+              "method": "btree",
+              "name": "users_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        }
+      ]
+    }
+  ],
+  "derivedLinks": [],
+  "diagnostics": [],
+  "format": "laranex-schema",
+  "generator": {
+    "name": "python-schema-viewer",
+    "orm": null
+  },
+  "inferredAssociations": [],
+  "links": [
+    {
+      "foreignKey": "[\"foreign_key\",\"[\\\"ledger\\\",null,\\\"orders\\\"]\",\"orders_user_id_fkey\",\"[\\\"user_id\\\"]\",\"[\\\"ledger\\\",null,\\\"users\\\"]\",\"[\\\"id\\\"]\"]",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "[\"ledger\",null,\"orders\"]"
+      },
+      "id": "lf66b17745c7d4d4d",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "[\"ledger\",null,\"users\"]"
+      }
+    }
+  ],
+  "migrations": [],
+  "models": [],
+  "note": null,
+  "relationships": [],
+  "source": "database",
+  "version": "2.0"
+}

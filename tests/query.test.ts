@@ -20,6 +20,22 @@ export function invoke(query: SnapshotQuery, tool: string, args: Record<string, 
             return query.getTable(args.table as string, (args.section as string | undefined) ?? 'columns', pagination);
         case 'schema_get_model':
             return query.getModel(args.model as string, pagination);
+        case 'schema_compare': {
+            const filter = (name: string): string | null => (args[name] as string | null | undefined) ?? null;
+            return query.compare(
+                (args.section as string | undefined) ?? 'comparisons',
+                {
+                    comparison: filter('comparison'),
+                    baseline: filter('baseline'),
+                    target: filter('target'),
+                    objectType: filter('object_type'),
+                    change: filter('change'),
+                    severity: filter('severity'),
+                    certainty: filter('certainty'),
+                },
+                pagination,
+            );
+        }
         default:
             return query.relationships((args.table as string | undefined) ?? null, (args.kind as string | undefined) ?? 'orm', pagination);
     }
@@ -59,8 +75,8 @@ describe('query conformance with python-schema-viewer', () => {
     }
 
     test('compares every recorded call', () => {
-        assert.equal(calls, 1470);
-        assert.equal(byteEqual, 1405);
+        assert.equal(calls, 1801);
+        assert.equal(byteEqual, 1633);
     });
 });
 

@@ -2,22 +2,193 @@
 // files are never executed, unknown keys are rejected, and database URLs never belong in configuration.
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { CHANGES, OBJECT_TYPES, type Certainty, type Change, type ObjectType, type Severity } from 'laranex-schema-viewer-ui/contract';
 import { writeAtomically } from './snapshot.js';
 
 export const SECTION = 'node-schema-viewer';
 export const DEFAULT_SNAPSHOT = 'schema-viewer.json';
-const KEYS = new Set(['output']);
+const KEYS = new Set(['output', 'comparisons', 'check']);
 const URL_KEYS = /^(?:url|database_?url|databaseUrl|connection_?url|connectionUrl|dsn)$/i;
 const URL_VALUE = /^[A-Za-z][A-Za-z0-9+.-]*:\/\//;
 const MAX_PACKAGE_JSON_BYTES = 4 * 1024 * 1024;
+
+// Differences listed per comparison; the rest are counted as omitted. Keeps a document with many tenant comparisons
+// well inside the 32 MiB snapshot limit.
+export const DEFAULT_COMPARISON_LIMIT = 500;
+export const WILDCARD = '*';
+export const SEVERITIES = ['error', 'warning', 'info'] as const;
+export const CERTAINTIES = ['certain', 'likely'] as const;
+// The fields a changed difference of each object type can list (the contract's comparison algorithm).
+export const FIELDS: Record<ObjectType, readonly string[]> = {
+    table: ['comment'],
+    column: ['collation', 'comment', 'default', 'enum', 'generated', 'nullable', 'type'],
+    primaryKey: ['columns'],
+    index: ['included', 'method', 'name', 'parts', 'predicate', 'unique'],
+    foreignKey: ['columns', 'deferrable', 'foreignColumns', 'foreignTable', 'initially', 'name', 'onDelete', 'onUpdate'],
+    constraint: ['columns', 'expression', 'name'],
+};
+// Python's [A-Za-z0-9_][\w.-]*, whose \w also matches Unicode letters and digits.
+const CONNECTION_NAME = /^[\p{L}\p{N}_][\p{L}\p{N}_.-]*$/u;
+export const COMPARISON_FORMAT = 'A comparison is BASELINE=TARGET, each scope a connection name, optionally with :SCHEMA (the target\'s schema may be *)';
 
 export class ConfigError extends Error {
     override name = 'ConfigError';
 }
 
+// A comparison side: a connection by name and a schema, null for the unqualified scope, or "*" (targets only) for
+// every schema the connection's inspection read.
+export interface ScopeConfig {
+    connection: string;
+    schema: string | null;
+}
+
+// A severity for (objectType, change), or for one field of a changed difference.
+export interface OverrideConfig {
+    objectType: ObjectType;
+    change: Change;
+    field: string | null;
+    severity: Severity;
+}
+
+export interface ComparisonConfig {
+    baseline: ScopeConfig;
+    target: ScopeConfig;
+    limit: number;
+    overrides: OverrideConfig[];
+}
+
+// The thresholds a finding must meet to fail check; null for the shared default.
+export interface CheckConfig {
+    severity: Severity | null;
+    certainty: Certainty | null;
+}
+
 export interface ProjectConfig {
     // Absolute path, resolved against the project root.
     output: string | null;
+    comparisons: ComparisonConfig[];
+    check: CheckConfig;
+}
+
+export const spellScope = (scope: ScopeConfig): string => (scope.schema === null ? scope.connection : `${scope.connection}:${scope.schema}`);
+const sameScope = (a: ScopeConfig, b: ScopeConfig): boolean => a.connection === b.connection && a.schema === b.schema;
+const isObject = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
+const oneOf = <T extends string>(value: unknown, allowed: readonly T[]): value is T => typeof value === 'string' && (allowed as readonly string[]).includes(value);
+
+function unknownKeys(value: Record<string, unknown>, known: readonly string[], where: string): void {
+    const unknown = Object.keys(value).filter((key) => !known.includes(key)).sort();
+    if (unknown.length) {
+        throw new ConfigError(`Unknown ${where} keys: ${unknown.join(', ')}`);
+    }
+}
+
+function scopeConfig(value: unknown, where: string, wildcard: boolean): ScopeConfig {
+    if (!isObject(value)) {
+        throw new ConfigError(`${where} must be an object: { "connection": "NAME", "schema": "SCHEMA" }`);
+    }
+    unknownKeys(value, ['connection', 'schema'], where);
+    const { connection, schema = null } = value;
+    if (typeof connection !== 'string' || !CONNECTION_NAME.test(connection)) {
+        throw new ConfigError(`${where} needs connection, a connection name`);
+    }
+    if (schema !== null && (typeof schema !== 'string' || schema === '' || schema.includes('@') || schema.includes('//'))) {
+        throw new ConfigError(`${where} schema must be a schema name (never a URL)`);
+    }
+    if (schema === WILDCARD && !wildcard) {
+        throw new ConfigError(`${where} schema cannot be "*"; only a target expands to every inspected schema`);
+    }
+    return { connection, schema };
+}
+
+function overrideConfig(value: unknown, where: string): OverrideConfig {
+    if (!isObject(value)) {
+        throw new ConfigError(`${where} overrides must be an array of objects`);
+    }
+    unknownKeys(value, ['objectType', 'change', 'field', 'severity'], `${where} override`);
+    const { objectType, change, severity, field = null } = value;
+    if (!oneOf(objectType, OBJECT_TYPES)) {
+        throw new ConfigError(`${where} override objectType must be one of ${OBJECT_TYPES.join(', ')}`);
+    }
+    if (!oneOf(change, CHANGES)) {
+        throw new ConfigError(`${where} override change must be one of ${CHANGES.join(', ')}`);
+    }
+    if (!oneOf(severity, SEVERITIES)) {
+        throw new ConfigError(`${where} override severity must be one of ${SEVERITIES.join(', ')}`);
+    }
+    if (field !== null && (change !== 'changed' || !oneOf(field, FIELDS[objectType]))) {
+        throw new ConfigError(`${where} override field applies to changed differences; a ${objectType} field is one of ${FIELDS[objectType].join(', ')}`);
+    }
+    return { objectType, change, field, severity };
+}
+
+function comparisonsConfig(value: unknown, where: string): ComparisonConfig[] {
+    if (!Array.isArray(value) || !value.every(isObject)) {
+        throw new ConfigError(`${where} comparisons must be an array of objects`);
+    }
+    return value.map((entry, n) => {
+        const at = `${where} comparisons[${n}]`;
+        unknownKeys(entry, ['baseline', 'target', 'limit', 'overrides'], at);
+        const baseline = scopeConfig(entry.baseline, `${at} baseline`, false);
+        const target = scopeConfig(entry.target, `${at} target`, true);
+        if (sameScope(baseline, target)) {
+            throw new ConfigError(`${at} compares ${spellScope(baseline)} with itself`);
+        }
+        const { limit = DEFAULT_COMPARISON_LIMIT, overrides = [] } = entry;
+        if (typeof limit !== 'number' || !Number.isSafeInteger(limit) || limit < 0) {
+            throw new ConfigError(`${at} limit must be a nonnegative integer`);
+        }
+        if (!Array.isArray(overrides)) {
+            throw new ConfigError(`${at} overrides must be an array of objects`);
+        }
+        return { baseline, target, limit, overrides: overrides.map((o) => overrideConfig(o, at)) };
+    });
+}
+
+function checkConfig(value: unknown, where: string): CheckConfig {
+    const at = `${where} check`;
+    if (!isObject(value)) {
+        throw new ConfigError(`${at} must be an object`);
+    }
+    unknownKeys(value, ['severity', 'certainty'], at);
+    const { severity = null, certainty = null } = value;
+    if (severity !== null && !oneOf(severity, SEVERITIES)) {
+        throw new ConfigError(`${at} severity must be one of ${SEVERITIES.join(', ')}`);
+    }
+    if (certainty !== null && !oneOf(certainty, CERTAINTIES)) {
+        throw new ConfigError(`${at} certainty must be one of ${CERTAINTIES.join(', ')}`);
+    }
+    return { severity, certainty };
+}
+
+// BASELINE=TARGET from the command line, each scope CONNECTION or CONNECTION:SCHEMA; the target schema may be "*".
+// Never echoes the value: a URL passed by mistake would end up in the error output.
+export function comparisonOption(value: string, limit: number = DEFAULT_COMPARISON_LIMIT): ComparisonConfig {
+    const separator = value.indexOf('=');
+    if (separator < 0) {
+        throw new ConfigError(COMPARISON_FORMAT);
+    }
+    const baseline = scopeOption(value.slice(0, separator), false);
+    const target = scopeOption(value.slice(separator + 1), true);
+    if (sameScope(baseline, target)) {
+        throw new ConfigError(`A comparison compares two different scopes, not ${spellScope(baseline)} with itself`);
+    }
+    return { baseline, target, limit, overrides: [] };
+}
+
+function scopeOption(text: string, wildcard: boolean): ScopeConfig {
+    const separator = text.indexOf(':');
+    const connection = separator < 0 ? text : text.slice(0, separator);
+    const schema = separator < 0 ? '' : text.slice(separator + 1);
+    if (!CONNECTION_NAME.test(connection) || (separator >= 0 && schema === '')) {
+        throw new ConfigError(COMPARISON_FORMAT);
+    }
+    if (schema.includes('@') || schema.includes('//')) {
+        throw new ConfigError(`${COMPARISON_FORMAT}; database URLs are never accepted as arguments`);
+    }
+    if (schema === WILDCARD && !wildcard) {
+        throw new ConfigError('Only a comparison target\'s schema can be "*"');
+    }
+    return { connection, schema: separator < 0 ? null : schema };
 }
 
 function readPackageJson(projectRoot: string): { path: string; text: string; data: Record<string, unknown> } | null {
@@ -65,7 +236,13 @@ function rejectUrls(value: unknown, where: string): void {
     }
 }
 
-export function validateSection(section: unknown, where = `package.json "${SECTION}"`): { output?: string } {
+export interface Section {
+    output?: string;
+    comparisons: ComparisonConfig[];
+    check: CheckConfig;
+}
+
+export function validateSection(section: unknown, where = `package.json "${SECTION}"`): Section {
     if (typeof section !== 'object' || section === null || Array.isArray(section)) {
         throw new ConfigError(`${where} must be an object`);
     }
@@ -74,20 +251,20 @@ export function validateSection(section: unknown, where = `package.json "${SECTI
     if (unknown.length) {
         throw new ConfigError(`Unknown ${where} keys: ${unknown.join(', ')}`);
     }
-    const output = (section as Record<string, unknown>).output;
+    const { output, comparisons = [], check = {} } = section as Record<string, unknown>;
     if (output !== undefined && (typeof output !== 'string' || output === '')) {
         throw new ConfigError(`${where} output must be a non-empty string path`);
     }
-    return output === undefined ? {} : { output };
+    return { ...(output === undefined ? {} : { output }), comparisons: comparisonsConfig(comparisons, where), check: checkConfig(check, where) };
 }
 
 export function loadConfig(projectRoot: string): ProjectConfig {
     const found = readPackageJson(projectRoot);
     if (found === null || !(SECTION in found.data)) {
-        return { output: null };
+        return { output: null, comparisons: [], check: { severity: null, certainty: null } };
     }
     const section = validateSection(found.data[SECTION], `${found.path} "${SECTION}"`);
-    return { output: section.output === undefined ? null : resolve(projectRoot, section.output) };
+    return { output: section.output === undefined ? null : resolve(projectRoot, section.output), comparisons: section.comparisons, check: section.check };
 }
 
 // Explicit path, else the configured output, else schema-viewer.json in the project root.
@@ -101,7 +278,8 @@ export function resolveSnapshot(snapshot: string | undefined, projectRoot: strin
 // Add the key to an existing package.json, keeping every other property, their order, the indentation and the final
 // newline. Refuses to replace an existing key.
 export function addConfig(projectRoot: string, output: string = DEFAULT_SNAPSHOT): string {
-    const section = validateSection({ output });
+    validateSection({ output });
+    const section = { output };
     const found = readPackageJson(projectRoot);
     if (found === null) {
         throw new ConfigError(`No package.json in ${resolve(projectRoot)}; run npm init first`);

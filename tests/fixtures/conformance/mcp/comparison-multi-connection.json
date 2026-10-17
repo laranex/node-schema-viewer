@@ -3878,6 +3878,1874 @@
       },
       "error": "kind must be orm or foreign_key",
       "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {},
+      "result": {
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "baseline": {
+              "connection": "connection:primary",
+              "schema": null
+            },
+            "complete": true,
+            "counts": {
+              "certain": 2,
+              "differences": 5,
+              "error": 2,
+              "info": 0,
+              "likely": 3,
+              "warning": 3
+            },
+            "id": "caa66b93189252d11",
+            "labels": {
+              "baseline": "primary",
+              "target": "replica"
+            },
+            "omitted": 0,
+            "summary": {
+              "changed": 5,
+              "extra": 0,
+              "missing": 0
+            },
+            "target": {
+              "connection": "connection:replica",
+              "schema": null
+            }
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "comparisons",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.active",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "true"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "1"
+                  }
+                }
+              ],
+              "id": "x23b068b0d7c342f7",
+              "key": [
+                "customers",
+                "active"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "customers.active",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.bio",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "text",
+                  "field": "type",
+                  "target": "longtext"
+                }
+              ],
+              "id": "x4b37d442a09c8471",
+              "key": [
+                "customers",
+                "bio"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.bio",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.created_at",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "timestamp with time zone",
+                  "field": "type",
+                  "target": "datetime"
+                }
+              ],
+              "id": "x42e932a468c5dbce",
+              "key": [
+                "customers",
+                "created_at"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.created_at",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:index:orders_customer_id_idx",
+                "label": "public.orders.orders_customer_id_idx",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_idx",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "x28de7a9e705093a2",
+              "key": [
+                "orders",
+                "parts",
+                "(customer_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:index:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:fk:orders_customer_id_fkey",
+                "label": "public.orders.orders_customer_id_fkey",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_fkey",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "xe275bfaa50f22fe1",
+              "key": [
+                "orders",
+                "references",
+                "customer_id->customers(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:fk:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 5
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "primary",
+        "target": "replica"
+      },
+      "result": {
+        "filters": {
+          "baseline": "primary",
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": "replica"
+        },
+        "items": [
+          {
+            "baseline": {
+              "connection": "connection:primary",
+              "schema": null
+            },
+            "complete": true,
+            "counts": {
+              "certain": 2,
+              "differences": 5,
+              "error": 2,
+              "info": 0,
+              "likely": 3,
+              "warning": 3
+            },
+            "id": "caa66b93189252d11",
+            "labels": {
+              "baseline": "primary",
+              "target": "replica"
+            },
+            "omitted": 0,
+            "summary": {
+              "changed": 5,
+              "extra": 0,
+              "missing": 0
+            },
+            "target": {
+              "connection": "connection:replica",
+              "schema": null
+            }
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "comparisons",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.active",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "true"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "1"
+                  }
+                }
+              ],
+              "id": "x23b068b0d7c342f7",
+              "key": [
+                "customers",
+                "active"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "customers.active",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.bio",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "text",
+                  "field": "type",
+                  "target": "longtext"
+                }
+              ],
+              "id": "x4b37d442a09c8471",
+              "key": [
+                "customers",
+                "bio"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.bio",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.created_at",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "timestamp with time zone",
+                  "field": "type",
+                  "target": "datetime"
+                }
+              ],
+              "id": "x42e932a468c5dbce",
+              "key": [
+                "customers",
+                "created_at"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.created_at",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:index:orders_customer_id_idx",
+                "label": "public.orders.orders_customer_id_idx",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_idx",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "x28de7a9e705093a2",
+              "key": [
+                "orders",
+                "parts",
+                "(customer_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:index:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:fk:orders_customer_id_fkey",
+                "label": "public.orders.orders_customer_id_fkey",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_fkey",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "xe275bfaa50f22fe1",
+              "key": [
+                "orders",
+                "references",
+                "customer_id->customers(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:fk:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 5
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 2,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.active",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "true"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "1"
+                  }
+                }
+              ],
+              "id": "x23b068b0d7c342f7",
+              "key": [
+                "customers",
+                "active"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "customers.active",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.bio",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "text",
+                  "field": "type",
+                  "target": "longtext"
+                }
+              ],
+              "id": "x4b37d442a09c8471",
+              "key": [
+                "customers",
+                "bio"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.bio",
+                "table": "replica:customers"
+              }
+            }
+          }
+        ],
+        "limit": 2,
+        "nextOffset": 2,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 5
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 2,
+        "offset": 2,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.created_at",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "timestamp with time zone",
+                  "field": "type",
+                  "target": "datetime"
+                }
+              ],
+              "id": "x42e932a468c5dbce",
+              "key": [
+                "customers",
+                "created_at"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.created_at",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:index:orders_customer_id_idx",
+                "label": "public.orders.orders_customer_id_idx",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_idx",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "x28de7a9e705093a2",
+              "key": [
+                "orders",
+                "parts",
+                "(customer_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:index:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          }
+        ],
+        "limit": 2,
+        "nextOffset": 4,
+        "offset": 2,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 5
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "object_type": "table",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": "table",
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "object_type": "column",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": "column",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.active",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "true"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "1"
+                  }
+                }
+              ],
+              "id": "x23b068b0d7c342f7",
+              "key": [
+                "customers",
+                "active"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "customers.active",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.bio",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "text",
+                  "field": "type",
+                  "target": "longtext"
+                }
+              ],
+              "id": "x4b37d442a09c8471",
+              "key": [
+                "customers",
+                "bio"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.bio",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.created_at",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "timestamp with time zone",
+                  "field": "type",
+                  "target": "datetime"
+                }
+              ],
+              "id": "x42e932a468c5dbce",
+              "key": [
+                "customers",
+                "created_at"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.created_at",
+                "table": "replica:customers"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "object_type": "primaryKey",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": "primaryKey",
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "object_type": "index",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": "index",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:index:orders_customer_id_idx",
+                "label": "public.orders.orders_customer_id_idx",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_idx",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "x28de7a9e705093a2",
+              "key": [
+                "orders",
+                "parts",
+                "(customer_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:index:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "object_type": "foreignKey",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": "foreignKey",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:fk:orders_customer_id_fkey",
+                "label": "public.orders.orders_customer_id_fkey",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_fkey",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "xe275bfaa50f22fe1",
+              "key": [
+                "orders",
+                "references",
+                "customer_id->customers(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:fk:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "object_type": "constraint",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": "constraint",
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "missing",
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "missing",
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "extra",
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "extra",
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "changed",
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "changed",
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.active",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "true"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "1"
+                  }
+                }
+              ],
+              "id": "x23b068b0d7c342f7",
+              "key": [
+                "customers",
+                "active"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "customers.active",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.bio",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "text",
+                  "field": "type",
+                  "target": "longtext"
+                }
+              ],
+              "id": "x4b37d442a09c8471",
+              "key": [
+                "customers",
+                "bio"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.bio",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.created_at",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "timestamp with time zone",
+                  "field": "type",
+                  "target": "datetime"
+                }
+              ],
+              "id": "x42e932a468c5dbce",
+              "key": [
+                "customers",
+                "created_at"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.created_at",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:index:orders_customer_id_idx",
+                "label": "public.orders.orders_customer_id_idx",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_idx",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "x28de7a9e705093a2",
+              "key": [
+                "orders",
+                "parts",
+                "(customer_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:index:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:fk:orders_customer_id_fkey",
+                "label": "public.orders.orders_customer_id_fkey",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_fkey",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "xe275bfaa50f22fe1",
+              "key": [
+                "orders",
+                "references",
+                "customer_id->customers(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:fk:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 5
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences",
+        "severity": "error"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": "error",
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.bio",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "text",
+                  "field": "type",
+                  "target": "longtext"
+                }
+              ],
+              "id": "x4b37d442a09c8471",
+              "key": [
+                "customers",
+                "bio"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.bio",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.created_at",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "timestamp with time zone",
+                  "field": "type",
+                  "target": "datetime"
+                }
+              ],
+              "id": "x42e932a468c5dbce",
+              "key": [
+                "customers",
+                "created_at"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.created_at",
+                "table": "replica:customers"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 2
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences",
+        "severity": "warning"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": "warning",
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.active",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "true"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "1"
+                  }
+                }
+              ],
+              "id": "x23b068b0d7c342f7",
+              "key": [
+                "customers",
+                "active"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "customers.active",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:index:orders_customer_id_idx",
+                "label": "public.orders.orders_customer_id_idx",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_idx",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "x28de7a9e705093a2",
+              "key": [
+                "orders",
+                "parts",
+                "(customer_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:index:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:fk:orders_customer_id_fkey",
+                "label": "public.orders.orders_customer_id_fkey",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_fkey",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "xe275bfaa50f22fe1",
+              "key": [
+                "orders",
+                "references",
+                "customer_id->customers(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:fk:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences",
+        "severity": "info"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": "info",
+          "target": null
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "certain",
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "certain",
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:index:orders_customer_id_idx",
+                "label": "public.orders.orders_customer_id_idx",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_idx",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "x28de7a9e705093a2",
+              "key": [
+                "orders",
+                "parts",
+                "(customer_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:index:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": "primary:public.orders:fk:orders_customer_id_fkey",
+                "label": "public.orders.orders_customer_id_fkey",
+                "table": "primary:public.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_customer_id_fkey",
+                  "field": "name",
+                  "target": "orders_customer_id_foreign"
+                }
+              ],
+              "id": "xe275bfaa50f22fe1",
+              "key": [
+                "orders",
+                "references",
+                "customer_id->customers(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "replica:orders:fk:orders_customer_id_foreign",
+                "label": "orders.orders_customer_id_foreign",
+                "table": "replica:orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 2
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "likely",
+        "comparison": "caa66b93189252d11",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "likely",
+          "change": null,
+          "comparison": "caa66b93189252d11",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.active",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "true"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "1"
+                  }
+                }
+              ],
+              "id": "x23b068b0d7c342f7",
+              "key": [
+                "customers",
+                "active"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "customers.active",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.bio",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "text",
+                  "field": "type",
+                  "target": "longtext"
+                }
+              ],
+              "id": "x4b37d442a09c8471",
+              "key": [
+                "customers",
+                "bio"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.bio",
+                "table": "replica:customers"
+              }
+            }
+          },
+          {
+            "comparison": "caa66b93189252d11",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "public.customers.created_at",
+                "table": "primary:public.customers"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "timestamp with time zone",
+                  "field": "type",
+                  "target": "datetime"
+                }
+              ],
+              "id": "x42e932a468c5dbce",
+              "key": [
+                "customers",
+                "created_at"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "customers.created_at",
+                "table": "replica:customers"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "certain",
+        "limit": 100,
+        "section": "differences",
+        "severity": "error",
+        "target": "replica"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "certain",
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": "error",
+          "target": "replica"
+        },
+        "items": [],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9",
+        "section": "differences",
+        "total": 0
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "section": "tables"
+      },
+      "error": "section must be comparisons or differences",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "missing"
+      },
+      "error": "Unknown comparison ID; use schema_compare",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "missing"
+      },
+      "error": "Unknown baseline connection; use schema_overview",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "target": "primary:"
+      },
+      "error": "target must be CONNECTION or CONNECTION:SCHEMA",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "object_type": "view",
+        "section": "differences"
+      },
+      "error": "object_type must be one of table, column, primaryKey, index, foreignKey, constraint",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "gone",
+        "section": "differences"
+      },
+      "error": "change must be one of missing, extra, changed",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "section": "differences",
+        "severity": "fatal"
+      },
+      "error": "severity must be one of error, warning, info",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "maybe",
+        "section": "differences"
+      },
+      "error": "certainty must be one of certain, likely",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "severity": "error"
+      },
+      "error": "object_type, change, severity and certainty filter differences; use section differences",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "primary",
+        "limit": 0
+      },
+      "error": "limit must be an integer from 1 to 100",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "offset": -1
+      },
+      "error": "offset must be a nonnegative integer",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "revision": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "error": "Document revision differs; restart pagination without revision",
+      "tool": "schema_compare"
     }
   ],
   "document": "tests/fixtures/contract/fixtures/valid/comparison-multi-connection.json",

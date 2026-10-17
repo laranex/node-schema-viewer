@@ -11688,6 +11688,4900 @@
       },
       "error": "kind must be orm or foreign_key",
       "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {},
+      "result": {
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "baseline": {
+              "connection": "connection:app",
+              "schema": "tenant_a"
+            },
+            "complete": true,
+            "counts": {
+              "certain": 23,
+              "differences": 25,
+              "error": 12,
+              "info": 1,
+              "likely": 2,
+              "warning": 12
+            },
+            "id": "c69f5b58e94575f1b",
+            "labels": {
+              "baseline": "app:tenant_a",
+              "target": "app:tenant_b"
+            },
+            "omitted": 0,
+            "summary": {
+              "changed": 9,
+              "extra": 8,
+              "missing": 8
+            },
+            "target": {
+              "connection": "connection:app",
+              "schema": "tenant_b"
+            }
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "comparisons",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdd225ad2192585d0",
+              "key": [
+                "coupons"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.coupons",
+                "table": "app:tenant_b.coupons"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.invoices",
+                "table": "app:tenant_a.invoices"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xbd52e4f186cfbf3d",
+              "key": [
+                "invoices"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.products",
+                "table": "app:tenant_a.products"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7675c1f7fc75d68d",
+              "key": [
+                "products"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x6327c1b461f122ed",
+              "key": [
+                "refunds"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.refunds",
+                "table": "app:tenant_b.refunds"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "Tenant users",
+                  "field": "comment",
+                  "target": "Users"
+                }
+              ],
+              "id": "x3ae7dedbaee6ab19",
+              "key": [
+                "users"
+              ],
+              "objectType": "table",
+              "severity": "info",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x7495099d9aba44a3",
+              "key": [
+                "line_items",
+                "coupon_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.coupon_id",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items.product_id",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x79d16d68eb709003",
+              "key": [
+                "line_items",
+                "product_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdaca713cc0b158a9",
+              "key": [
+                "line_items",
+                "variant"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.variant",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.placed_at",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": true,
+                  "field": "nullable",
+                  "target": false
+                }
+              ],
+              "id": "xca707e08038d401b",
+              "key": [
+                "orders",
+                "placed_at"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.placed_at",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.total",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "numeric(10,2)",
+                  "field": "type",
+                  "target": "numeric(12,2)"
+                }
+              ],
+              "id": "xa6880ce102bef32d",
+              "key": [
+                "orders",
+                "total"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.total",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.legacy_code",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x62b27f513574b3a0",
+              "key": [
+                "users",
+                "legacy_code"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x572bcdbbb296db20",
+              "key": [
+                "users",
+                "phone"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.phone",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.status",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "'active'::character varying"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "'pending'::character varying"
+                  }
+                }
+              ],
+              "id": "x972bdcd6f09977e8",
+              "key": [
+                "users",
+                "status"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.status",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.audit_events primary key",
+                "table": "app:tenant_a.audit_events"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xd3b67fd58cd1658d",
+              "key": [
+                "audit_events"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items primary key",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": [
+                    "order_id",
+                    "line_no"
+                  ],
+                  "field": "columns",
+                  "target": [
+                    "order_id",
+                    "line_no",
+                    "variant"
+                  ]
+                }
+              ],
+              "id": "x9923df11720e1e18",
+              "key": [
+                "line_items"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items primary key",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xda87e93f7e00389d",
+              "key": [
+                "settings"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.settings primary key",
+                "table": "app:tenant_b.settings"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_placed_at_idx",
+                "label": "tenant_a.orders.orders_placed_at_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x616713e4cbe15f07",
+              "key": [
+                "orders",
+                "name",
+                "orders_placed_at_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x8fe8383469f8f61b",
+              "key": [
+                "orders",
+                "name",
+                "orders_total_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_total_idx",
+                "label": "tenant_b.orders.orders_total_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_user_id_idx",
+                "label": "tenant_a.orders.orders_user_id_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_user_id_idx",
+                  "field": "name",
+                  "target": "orders_user_idx"
+                }
+              ],
+              "id": "x8baed283f070954f",
+              "key": [
+                "orders",
+                "parts",
+                "(user_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_user_idx",
+                "label": "tenant_b.orders.orders_user_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.users:index:users_name_idx",
+                "label": "tenant_a.users.users_name_idx",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": false,
+                  "field": "unique",
+                  "target": true
+                }
+              ],
+              "id": "xf36a69e9931c4c4f",
+              "key": [
+                "users",
+                "name",
+                "users_name_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.users:index:users_name_idx",
+                "label": "tenant_b.users.users_name_idx",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x0db6370534429f1b",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_coupon_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.line_items:fk:line_items_coupon_id_fkey",
+                "label": "tenant_b.line_items.line_items_coupon_id_fkey",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:fk:line_items_product_id_fkey",
+                "label": "tenant_a.line_items.line_items_product_id_fkey",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7c5614d39591f580",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_product_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:fk:orders_user_id_fkey",
+                "label": "tenant_a.orders.orders_user_id_fkey",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "CASCADE",
+                  "field": "onDelete",
+                  "target": "RESTRICT"
+                }
+              ],
+              "id": "x7fcf2cd715cd8d4e",
+              "key": [
+                "orders",
+                "references",
+                "user_id->users(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:fk:orders_user_id_fkey",
+                "label": "tenant_b.orders.orders_user_id_fkey",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:constraint:line_items_qty_check",
+                "label": "tenant_a.line_items.line_items_qty_check",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x36c6f80d64c93154",
+              "key": [
+                "line_items",
+                "check",
+                "name",
+                "line_items_qty_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:constraint:orders_total_check",
+                "label": "tenant_a.orders.orders_total_check",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "((total >= (0)::numeric))",
+                  "field": "expression",
+                  "target": "((total > (0)::numeric))"
+                }
+              ],
+              "id": "xdd358392b863cf3a",
+              "key": [
+                "orders",
+                "check",
+                "name",
+                "orders_total_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:constraint:orders_total_check",
+                "label": "tenant_b.orders.orders_total_check",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 25
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "app:tenant_a",
+        "target": "app:tenant_b"
+      },
+      "result": {
+        "filters": {
+          "baseline": "app:tenant_a",
+          "certainty": null,
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": null,
+          "target": "app:tenant_b"
+        },
+        "items": [
+          {
+            "baseline": {
+              "connection": "connection:app",
+              "schema": "tenant_a"
+            },
+            "complete": true,
+            "counts": {
+              "certain": 23,
+              "differences": 25,
+              "error": 12,
+              "info": 1,
+              "likely": 2,
+              "warning": 12
+            },
+            "id": "c69f5b58e94575f1b",
+            "labels": {
+              "baseline": "app:tenant_a",
+              "target": "app:tenant_b"
+            },
+            "omitted": 0,
+            "summary": {
+              "changed": 9,
+              "extra": 8,
+              "missing": 8
+            },
+            "target": {
+              "connection": "connection:app",
+              "schema": "tenant_b"
+            }
+          }
+        ],
+        "limit": 25,
+        "nextOffset": null,
+        "offset": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "comparisons",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdd225ad2192585d0",
+              "key": [
+                "coupons"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.coupons",
+                "table": "app:tenant_b.coupons"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.invoices",
+                "table": "app:tenant_a.invoices"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xbd52e4f186cfbf3d",
+              "key": [
+                "invoices"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.products",
+                "table": "app:tenant_a.products"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7675c1f7fc75d68d",
+              "key": [
+                "products"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x6327c1b461f122ed",
+              "key": [
+                "refunds"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.refunds",
+                "table": "app:tenant_b.refunds"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "Tenant users",
+                  "field": "comment",
+                  "target": "Users"
+                }
+              ],
+              "id": "x3ae7dedbaee6ab19",
+              "key": [
+                "users"
+              ],
+              "objectType": "table",
+              "severity": "info",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x7495099d9aba44a3",
+              "key": [
+                "line_items",
+                "coupon_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.coupon_id",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items.product_id",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x79d16d68eb709003",
+              "key": [
+                "line_items",
+                "product_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdaca713cc0b158a9",
+              "key": [
+                "line_items",
+                "variant"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.variant",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.placed_at",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": true,
+                  "field": "nullable",
+                  "target": false
+                }
+              ],
+              "id": "xca707e08038d401b",
+              "key": [
+                "orders",
+                "placed_at"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.placed_at",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.total",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "numeric(10,2)",
+                  "field": "type",
+                  "target": "numeric(12,2)"
+                }
+              ],
+              "id": "xa6880ce102bef32d",
+              "key": [
+                "orders",
+                "total"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.total",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.legacy_code",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x62b27f513574b3a0",
+              "key": [
+                "users",
+                "legacy_code"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x572bcdbbb296db20",
+              "key": [
+                "users",
+                "phone"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.phone",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.status",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "'active'::character varying"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "'pending'::character varying"
+                  }
+                }
+              ],
+              "id": "x972bdcd6f09977e8",
+              "key": [
+                "users",
+                "status"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.status",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.audit_events primary key",
+                "table": "app:tenant_a.audit_events"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xd3b67fd58cd1658d",
+              "key": [
+                "audit_events"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items primary key",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": [
+                    "order_id",
+                    "line_no"
+                  ],
+                  "field": "columns",
+                  "target": [
+                    "order_id",
+                    "line_no",
+                    "variant"
+                  ]
+                }
+              ],
+              "id": "x9923df11720e1e18",
+              "key": [
+                "line_items"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items primary key",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xda87e93f7e00389d",
+              "key": [
+                "settings"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.settings primary key",
+                "table": "app:tenant_b.settings"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_placed_at_idx",
+                "label": "tenant_a.orders.orders_placed_at_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x616713e4cbe15f07",
+              "key": [
+                "orders",
+                "name",
+                "orders_placed_at_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x8fe8383469f8f61b",
+              "key": [
+                "orders",
+                "name",
+                "orders_total_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_total_idx",
+                "label": "tenant_b.orders.orders_total_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_user_id_idx",
+                "label": "tenant_a.orders.orders_user_id_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_user_id_idx",
+                  "field": "name",
+                  "target": "orders_user_idx"
+                }
+              ],
+              "id": "x8baed283f070954f",
+              "key": [
+                "orders",
+                "parts",
+                "(user_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_user_idx",
+                "label": "tenant_b.orders.orders_user_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.users:index:users_name_idx",
+                "label": "tenant_a.users.users_name_idx",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": false,
+                  "field": "unique",
+                  "target": true
+                }
+              ],
+              "id": "xf36a69e9931c4c4f",
+              "key": [
+                "users",
+                "name",
+                "users_name_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.users:index:users_name_idx",
+                "label": "tenant_b.users.users_name_idx",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x0db6370534429f1b",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_coupon_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.line_items:fk:line_items_coupon_id_fkey",
+                "label": "tenant_b.line_items.line_items_coupon_id_fkey",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:fk:line_items_product_id_fkey",
+                "label": "tenant_a.line_items.line_items_product_id_fkey",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7c5614d39591f580",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_product_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:fk:orders_user_id_fkey",
+                "label": "tenant_a.orders.orders_user_id_fkey",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "CASCADE",
+                  "field": "onDelete",
+                  "target": "RESTRICT"
+                }
+              ],
+              "id": "x7fcf2cd715cd8d4e",
+              "key": [
+                "orders",
+                "references",
+                "user_id->users(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:fk:orders_user_id_fkey",
+                "label": "tenant_b.orders.orders_user_id_fkey",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:constraint:line_items_qty_check",
+                "label": "tenant_a.line_items.line_items_qty_check",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x36c6f80d64c93154",
+              "key": [
+                "line_items",
+                "check",
+                "name",
+                "line_items_qty_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:constraint:orders_total_check",
+                "label": "tenant_a.orders.orders_total_check",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "((total >= (0)::numeric))",
+                  "field": "expression",
+                  "target": "((total > (0)::numeric))"
+                }
+              ],
+              "id": "xdd358392b863cf3a",
+              "key": [
+                "orders",
+                "check",
+                "name",
+                "orders_total_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:constraint:orders_total_check",
+                "label": "tenant_b.orders.orders_total_check",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 25
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 2,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdd225ad2192585d0",
+              "key": [
+                "coupons"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.coupons",
+                "table": "app:tenant_b.coupons"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.invoices",
+                "table": "app:tenant_a.invoices"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xbd52e4f186cfbf3d",
+              "key": [
+                "invoices"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          }
+        ],
+        "limit": 2,
+        "nextOffset": 2,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 25
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 2,
+        "offset": 2,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.products",
+                "table": "app:tenant_a.products"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7675c1f7fc75d68d",
+              "key": [
+                "products"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x6327c1b461f122ed",
+              "key": [
+                "refunds"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.refunds",
+                "table": "app:tenant_b.refunds"
+              }
+            }
+          }
+        ],
+        "limit": 2,
+        "nextOffset": 4,
+        "offset": 2,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 25
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "object_type": "table",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": "table",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdd225ad2192585d0",
+              "key": [
+                "coupons"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.coupons",
+                "table": "app:tenant_b.coupons"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.invoices",
+                "table": "app:tenant_a.invoices"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xbd52e4f186cfbf3d",
+              "key": [
+                "invoices"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.products",
+                "table": "app:tenant_a.products"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7675c1f7fc75d68d",
+              "key": [
+                "products"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x6327c1b461f122ed",
+              "key": [
+                "refunds"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.refunds",
+                "table": "app:tenant_b.refunds"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "Tenant users",
+                  "field": "comment",
+                  "target": "Users"
+                }
+              ],
+              "id": "x3ae7dedbaee6ab19",
+              "key": [
+                "users"
+              ],
+              "objectType": "table",
+              "severity": "info",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users",
+                "table": "app:tenant_b.users"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 5
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "object_type": "column",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": "column",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x7495099d9aba44a3",
+              "key": [
+                "line_items",
+                "coupon_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.coupon_id",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items.product_id",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x79d16d68eb709003",
+              "key": [
+                "line_items",
+                "product_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdaca713cc0b158a9",
+              "key": [
+                "line_items",
+                "variant"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.variant",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.placed_at",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": true,
+                  "field": "nullable",
+                  "target": false
+                }
+              ],
+              "id": "xca707e08038d401b",
+              "key": [
+                "orders",
+                "placed_at"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.placed_at",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.total",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "numeric(10,2)",
+                  "field": "type",
+                  "target": "numeric(12,2)"
+                }
+              ],
+              "id": "xa6880ce102bef32d",
+              "key": [
+                "orders",
+                "total"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.total",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.legacy_code",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x62b27f513574b3a0",
+              "key": [
+                "users",
+                "legacy_code"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x572bcdbbb296db20",
+              "key": [
+                "users",
+                "phone"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.phone",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.status",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "'active'::character varying"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "'pending'::character varying"
+                  }
+                }
+              ],
+              "id": "x972bdcd6f09977e8",
+              "key": [
+                "users",
+                "status"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.status",
+                "table": "app:tenant_b.users"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 8
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "object_type": "primaryKey",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": "primaryKey",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.audit_events primary key",
+                "table": "app:tenant_a.audit_events"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xd3b67fd58cd1658d",
+              "key": [
+                "audit_events"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items primary key",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": [
+                    "order_id",
+                    "line_no"
+                  ],
+                  "field": "columns",
+                  "target": [
+                    "order_id",
+                    "line_no",
+                    "variant"
+                  ]
+                }
+              ],
+              "id": "x9923df11720e1e18",
+              "key": [
+                "line_items"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items primary key",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xda87e93f7e00389d",
+              "key": [
+                "settings"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.settings primary key",
+                "table": "app:tenant_b.settings"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "object_type": "index",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": "index",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_placed_at_idx",
+                "label": "tenant_a.orders.orders_placed_at_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x616713e4cbe15f07",
+              "key": [
+                "orders",
+                "name",
+                "orders_placed_at_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x8fe8383469f8f61b",
+              "key": [
+                "orders",
+                "name",
+                "orders_total_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_total_idx",
+                "label": "tenant_b.orders.orders_total_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_user_id_idx",
+                "label": "tenant_a.orders.orders_user_id_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_user_id_idx",
+                  "field": "name",
+                  "target": "orders_user_idx"
+                }
+              ],
+              "id": "x8baed283f070954f",
+              "key": [
+                "orders",
+                "parts",
+                "(user_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_user_idx",
+                "label": "tenant_b.orders.orders_user_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.users:index:users_name_idx",
+                "label": "tenant_a.users.users_name_idx",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": false,
+                  "field": "unique",
+                  "target": true
+                }
+              ],
+              "id": "xf36a69e9931c4c4f",
+              "key": [
+                "users",
+                "name",
+                "users_name_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.users:index:users_name_idx",
+                "label": "tenant_b.users.users_name_idx",
+                "table": "app:tenant_b.users"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 4
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "object_type": "foreignKey",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": "foreignKey",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x0db6370534429f1b",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_coupon_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.line_items:fk:line_items_coupon_id_fkey",
+                "label": "tenant_b.line_items.line_items_coupon_id_fkey",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:fk:line_items_product_id_fkey",
+                "label": "tenant_a.line_items.line_items_product_id_fkey",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7c5614d39591f580",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_product_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:fk:orders_user_id_fkey",
+                "label": "tenant_a.orders.orders_user_id_fkey",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "CASCADE",
+                  "field": "onDelete",
+                  "target": "RESTRICT"
+                }
+              ],
+              "id": "x7fcf2cd715cd8d4e",
+              "key": [
+                "orders",
+                "references",
+                "user_id->users(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:fk:orders_user_id_fkey",
+                "label": "tenant_b.orders.orders_user_id_fkey",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 3
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "object_type": "constraint",
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": "constraint",
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:constraint:line_items_qty_check",
+                "label": "tenant_a.line_items.line_items_qty_check",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x36c6f80d64c93154",
+              "key": [
+                "line_items",
+                "check",
+                "name",
+                "line_items_qty_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:constraint:orders_total_check",
+                "label": "tenant_a.orders.orders_total_check",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "((total >= (0)::numeric))",
+                  "field": "expression",
+                  "target": "((total > (0)::numeric))"
+                }
+              ],
+              "id": "xdd358392b863cf3a",
+              "key": [
+                "orders",
+                "check",
+                "name",
+                "orders_total_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:constraint:orders_total_check",
+                "label": "tenant_b.orders.orders_total_check",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 2
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "missing",
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "missing",
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.invoices",
+                "table": "app:tenant_a.invoices"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xbd52e4f186cfbf3d",
+              "key": [
+                "invoices"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.products",
+                "table": "app:tenant_a.products"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7675c1f7fc75d68d",
+              "key": [
+                "products"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items.product_id",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x79d16d68eb709003",
+              "key": [
+                "line_items",
+                "product_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.legacy_code",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x62b27f513574b3a0",
+              "key": [
+                "users",
+                "legacy_code"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.audit_events primary key",
+                "table": "app:tenant_a.audit_events"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xd3b67fd58cd1658d",
+              "key": [
+                "audit_events"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_placed_at_idx",
+                "label": "tenant_a.orders.orders_placed_at_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x616713e4cbe15f07",
+              "key": [
+                "orders",
+                "name",
+                "orders_placed_at_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:fk:line_items_product_id_fkey",
+                "label": "tenant_a.line_items.line_items_product_id_fkey",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7c5614d39591f580",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_product_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:constraint:line_items_qty_check",
+                "label": "tenant_a.line_items.line_items_qty_check",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x36c6f80d64c93154",
+              "key": [
+                "line_items",
+                "check",
+                "name",
+                "line_items_qty_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 8
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "extra",
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "extra",
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdd225ad2192585d0",
+              "key": [
+                "coupons"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.coupons",
+                "table": "app:tenant_b.coupons"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x6327c1b461f122ed",
+              "key": [
+                "refunds"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.refunds",
+                "table": "app:tenant_b.refunds"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x7495099d9aba44a3",
+              "key": [
+                "line_items",
+                "coupon_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.coupon_id",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdaca713cc0b158a9",
+              "key": [
+                "line_items",
+                "variant"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.variant",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x572bcdbbb296db20",
+              "key": [
+                "users",
+                "phone"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.phone",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xda87e93f7e00389d",
+              "key": [
+                "settings"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.settings primary key",
+                "table": "app:tenant_b.settings"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x8fe8383469f8f61b",
+              "key": [
+                "orders",
+                "name",
+                "orders_total_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_total_idx",
+                "label": "tenant_b.orders.orders_total_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x0db6370534429f1b",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_coupon_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.line_items:fk:line_items_coupon_id_fkey",
+                "label": "tenant_b.line_items.line_items_coupon_id_fkey",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 8
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "changed",
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": "changed",
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "Tenant users",
+                  "field": "comment",
+                  "target": "Users"
+                }
+              ],
+              "id": "x3ae7dedbaee6ab19",
+              "key": [
+                "users"
+              ],
+              "objectType": "table",
+              "severity": "info",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.placed_at",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": true,
+                  "field": "nullable",
+                  "target": false
+                }
+              ],
+              "id": "xca707e08038d401b",
+              "key": [
+                "orders",
+                "placed_at"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.placed_at",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.total",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "numeric(10,2)",
+                  "field": "type",
+                  "target": "numeric(12,2)"
+                }
+              ],
+              "id": "xa6880ce102bef32d",
+              "key": [
+                "orders",
+                "total"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.total",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.status",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "'active'::character varying"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "'pending'::character varying"
+                  }
+                }
+              ],
+              "id": "x972bdcd6f09977e8",
+              "key": [
+                "users",
+                "status"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.status",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items primary key",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": [
+                    "order_id",
+                    "line_no"
+                  ],
+                  "field": "columns",
+                  "target": [
+                    "order_id",
+                    "line_no",
+                    "variant"
+                  ]
+                }
+              ],
+              "id": "x9923df11720e1e18",
+              "key": [
+                "line_items"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items primary key",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_user_id_idx",
+                "label": "tenant_a.orders.orders_user_id_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_user_id_idx",
+                  "field": "name",
+                  "target": "orders_user_idx"
+                }
+              ],
+              "id": "x8baed283f070954f",
+              "key": [
+                "orders",
+                "parts",
+                "(user_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_user_idx",
+                "label": "tenant_b.orders.orders_user_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.users:index:users_name_idx",
+                "label": "tenant_a.users.users_name_idx",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": false,
+                  "field": "unique",
+                  "target": true
+                }
+              ],
+              "id": "xf36a69e9931c4c4f",
+              "key": [
+                "users",
+                "name",
+                "users_name_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.users:index:users_name_idx",
+                "label": "tenant_b.users.users_name_idx",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:fk:orders_user_id_fkey",
+                "label": "tenant_a.orders.orders_user_id_fkey",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "CASCADE",
+                  "field": "onDelete",
+                  "target": "RESTRICT"
+                }
+              ],
+              "id": "x7fcf2cd715cd8d4e",
+              "key": [
+                "orders",
+                "references",
+                "user_id->users(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:fk:orders_user_id_fkey",
+                "label": "tenant_b.orders.orders_user_id_fkey",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:constraint:orders_total_check",
+                "label": "tenant_a.orders.orders_total_check",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "((total >= (0)::numeric))",
+                  "field": "expression",
+                  "target": "((total > (0)::numeric))"
+                }
+              ],
+              "id": "xdd358392b863cf3a",
+              "key": [
+                "orders",
+                "check",
+                "name",
+                "orders_total_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:constraint:orders_total_check",
+                "label": "tenant_b.orders.orders_total_check",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 9
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences",
+        "severity": "error"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": "error",
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdd225ad2192585d0",
+              "key": [
+                "coupons"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.coupons",
+                "table": "app:tenant_b.coupons"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.invoices",
+                "table": "app:tenant_a.invoices"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xbd52e4f186cfbf3d",
+              "key": [
+                "invoices"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.products",
+                "table": "app:tenant_a.products"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7675c1f7fc75d68d",
+              "key": [
+                "products"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x6327c1b461f122ed",
+              "key": [
+                "refunds"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.refunds",
+                "table": "app:tenant_b.refunds"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x7495099d9aba44a3",
+              "key": [
+                "line_items",
+                "coupon_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.coupon_id",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items.product_id",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x79d16d68eb709003",
+              "key": [
+                "line_items",
+                "product_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdaca713cc0b158a9",
+              "key": [
+                "line_items",
+                "variant"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.variant",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.legacy_code",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x62b27f513574b3a0",
+              "key": [
+                "users",
+                "legacy_code"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x572bcdbbb296db20",
+              "key": [
+                "users",
+                "phone"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.phone",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.audit_events primary key",
+                "table": "app:tenant_a.audit_events"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xd3b67fd58cd1658d",
+              "key": [
+                "audit_events"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items primary key",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": [
+                    "order_id",
+                    "line_no"
+                  ],
+                  "field": "columns",
+                  "target": [
+                    "order_id",
+                    "line_no",
+                    "variant"
+                  ]
+                }
+              ],
+              "id": "x9923df11720e1e18",
+              "key": [
+                "line_items"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items primary key",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xda87e93f7e00389d",
+              "key": [
+                "settings"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.settings primary key",
+                "table": "app:tenant_b.settings"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 12
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences",
+        "severity": "warning"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": "warning",
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.placed_at",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": true,
+                  "field": "nullable",
+                  "target": false
+                }
+              ],
+              "id": "xca707e08038d401b",
+              "key": [
+                "orders",
+                "placed_at"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.placed_at",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.total",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "numeric(10,2)",
+                  "field": "type",
+                  "target": "numeric(12,2)"
+                }
+              ],
+              "id": "xa6880ce102bef32d",
+              "key": [
+                "orders",
+                "total"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.total",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.status",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "'active'::character varying"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "'pending'::character varying"
+                  }
+                }
+              ],
+              "id": "x972bdcd6f09977e8",
+              "key": [
+                "users",
+                "status"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.status",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_placed_at_idx",
+                "label": "tenant_a.orders.orders_placed_at_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x616713e4cbe15f07",
+              "key": [
+                "orders",
+                "name",
+                "orders_placed_at_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x8fe8383469f8f61b",
+              "key": [
+                "orders",
+                "name",
+                "orders_total_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_total_idx",
+                "label": "tenant_b.orders.orders_total_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_user_id_idx",
+                "label": "tenant_a.orders.orders_user_id_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_user_id_idx",
+                  "field": "name",
+                  "target": "orders_user_idx"
+                }
+              ],
+              "id": "x8baed283f070954f",
+              "key": [
+                "orders",
+                "parts",
+                "(user_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_user_idx",
+                "label": "tenant_b.orders.orders_user_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.users:index:users_name_idx",
+                "label": "tenant_a.users.users_name_idx",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": false,
+                  "field": "unique",
+                  "target": true
+                }
+              ],
+              "id": "xf36a69e9931c4c4f",
+              "key": [
+                "users",
+                "name",
+                "users_name_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.users:index:users_name_idx",
+                "label": "tenant_b.users.users_name_idx",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x0db6370534429f1b",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_coupon_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.line_items:fk:line_items_coupon_id_fkey",
+                "label": "tenant_b.line_items.line_items_coupon_id_fkey",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:fk:line_items_product_id_fkey",
+                "label": "tenant_a.line_items.line_items_product_id_fkey",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7c5614d39591f580",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_product_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:fk:orders_user_id_fkey",
+                "label": "tenant_a.orders.orders_user_id_fkey",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "CASCADE",
+                  "field": "onDelete",
+                  "target": "RESTRICT"
+                }
+              ],
+              "id": "x7fcf2cd715cd8d4e",
+              "key": [
+                "orders",
+                "references",
+                "user_id->users(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:fk:orders_user_id_fkey",
+                "label": "tenant_b.orders.orders_user_id_fkey",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:constraint:line_items_qty_check",
+                "label": "tenant_a.line_items.line_items_qty_check",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x36c6f80d64c93154",
+              "key": [
+                "line_items",
+                "check",
+                "name",
+                "line_items_qty_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:constraint:orders_total_check",
+                "label": "tenant_a.orders.orders_total_check",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "((total >= (0)::numeric))",
+                  "field": "expression",
+                  "target": "((total > (0)::numeric))"
+                }
+              ],
+              "id": "xdd358392b863cf3a",
+              "key": [
+                "orders",
+                "check",
+                "name",
+                "orders_total_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:constraint:orders_total_check",
+                "label": "tenant_b.orders.orders_total_check",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 12
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences",
+        "severity": "info"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": null,
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": "info",
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "Tenant users",
+                  "field": "comment",
+                  "target": "Users"
+                }
+              ],
+              "id": "x3ae7dedbaee6ab19",
+              "key": [
+                "users"
+              ],
+              "objectType": "table",
+              "severity": "info",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users",
+                "table": "app:tenant_b.users"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 1
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "certain",
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "certain",
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdd225ad2192585d0",
+              "key": [
+                "coupons"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.coupons",
+                "table": "app:tenant_b.coupons"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.invoices",
+                "table": "app:tenant_a.invoices"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xbd52e4f186cfbf3d",
+              "key": [
+                "invoices"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.products",
+                "table": "app:tenant_a.products"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7675c1f7fc75d68d",
+              "key": [
+                "products"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x6327c1b461f122ed",
+              "key": [
+                "refunds"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.refunds",
+                "table": "app:tenant_b.refunds"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "Tenant users",
+                  "field": "comment",
+                  "target": "Users"
+                }
+              ],
+              "id": "x3ae7dedbaee6ab19",
+              "key": [
+                "users"
+              ],
+              "objectType": "table",
+              "severity": "info",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x7495099d9aba44a3",
+              "key": [
+                "line_items",
+                "coupon_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.coupon_id",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items.product_id",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x79d16d68eb709003",
+              "key": [
+                "line_items",
+                "product_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdaca713cc0b158a9",
+              "key": [
+                "line_items",
+                "variant"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.variant",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.placed_at",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": true,
+                  "field": "nullable",
+                  "target": false
+                }
+              ],
+              "id": "xca707e08038d401b",
+              "key": [
+                "orders",
+                "placed_at"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.placed_at",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.orders.total",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "numeric(10,2)",
+                  "field": "type",
+                  "target": "numeric(12,2)"
+                }
+              ],
+              "id": "xa6880ce102bef32d",
+              "key": [
+                "orders",
+                "total"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.orders.total",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.legacy_code",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x62b27f513574b3a0",
+              "key": [
+                "users",
+                "legacy_code"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x572bcdbbb296db20",
+              "key": [
+                "users",
+                "phone"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.phone",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.audit_events primary key",
+                "table": "app:tenant_a.audit_events"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xd3b67fd58cd1658d",
+              "key": [
+                "audit_events"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items primary key",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": [
+                    "order_id",
+                    "line_no"
+                  ],
+                  "field": "columns",
+                  "target": [
+                    "order_id",
+                    "line_no",
+                    "variant"
+                  ]
+                }
+              ],
+              "id": "x9923df11720e1e18",
+              "key": [
+                "line_items"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items primary key",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xda87e93f7e00389d",
+              "key": [
+                "settings"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.settings primary key",
+                "table": "app:tenant_b.settings"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_placed_at_idx",
+                "label": "tenant_a.orders.orders_placed_at_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x616713e4cbe15f07",
+              "key": [
+                "orders",
+                "name",
+                "orders_placed_at_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x8fe8383469f8f61b",
+              "key": [
+                "orders",
+                "name",
+                "orders_total_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_total_idx",
+                "label": "tenant_b.orders.orders_total_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:index:orders_user_id_idx",
+                "label": "tenant_a.orders.orders_user_id_idx",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "orders_user_id_idx",
+                  "field": "name",
+                  "target": "orders_user_idx"
+                }
+              ],
+              "id": "x8baed283f070954f",
+              "key": [
+                "orders",
+                "parts",
+                "(user_id)"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:index:orders_user_idx",
+                "label": "tenant_b.orders.orders_user_idx",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.users:index:users_name_idx",
+                "label": "tenant_a.users.users_name_idx",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": false,
+                  "field": "unique",
+                  "target": true
+                }
+              ],
+              "id": "xf36a69e9931c4c4f",
+              "key": [
+                "users",
+                "name",
+                "users_name_idx"
+              ],
+              "objectType": "index",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.users:index:users_name_idx",
+                "label": "tenant_b.users.users_name_idx",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x0db6370534429f1b",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_coupon_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.line_items:fk:line_items_coupon_id_fkey",
+                "label": "tenant_b.line_items.line_items_coupon_id_fkey",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:fk:line_items_product_id_fkey",
+                "label": "tenant_a.line_items.line_items_product_id_fkey",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7c5614d39591f580",
+              "key": [
+                "line_items",
+                "name",
+                "line_items_product_id_fkey"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:fk:orders_user_id_fkey",
+                "label": "tenant_a.orders.orders_user_id_fkey",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "CASCADE",
+                  "field": "onDelete",
+                  "target": "RESTRICT"
+                }
+              ],
+              "id": "x7fcf2cd715cd8d4e",
+              "key": [
+                "orders",
+                "references",
+                "user_id->users(id)"
+              ],
+              "objectType": "foreignKey",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:fk:orders_user_id_fkey",
+                "label": "tenant_b.orders.orders_user_id_fkey",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.line_items:constraint:line_items_qty_check",
+                "label": "tenant_a.line_items.line_items_qty_check",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x36c6f80d64c93154",
+              "key": [
+                "line_items",
+                "check",
+                "name",
+                "line_items_qty_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": null
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 23
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "likely",
+        "comparison": "c69f5b58e94575f1b",
+        "limit": 100,
+        "section": "differences"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "likely",
+          "change": null,
+          "comparison": "c69f5b58e94575f1b",
+          "objectType": null,
+          "severity": null,
+          "target": null
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.status",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": {
+                    "kind": "literal",
+                    "value": "'active'::character varying"
+                  },
+                  "field": "default",
+                  "target": {
+                    "kind": "literal",
+                    "value": "'pending'::character varying"
+                  }
+                }
+              ],
+              "id": "x972bdcd6f09977e8",
+              "key": [
+                "users",
+                "status"
+              ],
+              "objectType": "column",
+              "severity": "warning",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.status",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": "app:tenant_a.orders:constraint:orders_total_check",
+                "label": "tenant_a.orders.orders_total_check",
+                "table": "app:tenant_a.orders"
+              },
+              "certainty": "likely",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": "((total >= (0)::numeric))",
+                  "field": "expression",
+                  "target": "((total > (0)::numeric))"
+                }
+              ],
+              "id": "xdd358392b863cf3a",
+              "key": [
+                "orders",
+                "check",
+                "name",
+                "orders_total_check"
+              ],
+              "objectType": "constraint",
+              "severity": "warning",
+              "target": {
+                "id": "app:tenant_b.orders:constraint:orders_total_check",
+                "label": "tenant_b.orders.orders_total_check",
+                "table": "app:tenant_b.orders"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 2
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "certain",
+        "limit": 100,
+        "section": "differences",
+        "severity": "error",
+        "target": "app:tenant_b"
+      },
+      "result": {
+        "comparisons": 1,
+        "filters": {
+          "baseline": null,
+          "certainty": "certain",
+          "change": null,
+          "comparison": null,
+          "objectType": null,
+          "severity": "error",
+          "target": "app:tenant_b"
+        },
+        "items": [
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdd225ad2192585d0",
+              "key": [
+                "coupons"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.coupons",
+                "table": "app:tenant_b.coupons"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.invoices",
+                "table": "app:tenant_a.invoices"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xbd52e4f186cfbf3d",
+              "key": [
+                "invoices"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.products",
+                "table": "app:tenant_a.products"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x7675c1f7fc75d68d",
+              "key": [
+                "products"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x6327c1b461f122ed",
+              "key": [
+                "refunds"
+              ],
+              "objectType": "table",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.refunds",
+                "table": "app:tenant_b.refunds"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x7495099d9aba44a3",
+              "key": [
+                "line_items",
+                "coupon_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.coupon_id",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items.product_id",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x79d16d68eb709003",
+              "key": [
+                "line_items",
+                "product_id"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xdaca713cc0b158a9",
+              "key": [
+                "line_items",
+                "variant"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items.variant",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.users.legacy_code",
+                "table": "app:tenant_a.users"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "x62b27f513574b3a0",
+              "key": [
+                "users",
+                "legacy_code"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "x572bcdbbb296db20",
+              "key": [
+                "users",
+                "phone"
+              ],
+              "objectType": "column",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.users.phone",
+                "table": "app:tenant_b.users"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.audit_events primary key",
+                "table": "app:tenant_a.audit_events"
+              },
+              "certainty": "certain",
+              "change": "missing",
+              "fields": [],
+              "id": "xd3b67fd58cd1658d",
+              "key": [
+                "audit_events"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": null
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": {
+                "id": null,
+                "label": "tenant_a.line_items primary key",
+                "table": "app:tenant_a.line_items"
+              },
+              "certainty": "certain",
+              "change": "changed",
+              "fields": [
+                {
+                  "baseline": [
+                    "order_id",
+                    "line_no"
+                  ],
+                  "field": "columns",
+                  "target": [
+                    "order_id",
+                    "line_no",
+                    "variant"
+                  ]
+                }
+              ],
+              "id": "x9923df11720e1e18",
+              "key": [
+                "line_items"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.line_items primary key",
+                "table": "app:tenant_b.line_items"
+              }
+            }
+          },
+          {
+            "comparison": "c69f5b58e94575f1b",
+            "difference": {
+              "baseline": null,
+              "certainty": "certain",
+              "change": "extra",
+              "fields": [],
+              "id": "xda87e93f7e00389d",
+              "key": [
+                "settings"
+              ],
+              "objectType": "primaryKey",
+              "severity": "error",
+              "target": {
+                "id": null,
+                "label": "tenant_b.settings primary key",
+                "table": "app:tenant_b.settings"
+              }
+            }
+          }
+        ],
+        "limit": 100,
+        "nextOffset": null,
+        "offset": 0,
+        "omitted": 0,
+        "revision": "8fc33266578cab25a66a52c5009d98d24dc325ebb25850f3f078d7ab14f45313",
+        "section": "differences",
+        "total": 12
+      },
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "section": "tables"
+      },
+      "error": "section must be comparisons or differences",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "missing"
+      },
+      "error": "Unknown comparison ID; use schema_compare",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "missing"
+      },
+      "error": "Unknown baseline connection; use schema_overview",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "target": "app:"
+      },
+      "error": "target must be CONNECTION or CONNECTION:SCHEMA",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "object_type": "view",
+        "section": "differences"
+      },
+      "error": "object_type must be one of table, column, primaryKey, index, foreignKey, constraint",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "change": "gone",
+        "section": "differences"
+      },
+      "error": "change must be one of missing, extra, changed",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "section": "differences",
+        "severity": "fatal"
+      },
+      "error": "severity must be one of error, warning, info",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "certainty": "maybe",
+        "section": "differences"
+      },
+      "error": "certainty must be one of certain, likely",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "severity": "error"
+      },
+      "error": "object_type, change, severity and certainty filter differences; use section differences",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "app",
+        "limit": 0
+      },
+      "error": "limit must be an integer from 1 to 100",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "offset": -1
+      },
+      "error": "offset must be a nonnegative integer",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "revision": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "error": "Document revision differs; restart pagination without revision",
+      "tool": "schema_compare"
     }
   ],
   "document": "tests/fixtures/contract/fixtures/valid/comparison-tenant-schemas.json",
