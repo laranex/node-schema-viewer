@@ -114,6 +114,6 @@ npx node-schema-viewer --version
 `compare` and `check` follow python-schema-viewer's commands: the same arguments, summaries, JSON output, `--write` behaviour and exit codes, checked byte for byte in `tests/parity.test.ts`. Intentional differences:
 
 - Configuration is camelCase JSON in `package.json` (`objectType` in overrides) instead of TOML in `pyproject.toml`.
-- Usage errors are worded by this CLI, not by argparse (both exit 2), and configuration errors name `package.json` keys.
+- Usage errors are worded by this CLI, not by argparse (both exit 2), and configuration errors name `package.json` keys: an override error reads `PATH/package.json "node-schema-viewer" comparisons[0] overrides[1].objectType must be one of …` where python-schema-viewer writes `[[tool.laranex-schema-viewer.comparisons]] entry 1 overrides[1].object_type must be one of …`; the rest of the message is the shared validator's.
 - Connection names follow python-schema-viewer's pattern, with Unicode letters and digits matched as JavaScript's `\p{L}` and `\p{N}`.
 - A file that cannot be read is described with the operating system's message as libuv words it (stderr only).

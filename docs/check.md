@@ -42,9 +42,9 @@ These are **errors**: the check could not be completed, and the gate exits 2 wha
 | `check` with configured `comparisons` | The configured entries, as written (connection names, `*` targets unexpanded) | Only those, which must be stored in the document; others in the document are ignored |
 | `check BASELINE=TARGET ...` | The named comparisons, replacing the configured ones | Only those, computed in memory first |
 
-A target schema `*` is expanded by the gate to every schema the target connection's inspection read except the baseline's own scope, exactly as `compare` expands it. A request that cannot be resolved is a `comparison_not_found` error (exit 2).
+A target schema `*` is expanded by the gate to every schema the target connection's inspection read except the baseline's own scope, exactly as `compare` expands it. A request that cannot be resolved is a `comparison_not_found` error (exit 2). A comparison configured or named twice is a configuration or usage error, rejected before the snapshot is read (exit 2, no report, nothing on stdout): `Error: Requested comparison app:tenant_a → app:tenant_b is listed more than once.` on stderr, as the contract requires of producers (the gate itself would drop the duplicate silently).
 
-Comparisons named on the command line are computed from the saved document as [`compare`](./comparison.md#compare-a-saved-document) computes them (replacing a stored comparison of the same scopes, with `--limit`), and then requested, so the gate checks exactly what was computed. Nothing is written. Both use the shared `expandComparisonRequests`: a named comparison whose connection is unknown, or whose `*` cannot be expanded or matches no schema, is not computed and is reported by the gate as `comparison_not_found` with the contract's message; the same comparison named twice is an error (exit 2); on an invalid document nothing is computed.
+Comparisons named on the command line are computed from the saved document as [`compare`](./comparison.md#compare-a-saved-document) computes them (replacing a stored comparison of the same scopes, with `--limit`), and then requested, so the gate checks exactly what was computed. Nothing is written. Both use the shared `expandComparisonRequests`: a named comparison whose connection is unknown, or whose `*` cannot be expanded or matches no schema, is not computed and is reported by the gate as `comparison_not_found` with the contract's message; the same comparison named twice is the duplicate error above; on an invalid document nothing is computed.
 
 ## Thresholds
 
@@ -71,7 +71,7 @@ Flags take precedence over the configuration, which takes precedence over the sh
 | --- | --- |
 | `0` | Passed: no error and no qualifying finding (findings below the thresholds are still listed) |
 | `1` | Drift: at least one finding qualifies, and nothing kept the check from completing |
-| `2` | Incomplete or invalid: any error above (it wins over `1`), or, without a report, invalid arguments, invalid configuration, a named comparison given twice, a failure writing `--output`, or any unexpected error |
+| `2` | Incomplete or invalid: any error above (it wins over `1`), or, without a report, invalid arguments, invalid configuration, a comparison configured or named twice, a failure writing `--output`, or any unexpected error |
 
 Nothing on a failure path exits 0 or 1.
 
