@@ -95,7 +95,7 @@ export function runStdio(snapshot: string): StdioServerHandle {
     const query = SnapshotQuery.fromFile(snapshot);
     return serveStdio(() => createMcpServer(query), {
         onerror: (error) => {
-            process.stderr.write(`laranex-schema-viewer mcp: ${error.message}\n`);
+            process.stderr.write(`node-schema-viewer mcp: ${error.message}\n`);
         },
     });
 }

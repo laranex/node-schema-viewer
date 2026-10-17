@@ -45,7 +45,7 @@ describe('cli', () => {
         }
         const help = await runCli(['--help']);
         assert.equal(help.code, 0);
-        assert.match(help.stdout, /Usage: laranex-schema-viewer <command>/);
+        assert.match(help.stdout, /Usage: node-schema-viewer <command>/);
         for (const command of ['init', 'serve', 'mcp', 'build']) {
             assert.match(help.stdout, new RegExp(`\\n  ${command}`));
         }
@@ -79,10 +79,10 @@ describe('cli', () => {
         writeFileSync(join(dir, 'package.json'), '{\n  "name": "app"\n}\n');
         const first = await runCli(['init', '--output', 'docs/schema.json'], { cwd: dir });
         assert.equal(first.code, 0, first.stderr);
-        assert.match(first.stdout, /Added "laranex-schema-viewer"/);
+        assert.match(first.stdout, /Added "node-schema-viewer"/);
         assert.deepEqual(JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8')), {
             name: 'app',
-            'laranex-schema-viewer': { output: 'docs/schema.json' },
+            'node-schema-viewer': { output: 'docs/schema.json' },
         });
         const second = await runCli(['init', '--project-root', dir]);
         assert.equal(second.code, 1);
@@ -95,7 +95,7 @@ describe('cli', () => {
 
     test('serve uses the configured output and stops cleanly', async (t) => {
         const dir = tempDir(t);
-        writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'app', 'laranex-schema-viewer': { output: 'docs/schema.json' } }));
+        writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'app', 'node-schema-viewer': { output: 'docs/schema.json' } }));
         mkdirSync(join(dir, 'docs'));
         copyFileSync(COMBINED, join(dir, 'docs', 'schema.json'));
         const server = await startServe(['--port', '0'], dir);
@@ -124,7 +124,7 @@ describe('cli', () => {
         const missing = await runCli(['serve', '--port', '0'], { cwd: dir });
         assert.equal(missing.code, 1);
         assert.match(missing.stderr, /Error: Snapshot not found: .*schema-viewer\.json/);
-        writeFileSync(join(dir, 'package.json'), JSON.stringify({ 'laranex-schema-viewer': { output: 'x.json', databaseUrl: 'x' } }));
+        writeFileSync(join(dir, 'package.json'), JSON.stringify({ 'node-schema-viewer': { output: 'x.json', databaseUrl: 'x' } }));
         const config = await runCli(['serve', '--port', '0'], { cwd: dir });
         assert.equal(config.code, 1);
         assert.match(config.stderr, /must not contain a database URL/);

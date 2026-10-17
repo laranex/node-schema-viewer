@@ -15,7 +15,7 @@ const MOUNT = '/project';
 const MIN_NODE = [22, 13];
 const DIGEST = /@sha256:[0-9a-f]{64}$/;
 // Where the package is, resolved from the image's working directory when containerPackagePath is not set.
-const LOCATE = "process.stdout.write(require('path').dirname(require.resolve('laranex-schema-viewer/package.json')))";
+const LOCATE = "process.stdout.write(require('path').dirname(require.resolve('node-schema-viewer/package.json')))";
 
 export function containerRuntime(config: IsolationConfig): string {
     const candidates = config.containerRuntime !== null ? [config.containerRuntime] : ['docker', 'podman'];
@@ -65,7 +65,7 @@ export interface ImageProbe {
 }
 
 // Refuses an image whose worker entry point did not answer, whose Node.js is too old for the Permission Model flags,
-// or whose package is not laranex-schema-viewer at exactly the host's version.
+// or whose package is not node-schema-viewer at exactly the host's version.
 export function checkImage(image: string, probe: ImageProbe | null, detail = ''): void {
     if (probe === null) {
         throw new IsolationError(
@@ -76,9 +76,9 @@ export function checkImage(image: string, probe: ImageProbe | null, detail = '')
     if (major < (MIN_NODE[0] ?? 0) || (major === MIN_NODE[0] && minor < (MIN_NODE[1] ?? 0))) {
         throw new IsolationError(`Image ${image} has Node.js ${String(probe.node)}; container isolation needs Node.js 22.13 or later in the image`);
     }
-    if (probe.name !== 'laranex-schema-viewer' || probe.version !== VERSION) {
+    if (probe.name !== 'node-schema-viewer' || probe.version !== VERSION) {
         throw new IsolationError(
-            `Image ${image} must have laranex-schema-viewer ${VERSION} (found: ${typeof probe.name === 'string' ? probe.name : 'nothing'}` +
+            `Image ${image} must have node-schema-viewer ${VERSION} (found: ${typeof probe.name === 'string' ? probe.name : 'nothing'}` +
                 `${typeof probe.version === 'string' ? ` ${probe.version}` : ''})`,
         );
     }
@@ -95,7 +95,7 @@ function packageDirectory(runtime: string, image: string, config: IsolationConfi
     const path = located.status === 0 ? located.stdout.trim() : '';
     if (!posix.isAbsolute(path)) {
         throw new IsolationError(
-            `Cannot find laranex-schema-viewer from the working directory of image ${image}; install it there (npm install --prefix) ` +
+            `Cannot find node-schema-viewer from the working directory of image ${image}; install it there (npm install --prefix) ` +
                 `or set containerPackagePath${located.stderr ? `: ${located.stderr.trim().slice(-300)}` : ''}`,
         );
     }
@@ -123,7 +123,7 @@ export async function extractInContainer(request: ExtractRequest, config: Isolat
     const image = config.containerImage;
     if (image === null || image === '') {
         throw new IsolationError(
-            `Container isolation needs containerImage: an image with Node.js and laranex-schema-viewer ${VERSION} installed`,
+            `Container isolation needs containerImage: an image with Node.js and node-schema-viewer ${VERSION} installed`,
         );
     }
     const runtime = containerRuntime(config);

@@ -36,7 +36,7 @@ export interface IsolationConfig {
     containerRuntime: string | null;
     containerMemory: string;
     // Where this package is installed inside the image (absolute path of its directory). By default it is resolved
-    // from the image's working directory, as `require.resolve('laranex-schema-viewer/package.json')` would.
+    // from the image's working directory, as `require.resolve('node-schema-viewer/package.json')` would.
     containerPackagePath: string | null;
     // Opt-in: let the container runtime pull a missing image. Off by default: every run uses --pull never.
     pullImage: boolean;

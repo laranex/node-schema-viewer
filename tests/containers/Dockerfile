@@ -2,8 +2,8 @@
 # the tests show the container doing it), and this package installed from a locally packed tarball into /opt/lsv (not
 # globally), the image's working directory, where the build resolves it. No application code and no credentials.
 FROM node:24-slim
-COPY laranex-schema-viewer-*.tgz /tmp/
+COPY node-schema-viewer-*.tgz /tmp/
 RUN mkdir /opt/lsv \
-    && npm install --prefix /opt/lsv --no-audit --no-fund /tmp/laranex-schema-viewer-*.tgz \
-    && rm /tmp/laranex-schema-viewer-*.tgz
+    && npm install --prefix /opt/lsv --no-audit --no-fund /tmp/node-schema-viewer-*.tgz \
+    && rm /tmp/node-schema-viewer-*.tgz
 WORKDIR /opt/lsv

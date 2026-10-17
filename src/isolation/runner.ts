@@ -56,13 +56,13 @@ function inside(path: string, root: string): boolean {
     return rel === '' || (!rel.startsWith('..') && !isAbsolute(rel));
 }
 
-// This package's root: the nearest laranex-schema-viewer package.json above this module.
+// This package's root: the nearest node-schema-viewer package.json above this module.
 export function packageRoot(): string {
     let directory = dirname(fileURLToPath(import.meta.url));
     for (;;) {
         try {
             const data = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as { name?: unknown };
-            if (data.name === 'laranex-schema-viewer') {
+            if (data.name === 'node-schema-viewer') {
                 return real(directory);
             }
         } catch {
@@ -70,7 +70,7 @@ export function packageRoot(): string {
         }
         const parent = dirname(directory);
         if (parent === directory) {
-            throw new IsolationError('Cannot find the laranex-schema-viewer package directory');
+            throw new IsolationError('Cannot find the node-schema-viewer package directory');
         }
         directory = parent;
     }

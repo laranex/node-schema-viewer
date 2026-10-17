@@ -1,4 +1,4 @@
-// The package version, from the nearest laranex-schema-viewer package.json above this module (dist/ when installed,
+// The package version, from the nearest node-schema-viewer package.json above this module (dist/ when installed,
 // build/src/ in this repository's tests).
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -9,7 +9,7 @@ function packageVersion(): string {
     for (;;) {
         try {
             const data = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as { name?: unknown; version?: unknown };
-            if (data.name === 'laranex-schema-viewer' && typeof data.version === 'string') {
+            if (data.name === 'node-schema-viewer' && typeof data.version === 'string') {
                 return data.version;
             }
         } catch {

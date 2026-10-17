@@ -1,16 +1,16 @@
 # Laranex Schema Viewer for Node.js
 
-`laranex-schema-viewer` serves the shared [Laranex Schema Viewer UI](https://github.com/laranex/schema-viewer-ui) and read-only MCP tools from a saved [laranex-schema](https://github.com/laranex/schema-viewer-ui/blob/main/docs/contract.md) 1.x document. It never connects to a database, runs migrations or executes your configuration.
+`node-schema-viewer` serves the shared [Laranex Schema Viewer UI](https://github.com/laranex/schema-viewer-ui) and read-only MCP tools from a saved [laranex-schema](https://github.com/laranex/schema-viewer-ui/blob/main/docs/contract.md) 1.x document. It never connects to a database, runs migrations or executes your configuration.
 
 > Status: 0.1.0, unreleased. Building snapshots from Node.js ORMs is not available yet; `serve` and `mcp` read a document written by another Laranex Schema Viewer (Laravel, Python) or a later milestone of this package.
 
 Requires Node.js 22.13 or later (22, 24 and 26 are tested).
 
 ```bash
-npm install --save-dev laranex-schema-viewer
-npx laranex-schema-viewer init                      # adds "laranex-schema-viewer": {"output": "schema-viewer.json"} to package.json
-npx laranex-schema-viewer serve                     # http://127.0.0.1:8765
-npx laranex-schema-viewer mcp --snapshot /abs/path/schema-viewer.json
+npm install --save-dev node-schema-viewer
+npx node-schema-viewer init                      # adds "node-schema-viewer": {"output": "schema-viewer.json"} to package.json
+npx node-schema-viewer serve                     # http://127.0.0.1:8765
+npx node-schema-viewer mcp --snapshot /abs/path/schema-viewer.json
 ```
 
 ## Configuration
@@ -19,7 +19,7 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
 
 ```json
 {
-  "laranex-schema-viewer": {
+  "node-schema-viewer": {
     "output": "schema-viewer.json"
   }
 }
@@ -40,7 +40,7 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
   "mcpServers": {
     "laranex_schema": {
       "type": "stdio",
-      "command": "/absolute/path/to/node_modules/.bin/laranex-schema-viewer",
+      "command": "/absolute/path/to/node_modules/.bin/node-schema-viewer",
       "args": ["mcp", "--snapshot", "/absolute/path/to/schema-viewer.json"]
     }
   }

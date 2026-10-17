@@ -62,7 +62,7 @@ Enforced outside the worker's JavaScript, by the operating system, the container
 - **Nothing outlives the build:** the container runs with `--rm`, is killed and removed on timeout, and takes every process in it along.
 - **Reduced privileges:** `--cap-drop ALL`, `--security-opt no-new-privileges`, `--pids-limit 256`, `--memory`, and your uid and gid.
 - **Images are never pulled by default.** Every run, the checks included, uses `--pull never`. An image that is not present locally stops the build with a message naming it and how to build or pull it. `pullImage: true` opts in to `--pull missing`; when the reference is not pinned by digest (`image@sha256:…`), the result carries a notice recommending one, because a tag can be moved to a different image.
-- **The image is checked before use.** The package is found from the image's working directory (as `require.resolve('laranex-schema-viewer/package.json')` would), or at `containerPackagePath`. A global install is not needed. The build then runs that package's worker entry point itself, under `--permission`, with `--probe`; it prints the package name and version from its own `package.json` and the Node.js version. The build stops when the entry point is missing or does not run, when the name is not `laranex-schema-viewer` or the version is not exactly the host's, or when Node.js is older than 22.13.
+- **The image is checked before use.** The package is found from the image's working directory (as `require.resolve('node-schema-viewer/package.json')` would), or at `containerPackagePath`. A global install is not needed. The build then runs that package's worker entry point itself, under `--permission`, with `--probe`; it prints the package name and version from its own `package.json` and the Node.js version. The build stops when the entry point is missing or does not run, when the name is not `node-schema-viewer` or the version is not exactly the host's, or when Node.js is older than 22.13.
 
 ## Best-effort safeguards
 
@@ -128,10 +128,10 @@ The isolation settings (`IsolationConfig` in `src/isolation/index.ts`; exposed b
 | `containerPackagePath` | resolved from the image's working directory | Absolute path of the package directory inside the image |
 | `pullImage` | `false` | Let the runtime pull a missing image (`--pull missing`); pin it by digest |
 
-A container image needs Node.js 22.13+ (22.15+ for TypeScript models) and the same `laranex-schema-viewer` version as the host, resolvable from the image's working directory or at `containerPackagePath`. Your project, with its `node_modules`, is mounted read-only; native addons are refused, so only JavaScript dependencies load. Build the image yourself and keep it local, or pin it by digest:
+A container image needs Node.js 22.13+ (22.15+ for TypeScript models) and the same `node-schema-viewer` version as the host, resolvable from the image's working directory or at `containerPackagePath`. Your project, with its `node_modules`, is mounted read-only; native addons are refused, so only JavaScript dependencies load. Build the image yourself and keep it local, or pin it by digest:
 
 ```dockerfile
 FROM node:24-slim@sha256:<digest>
-RUN mkdir /opt/lsv && npm install --prefix /opt/lsv laranex-schema-viewer@0.1.0
+RUN mkdir /opt/lsv && npm install --prefix /opt/lsv node-schema-viewer@0.1.0
 WORKDIR /opt/lsv
 ```

@@ -19,7 +19,7 @@ async function connect(snapshot: string): Promise<{ client: Client; transport: S
     const transport = new StdioClientTransport({ command: process.execPath, args: [CLI, 'mcp', '--snapshot', snapshot], stderr: 'pipe' });
     let stderr = '';
     transport.stderr?.on('data', (chunk: Buffer) => (stderr += chunk.toString()));
-    const client = new Client({ name: 'laranex-schema-viewer-tests', version: '0.0.0' });
+    const client = new Client({ name: 'node-schema-viewer-tests', version: '0.0.0' });
     await client.connect(transport);
     return { client, transport, stderr: () => stderr };
 }

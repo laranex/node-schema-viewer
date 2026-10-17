@@ -7,7 +7,7 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Added
 
 - Package foundation: TypeScript (strict, ESM), ESLint with typescript-eslint, `node:test` suite compiled with `tsc`, MIT license. Requires Node.js 22.13 or later; tested on 22, 24 and 26.
-- Static configuration under `"laranex-schema-viewer"` in the project's `package.json` (`output`), with unknown keys and database URLs rejected, and `init`, which adds the key without changing anything else.
+- Static configuration under `"node-schema-viewer"` in the project's `package.json` (`output`), with unknown keys and database URLs rejected, and `init`, which adds the key without changing anything else.
 - laranex-schema 1.x snapshots: bounded loading (32 MiB) with lenient reader validation, canonical JSON and revisions from `laranex-schema-viewer-ui`'s contract, strict validation and atomic writes for everything the package writes.
 - `serve`: the shared viewer (`laranex-schema-viewer-ui` 0.2.0, used from the npm package: multi-connection frames and cross-connection reference nodes, and its favicon) on `127.0.0.1:8765`, serving only manifest-listed files verified by SHA-256 at startup, `/snapshot.json` re-read and validated on every request, Host checks, GET/HEAD only, and python-schema-viewer's Content-Security-Policy.
 - `mcp`: the five read-only tools of python-schema-viewer (`schema_overview`, `schema_search`, `schema_get_table`, `schema_get_model`, `schema_get_relationships`) on the official MCP TypeScript SDK v2, with the same arguments, pagination, 64 KiB limit, annotations and response text. A conformance suite compares 786 recorded python-schema-viewer responses over ten documents.

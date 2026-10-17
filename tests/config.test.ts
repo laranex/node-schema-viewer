@@ -22,7 +22,7 @@ describe('config', () => {
 
     test('output resolves against the project root; an explicit snapshot wins', (t) => {
         const dir = tempDir(t);
-        project(dir, { name: 'app', 'laranex-schema-viewer': { output: 'docs/schema.json' } });
+        project(dir, { name: 'app', 'node-schema-viewer': { output: 'docs/schema.json' } });
         assert.deepEqual(loadConfig(dir), { output: join(dir, 'docs', 'schema.json') });
         assert.equal(resolveSnapshot(undefined, dir), join(dir, 'docs', 'schema.json'));
         assert.equal(resolveSnapshot('/elsewhere/x.json', dir), '/elsewhere/x.json');
@@ -38,7 +38,7 @@ describe('config', () => {
             [null, /must be an object/],
             [[], /must be an object/],
         ] as const) {
-            project(dir, { name: 'app', 'laranex-schema-viewer': section });
+            project(dir, { name: 'app', 'node-schema-viewer': section });
             assert.throws(() => loadConfig(dir), (error: Error) => error instanceof ConfigError && message.test(error.message));
         }
     });
@@ -47,7 +47,7 @@ describe('config', () => {
         const dir = tempDir(t);
         const secret = 'postgres://user:hunter2@db.internal/app';
         for (const section of [{ databaseUrl: 'x' }, { database_url: 'x' }, { url: 'x' }, { output: secret }, { DSN: 'x' }]) {
-            project(dir, { 'laranex-schema-viewer': section });
+            project(dir, { 'node-schema-viewer': section });
             assert.throws(
                 () => loadConfig(dir),
                 (error: Error) => error instanceof ConfigError && /URL/.test(error.message) && !error.message.includes('hunter2'),
@@ -71,7 +71,7 @@ describe('config', () => {
         const text = readFileSync(path, 'utf8');
         assert.equal(
             text,
-            '{\n    "name": "app",\n    "scripts": {\n        "test": "node --test"\n    },\n    "private": true,\n    "laranex-schema-viewer": {\n        "output": "docs/schema.json"\n    }\n}\n',
+            '{\n    "name": "app",\n    "scripts": {\n        "test": "node --test"\n    },\n    "private": true,\n    "node-schema-viewer": {\n        "output": "docs/schema.json"\n    }\n}\n',
         );
         assert.deepEqual(loadConfig(dir), { output: join(dir, 'docs', 'schema.json') });
     });
@@ -80,15 +80,15 @@ describe('config', () => {
         const dir = tempDir(t);
         const path = project(dir, null, '{\n\t"name": "app"\n}');
         addConfig(dir);
-        assert.equal(readFileSync(path, 'utf8'), '{\n\t"name": "app",\n\t"laranex-schema-viewer": {\n\t\t"output": "schema-viewer.json"\n\t}\n}');
+        assert.equal(readFileSync(path, 'utf8'), '{\n\t"name": "app",\n\t"node-schema-viewer": {\n\t\t"output": "schema-viewer.json"\n\t}\n}');
     });
 
     test('init refuses to replace an existing key, a missing package.json and URLs', (t) => {
         const dir = tempDir(t);
         assert.throws(() => addConfig(dir), /No package.json/);
-        const path = project(dir, { name: 'app', 'laranex-schema-viewer': { output: 'a.json' } });
+        const path = project(dir, { name: 'app', 'node-schema-viewer': { output: 'a.json' } });
         const before = readFileSync(path, 'utf8');
-        assert.throws(() => addConfig(dir), /already contains "laranex-schema-viewer"/);
+        assert.throws(() => addConfig(dir), /already contains "node-schema-viewer"/);
         assert.equal(readFileSync(path, 'utf8'), before);
         project(dir, { name: 'app' });
         assert.throws(() => addConfig(dir, 'mysql://root@localhost/db'), /must not contain a URL/);

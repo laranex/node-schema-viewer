@@ -1,5 +1,5 @@
 {
-  "name": "laranex-schema-viewer",
+  "name": "node-schema-viewer",
   "version": "0.1.0",
   "description": "Serve the Laranex Schema Viewer and read-only MCP tools from saved laranex-schema documents.",
   "license": "MIT",
@@ -20,7 +20,7 @@
   ],
   "type": "module",
   "bin": {
-    "laranex-schema-viewer": "dist/cli.js"
+    "node-schema-viewer": "dist/cli.js"
   },
   "exports": {
     ".": {

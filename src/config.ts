@@ -1,10 +1,10 @@
-// Project defaults from the "laranex-schema-viewer" key of the project's package.json. Static JSON only: configuration
+// Project defaults from the "node-schema-viewer" key of the project's package.json. Static JSON only: configuration
 // files are never executed, unknown keys are rejected, and database URLs never belong in configuration.
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { writeAtomically } from './snapshot.js';
 
-export const SECTION = 'laranex-schema-viewer';
+export const SECTION = 'node-schema-viewer';
 export const DEFAULT_SNAPSHOT = 'schema-viewer.json';
 const KEYS = new Set(['output']);
 const URL_KEYS = /^(?:url|database_?url|databaseUrl|connection_?url|connectionUrl|dsn)$/i;

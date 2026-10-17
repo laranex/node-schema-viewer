@@ -30,8 +30,8 @@ describe('package', { timeout: 300_000 }, () => {
         mkdirSync(project);
         writeFileSync(join(project, 'package.json'), JSON.stringify({ name: 'packaging-test', private: true }));
         execFileSync(npm, ['install', '--no-audit', '--no-fund', '--prefer-offline', join(dir, tarball.filename)], { cwd: project, stdio: ['ignore', 'ignore', 'inherit'] });
-        const bin = join(project, 'node_modules', '.bin', 'laranex-schema-viewer');
-        assert.ok(readdirSync(join(project, 'node_modules', 'laranex-schema-viewer', 'dist')).includes('cli.js'));
+        const bin = join(project, 'node_modules', '.bin', 'node-schema-viewer');
+        assert.ok(readdirSync(join(project, 'node_modules', 'node-schema-viewer', 'dist')).includes('cli.js'));
 
         assert.equal(execFileSync(bin, ['--version'], { cwd: project, encoding: 'utf8' }), '0.1.0\n');
 

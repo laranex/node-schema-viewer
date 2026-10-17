@@ -1,11 +1,11 @@
 # Laranex Schema Viewer for Node.js
 
-npm package `laranex-schema-viewer` (TypeScript, ESM, strict): serves the shared Laranex Schema Viewer UI and read-only MCP tools from a saved laranex-schema 1.x document. Part of the Laranex Schema Viewer family with python-schema-viewer and laravel-schema-viewer; the contract and the viewer come from the npm package `laranex-schema-viewer-ui`. Inspect existing files and preserve unrelated changes before editing.
+npm package `node-schema-viewer` (TypeScript, ESM, strict): serves the shared Laranex Schema Viewer UI and read-only MCP tools from a saved laranex-schema 1.x document. Part of the Laranex Schema Viewer family with python-schema-viewer and laravel-schema-viewer; the contract and the viewer come from the npm package `laranex-schema-viewer-ui`. Inspect existing files and preserve unrelated changes before editing.
 
 ## Architecture
 
 - `src/snapshot.ts`: bounded loading (≤ 32 MiB) with lenient reader validation, canonical JSON, revisions (`documentRevision`) and atomic writes with strict producer validation. Only laranex-schema 1.x is read or written; there is no version 1 conversion.
-- `src/config.ts`: the `"laranex-schema-viewer"` key of the project's `package.json` (static JSON only; currently `output`), and the `init` writer, which adds the key without touching other content. Unknown keys and database URLs are rejected. Never load or execute JavaScript configuration.
+- `src/config.ts`: the `"node-schema-viewer"` key of the project's `package.json` (static JSON only; currently `output`), and the `init` writer, which adds the key without touching other content. Unknown keys and database URLs are rejected. Never load or execute JavaScript configuration.
 - `src/query.ts`: a port of python-schema-viewer's `query.py` (`SnapshotQuery`, `unified_view`): the same fields in the same order, pagination, revision pinning and the 64 KiB limit measured as Python's `json.dumps` measures it.
 - `src/mcp.ts`: the five read-only tools on the official MCP TypeScript SDK v2 (`@modelcontextprotocol/server`, `serveStdio`), a port of `mcp.py` with the same arguments, annotations and response text.
 - `src/server.ts`: `node:http` viewer server. Serves only the files `laranex-schema-viewer-ui/viewer/manifest.json` lists (SHA-256 verified at startup, held in memory), `/` as `index.html`, `/snapshot.json` re-read and validated per request (503 while invalid), the favicon (`favicon.ico`, `favicon.svg`) from the manifest like every other viewer file. GET/HEAD only, Host check, loopback default, Python's exact CSP, `nosniff`, `no-store`, default listen backlog (511).

@@ -4,11 +4,11 @@
 import { parseArgs, type ParseArgsConfig } from 'node:util';
 import { VERSION } from './version.js';
 
-const USAGE = `Usage: laranex-schema-viewer <command> [options]
+const USAGE = `Usage: node-schema-viewer <command> [options]
 
 Commands:
   init [--output PATH] [--project-root DIR]
-                     Add "laranex-schema-viewer" defaults to the project's package.json
+                     Add "node-schema-viewer" defaults to the project's package.json
   serve [--snapshot PATH] [--host HOST] [--port PORT]
                      Serve the viewer from a saved laranex-schema document (default 127.0.0.1:8765)
   mcp [--snapshot PATH]
@@ -102,7 +102,7 @@ async function init(args: string[]): Promise<void> {
     }
     const { addConfig, DEFAULT_SNAPSHOT } = await import('./config.js');
     const path = addConfig((values['project-root'] as string | undefined) ?? process.cwd(), (values.output as string | undefined) ?? DEFAULT_SNAPSHOT);
-    process.stdout.write(`Added "laranex-schema-viewer" to ${path}\n`);
+    process.stdout.write(`Added "node-schema-viewer" to ${path}\n`);
 }
 
 async function main(argv: string[]): Promise<number> {
@@ -119,7 +119,7 @@ async function main(argv: string[]): Promise<number> {
                 await mcp(rest);
                 break;
             case 'build':
-                process.stderr.write('Error: build is not available yet in laranex-schema-viewer for Node.js; serve and mcp read a saved laranex-schema document\n');
+                process.stderr.write('Error: build is not available yet in node-schema-viewer for Node.js; serve and mcp read a saved laranex-schema document\n');
                 return 1;
             case '--version':
             case '-v':
