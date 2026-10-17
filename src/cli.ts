@@ -13,6 +13,10 @@ Commands:
                      Serve the viewer from a saved laranex-schema document (default 127.0.0.1:8765)
   mcp [--snapshot PATH]
                      Run read-only MCP tools over stdio for a saved laranex-schema document
+  compare [BASELINE=TARGET...] [--snapshot PATH] [--limit N] [--json] [--write]
+                     Compare scopes of a saved document, without a database; each scope is CONNECTION or
+                     CONNECTION:SCHEMA (target schema * for every inspected schema); default: the configured
+                     comparisons. --write stores them in the document
   build              Not available yet
 
 Options:
@@ -24,16 +28,33 @@ The snapshot defaults to the configured output, else schema-viewer.json in the c
 
 class UsageError extends Error {}
 
-function parse(args: string[], options: ParseArgsConfig['options']): Record<string, string | boolean | undefined> {
+type Values = Record<string, string | boolean | undefined>;
+
+function parseWithPositionals(args: string[], options: ParseArgsConfig['options']): { values: Values; positionals: string[] } {
     try {
-        const { values, positionals } = parseArgs({ args, options: { ...options, help: { type: 'boolean', short: 'h' } }, strict: true, allowPositionals: true });
-        if (positionals.length) {
-            throw new UsageError(`Unexpected argument: ${positionals[0] ?? ''}`);
-        }
-        return values;
+        return parseArgs({ args, options: { ...options, help: { type: 'boolean', short: 'h' } }, strict: true, allowPositionals: true });
     } catch (error) {
-        throw error instanceof UsageError ? error : new UsageError((error as Error).message);
+        throw new UsageError((error as Error).message);
     }
+}
+
+function parse(args: string[], options: ParseArgsConfig['options']): Values {
+    const { values, positionals } = parseWithPositionals(args, options);
+    if (positionals.length) {
+        throw new UsageError(`Unexpected argument: ${positionals[0] ?? ''}`);
+    }
+    return values;
+}
+
+// An integer as Python's int() reads a command-line value; nonnegativity is checked where the limit is used.
+function integer(value: string | undefined, option: string): number | undefined {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (!/^\s*[+-]?\d+\s*$/.test(value) || !Number.isSafeInteger(Number(value))) {
+        throw new UsageError(`${option} must be an integer`);
+    }
+    return Number(value);
 }
 
 function port(value: string | undefined): number {
@@ -105,6 +126,54 @@ async function init(args: string[]): Promise<void> {
     process.stdout.write(`Added "node-schema-viewer" to ${path}\n`);
 }
 
+// Comparisons named on the command line (with limit), or else the configured ones.
+async function comparisonSpecs(options: string[], limit: number | undefined, configured: import('./config.js').ComparisonConfig[]) {
+    const { comparisonOption, ConfigError, DEFAULT_COMPARISON_LIMIT } = await import('./config.js');
+    if (limit !== undefined && limit < 0) {
+        throw new ConfigError('The comparison limit must be a nonnegative integer');
+    }
+    if (!options.length) {
+        if (limit !== undefined) {
+            throw new ConfigError(
+                'A comparison limit applies to comparisons named on the command line; configure limit per comparisons entry of "node-schema-viewer" in package.json',
+            );
+        }
+        return configured;
+    }
+    return options.map((option) => comparisonOption(option, limit ?? DEFAULT_COMPARISON_LIMIT));
+}
+
+// Compare scopes of a saved document. Reads only the document (and package.json): no database, no imports.
+async function compare(args: string[]): Promise<void> {
+    const { values, positionals } = parseWithPositionals(args, { snapshot: { type: 'string' }, limit: { type: 'string' }, json: { type: 'boolean' }, write: { type: 'boolean' } });
+    if (values.help) {
+        process.stdout.write(USAGE);
+        return;
+    }
+    const limit = integer(values.limit as string | undefined, '--limit');
+    const { DEFAULT_SNAPSHOT, loadConfig } = await import('./config.js');
+    const { compute, describe, store } = await import('./compare.js');
+    const { canonicalJson, VERSION } = await import('laranex-schema-viewer-ui/contract');
+    const { loadDocument, writeDocument } = await import('./snapshot.js');
+    const config = loadConfig(process.cwd());
+    const specs = await comparisonSpecs(positionals, limit, config.comparisons);
+    if (!specs.length) {
+        throw new Error('Name comparisons as BASELINE=TARGET, or configure comparisons under "node-schema-viewer" in package.json');
+    }
+    // As given, like python-schema-viewer prints it: the explicit path, else the configured (absolute) output.
+    const path = (values.snapshot as string | undefined) ?? config.output ?? DEFAULT_SNAPSHOT;
+    const document = loadDocument(path);
+    if (values.write && document.version !== VERSION) {
+        throw new Error(`${path} is laranex-schema ${document.version}; --write rewrites only ${VERSION} documents, so nothing a newer version added is lost`);
+    }
+    const { comparisons, diagnostics } = compute(document, specs);
+    process.stdout.write(values.json ? canonicalJson(comparisons) : `${describe(document, comparisons) || 'No scope pairs to compare'}\n`);
+    if (values.write) {
+        writeDocument(store(document, comparisons, diagnostics), path);
+        (values.json ? process.stderr : process.stdout).write(`Stored ${String(comparisons.length)} comparisons in ${path}\n`);
+    }
+}
+
 async function main(argv: string[]): Promise<number> {
     const [command, ...rest] = argv;
     try {
@@ -117,6 +186,9 @@ async function main(argv: string[]): Promise<number> {
                 break;
             case 'mcp':
                 await mcp(rest);
+                break;
+            case 'compare':
+                await compare(rest);
                 break;
             case 'build':
                 process.stderr.write('Error: build is not available yet in node-schema-viewer for Node.js; serve and mcp read a saved laranex-schema document\n');
