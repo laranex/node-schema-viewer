@@ -15,14 +15,6 @@ export const CLI = join(ROOT, 'dist', 'cli.js');
 // each call, from scripts/record-mcp-conformance.py.
 export const EXPECTED = join(ROOT, 'tests', 'fixtures', 'conformance', 'mcp');
 export const EXPECTED_TEXT = join(ROOT, 'tests', 'fixtures', 'conformance', 'mcp-text');
-// Recordings whose document the shared contract changed after python-schema-viewer recorded them (at 195c1a6): they
-// are skipped, not edited, until they are re-recorded from python-schema-viewer once it adopts the same contract.
-export const AWAITING_PYTHON = new Map<string, string>([
-    [
-        'comparison-incomplete.json',
-        'laranex-schema-viewer-ui d9db852 regenerated the comparison-incomplete fixture: its comparison_incomplete diagnostic (id, message, label) and so the revision and every response differ from the recording',
-    ],
-]);
 // The shared contract artifacts, from the installed laranex-schema-viewer-ui package.
 export const CONTRACT = join(dirname(fileURLToPath(import.meta.resolve('laranex-schema-viewer-ui/package.json'))), 'contract');
 export const VALID = join(CONTRACT, 'fixtures', 'valid');

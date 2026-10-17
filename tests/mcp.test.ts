@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { after, before, describe, test } from 'node:test';
 import { Client } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
-import { AWAITING_PYTHON, CLI, COMBINED, DECLARED, recordings, runCli, schemaRejected, scratchDir, tempDir } from './helpers.js';
+import { CLI, COMBINED, DECLARED, recordings, runCli, schemaRejected, scratchDir, tempDir } from './helpers.js';
 
 const SECTIONS = ['columns', 'indexes', 'foreign_keys', 'constraints', 'models', 'relationships', 'links', 'derived_links', 'diagnostics'];
 // python-schema-viewer's tool descriptions, as its MCP server lists them.
@@ -116,7 +116,7 @@ describe('mcp conformance over stdio with python-schema-viewer', () => {
     let byteEqual = 0;
 
     for (const recording of recordings(scratchDir())) {
-        test(recording.name, { skip: AWAITING_PYTHON.get(recording.name) ?? false }, async () => {
+        test(recording.name, async () => {
             const session = await connect(recording.snapshot);
             try {
                 for (const [n, call] of recording.calls.entries()) {
@@ -140,9 +140,9 @@ describe('mcp conformance over stdio with python-schema-viewer', () => {
     }
 
     test('compares every recorded call end to end', () => {
-        // 1801 recorded calls (1633 byte-equal), less the 233 (221) of comparison-incomplete.json (AWAITING_PYTHON).
-        assert.equal(calls, 1568);
-        assert.equal(byteEqual, 1412);
+        // 1801 recorded calls; 1633 byte-equal (input-schema rejections compare the error only).
+        assert.equal(calls, 1801);
+        assert.equal(byteEqual, 1633);
     });
 });
 

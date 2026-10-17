@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 import { casefold, MAX_RESPONSE_BYTES, QueryError, size, SnapshotQuery, type Page } from '../src/query.js';
-import { AWAITING_PYTHON, COMBINED, recordings, schemaRejected, scratchDir } from './helpers.js';
+import { COMBINED, recordings, schemaRejected, scratchDir } from './helpers.js';
 
 export function invoke(query: SnapshotQuery, tool: string, args: Record<string, unknown>): Page {
     const pagination = {
@@ -46,7 +46,7 @@ describe('query conformance with python-schema-viewer', () => {
     let byteEqual = 0;
 
     for (const recording of recordings(scratchDir())) {
-        test(recording.name, { skip: AWAITING_PYTHON.get(recording.name) ?? false }, () => {
+        test(recording.name, () => {
             const query = SnapshotQuery.fromFile(recording.snapshot);
             assert.equal(query.revision, recording.revision);
             assert.equal(recording.texts.length, recording.calls.length);
@@ -74,17 +74,10 @@ describe('query conformance with python-schema-viewer', () => {
         });
     }
 
-    test('skips only recordings python-schema-viewer has not re-recorded since 195c1a6', () => {
-        const all = new Map(recordings(scratchDir()).map((r) => [r.name, r.pythonCommit]));
-        for (const name of AWAITING_PYTHON.keys()) {
-            assert.equal(all.get(name), '195c1a6f6182354b781ba615b2b685e0d463a8db', `${name} was re-recorded: remove it from AWAITING_PYTHON`);
-        }
-    });
-
     test('compares every recorded call', () => {
-        // 1801 recorded calls (1633 byte-equal), less the 233 (221) of comparison-incomplete.json (AWAITING_PYTHON).
-        assert.equal(calls, 1568);
-        assert.equal(byteEqual, 1412);
+        // 1801 recorded calls; 1633 byte-equal (input-schema rejections compare the error only).
+        assert.equal(calls, 1801);
+        assert.equal(byteEqual, 1633);
     });
 });
 
