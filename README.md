@@ -1,10 +1,12 @@
 # Laranex Schema Viewer for Node.js
 
-`node-schema-viewer` serves the shared [Laranex Schema Viewer UI](https://github.com/laranex/schema-viewer-ui) and read-only MCP tools from a saved [laranex-schema](https://github.com/laranex/schema-viewer-ui/blob/main/docs/contract.md) 1.x document. It never connects to a database, runs migrations or executes your configuration.
+`node-schema-viewer` serves the shared [Laranex Schema Viewer UI](https://github.com/laranex/schema-viewer-ui) and read-only MCP tools from a saved [laranex-schema](https://github.com/laranex/schema-viewer-ui/blob/main/docs/contract.md) 1.x document. `serve` and `mcp` never connect to a database, run migrations or execute your configuration.
 
 > Status: 0.1.0, unreleased. Building snapshots from Node.js ORMs is not available yet; `serve` and `mcp` read a document written by another Laranex Schema Viewer (Laravel, Python) or a later milestone of this package.
 
 Requires Node.js 22.13 or later (22, 24 and 26 are tested).
+
+Read-only database introspection (PostgreSQL, MySQL, MariaDB, SQLite) is available as an API (`introspect`, `introspectAll`) for the upcoming `build`; see [docs/database.md](docs/database.md) and [docs/security.md](docs/security.md#database-inspection).
 
 ```bash
 npm install --save-dev node-schema-viewer

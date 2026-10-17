@@ -135,3 +135,41 @@ FROM node:24-slim@sha256:<digest>
 RUN mkdir /opt/lsv && npm install --prefix /opt/lsv node-schema-viewer@0.1.0
 WORKDIR /opt/lsv
 ```
+
+## Database inspection
+
+Reading a live database's catalogs ([database introspection](./database.md)) runs in a separate **introspection worker**, never in the extraction worker and never together with application code. Each connection gets its own worker, which receives only that connection's URL.
+
+### Guaranteed
+
+Enforced by the database, the operating system or the parent process:
+
+- **Read-only sessions, verified.** PostgreSQL connects with `default_transaction_read_only=on` and runs `SET TRANSACTION READ ONLY`; MySQL and MariaDB run `SET SESSION TRANSACTION READ ONLY` and `START TRANSACTION READ ONLY`. The worker reads back `transaction_read_only` (`tx_read_only` on older servers) and inspects nothing unless the database confirms it. The transaction is always rolled back. The tests send `CREATE TABLE` straight to the driver, past the statement allowlist, as an admin, and each database refuses it.
+- **SQLite files are opened read-only and never created.** The parent requires an existing regular file (resolved through symlinks), the worker opens it with `readOnly: true` and sets `PRAGMA query_only = 1`. The tests check that the file's hash and its directory are unchanged and that a missing file is not created.
+- **Role check.** A role that could change the schema or data (see [database.md](./database.md#use-a-read-only-role)) stops the inspection unless `allowWritePrivileges` is set; then the document carries a `write_privileges` diagnostic.
+- **The URL never reaches arguments or the environment.** It is sent on the worker's stdin. The worker's environment is an allowlist: `PATH`, `LANG`, `LANGUAGE`, `LC_*`, `TZ`, the Windows system variables, and TLS settings (`SSL_CERT_FILE`, `SSL_CERT_DIR`, `NODE_EXTRA_CA_CERTS`, `PGSSLMODE`, `PGSSLROOTCERT`, `PGSSLCERT`, `PGSSLKEY`, `PGSSLCRL`, `PGGSSENCMODE`), plus a private `HOME` and `TMPDIR`; never `NODE_OPTIONS`, `NODE_PATH`, `DATABASE_URL`, `PGPASSWORD` or other credentials. A private, empty `HOME` means `pg` finds no `~/.pgpass`.
+- **Errors are scrubbed** of the URL and of its password (when at least 4 characters long, as in python-schema-viewer; shorter ones would mask fragments of ordinary words) in the worker and again in the parent, including the tail of the worker's log.
+- **Bounded:** connections time out after 10 seconds, statements after `statementTimeout` (default 30 seconds; PostgreSQL also sets `lock_timeout` and `idle_in_transaction_session_timeout`), and the worker after `timeout` (default 120 seconds), when its process group is killed. The result file is a regular file of at most 32 MiB that must pass the contract's strict validation with `source: "database"`.
+
+### Best-effort
+
+The worker runs under the Permission Model on every supported Node.js version:
+
+```text
+node --permission
+     --allow-fs-read=<this package> --allow-fs-read=<laranex-schema-viewer-ui> --allow-fs-read=<pg, mysql2 and each of their dependencies>
+     --allow-fs-read=<scratch: home, tmp, out, work> --allow-fs-write=<scratch: home, tmp, out>
+     [--allow-net]   (where the flag exists, Node.js 25+; tested on 26: the drivers need the network)
+     --no-addons --disallow-code-generation-from-strings
+     <package>/dist/introspection/worker.js --result <out>/result.json
+```
+
+with an empty scratch directory as its working directory. The project is never granted: a module, `node_modules` shadow or `.env` in the project cannot be loaded or read (the tests put hostile `pg`, `mysql2` and `laranex-schema-viewer-ui` shadows and a `.env` in a fake project, run from it with `NODE_PATH` pointing there, and show that reading or importing them from the worker fails with `ERR_ACCESS_DENIED`). The worker imports only `node:` built-ins, its own modules, the contract and the drivers; `mysql2` runs with `disableEval`. Every statement must pass an allowlist (`SELECT`, `WITH`, `SHOW`, session `SET`, read-only `PRAGMA`, `BEGIN`, `START TRANSACTION`, `ROLLBACK`) before it reaches the driver.
+
+### Limitations
+
+- **`node:sqlite` ignores the Permission Model** on every version. The introspection worker needs it, so it does not pass `--no-experimental-sqlite`; SQLite safety rests on the parent's path check, `readOnly: true` and `PRAGMA query_only`, not on file permissions. On Node.js 22, `node:sqlite` needs no flag (22.13+) and prints an `ExperimentalWarning`, which goes to the worker's log, never stdout.
+- **Network:** on Node.js 22 and 24 the Permission Model does not restrict the network at all; from 25 on the worker is granted `--allow-net` because the drivers need it. The worker can therefore reach any host on every version. It runs only this package's code and its drivers, never application code, which is why it is not put in a container.
+- **The privilege check reads what the database reports.** PostgreSQL: column-level privileges, default privileges and privileges reached through `SECURITY DEFINER` functions are not examined; the check covers the inspected schemas only. MySQL and MariaDB: privileges of granted roles cannot be listed (such accounts are refused), and `SHOW GRANTS` is parsed textually. Read-only transactions apply either way.
+- **The Permission Model is not a security boundary**, and the limits listed above for the extraction worker (symlinks inside granted directories, inherited file descriptors, signals) apply to this worker too. In a development checkout the package directory includes its whole `node_modules`; in an installed project only the package and the listed dependency directories are granted.
+- **TLS:** TLS file parameters in URLs (`sslrootcert`, `sslcert`, `sslkey`) are refused; use `NODE_EXTRA_CA_CERTS`. TLS connections are not covered by the tests.
