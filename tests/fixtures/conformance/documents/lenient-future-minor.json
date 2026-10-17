@@ -1,0 +1,667 @@
+{
+  "connections": [
+    {
+      "coverage": {
+        "database": {
+          "complete": false,
+          "features": {
+            "checkConstraints": "unavailable",
+            "columnTypes": "complete",
+            "columns": "complete",
+            "comments": "complete",
+            "defaults": "complete",
+            "foreignKeys": "complete",
+            "includedColumns": "complete",
+            "indexExpressions": "complete",
+            "indexPredicates": "complete",
+            "indexes": "complete",
+            "models": "not_applicable",
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": [
+            "public"
+          ],
+          "futureCoverage": "x"
+        },
+        "declared": {
+          "complete": true,
+          "features": {
+            "columns": "complete",
+            "foreignKeys": "complete",
+            "indexes": "complete",
+            "models": "complete",
+            "relationships": "complete",
+            "tables": "complete"
+          },
+          "schemas": null
+        }
+      },
+      "defaultSchema": "public",
+      "driver": "postgresql",
+      "id": "connection:default",
+      "name": "default",
+      "tables": [
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint",
+              "typeName": "bigint",
+              "futureColumn": "c"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "payload",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "jsonb",
+              "typeName": "jsonb",
+              "futureColumn": "c"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "table:default.audit_log",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key",
+                "futureBacks": 3
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "table:default.audit_log:index:audit_log_pkey",
+              "included": [],
+              "method": null,
+              "name": "audit_log_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null,
+                  "futurePart": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "audit_log",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null,
+            "futureOwner": 1
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": "public"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database",
+                "declared"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer",
+              "futureColumn": "c"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "table:default.teams",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key",
+                "futureBacks": 3
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "table:default.teams:index:teams_pkey",
+              "included": [],
+              "method": null,
+              "name": "teams_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null,
+                  "futurePart": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database",
+                "declared"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "teams",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null,
+            "futureOwner": 1
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database",
+            "declared"
+          ],
+          "schema": "public"
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database",
+                "declared"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer",
+              "futureColumn": "c"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "drift": [
+                {
+                  "database": "character varying(320)",
+                  "declared": "VARCHAR(255)",
+                  "field": "type",
+                  "futureDrift": 2
+                }
+              ],
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database",
+                "declared"
+              ],
+              "timezone": null,
+              "type": "character varying(320)",
+              "typeName": "varchar",
+              "futureColumn": "c"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "team_id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database",
+                "declared"
+              ],
+              "timezone": null,
+              "type": "integer",
+              "typeName": "integer",
+              "futureColumn": "c"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "nickname",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "declared"
+              ],
+              "timezone": null,
+              "type": "VARCHAR(40)",
+              "typeName": "varchar",
+              "futureColumn": "c"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "legacy_flag",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "boolean",
+              "typeName": "boolean",
+              "futureColumn": "c"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "team_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "table:default.teams",
+              "id": "table:default.users:fk:fk_users_team",
+              "initially": null,
+              "name": "fk_users_team",
+              "onDelete": "SET NULL",
+              "onUpdate": null,
+              "provenance": [
+                "declared"
+              ]
+            }
+          ],
+          "id": "table:default.users",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key",
+                "futureBacks": 3
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "table:default.users:index:users_pkey",
+              "included": [],
+              "method": null,
+              "name": "users_pkey",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null,
+                  "futurePart": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database",
+                "declared"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "email"
+              ],
+              "drift": [
+                {
+                  "database": true,
+                  "declared": false,
+                  "field": "unique"
+                }
+              ],
+              "expression": false,
+              "id": "table:default.users:index:ix_users_email",
+              "included": [],
+              "method": null,
+              "name": "ix_users_email",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null,
+                  "futurePart": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database",
+                "declared"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null,
+            "futureOwner": 1
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database",
+            "declared"
+          ],
+          "schema": "public"
+        }
+      ],
+      "futureConnection": true
+    }
+  ],
+  "derivedLinks": [],
+  "diagnostics": [
+    {
+      "category": "drift",
+      "certainty": "certain",
+      "kind": "column_drift",
+      "message": "The database stores users.email as character varying(320); the model declares VARCHAR(255).",
+      "severity": "warning",
+      "subject": {
+        "columns": [
+          "email"
+        ],
+        "id": "table:default.users",
+        "label": "users.email",
+        "type": "column"
+      }
+    },
+    {
+      "category": "drift",
+      "certainty": "certain",
+      "kind": "index_drift",
+      "message": "ix_users_email is unique in the database but not in the model.",
+      "severity": "warning",
+      "subject": {
+        "columns": null,
+        "id": "table:default.users:index:ix_users_email",
+        "label": "ix_users_email",
+        "type": "index"
+      }
+    },
+    {
+      "category": "inspection",
+      "certainty": "certain",
+      "kind": "inspection_unavailable",
+      "message": "Check constraints could not be read: the inspection role lacks access to pg_constraint.",
+      "severity": "warning",
+      "subject": {
+        "columns": null,
+        "id": "connection:default",
+        "label": "default",
+        "type": "connection"
+      }
+    },
+    {
+      "category": "reconciliation",
+      "certainty": "certain",
+      "kind": "database_only",
+      "message": "The database has users.legacy_flag; the model does not declare it.",
+      "severity": "info",
+      "subject": {
+        "columns": [
+          "legacy_flag"
+        ],
+        "id": "table:default.users",
+        "label": "users.legacy_flag",
+        "type": "column"
+      }
+    },
+    {
+      "category": "reconciliation",
+      "certainty": "certain",
+      "kind": "declared_only",
+      "message": "The model declares users.nickname; the database has no such column.",
+      "severity": "warning",
+      "subject": {
+        "columns": [
+          "nickname"
+        ],
+        "id": "table:default.users",
+        "label": "users.nickname",
+        "type": "column"
+      }
+    },
+    {
+      "category": "reconciliation",
+      "certainty": "certain",
+      "kind": "declared_only",
+      "message": "The model declares a foreign key on users.team_id; the database does not enforce one.",
+      "severity": "warning",
+      "subject": {
+        "columns": null,
+        "id": "table:default.users:fk:fk_users_team",
+        "label": "fk_users_team",
+        "type": "foreignKey"
+      }
+    },
+    {
+      "category": "reconciliation",
+      "certainty": "certain",
+      "kind": "model_without_table",
+      "message": "app.models.Ghost declares table ghosts, which the database does not have.",
+      "severity": "warning",
+      "subject": {
+        "columns": null,
+        "id": "model:app.models.Ghost",
+        "label": "Ghost",
+        "type": "model"
+      }
+    },
+    {
+      "category": "reconciliation",
+      "certainty": "certain",
+      "kind": "table_without_model",
+      "message": "No model maps public.audit_log.",
+      "severity": "info",
+      "subject": {
+        "columns": null,
+        "id": "table:default.audit_log",
+        "label": "audit_log",
+        "type": "table"
+      }
+    }
+  ],
+  "format": "laranex-schema",
+  "generator": {
+    "name": "python-schema-viewer",
+    "orm": "sqlalchemy"
+  },
+  "links": [
+    {
+      "foreignKey": "table:default.users:fk:fk_users_team",
+      "from": {
+        "columns": [
+          "team_id"
+        ],
+        "table": "table:default.users"
+      },
+      "id": "l65742ace99e88e5f",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [
+        "relationship:app.models.User.team"
+      ],
+      "state": "both",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "table:default.teams"
+      }
+    }
+  ],
+  "models": [
+    {
+      "className": "app.models.Ghost",
+      "id": "model:app.models.Ghost",
+      "primaryKey": [],
+      "source": null,
+      "tables": []
+    },
+    {
+      "className": "app.models.Team",
+      "id": "model:app.models.Team",
+      "primaryKey": [
+        "id"
+      ],
+      "source": null,
+      "tables": [
+        "table:default.teams"
+      ]
+    },
+    {
+      "className": "app.models.User",
+      "id": "model:app.models.User",
+      "primaryKey": [
+        "id"
+      ],
+      "source": null,
+      "tables": [
+        "table:default.users"
+      ]
+    }
+  ],
+  "note": null,
+  "relationships": [
+    {
+      "cardinality": "many-to-one",
+      "collection": false,
+      "constraints": [],
+      "id": "relationship:app.models.User.team",
+      "inverse": null,
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "team_id"
+          ],
+          "table": "table:default.users"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "table:default.teams"
+        }
+      },
+      "model": "model:app.models.User",
+      "name": "team",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "model:app.models.Team",
+      "relatedTable": "table:default.teams",
+      "source": null,
+      "table": "table:default.users",
+      "through": null,
+      "type": "MANYTOONE",
+      "futureRelationship": []
+    }
+  ],
+  "source": "combined",
+  "version": "1.7",
+  "futureTopLevel": {
+    "x": 1
+  }
+}

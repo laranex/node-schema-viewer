@@ -1,0 +1,3651 @@
+{
+ "document": "lenient-future-minor.json",
+ "python_revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+ "raw_revision": "b23f9308559421561d6baf105fe2f27fa91ba9ce6547055b6c3b7ce32d0e8dd5",
+ "view": {
+  "scope": "combined_metadata",
+  "source": "combined",
+  "connections": [
+   {
+    "id": "connection:default",
+    "name": "default",
+    "driver": "postgresql",
+    "default_schema": "public",
+    "coverage": {
+     "database": {
+      "complete": false,
+      "schemas": [
+       "public"
+      ],
+      "features": {
+       "checkConstraints": "unavailable",
+       "columnTypes": "complete",
+       "columns": "complete",
+       "comments": "complete",
+       "defaults": "complete",
+       "foreignKeys": "complete",
+       "includedColumns": "complete",
+       "indexExpressions": "complete",
+       "indexPredicates": "complete",
+       "indexes": "complete",
+       "models": "not_applicable",
+       "primaryKeys": "complete",
+       "referentialActions": "complete",
+       "relationships": "not_applicable",
+       "tables": "complete",
+       "uniqueConstraints": "complete"
+      }
+     },
+     "declared": {
+      "complete": true,
+      "schemas": null,
+      "features": {
+       "columns": "complete",
+       "foreignKeys": "complete",
+       "indexes": "complete",
+       "models": "complete",
+       "relationships": "complete",
+       "tables": "complete"
+      }
+     }
+    }
+   }
+  ],
+  "tables": [
+   {
+    "id": "table:default.audit_log",
+    "namespace": "default",
+    "name": "audit_log",
+    "schema_name": "public",
+    "comment": null,
+    "columns": [
+     {
+      "name": "id",
+      "type": "bigint",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "bigint",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     },
+     {
+      "name": "payload",
+      "type": "jsonb",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "jsonb",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "indexes": [
+     {
+      "name": "audit_log_pkey",
+      "columns": [
+       "id"
+      ],
+      "expressions": [],
+      "unique": true,
+      "predicates": {},
+      "included_columns": {},
+      "methods": {},
+      "id": "table:default.audit_log:index:audit_log_pkey",
+      "parts": [
+       {
+        "column": "id",
+        "expression": null,
+        "order": null,
+        "nulls": null,
+        "length": null,
+        "collation": null,
+        "opclass": null
+       }
+      ],
+      "primary": true,
+      "backs": {
+       "kind": "primary_key",
+       "constraint": null
+      },
+      "partial": false,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "foreign_keys": [],
+    "constraints": [],
+    "owner": {
+     "kind": "application",
+     "package": null
+    },
+    "provenance": [
+     "database"
+    ]
+   },
+   {
+    "id": "table:default.teams",
+    "namespace": "default",
+    "name": "teams",
+    "schema_name": "public",
+    "comment": null,
+    "columns": [
+     {
+      "name": "id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "indexes": [
+     {
+      "name": "teams_pkey",
+      "columns": [
+       "id"
+      ],
+      "expressions": [],
+      "unique": true,
+      "predicates": {},
+      "included_columns": {},
+      "methods": {},
+      "id": "table:default.teams:index:teams_pkey",
+      "parts": [
+       {
+        "column": "id",
+        "expression": null,
+        "order": null,
+        "nulls": null,
+        "length": null,
+        "collation": null,
+        "opclass": null
+       }
+      ],
+      "primary": true,
+      "backs": {
+       "kind": "primary_key",
+       "constraint": null
+      },
+      "partial": false,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "foreign_keys": [],
+    "constraints": [],
+    "owner": {
+     "kind": "application",
+     "package": null
+    },
+    "provenance": [
+     "database",
+     "declared"
+    ]
+   },
+   {
+    "id": "table:default.users",
+    "namespace": "default",
+    "name": "users",
+    "schema_name": "public",
+    "comment": null,
+    "columns": [
+     {
+      "name": "id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "name": "email",
+      "type": "character varying(320)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ],
+      "drift": [
+       {
+        "field": "type",
+        "database": "character varying(320)",
+        "declared": "VARCHAR(255)"
+       }
+      ]
+     },
+     {
+      "name": "team_id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "name": "nickname",
+      "type": "VARCHAR(40)",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "legacy_flag",
+      "type": "boolean",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "boolean",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "indexes": [
+     {
+      "name": "users_pkey",
+      "columns": [
+       "id"
+      ],
+      "expressions": [],
+      "unique": true,
+      "predicates": {},
+      "included_columns": {},
+      "methods": {},
+      "id": "table:default.users:index:users_pkey",
+      "parts": [
+       {
+        "column": "id",
+        "expression": null,
+        "order": null,
+        "nulls": null,
+        "length": null,
+        "collation": null,
+        "opclass": null
+       }
+      ],
+      "primary": true,
+      "backs": {
+       "kind": "primary_key",
+       "constraint": null
+      },
+      "partial": false,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "name": "ix_users_email",
+      "columns": [
+       "email"
+      ],
+      "expressions": [],
+      "unique": true,
+      "predicates": {},
+      "included_columns": {},
+      "methods": {},
+      "id": "table:default.users:index:ix_users_email",
+      "parts": [
+       {
+        "column": "email",
+        "expression": null,
+        "order": null,
+        "nulls": null,
+        "length": null,
+        "collation": null,
+        "opclass": null
+       }
+      ],
+      "primary": false,
+      "backs": null,
+      "partial": false,
+      "provenance": [
+       "database",
+       "declared"
+      ],
+      "drift": [
+       {
+        "field": "unique",
+        "database": true,
+        "declared": false
+       }
+      ]
+     }
+    ],
+    "foreign_keys": [
+     {
+      "id": "table:default.users:fk:fk_users_team",
+      "name": "fk_users_team",
+      "columns": [
+       "team_id"
+      ],
+      "target_table": "table:default.teams",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "SET NULL",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "constraints": [],
+    "owner": {
+     "kind": "application",
+     "package": null
+    },
+    "provenance": [
+     "database",
+     "declared"
+    ]
+   }
+  ],
+  "models": [
+   {
+    "id": "model:app.models.Ghost",
+    "class_name": "app.models.Ghost",
+    "table_ids": [],
+    "primary_key": [],
+    "source": null
+   },
+   {
+    "id": "model:app.models.Team",
+    "class_name": "app.models.Team",
+    "table_ids": [
+     "table:default.teams"
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "source": null
+   },
+   {
+    "id": "model:app.models.User",
+    "class_name": "app.models.User",
+    "table_ids": [
+     "table:default.users"
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "source": null
+   }
+  ],
+  "relationships": [
+   {
+    "id": "relationship:app.models.User.team",
+    "name": "team",
+    "model": "model:app.models.User",
+    "target_model": "model:app.models.Team",
+    "source_table": "table:default.users",
+    "target_table": "table:default.teams",
+    "direction": "MANYTOONE",
+    "uselist": false,
+    "viewonly": false,
+    "back_populates": null,
+    "secondary": null,
+    "primary_join": "",
+    "secondary_join": null,
+    "join_pairs": [
+     {
+      "local": {
+       "table": "table:default.users",
+       "column": "team_id"
+      },
+      "remote": {
+       "table": "table:default.teams",
+       "column": "id"
+      }
+     }
+    ],
+    "cardinality": "many-to-one",
+    "polymorphic": null,
+    "through": null,
+    "constraints": [],
+    "note": null
+   }
+  ],
+  "diagnostics": [
+   {
+    "kind": "column_drift",
+    "subject": "table:default.users",
+    "message": "The database stores users.email as character varying(320); the model declares VARCHAR(255).",
+    "category": "drift",
+    "severity": "warning",
+    "certainty": "certain",
+    "subject_type": "column",
+    "columns": [
+     "email"
+    ]
+   },
+   {
+    "kind": "index_drift",
+    "subject": "table:default.users:index:ix_users_email",
+    "message": "ix_users_email is unique in the database but not in the model.",
+    "category": "drift",
+    "severity": "warning",
+    "certainty": "certain",
+    "subject_type": "index",
+    "columns": null
+   },
+   {
+    "kind": "inspection_unavailable",
+    "subject": "connection:default",
+    "message": "Check constraints could not be read: the inspection role lacks access to pg_constraint.",
+    "category": "inspection",
+    "severity": "warning",
+    "certainty": "certain",
+    "subject_type": "connection",
+    "columns": null
+   },
+   {
+    "kind": "database_only",
+    "subject": "table:default.users",
+    "message": "The database has users.legacy_flag; the model does not declare it.",
+    "category": "reconciliation",
+    "severity": "info",
+    "certainty": "certain",
+    "subject_type": "column",
+    "columns": [
+     "legacy_flag"
+    ]
+   },
+   {
+    "kind": "declared_only",
+    "subject": "table:default.users",
+    "message": "The model declares users.nickname; the database has no such column.",
+    "category": "reconciliation",
+    "severity": "warning",
+    "certainty": "certain",
+    "subject_type": "column",
+    "columns": [
+     "nickname"
+    ]
+   },
+   {
+    "kind": "declared_only",
+    "subject": "table:default.users:fk:fk_users_team",
+    "message": "The model declares a foreign key on users.team_id; the database does not enforce one.",
+    "category": "reconciliation",
+    "severity": "warning",
+    "certainty": "certain",
+    "subject_type": "foreignKey",
+    "columns": null
+   },
+   {
+    "kind": "model_without_table",
+    "subject": "model:app.models.Ghost",
+    "message": "app.models.Ghost declares table ghosts, which the database does not have.",
+    "category": "reconciliation",
+    "severity": "warning",
+    "certainty": "certain",
+    "subject_type": "model",
+    "columns": null
+   },
+   {
+    "kind": "table_without_model",
+    "subject": "table:default.audit_log",
+    "message": "No model maps public.audit_log.",
+    "category": "reconciliation",
+    "severity": "info",
+    "certainty": "certain",
+    "subject_type": "table",
+    "columns": null
+   }
+  ]
+ },
+ "calls": [
+  {
+   "tool": "schema_overview",
+   "arguments": {},
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 8,
+     "indexes": 4,
+     "foreign_keys": 1,
+     "relationships": 1,
+     "diagnostics": 8,
+     "drift": 2
+    },
+    "scope": "combined_metadata",
+    "source": "combined",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": {
+        "complete": false,
+        "schemas": [
+         "public"
+        ],
+        "features": {
+         "checkConstraints": "unavailable",
+         "columnTypes": "complete",
+         "columns": "complete",
+         "comments": "complete",
+         "defaults": "complete",
+         "foreignKeys": "complete",
+         "includedColumns": "complete",
+         "indexExpressions": "complete",
+         "indexPredicates": "complete",
+         "indexes": "complete",
+         "models": "not_applicable",
+         "primaryKeys": "complete",
+         "referentialActions": "complete",
+         "relationships": "not_applicable",
+         "tables": "complete",
+         "uniqueConstraints": "complete"
+        }
+       },
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "indexes": "complete",
+         "models": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 3,
+    "items": [
+     {
+      "id": "table:default.audit_log",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "audit_log",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "database"
+      ]
+     },
+     {
+      "id": "table:default.teams",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "teams",
+      "columns": 1,
+      "foreign_keys": 0,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "id": "table:default.users",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "users",
+      "columns": 5,
+      "foreign_keys": 1,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 8,\n    \"indexes\": 4,\n    \"foreign_keys\": 1,\n    \"relationships\": 1,\n    \"diagnostics\": 8,\n    \"drift\": 2\n  },\n  \"scope\": \"combined_metadata\",\n  \"source\": \"combined\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": {\n          \"complete\": false,\n          \"schemas\": [\n            \"public\"\n          ],\n          \"features\": {\n            \"checkConstraints\": \"unavailable\",\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"comments\": \"complete\",\n            \"defaults\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"includedColumns\": \"complete\",\n            \"indexExpressions\": \"complete\",\n            \"indexPredicates\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"not_applicable\",\n            \"primaryKeys\": \"complete\",\n            \"referentialActions\": \"complete\",\n            \"relationships\": \"not_applicable\",\n            \"tables\": \"complete\",\n            \"uniqueConstraints\": \"complete\"\n          }\n        },\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"id\": \"table:default.audit_log\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"audit_log\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"database\"\n      ]\n    },\n    {\n      \"id\": \"table:default.teams\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"teams\",\n      \"columns\": 1,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:default.users\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"users\",\n      \"columns\": 5,\n      \"foreign_keys\": 1,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "limit": 100
+   },
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 8,
+     "indexes": 4,
+     "foreign_keys": 1,
+     "relationships": 1,
+     "diagnostics": 8,
+     "drift": 2
+    },
+    "scope": "combined_metadata",
+    "source": "combined",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": {
+        "complete": false,
+        "schemas": [
+         "public"
+        ],
+        "features": {
+         "checkConstraints": "unavailable",
+         "columnTypes": "complete",
+         "columns": "complete",
+         "comments": "complete",
+         "defaults": "complete",
+         "foreignKeys": "complete",
+         "includedColumns": "complete",
+         "indexExpressions": "complete",
+         "indexPredicates": "complete",
+         "indexes": "complete",
+         "models": "not_applicable",
+         "primaryKeys": "complete",
+         "referentialActions": "complete",
+         "relationships": "not_applicable",
+         "tables": "complete",
+         "uniqueConstraints": "complete"
+        }
+       },
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "indexes": "complete",
+         "models": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 3,
+    "items": [
+     {
+      "id": "table:default.audit_log",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "audit_log",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "database"
+      ]
+     },
+     {
+      "id": "table:default.teams",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "teams",
+      "columns": 1,
+      "foreign_keys": 0,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "id": "table:default.users",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "users",
+      "columns": 5,
+      "foreign_keys": 1,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 8,\n    \"indexes\": 4,\n    \"foreign_keys\": 1,\n    \"relationships\": 1,\n    \"diagnostics\": 8,\n    \"drift\": 2\n  },\n  \"scope\": \"combined_metadata\",\n  \"source\": \"combined\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": {\n          \"complete\": false,\n          \"schemas\": [\n            \"public\"\n          ],\n          \"features\": {\n            \"checkConstraints\": \"unavailable\",\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"comments\": \"complete\",\n            \"defaults\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"includedColumns\": \"complete\",\n            \"indexExpressions\": \"complete\",\n            \"indexPredicates\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"not_applicable\",\n            \"primaryKeys\": \"complete\",\n            \"referentialActions\": \"complete\",\n            \"relationships\": \"not_applicable\",\n            \"tables\": \"complete\",\n            \"uniqueConstraints\": \"complete\"\n          }\n        },\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"id\": \"table:default.audit_log\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"audit_log\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"database\"\n      ]\n    },\n    {\n      \"id\": \"table:default.teams\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"teams\",\n      \"columns\": 1,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:default.users\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"users\",\n      \"columns\": 5,\n      \"foreign_keys\": 1,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "limit": 2,
+    "offset": 1
+   },
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 8,
+     "indexes": 4,
+     "foreign_keys": 1,
+     "relationships": 1,
+     "diagnostics": 8,
+     "drift": 2
+    },
+    "scope": "combined_metadata",
+    "source": "combined",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": {
+        "complete": false,
+        "schemas": [
+         "public"
+        ],
+        "features": {
+         "checkConstraints": "unavailable",
+         "columnTypes": "complete",
+         "columns": "complete",
+         "comments": "complete",
+         "defaults": "complete",
+         "foreignKeys": "complete",
+         "includedColumns": "complete",
+         "indexExpressions": "complete",
+         "indexPredicates": "complete",
+         "indexes": "complete",
+         "models": "not_applicable",
+         "primaryKeys": "complete",
+         "referentialActions": "complete",
+         "relationships": "not_applicable",
+         "tables": "complete",
+         "uniqueConstraints": "complete"
+        }
+       },
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "indexes": "complete",
+         "models": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 3,
+    "items": [
+     {
+      "id": "table:default.teams",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "teams",
+      "columns": 1,
+      "foreign_keys": 0,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "id": "table:default.users",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "users",
+      "columns": 5,
+      "foreign_keys": 1,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 8,\n    \"indexes\": 4,\n    \"foreign_keys\": 1,\n    \"relationships\": 1,\n    \"diagnostics\": 8,\n    \"drift\": 2\n  },\n  \"scope\": \"combined_metadata\",\n  \"source\": \"combined\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": {\n          \"complete\": false,\n          \"schemas\": [\n            \"public\"\n          ],\n          \"features\": {\n            \"checkConstraints\": \"unavailable\",\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"comments\": \"complete\",\n            \"defaults\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"includedColumns\": \"complete\",\n            \"indexExpressions\": \"complete\",\n            \"indexPredicates\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"not_applicable\",\n            \"primaryKeys\": \"complete\",\n            \"referentialActions\": \"complete\",\n            \"relationships\": \"not_applicable\",\n            \"tables\": \"complete\",\n            \"uniqueConstraints\": \"complete\"\n          }\n        },\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"id\": \"table:default.teams\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"teams\",\n      \"columns\": 1,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:default.users\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"users\",\n      \"columns\": 5,\n      \"foreign_keys\": 1,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "limit": 1,
+    "offset": 10000
+   },
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 8,
+     "indexes": 4,
+     "foreign_keys": 1,
+     "relationships": 1,
+     "diagnostics": 8,
+     "drift": 2
+    },
+    "scope": "combined_metadata",
+    "source": "combined",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": {
+        "complete": false,
+        "schemas": [
+         "public"
+        ],
+        "features": {
+         "checkConstraints": "unavailable",
+         "columnTypes": "complete",
+         "columns": "complete",
+         "comments": "complete",
+         "defaults": "complete",
+         "foreignKeys": "complete",
+         "includedColumns": "complete",
+         "indexExpressions": "complete",
+         "indexPredicates": "complete",
+         "indexes": "complete",
+         "models": "not_applicable",
+         "primaryKeys": "complete",
+         "referentialActions": "complete",
+         "relationships": "not_applicable",
+         "tables": "complete",
+         "uniqueConstraints": "complete"
+        }
+       },
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "indexes": "complete",
+         "models": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 3,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 8,\n    \"indexes\": 4,\n    \"foreign_keys\": 1,\n    \"relationships\": 1,\n    \"diagnostics\": 8,\n    \"drift\": 2\n  },\n  \"scope\": \"combined_metadata\",\n  \"source\": \"combined\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": {\n          \"complete\": false,\n          \"schemas\": [\n            \"public\"\n          ],\n          \"features\": {\n            \"checkConstraints\": \"unavailable\",\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"comments\": \"complete\",\n            \"defaults\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"includedColumns\": \"complete\",\n            \"indexExpressions\": \"complete\",\n            \"indexPredicates\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"not_applicable\",\n            \"primaryKeys\": \"complete\",\n            \"referentialActions\": \"complete\",\n            \"relationships\": \"not_applicable\",\n            \"tables\": \"complete\",\n            \"uniqueConstraints\": \"complete\"\n          }\n        },\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 3,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611"
+   },
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 8,
+     "indexes": 4,
+     "foreign_keys": 1,
+     "relationships": 1,
+     "diagnostics": 8,
+     "drift": 2
+    },
+    "scope": "combined_metadata",
+    "source": "combined",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": {
+        "complete": false,
+        "schemas": [
+         "public"
+        ],
+        "features": {
+         "checkConstraints": "unavailable",
+         "columnTypes": "complete",
+         "columns": "complete",
+         "comments": "complete",
+         "defaults": "complete",
+         "foreignKeys": "complete",
+         "includedColumns": "complete",
+         "indexExpressions": "complete",
+         "indexPredicates": "complete",
+         "indexes": "complete",
+         "models": "not_applicable",
+         "primaryKeys": "complete",
+         "referentialActions": "complete",
+         "relationships": "not_applicable",
+         "tables": "complete",
+         "uniqueConstraints": "complete"
+        }
+       },
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "indexes": "complete",
+         "models": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 3,
+    "items": [
+     {
+      "id": "table:default.audit_log",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "audit_log",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "database"
+      ]
+     },
+     {
+      "id": "table:default.teams",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "teams",
+      "columns": 1,
+      "foreign_keys": 0,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "id": "table:default.users",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "users",
+      "columns": 5,
+      "foreign_keys": 1,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 8,\n    \"indexes\": 4,\n    \"foreign_keys\": 1,\n    \"relationships\": 1,\n    \"diagnostics\": 8,\n    \"drift\": 2\n  },\n  \"scope\": \"combined_metadata\",\n  \"source\": \"combined\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": {\n          \"complete\": false,\n          \"schemas\": [\n            \"public\"\n          ],\n          \"features\": {\n            \"checkConstraints\": \"unavailable\",\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"comments\": \"complete\",\n            \"defaults\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"includedColumns\": \"complete\",\n            \"indexExpressions\": \"complete\",\n            \"indexPredicates\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"not_applicable\",\n            \"primaryKeys\": \"complete\",\n            \"referentialActions\": \"complete\",\n            \"relationships\": \"not_applicable\",\n            \"tables\": \"complete\",\n            \"uniqueConstraints\": \"complete\"\n          }\n        },\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"indexes\": \"complete\",\n            \"models\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"id\": \"table:default.audit_log\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"audit_log\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"database\"\n      ]\n    },\n    {\n      \"id\": \"table:default.teams\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"teams\",\n      \"columns\": 1,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:default.users\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"users\",\n      \"columns\": 5,\n      \"foreign_keys\": 1,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "id",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 4,
+    "items": [
+     {
+      "kind": "column",
+      "table": "table:default.audit_log",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.teams",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "team_id"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 4,\n  \"items\": [\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.audit_log\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.teams\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"team_id\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "ID",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 4,
+    "items": [
+     {
+      "kind": "column",
+      "table": "table:default.audit_log",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.teams",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "team_id"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 4,\n  \"items\": [\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.audit_log\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.teams\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"team_id\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "order",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "user",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 2,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.users",
+      "name": "users"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.User",
+      "name": "app.models.User"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.users\",\n      \"name\": \"users\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.User\",\n      \"name\": \"app.models.User\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "e",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 11,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.audit_log",
+      "name": "audit_log"
+     },
+     {
+      "kind": "table",
+      "id": "table:default.teams",
+      "name": "teams"
+     },
+     {
+      "kind": "table",
+      "id": "table:default.users",
+      "name": "users"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "email"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "team_id"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "nickname"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "legacy_flag"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.Ghost",
+      "name": "app.models.Ghost"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.Team",
+      "name": "app.models.Team"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.User",
+      "name": "app.models.User"
+     },
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.User.team",
+      "name": "team"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 11,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.audit_log\",\n      \"name\": \"audit_log\"\n    },\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.teams\",\n      \"name\": \"teams\"\n    },\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.users\",\n      \"name\": \"users\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"email\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"team_id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"nickname\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"legacy_flag\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.Ghost\",\n      \"name\": \"app.models.Ghost\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.Team\",\n      \"name\": \"app.models.Team\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.User\",\n      \"name\": \"app.models.User\"\n    },\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "MANYTOONE",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.User.team",
+      "name": "team"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "one",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.User.team",
+      "name": "team"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "zzz",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "default.",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 3,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.audit_log",
+      "name": "audit_log"
+     },
+     {
+      "kind": "table",
+      "id": "table:default.teams",
+      "name": "teams"
+     },
+     {
+      "kind": "table",
+      "id": "table:default.users",
+      "name": "users"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.audit_log\",\n      \"name\": \"audit_log\"\n    },\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.teams\",\n      \"name\": \"teams\"\n    },\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.users\",\n      \"name\": \"users\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "ß",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "_",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 3,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.audit_log",
+      "name": "audit_log"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "team_id"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "legacy_flag"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.audit_log\",\n      \"name\": \"audit_log\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"team_id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"legacy_flag\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "audit_log",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.audit_log",
+      "name": "audit_log"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.audit_log\",\n      \"name\": \"audit_log\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "teams",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.teams",
+      "name": "teams"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.teams\",\n      \"name\": \"teams\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "users",
+    "limit": 100
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.users",
+      "name": "users"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.users\",\n      \"name\": \"users\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "e",
+    "limit": 3,
+    "offset": 2
+   },
+   "response": {
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 11,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.users",
+      "name": "users"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "email"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.users",
+      "name": "team_id"
+     }
+    ],
+    "next_offset": 5
+   },
+   "text": "{\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 11,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.users\",\n      \"name\": \"users\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"email\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.users\",\n      \"name\": \"team_id\"\n    }\n  ],\n  \"next_offset\": 5\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log"
+   },
+   "response": {
+    "table": {
+     "id": "table:default.audit_log",
+     "name": "audit_log",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 0,
+     "relationships": 0
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 2,
+    "items": [
+     {
+      "name": "id",
+      "type": "bigint",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "bigint",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     },
+     {
+      "name": "payload",
+      "type": "jsonb",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "jsonb",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.audit_log\",\n    \"name\": \"audit_log\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 0,\n    \"relationships\": 0\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"bigint\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": true,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"bigint\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\"\n      ]\n    },\n    {\n      \"name\": \"payload\",\n      \"type\": \"jsonb\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"jsonb\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "section": "columns",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.audit_log",
+     "name": "audit_log",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 0,
+     "relationships": 0
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 2,
+    "items": [
+     {
+      "name": "id",
+      "type": "bigint",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "bigint",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     },
+     {
+      "name": "payload",
+      "type": "jsonb",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "jsonb",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.audit_log\",\n    \"name\": \"audit_log\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 0,\n    \"relationships\": 0\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"bigint\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": true,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"bigint\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\"\n      ]\n    },\n    {\n      \"name\": \"payload\",\n      \"type\": \"jsonb\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"jsonb\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "section": "indexes",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.audit_log",
+     "name": "audit_log",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "indexes",
+    "counts": {
+     "columns": 2,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 0,
+     "relationships": 0
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "name": "audit_log_pkey",
+      "columns": [
+       "id"
+      ],
+      "expressions": [],
+      "unique": true,
+      "predicates": {},
+      "included_columns": {},
+      "methods": {},
+      "id": "table:default.audit_log:index:audit_log_pkey",
+      "parts": [
+       {
+        "column": "id",
+        "expression": null,
+        "order": null,
+        "nulls": null,
+        "length": null,
+        "collation": null,
+        "opclass": null
+       }
+      ],
+      "primary": true,
+      "backs": {
+       "kind": "primary_key",
+       "constraint": null
+      },
+      "partial": false,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.audit_log\",\n    \"name\": \"audit_log\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"indexes\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 0,\n    \"relationships\": 0\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"name\": \"audit_log_pkey\",\n      \"columns\": [\n        \"id\"\n      ],\n      \"expressions\": [],\n      \"unique\": true,\n      \"predicates\": {},\n      \"included_columns\": {},\n      \"methods\": {},\n      \"id\": \"table:default.audit_log:index:audit_log_pkey\",\n      \"parts\": [\n        {\n          \"column\": \"id\",\n          \"expression\": null,\n          \"order\": null,\n          \"nulls\": null,\n          \"length\": null,\n          \"collation\": null,\n          \"opclass\": null\n        }\n      ],\n      \"primary\": true,\n      \"backs\": {\n        \"kind\": \"primary_key\",\n        \"constraint\": null\n      },\n      \"partial\": false,\n      \"provenance\": [\n        \"database\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "section": "foreign_keys",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.audit_log",
+     "name": "audit_log",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "foreign_keys",
+    "counts": {
+     "columns": 2,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 0,
+     "relationships": 0
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.audit_log\",\n    \"name\": \"audit_log\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"foreign_keys\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 0,\n    \"relationships\": 0\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "section": "constraints",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.audit_log",
+     "name": "audit_log",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "constraints",
+    "counts": {
+     "columns": 2,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 0,
+     "relationships": 0
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.audit_log\",\n    \"name\": \"audit_log\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"constraints\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 0,\n    \"relationships\": 0\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "section": "models",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.audit_log",
+     "name": "audit_log",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "models",
+    "counts": {
+     "columns": 2,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 0,
+     "relationships": 0
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.audit_log\",\n    \"name\": \"audit_log\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"models\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 0,\n    \"relationships\": 0\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "section": "relationships",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.audit_log",
+     "name": "audit_log",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "relationships",
+    "counts": {
+     "columns": 2,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 0,
+     "relationships": 0
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.audit_log\",\n    \"name\": \"audit_log\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"relationships\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 0,\n    \"relationships\": 0\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "section": "columns",
+    "limit": 1,
+    "offset": 1
+   },
+   "response": {
+    "table": {
+     "id": "table:default.audit_log",
+     "name": "audit_log",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 0,
+     "relationships": 0
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 2,
+    "items": [
+     {
+      "name": "payload",
+      "type": "jsonb",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "jsonb",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.audit_log\",\n    \"name\": \"audit_log\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 0,\n    \"relationships\": 0\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"payload\",\n      \"type\": \"jsonb\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"jsonb\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "kind": "orm",
+    "limit": 100
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "kind": "foreign_key",
+    "limit": 100
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.teams"
+   },
+   "response": {
+    "table": {
+     "id": "table:default.teams",
+     "name": "teams",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 1,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "name": "id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.teams\",\n    \"name\": \"teams\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 1,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"integer\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": true,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.teams",
+    "section": "columns",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.teams",
+     "name": "teams",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 1,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "name": "id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.teams\",\n    \"name\": \"teams\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 1,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"integer\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": true,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.teams",
+    "section": "indexes",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.teams",
+     "name": "teams",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "indexes",
+    "counts": {
+     "columns": 1,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "name": "teams_pkey",
+      "columns": [
+       "id"
+      ],
+      "expressions": [],
+      "unique": true,
+      "predicates": {},
+      "included_columns": {},
+      "methods": {},
+      "id": "table:default.teams:index:teams_pkey",
+      "parts": [
+       {
+        "column": "id",
+        "expression": null,
+        "order": null,
+        "nulls": null,
+        "length": null,
+        "collation": null,
+        "opclass": null
+       }
+      ],
+      "primary": true,
+      "backs": {
+       "kind": "primary_key",
+       "constraint": null
+      },
+      "partial": false,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.teams\",\n    \"name\": \"teams\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"indexes\",\n  \"counts\": {\n    \"columns\": 1,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"name\": \"teams_pkey\",\n      \"columns\": [\n        \"id\"\n      ],\n      \"expressions\": [],\n      \"unique\": true,\n      \"predicates\": {},\n      \"included_columns\": {},\n      \"methods\": {},\n      \"id\": \"table:default.teams:index:teams_pkey\",\n      \"parts\": [\n        {\n          \"column\": \"id\",\n          \"expression\": null,\n          \"order\": null,\n          \"nulls\": null,\n          \"length\": null,\n          \"collation\": null,\n          \"opclass\": null\n        }\n      ],\n      \"primary\": true,\n      \"backs\": {\n        \"kind\": \"primary_key\",\n        \"constraint\": null\n      },\n      \"partial\": false,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.teams",
+    "section": "foreign_keys",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.teams",
+     "name": "teams",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "foreign_keys",
+    "counts": {
+     "columns": 1,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.teams\",\n    \"name\": \"teams\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"foreign_keys\",\n  \"counts\": {\n    \"columns\": 1,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.teams",
+    "section": "constraints",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.teams",
+     "name": "teams",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "constraints",
+    "counts": {
+     "columns": 1,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.teams\",\n    \"name\": \"teams\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"constraints\",\n  \"counts\": {\n    \"columns\": 1,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.teams",
+    "section": "models",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.teams",
+     "name": "teams",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "models",
+    "counts": {
+     "columns": 1,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "model:app.models.Team",
+      "class_name": "app.models.Team",
+      "table_ids": [
+       "table:default.teams"
+      ],
+      "primary_key": [
+       "id"
+      ],
+      "source": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.teams\",\n    \"name\": \"teams\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"models\",\n  \"counts\": {\n    \"columns\": 1,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"model:app.models.Team\",\n      \"class_name\": \"app.models.Team\",\n      \"table_ids\": [\n        \"table:default.teams\"\n      ],\n      \"primary_key\": [\n        \"id\"\n      ],\n      \"source\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.teams",
+    "section": "relationships",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.teams",
+     "name": "teams",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "relationships",
+    "counts": {
+     "columns": 1,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.User.team",
+      "name": "team",
+      "model": "model:app.models.User",
+      "target_model": "model:app.models.Team",
+      "source_table": "table:default.users",
+      "target_table": "table:default.teams",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:default.users",
+         "column": "team_id"
+        },
+        "remote": {
+         "table": "table:default.teams",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.teams\",\n    \"name\": \"teams\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"relationships\",\n  \"counts\": {\n    \"columns\": 1,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\",\n      \"model\": \"model:app.models.User\",\n      \"target_model\": \"model:app.models.Team\",\n      \"source_table\": \"table:default.users\",\n      \"target_table\": \"table:default.teams\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:default.users\",\n            \"column\": \"team_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.teams\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.teams",
+    "section": "columns",
+    "limit": 1,
+    "offset": 1
+   },
+   "response": {
+    "table": {
+     "id": "table:default.teams",
+     "name": "teams",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 1,
+     "indexes": 1,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.teams\",\n    \"name\": \"teams\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 1,\n    \"indexes\": 1,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:default.teams",
+    "kind": "orm",
+    "limit": 100
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.User.team",
+      "name": "team",
+      "model": "model:app.models.User",
+      "target_model": "model:app.models.Team",
+      "source_table": "table:default.users",
+      "target_table": "table:default.teams",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:default.users",
+         "column": "team_id"
+        },
+        "remote": {
+         "table": "table:default.teams",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\",\n      \"model\": \"model:app.models.User\",\n      \"target_model\": \"model:app.models.Team\",\n      \"source_table\": \"table:default.users\",\n      \"target_table\": \"table:default.teams\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:default.users\",\n            \"column\": \"team_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.teams\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:default.teams",
+    "kind": "foreign_key",
+    "limit": 100
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "source_table": "table:default.users",
+      "id": "table:default.users:fk:fk_users_team",
+      "name": "fk_users_team",
+      "columns": [
+       "team_id"
+      ],
+      "target_table": "table:default.teams",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "SET NULL",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"source_table\": \"table:default.users\",\n      \"id\": \"table:default.users:fk:fk_users_team\",\n      \"name\": \"fk_users_team\",\n      \"columns\": [\n        \"team_id\"\n      ],\n      \"target_table\": \"table:default.teams\",\n      \"target_columns\": [\n        \"id\"\n      ],\n      \"on_delete\": \"SET NULL\",\n      \"on_update\": null,\n      \"deferrable\": null,\n      \"initially\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.users"
+   },
+   "response": {
+    "table": {
+     "id": "table:default.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 5,
+     "indexes": 2,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 5,
+    "items": [
+     {
+      "name": "id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "name": "email",
+      "type": "character varying(320)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ],
+      "drift": [
+       {
+        "field": "type",
+        "database": "character varying(320)",
+        "declared": "VARCHAR(255)"
+       }
+      ]
+     },
+     {
+      "name": "team_id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "name": "nickname",
+      "type": "VARCHAR(40)",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "legacy_flag",
+      "type": "boolean",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "boolean",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 5,\n    \"indexes\": 2,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 5,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"integer\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": true,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"email\",\n      \"type\": \"character varying(320)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ],\n      \"drift\": [\n        {\n          \"field\": \"type\",\n          \"database\": \"character varying(320)\",\n          \"declared\": \"VARCHAR(255)\"\n        }\n      ]\n    },\n    {\n      \"name\": \"team_id\",\n      \"type\": \"integer\",\n      \"timezone\": null,\n      \"nullable\": true,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"nickname\",\n      \"type\": \"VARCHAR(40)\",\n      \"timezone\": null,\n      \"nullable\": true,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"legacy_flag\",\n      \"type\": \"boolean\",\n      \"timezone\": null,\n      \"nullable\": true,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"boolean\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.users",
+    "section": "columns",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 5,
+     "indexes": 2,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 5,
+    "items": [
+     {
+      "name": "id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": true,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "name": "email",
+      "type": "character varying(320)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ],
+      "drift": [
+       {
+        "field": "type",
+        "database": "character varying(320)",
+        "declared": "VARCHAR(255)"
+       }
+      ]
+     },
+     {
+      "name": "team_id",
+      "type": "integer",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "name": "nickname",
+      "type": "VARCHAR(40)",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "legacy_flag",
+      "type": "boolean",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "boolean",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 5,\n    \"indexes\": 2,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 5,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"integer\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": true,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"email\",\n      \"type\": \"character varying(320)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ],\n      \"drift\": [\n        {\n          \"field\": \"type\",\n          \"database\": \"character varying(320)\",\n          \"declared\": \"VARCHAR(255)\"\n        }\n      ]\n    },\n    {\n      \"name\": \"team_id\",\n      \"type\": \"integer\",\n      \"timezone\": null,\n      \"nullable\": true,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"nickname\",\n      \"type\": \"VARCHAR(40)\",\n      \"timezone\": null,\n      \"nullable\": true,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"legacy_flag\",\n      \"type\": \"boolean\",\n      \"timezone\": null,\n      \"nullable\": true,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"boolean\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.users",
+    "section": "indexes",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "indexes",
+    "counts": {
+     "columns": 5,
+     "indexes": 2,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 2,
+    "items": [
+     {
+      "name": "users_pkey",
+      "columns": [
+       "id"
+      ],
+      "expressions": [],
+      "unique": true,
+      "predicates": {},
+      "included_columns": {},
+      "methods": {},
+      "id": "table:default.users:index:users_pkey",
+      "parts": [
+       {
+        "column": "id",
+        "expression": null,
+        "order": null,
+        "nulls": null,
+        "length": null,
+        "collation": null,
+        "opclass": null
+       }
+      ],
+      "primary": true,
+      "backs": {
+       "kind": "primary_key",
+       "constraint": null
+      },
+      "partial": false,
+      "provenance": [
+       "database",
+       "declared"
+      ]
+     },
+     {
+      "name": "ix_users_email",
+      "columns": [
+       "email"
+      ],
+      "expressions": [],
+      "unique": true,
+      "predicates": {},
+      "included_columns": {},
+      "methods": {},
+      "id": "table:default.users:index:ix_users_email",
+      "parts": [
+       {
+        "column": "email",
+        "expression": null,
+        "order": null,
+        "nulls": null,
+        "length": null,
+        "collation": null,
+        "opclass": null
+       }
+      ],
+      "primary": false,
+      "backs": null,
+      "partial": false,
+      "provenance": [
+       "database",
+       "declared"
+      ],
+      "drift": [
+       {
+        "field": "unique",
+        "database": true,
+        "declared": false
+       }
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"indexes\",\n  \"counts\": {\n    \"columns\": 5,\n    \"indexes\": 2,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"users_pkey\",\n      \"columns\": [\n        \"id\"\n      ],\n      \"expressions\": [],\n      \"unique\": true,\n      \"predicates\": {},\n      \"included_columns\": {},\n      \"methods\": {},\n      \"id\": \"table:default.users:index:users_pkey\",\n      \"parts\": [\n        {\n          \"column\": \"id\",\n          \"expression\": null,\n          \"order\": null,\n          \"nulls\": null,\n          \"length\": null,\n          \"collation\": null,\n          \"opclass\": null\n        }\n      ],\n      \"primary\": true,\n      \"backs\": {\n        \"kind\": \"primary_key\",\n        \"constraint\": null\n      },\n      \"partial\": false,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"ix_users_email\",\n      \"columns\": [\n        \"email\"\n      ],\n      \"expressions\": [],\n      \"unique\": true,\n      \"predicates\": {},\n      \"included_columns\": {},\n      \"methods\": {},\n      \"id\": \"table:default.users:index:ix_users_email\",\n      \"parts\": [\n        {\n          \"column\": \"email\",\n          \"expression\": null,\n          \"order\": null,\n          \"nulls\": null,\n          \"length\": null,\n          \"collation\": null,\n          \"opclass\": null\n        }\n      ],\n      \"primary\": false,\n      \"backs\": null,\n      \"partial\": false,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ],\n      \"drift\": [\n        {\n          \"field\": \"unique\",\n          \"database\": true,\n          \"declared\": false\n        }\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.users",
+    "section": "foreign_keys",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "foreign_keys",
+    "counts": {
+     "columns": 5,
+     "indexes": 2,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "table:default.users:fk:fk_users_team",
+      "name": "fk_users_team",
+      "columns": [
+       "team_id"
+      ],
+      "target_table": "table:default.teams",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "SET NULL",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"foreign_keys\",\n  \"counts\": {\n    \"columns\": 5,\n    \"indexes\": 2,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"table:default.users:fk:fk_users_team\",\n      \"name\": \"fk_users_team\",\n      \"columns\": [\n        \"team_id\"\n      ],\n      \"target_table\": \"table:default.teams\",\n      \"target_columns\": [\n        \"id\"\n      ],\n      \"on_delete\": \"SET NULL\",\n      \"on_update\": null,\n      \"deferrable\": null,\n      \"initially\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.users",
+    "section": "constraints",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "constraints",
+    "counts": {
+     "columns": 5,
+     "indexes": 2,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"constraints\",\n  \"counts\": {\n    \"columns\": 5,\n    \"indexes\": 2,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.users",
+    "section": "models",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "models",
+    "counts": {
+     "columns": 5,
+     "indexes": 2,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "model:app.models.User",
+      "class_name": "app.models.User",
+      "table_ids": [
+       "table:default.users"
+      ],
+      "primary_key": [
+       "id"
+      ],
+      "source": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"models\",\n  \"counts\": {\n    \"columns\": 5,\n    \"indexes\": 2,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"model:app.models.User\",\n      \"class_name\": \"app.models.User\",\n      \"table_ids\": [\n        \"table:default.users\"\n      ],\n      \"primary_key\": [\n        \"id\"\n      ],\n      \"source\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.users",
+    "section": "relationships",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "relationships",
+    "counts": {
+     "columns": 5,
+     "indexes": 2,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.User.team",
+      "name": "team",
+      "model": "model:app.models.User",
+      "target_model": "model:app.models.Team",
+      "source_table": "table:default.users",
+      "target_table": "table:default.teams",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:default.users",
+         "column": "team_id"
+        },
+        "remote": {
+         "table": "table:default.teams",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"relationships\",\n  \"counts\": {\n    \"columns\": 5,\n    \"indexes\": 2,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\",\n      \"model\": \"model:app.models.User\",\n      \"target_model\": \"model:app.models.Team\",\n      \"source_table\": \"table:default.users\",\n      \"target_table\": \"table:default.teams\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:default.users\",\n            \"column\": \"team_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.teams\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.users",
+    "section": "columns",
+    "limit": 1,
+    "offset": 1
+   },
+   "response": {
+    "table": {
+     "id": "table:default.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "database",
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 5,
+     "indexes": 2,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 5,
+    "items": [
+     {
+      "name": "email",
+      "type": "character varying(320)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "database",
+       "declared"
+      ],
+      "drift": [
+       {
+        "field": "type",
+        "database": "character varying(320)",
+        "declared": "VARCHAR(255)"
+       }
+      ]
+     }
+    ],
+    "next_offset": 2
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"database\",\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 5,\n    \"indexes\": 2,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 5,\n  \"items\": [\n    {\n      \"name\": \"email\",\n      \"type\": \"character varying(320)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"database\",\n        \"declared\"\n      ],\n      \"drift\": [\n        {\n          \"field\": \"type\",\n          \"database\": \"character varying(320)\",\n          \"declared\": \"VARCHAR(255)\"\n        }\n      ]\n    }\n  ],\n  \"next_offset\": 2\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:default.users",
+    "kind": "orm",
+    "limit": 100
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.User.team",
+      "name": "team",
+      "model": "model:app.models.User",
+      "target_model": "model:app.models.Team",
+      "source_table": "table:default.users",
+      "target_table": "table:default.teams",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:default.users",
+         "column": "team_id"
+        },
+        "remote": {
+         "table": "table:default.teams",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\",\n      \"model\": \"model:app.models.User\",\n      \"target_model\": \"model:app.models.Team\",\n      \"source_table\": \"table:default.users\",\n      \"target_table\": \"table:default.teams\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:default.users\",\n            \"column\": \"team_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.teams\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:default.users",
+    "kind": "foreign_key",
+    "limit": 100
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "source_table": "table:default.users",
+      "id": "table:default.users:fk:fk_users_team",
+      "name": "fk_users_team",
+      "columns": [
+       "team_id"
+      ],
+      "target_table": "table:default.teams",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "SET NULL",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"source_table\": \"table:default.users\",\n      \"id\": \"table:default.users:fk:fk_users_team\",\n      \"name\": \"fk_users_team\",\n      \"columns\": [\n        \"team_id\"\n      ],\n      \"target_table\": \"table:default.teams\",\n      \"target_columns\": [\n        \"id\"\n      ],\n      \"on_delete\": \"SET NULL\",\n      \"on_update\": null,\n      \"deferrable\": null,\n      \"initially\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.Ghost"
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.Ghost",
+     "class_name": "app.models.Ghost",
+     "table_ids": [],
+     "primary_key": [],
+     "source": null
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.Ghost\",\n    \"class_name\": \"app.models.Ghost\",\n    \"table_ids\": [],\n    \"primary_key\": [],\n    \"source\": null\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.Ghost",
+    "limit": 1
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.Ghost",
+     "class_name": "app.models.Ghost",
+     "table_ids": [],
+     "primary_key": [],
+     "source": null
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.Ghost\",\n    \"class_name\": \"app.models.Ghost\",\n    \"table_ids\": [],\n    \"primary_key\": [],\n    \"source\": null\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.Team"
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.Team",
+     "class_name": "app.models.Team",
+     "table_ids": [
+      "table:default.teams"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.Team\",\n    \"class_name\": \"app.models.Team\",\n    \"table_ids\": [\n      \"table:default.teams\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.Team",
+    "limit": 1
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.Team",
+     "class_name": "app.models.Team",
+     "table_ids": [
+      "table:default.teams"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.Team\",\n    \"class_name\": \"app.models.Team\",\n    \"table_ids\": [\n      \"table:default.teams\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.User"
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.User",
+     "class_name": "app.models.User",
+     "table_ids": [
+      "table:default.users"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.User.team",
+      "name": "team",
+      "model": "model:app.models.User",
+      "target_model": "model:app.models.Team",
+      "source_table": "table:default.users",
+      "target_table": "table:default.teams",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:default.users",
+         "column": "team_id"
+        },
+        "remote": {
+         "table": "table:default.teams",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.User\",\n    \"class_name\": \"app.models.User\",\n    \"table_ids\": [\n      \"table:default.users\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\",\n      \"model\": \"model:app.models.User\",\n      \"target_model\": \"model:app.models.Team\",\n      \"source_table\": \"table:default.users\",\n      \"target_table\": \"table:default.teams\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:default.users\",\n            \"column\": \"team_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.teams\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.User",
+    "limit": 1
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.User",
+     "class_name": "app.models.User",
+     "table_ids": [
+      "table:default.users"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.User.team",
+      "name": "team",
+      "model": "model:app.models.User",
+      "target_model": "model:app.models.Team",
+      "source_table": "table:default.users",
+      "target_table": "table:default.teams",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:default.users",
+         "column": "team_id"
+        },
+        "remote": {
+         "table": "table:default.teams",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.User\",\n    \"class_name\": \"app.models.User\",\n    \"table_ids\": [\n      \"table:default.users\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\",\n      \"model\": \"model:app.models.User\",\n      \"target_model\": \"model:app.models.Team\",\n      \"source_table\": \"table:default.users\",\n      \"target_table\": \"table:default.teams\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:default.users\",\n            \"column\": \"team_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.teams\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "orm",
+    "limit": 100
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.User.team",
+      "name": "team",
+      "model": "model:app.models.User",
+      "target_model": "model:app.models.Team",
+      "source_table": "table:default.users",
+      "target_table": "table:default.teams",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:default.users",
+         "column": "team_id"
+        },
+        "remote": {
+         "table": "table:default.teams",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\",\n      \"model\": \"model:app.models.User\",\n      \"target_model\": \"model:app.models.Team\",\n      \"source_table\": \"table:default.users\",\n      \"target_table\": \"table:default.teams\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:default.users\",\n            \"column\": \"team_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.teams\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "orm",
+    "limit": 2,
+    "offset": 1
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "foreign_key",
+    "limit": 100
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "source_table": "table:default.users",
+      "id": "table:default.users:fk:fk_users_team",
+      "name": "fk_users_team",
+      "columns": [
+       "team_id"
+      ],
+      "target_table": "table:default.teams",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "SET NULL",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"source_table\": \"table:default.users\",\n      \"id\": \"table:default.users:fk:fk_users_team\",\n      \"name\": \"fk_users_team\",\n      \"columns\": [\n        \"team_id\"\n      ],\n      \"target_table\": \"table:default.teams\",\n      \"target_columns\": [\n        \"id\"\n      ],\n      \"on_delete\": \"SET NULL\",\n      \"on_update\": null,\n      \"deferrable\": null,\n      \"initially\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "foreign_key",
+    "limit": 2,
+    "offset": 1
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {},
+   "response": {
+    "kind": "orm",
+    "revision": "48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.User.team",
+      "name": "team",
+      "model": "model:app.models.User",
+      "target_model": "model:app.models.Team",
+      "source_table": "table:default.users",
+      "target_table": "table:default.teams",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:default.users",
+         "column": "team_id"
+        },
+        "remote": {
+         "table": "table:default.teams",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"48c8b7e474b75a89f1fc58a50d7a27dcd89de78685c6257be3122d1ad2ffe611\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.User.team\",\n      \"name\": \"team\",\n      \"model\": \"model:app.models.User\",\n      \"target_model\": \"model:app.models.Team\",\n      \"source_table\": \"table:default.users\",\n      \"target_table\": \"table:default.teams\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:default.users\",\n            \"column\": \"team_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.teams\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:does-not-exist"
+   },
+   "error": "Unknown table ID; use schema_overview or schema_search"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:does-not-exist"
+   },
+   "error": "Unknown model ID; use schema_search"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:does-not-exist"
+   },
+   "error": "Unknown table ID"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "revision": "0000000000000000000000000000000000000000000000000000000000000000"
+   },
+   "error": "Snapshot revision differs; restart pagination without revision"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   },
+   "error": "query must contain 1 to 200 characters"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.audit_log",
+    "section": "rows"
+   },
+   "error": "Unknown table section: rows"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "both"
+   },
+   "error": "kind must be orm or foreign_key"
+  }
+ ]
+}

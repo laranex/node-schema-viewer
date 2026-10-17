@@ -1,0 +1,3503 @@
+{
+ "document": "declared-multi-connection.json",
+ "python_revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+ "raw_revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+ "view": {
+  "scope": "declared_metadata",
+  "source": "declared",
+  "connections": [
+   {
+    "id": "connection:default",
+    "name": "default",
+    "driver": "postgresql",
+    "default_schema": "public",
+    "coverage": {
+     "database": null,
+     "declared": {
+      "complete": true,
+      "schemas": null,
+      "features": {
+       "columnTypes": "complete",
+       "columns": "complete",
+       "foreignKeys": "complete",
+       "models": "complete",
+       "primaryKeys": "complete",
+       "relationships": "complete",
+       "tables": "complete"
+      }
+     }
+    }
+   },
+   {
+    "id": "connection:reporting",
+    "name": "reporting",
+    "driver": "mysql",
+    "default_schema": null,
+    "coverage": {
+     "database": null,
+     "declared": {
+      "complete": true,
+      "schemas": null,
+      "features": {
+       "columnTypes": "complete",
+       "columns": "complete",
+       "foreignKeys": "complete",
+       "models": "complete",
+       "primaryKeys": "complete",
+       "relationships": "complete",
+       "tables": "complete"
+      }
+     }
+    }
+   }
+  ],
+  "tables": [
+   {
+    "id": "table:default.public.users",
+    "namespace": "default",
+    "name": "users",
+    "schema_name": "public",
+    "comment": null,
+    "columns": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "email",
+      "type": "VARCHAR(255)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "indexes": [],
+    "foreign_keys": [],
+    "constraints": [],
+    "owner": {
+     "kind": "application",
+     "package": null
+    },
+    "provenance": [
+     "declared"
+    ]
+   },
+   {
+    "id": "table:reporting.reports",
+    "namespace": "reporting",
+    "name": "reports",
+    "schema_name": null,
+    "comment": null,
+    "columns": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "owner_id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "requested_by",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "indexes": [],
+    "foreign_keys": [
+     {
+      "id": "table:reporting.reports:fk:fk_reports_owner",
+      "name": "fk_reports_owner",
+      "columns": [
+       "owner_id"
+      ],
+      "target_table": "table:reporting.users",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "CASCADE",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "constraints": [],
+    "owner": {
+     "kind": "application",
+     "package": null
+    },
+    "provenance": [
+     "declared"
+    ]
+   },
+   {
+    "id": "table:reporting.users",
+    "namespace": "reporting",
+    "name": "users",
+    "schema_name": null,
+    "comment": null,
+    "columns": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "display_name",
+      "type": "VARCHAR(80)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "indexes": [],
+    "foreign_keys": [],
+    "constraints": [],
+    "owner": {
+     "kind": "application",
+     "package": null
+    },
+    "provenance": [
+     "declared"
+    ]
+   }
+  ],
+  "models": [
+   {
+    "id": "model:app.models.Report",
+    "class_name": "app.models.reporting.Report",
+    "table_ids": [
+     "table:reporting.reports"
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "source": null
+   },
+   {
+    "id": "model:app.models.ReportUser",
+    "class_name": "app.models.reporting.ReportUser",
+    "table_ids": [
+     "table:reporting.users"
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "source": null
+   },
+   {
+    "id": "model:app.models.User",
+    "class_name": "app.models.User",
+    "table_ids": [
+     "table:default.public.users"
+    ],
+    "primary_key": [
+     "id"
+    ],
+    "source": null
+   }
+  ],
+  "relationships": [
+   {
+    "id": "relationship:app.models.Report.owner",
+    "name": "owner",
+    "model": "model:app.models.Report",
+    "target_model": "model:app.models.ReportUser",
+    "source_table": "table:reporting.reports",
+    "target_table": "table:reporting.users",
+    "direction": "MANYTOONE",
+    "uselist": false,
+    "viewonly": false,
+    "back_populates": null,
+    "secondary": null,
+    "primary_join": "",
+    "secondary_join": null,
+    "join_pairs": [
+     {
+      "local": {
+       "table": "table:reporting.reports",
+       "column": "owner_id"
+      },
+      "remote": {
+       "table": "table:reporting.users",
+       "column": "id"
+      }
+     }
+    ],
+    "cardinality": "many-to-one",
+    "polymorphic": null,
+    "through": null,
+    "constraints": [],
+    "note": null
+   },
+   {
+    "id": "relationship:app.models.Report.requester",
+    "name": "requester",
+    "model": "model:app.models.Report",
+    "target_model": "model:app.models.User",
+    "source_table": "table:reporting.reports",
+    "target_table": "table:default.public.users",
+    "direction": "MANYTOONE",
+    "uselist": false,
+    "viewonly": false,
+    "back_populates": null,
+    "secondary": null,
+    "primary_join": "",
+    "secondary_join": null,
+    "join_pairs": [
+     {
+      "local": {
+       "table": "table:reporting.reports",
+       "column": "requested_by"
+      },
+      "remote": {
+       "table": "table:default.public.users",
+       "column": "id"
+      }
+     }
+    ],
+    "cardinality": "many-to-one",
+    "polymorphic": null,
+    "through": null,
+    "constraints": [],
+    "note": "Joined in Python across binds; the databases do not know about it."
+   }
+  ],
+  "diagnostics": []
+ },
+ "calls": [
+  {
+   "tool": "schema_overview",
+   "arguments": {},
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 7,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "relationships": 2,
+     "diagnostics": 0,
+     "drift": 0
+    },
+    "scope": "declared_metadata",
+    "source": "declared",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     },
+     {
+      "id": "connection:reporting",
+      "name": "reporting",
+      "driver": "mysql",
+      "default_schema": null,
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [
+     {
+      "id": "table:default.public.users",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "users",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "id": "table:reporting.reports",
+      "namespace": "reporting",
+      "schema_name": null,
+      "name": "reports",
+      "columns": 3,
+      "foreign_keys": 1,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "id": "table:reporting.users",
+      "namespace": "reporting",
+      "schema_name": null,
+      "name": "users",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 7,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"relationships\": 2,\n    \"diagnostics\": 0,\n    \"drift\": 0\n  },\n  \"scope\": \"declared_metadata\",\n  \"source\": \"declared\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"connection:reporting\",\n      \"name\": \"reporting\",\n      \"driver\": \"mysql\",\n      \"default_schema\": null,\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"id\": \"table:default.public.users\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"users\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:reporting.reports\",\n      \"namespace\": \"reporting\",\n      \"schema_name\": null,\n      \"name\": \"reports\",\n      \"columns\": 3,\n      \"foreign_keys\": 1,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:reporting.users\",\n      \"namespace\": \"reporting\",\n      \"schema_name\": null,\n      \"name\": \"users\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "limit": 100
+   },
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 7,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "relationships": 2,
+     "diagnostics": 0,
+     "drift": 0
+    },
+    "scope": "declared_metadata",
+    "source": "declared",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     },
+     {
+      "id": "connection:reporting",
+      "name": "reporting",
+      "driver": "mysql",
+      "default_schema": null,
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [
+     {
+      "id": "table:default.public.users",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "users",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "id": "table:reporting.reports",
+      "namespace": "reporting",
+      "schema_name": null,
+      "name": "reports",
+      "columns": 3,
+      "foreign_keys": 1,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "id": "table:reporting.users",
+      "namespace": "reporting",
+      "schema_name": null,
+      "name": "users",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 7,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"relationships\": 2,\n    \"diagnostics\": 0,\n    \"drift\": 0\n  },\n  \"scope\": \"declared_metadata\",\n  \"source\": \"declared\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"connection:reporting\",\n      \"name\": \"reporting\",\n      \"driver\": \"mysql\",\n      \"default_schema\": null,\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"id\": \"table:default.public.users\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"users\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:reporting.reports\",\n      \"namespace\": \"reporting\",\n      \"schema_name\": null,\n      \"name\": \"reports\",\n      \"columns\": 3,\n      \"foreign_keys\": 1,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:reporting.users\",\n      \"namespace\": \"reporting\",\n      \"schema_name\": null,\n      \"name\": \"users\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "limit": 2,
+    "offset": 1
+   },
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 7,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "relationships": 2,
+     "diagnostics": 0,
+     "drift": 0
+    },
+    "scope": "declared_metadata",
+    "source": "declared",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     },
+     {
+      "id": "connection:reporting",
+      "name": "reporting",
+      "driver": "mysql",
+      "default_schema": null,
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [
+     {
+      "id": "table:reporting.reports",
+      "namespace": "reporting",
+      "schema_name": null,
+      "name": "reports",
+      "columns": 3,
+      "foreign_keys": 1,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "id": "table:reporting.users",
+      "namespace": "reporting",
+      "schema_name": null,
+      "name": "users",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 7,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"relationships\": 2,\n    \"diagnostics\": 0,\n    \"drift\": 0\n  },\n  \"scope\": \"declared_metadata\",\n  \"source\": \"declared\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"connection:reporting\",\n      \"name\": \"reporting\",\n      \"driver\": \"mysql\",\n      \"default_schema\": null,\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"id\": \"table:reporting.reports\",\n      \"namespace\": \"reporting\",\n      \"schema_name\": null,\n      \"name\": \"reports\",\n      \"columns\": 3,\n      \"foreign_keys\": 1,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:reporting.users\",\n      \"namespace\": \"reporting\",\n      \"schema_name\": null,\n      \"name\": \"users\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "limit": 1,
+    "offset": 10000
+   },
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 7,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "relationships": 2,
+     "diagnostics": 0,
+     "drift": 0
+    },
+    "scope": "declared_metadata",
+    "source": "declared",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     },
+     {
+      "id": "connection:reporting",
+      "name": "reporting",
+      "driver": "mysql",
+      "default_schema": null,
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 7,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"relationships\": 2,\n    \"diagnostics\": 0,\n    \"drift\": 0\n  },\n  \"scope\": \"declared_metadata\",\n  \"source\": \"declared\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"connection:reporting\",\n      \"name\": \"reporting\",\n      \"driver\": \"mysql\",\n      \"default_schema\": null,\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e"
+   },
+   "response": {
+    "counts": {
+     "tables": 3,
+     "models": 3,
+     "columns": 7,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "relationships": 2,
+     "diagnostics": 0,
+     "drift": 0
+    },
+    "scope": "declared_metadata",
+    "source": "declared",
+    "connections": [
+     {
+      "id": "connection:default",
+      "name": "default",
+      "driver": "postgresql",
+      "default_schema": "public",
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     },
+     {
+      "id": "connection:reporting",
+      "name": "reporting",
+      "driver": "mysql",
+      "default_schema": null,
+      "coverage": {
+       "database": null,
+       "declared": {
+        "complete": true,
+        "schemas": null,
+        "features": {
+         "columnTypes": "complete",
+         "columns": "complete",
+         "foreignKeys": "complete",
+         "models": "complete",
+         "primaryKeys": "complete",
+         "relationships": "complete",
+         "tables": "complete"
+        }
+       }
+      }
+     }
+    ],
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [
+     {
+      "id": "table:default.public.users",
+      "namespace": "default",
+      "schema_name": "public",
+      "name": "users",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "id": "table:reporting.reports",
+      "namespace": "reporting",
+      "schema_name": null,
+      "name": "reports",
+      "columns": 3,
+      "foreign_keys": 1,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "id": "table:reporting.users",
+      "namespace": "reporting",
+      "schema_name": null,
+      "name": "users",
+      "columns": 2,
+      "foreign_keys": 0,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"counts\": {\n    \"tables\": 3,\n    \"models\": 3,\n    \"columns\": 7,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"relationships\": 2,\n    \"diagnostics\": 0,\n    \"drift\": 0\n  },\n  \"scope\": \"declared_metadata\",\n  \"source\": \"declared\",\n  \"connections\": [\n    {\n      \"id\": \"connection:default\",\n      \"name\": \"default\",\n      \"driver\": \"postgresql\",\n      \"default_schema\": \"public\",\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"connection:reporting\",\n      \"name\": \"reporting\",\n      \"driver\": \"mysql\",\n      \"default_schema\": null,\n      \"coverage\": {\n        \"database\": null,\n        \"declared\": {\n          \"complete\": true,\n          \"schemas\": null,\n          \"features\": {\n            \"columnTypes\": \"complete\",\n            \"columns\": \"complete\",\n            \"foreignKeys\": \"complete\",\n            \"models\": \"complete\",\n            \"primaryKeys\": \"complete\",\n            \"relationships\": \"complete\",\n            \"tables\": \"complete\"\n          }\n        }\n      }\n    }\n  ],\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"id\": \"table:default.public.users\",\n      \"namespace\": \"default\",\n      \"schema_name\": \"public\",\n      \"name\": \"users\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:reporting.reports\",\n      \"namespace\": \"reporting\",\n      \"schema_name\": null,\n      \"name\": \"reports\",\n      \"columns\": 3,\n      \"foreign_keys\": 1,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"id\": \"table:reporting.users\",\n      \"namespace\": \"reporting\",\n      \"schema_name\": null,\n      \"name\": \"users\",\n      \"columns\": 2,\n      \"foreign_keys\": 0,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "id",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 4,
+    "items": [
+     {
+      "kind": "column",
+      "table": "table:default.public.users",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "owner_id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.users",
+      "name": "id"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 4,\n  \"items\": [\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.public.users\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"owner_id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.users\",\n      \"name\": \"id\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "ID",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 4,
+    "items": [
+     {
+      "kind": "column",
+      "table": "table:default.public.users",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "owner_id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.users",
+      "name": "id"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 4,\n  \"items\": [\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.public.users\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"owner_id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.users\",\n      \"name\": \"id\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "order",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "user",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 4,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.public.users",
+      "name": "users"
+     },
+     {
+      "kind": "table",
+      "id": "table:reporting.users",
+      "name": "users"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.ReportUser",
+      "name": "app.models.reporting.ReportUser"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.User",
+      "name": "app.models.User"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 4,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.public.users\",\n      \"name\": \"users\"\n    },\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:reporting.users\",\n      \"name\": \"users\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.ReportUser\",\n      \"name\": \"app.models.reporting.ReportUser\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.User\",\n      \"name\": \"app.models.User\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "e",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 12,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.public.users",
+      "name": "users"
+     },
+     {
+      "kind": "column",
+      "table": "table:default.public.users",
+      "name": "email"
+     },
+     {
+      "kind": "table",
+      "id": "table:reporting.reports",
+      "name": "reports"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "owner_id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "requested_by"
+     },
+     {
+      "kind": "table",
+      "id": "table:reporting.users",
+      "name": "users"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.users",
+      "name": "display_name"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.Report",
+      "name": "app.models.reporting.Report"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.ReportUser",
+      "name": "app.models.reporting.ReportUser"
+     },
+     {
+      "kind": "model",
+      "id": "model:app.models.User",
+      "name": "app.models.User"
+     },
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner"
+     },
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 12,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.public.users\",\n      \"name\": \"users\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:default.public.users\",\n      \"name\": \"email\"\n    },\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:reporting.reports\",\n      \"name\": \"reports\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"owner_id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"requested_by\"\n    },\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:reporting.users\",\n      \"name\": \"users\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.users\",\n      \"name\": \"display_name\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.Report\",\n      \"name\": \"app.models.reporting.Report\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.ReportUser\",\n      \"name\": \"app.models.reporting.ReportUser\"\n    },\n    {\n      \"kind\": \"model\",\n      \"id\": \"model:app.models.User\",\n      \"name\": \"app.models.User\"\n    },\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\"\n    },\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "MANYTOONE",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner"
+     },
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\"\n    },\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "one",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner"
+     },
+     {
+      "kind": "relationship",
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\"\n    },\n    {\n      \"kind\": \"relationship\",\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "zzz",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "default.",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.public.users",
+      "name": "users"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.public.users\",\n      \"name\": \"users\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "ß",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "_",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "owner_id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "requested_by"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.users",
+      "name": "display_name"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"owner_id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"requested_by\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.users\",\n      \"name\": \"display_name\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "reports",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:reporting.reports",
+      "name": "reports"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:reporting.reports\",\n      \"name\": \"reports\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "users",
+    "limit": 100
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:default.public.users",
+      "name": "users"
+     },
+     {
+      "kind": "table",
+      "id": "table:reporting.users",
+      "name": "users"
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:default.public.users\",\n      \"name\": \"users\"\n    },\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:reporting.users\",\n      \"name\": \"users\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "e",
+    "limit": 3,
+    "offset": 2
+   },
+   "response": {
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 12,
+    "items": [
+     {
+      "kind": "table",
+      "id": "table:reporting.reports",
+      "name": "reports"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "owner_id"
+     },
+     {
+      "kind": "column",
+      "table": "table:reporting.reports",
+      "name": "requested_by"
+     }
+    ],
+    "next_offset": 5
+   },
+   "text": "{\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 12,\n  \"items\": [\n    {\n      \"kind\": \"table\",\n      \"id\": \"table:reporting.reports\",\n      \"name\": \"reports\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"owner_id\"\n    },\n    {\n      \"kind\": \"column\",\n      \"table\": \"table:reporting.reports\",\n      \"name\": \"requested_by\"\n    }\n  ],\n  \"next_offset\": 5\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users"
+   },
+   "response": {
+    "table": {
+     "id": "table:default.public.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "email",
+      "type": "VARCHAR(255)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.public.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"email\",\n      \"type\": \"VARCHAR(255)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users",
+    "section": "columns",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.public.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "email",
+      "type": "VARCHAR(255)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.public.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"email\",\n      \"type\": \"VARCHAR(255)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users",
+    "section": "indexes",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.public.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "indexes",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.public.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"indexes\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users",
+    "section": "foreign_keys",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.public.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "foreign_keys",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.public.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"foreign_keys\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users",
+    "section": "constraints",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.public.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "constraints",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.public.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"constraints\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users",
+    "section": "models",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.public.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "models",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "id": "model:app.models.User",
+      "class_name": "app.models.User",
+      "table_ids": [
+       "table:default.public.users"
+      ],
+      "primary_key": [
+       "id"
+      ],
+      "source": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.public.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"models\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"model:app.models.User\",\n      \"class_name\": \"app.models.User\",\n      \"table_ids\": [\n        \"table:default.public.users\"\n      ],\n      \"primary_key\": [\n        \"id\"\n      ],\n      \"source\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users",
+    "section": "relationships",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:default.public.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "relationships",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.User",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:default.public.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "requested_by"
+        },
+        "remote": {
+         "table": "table:default.public.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": "Joined in Python across binds; the databases do not know about it."
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.public.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"relationships\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.User\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:default.public.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"requested_by\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.public.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": \"Joined in Python across binds; the databases do not know about it.\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users",
+    "section": "columns",
+    "limit": 1,
+    "offset": 1
+   },
+   "response": {
+    "table": {
+     "id": "table:default.public.users",
+     "name": "users",
+     "namespace": "default",
+     "schema_name": "public",
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "name": "email",
+      "type": "VARCHAR(255)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:default.public.users\",\n    \"name\": \"users\",\n    \"namespace\": \"default\",\n    \"schema_name\": \"public\",\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"email\",\n      \"type\": \"VARCHAR(255)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:default.public.users",
+    "kind": "orm",
+    "limit": 100
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.User",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:default.public.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "requested_by"
+        },
+        "remote": {
+         "table": "table:default.public.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": "Joined in Python across binds; the databases do not know about it."
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.User\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:default.public.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"requested_by\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.public.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": \"Joined in Python across binds; the databases do not know about it.\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:default.public.users",
+    "kind": "foreign_key",
+    "limit": 100
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.reports"
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.reports",
+     "name": "reports",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 3,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 2
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "owner_id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "requested_by",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.reports\",\n    \"name\": \"reports\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 3,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 2\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"owner_id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"requested_by\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": true,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "section": "columns",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.reports",
+     "name": "reports",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 3,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 2
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "owner_id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "requested_by",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": true,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.reports\",\n    \"name\": \"reports\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 3,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 2\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"owner_id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"requested_by\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": true,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "section": "indexes",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.reports",
+     "name": "reports",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "indexes",
+    "counts": {
+     "columns": 3,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 2
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.reports\",\n    \"name\": \"reports\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"indexes\",\n  \"counts\": {\n    \"columns\": 3,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 2\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "section": "foreign_keys",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.reports",
+     "name": "reports",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "foreign_keys",
+    "counts": {
+     "columns": 3,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 2
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "id": "table:reporting.reports:fk:fk_reports_owner",
+      "name": "fk_reports_owner",
+      "columns": [
+       "owner_id"
+      ],
+      "target_table": "table:reporting.users",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "CASCADE",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.reports\",\n    \"name\": \"reports\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"foreign_keys\",\n  \"counts\": {\n    \"columns\": 3,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 2\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"table:reporting.reports:fk:fk_reports_owner\",\n      \"name\": \"fk_reports_owner\",\n      \"columns\": [\n        \"owner_id\"\n      ],\n      \"target_table\": \"table:reporting.users\",\n      \"target_columns\": [\n        \"id\"\n      ],\n      \"on_delete\": \"CASCADE\",\n      \"on_update\": null,\n      \"deferrable\": null,\n      \"initially\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "section": "constraints",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.reports",
+     "name": "reports",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "constraints",
+    "counts": {
+     "columns": 3,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 2
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.reports\",\n    \"name\": \"reports\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"constraints\",\n  \"counts\": {\n    \"columns\": 3,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 2\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "section": "models",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.reports",
+     "name": "reports",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "models",
+    "counts": {
+     "columns": 3,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 2
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "id": "model:app.models.Report",
+      "class_name": "app.models.reporting.Report",
+      "table_ids": [
+       "table:reporting.reports"
+      ],
+      "primary_key": [
+       "id"
+      ],
+      "source": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.reports\",\n    \"name\": \"reports\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"models\",\n  \"counts\": {\n    \"columns\": 3,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 2\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"model:app.models.Report\",\n      \"class_name\": \"app.models.reporting.Report\",\n      \"table_ids\": [\n        \"table:reporting.reports\"\n      ],\n      \"primary_key\": [\n        \"id\"\n      ],\n      \"source\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "section": "relationships",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.reports",
+     "name": "reports",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "relationships",
+    "counts": {
+     "columns": 3,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 2
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.ReportUser",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:reporting.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "owner_id"
+        },
+        "remote": {
+         "table": "table:reporting.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     },
+     {
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.User",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:default.public.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "requested_by"
+        },
+        "remote": {
+         "table": "table:default.public.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": "Joined in Python across binds; the databases do not know about it."
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.reports\",\n    \"name\": \"reports\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"relationships\",\n  \"counts\": {\n    \"columns\": 3,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 2\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.ReportUser\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:reporting.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"owner_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:reporting.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    },\n    {\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.User\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:default.public.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"requested_by\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.public.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": \"Joined in Python across binds; the databases do not know about it.\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "section": "columns",
+    "limit": 1,
+    "offset": 1
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.reports",
+     "name": "reports",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 3,
+     "indexes": 0,
+     "foreign_keys": 1,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 2
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 3,
+    "items": [
+     {
+      "name": "owner_id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": 2
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.reports\",\n    \"name\": \"reports\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 3,\n    \"indexes\": 0,\n    \"foreign_keys\": 1,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 2\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 3,\n  \"items\": [\n    {\n      \"name\": \"owner_id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": 2\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "kind": "orm",
+    "limit": 100
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.ReportUser",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:reporting.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "owner_id"
+        },
+        "remote": {
+         "table": "table:reporting.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     },
+     {
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.User",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:default.public.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "requested_by"
+        },
+        "remote": {
+         "table": "table:default.public.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": "Joined in Python across binds; the databases do not know about it."
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.ReportUser\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:reporting.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"owner_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:reporting.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    },\n    {\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.User\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:default.public.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"requested_by\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.public.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": \"Joined in Python across binds; the databases do not know about it.\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:reporting.reports",
+    "kind": "foreign_key",
+    "limit": 100
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "source_table": "table:reporting.reports",
+      "id": "table:reporting.reports:fk:fk_reports_owner",
+      "name": "fk_reports_owner",
+      "columns": [
+       "owner_id"
+      ],
+      "target_table": "table:reporting.users",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "CASCADE",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"source_table\": \"table:reporting.reports\",\n      \"id\": \"table:reporting.reports:fk:fk_reports_owner\",\n      \"name\": \"fk_reports_owner\",\n      \"columns\": [\n        \"owner_id\"\n      ],\n      \"target_table\": \"table:reporting.users\",\n      \"target_columns\": [\n        \"id\"\n      ],\n      \"on_delete\": \"CASCADE\",\n      \"on_update\": null,\n      \"deferrable\": null,\n      \"initially\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.users"
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.users",
+     "name": "users",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "display_name",
+      "type": "VARCHAR(80)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.users\",\n    \"name\": \"users\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"display_name\",\n      \"type\": \"VARCHAR(80)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.users",
+    "section": "columns",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.users",
+     "name": "users",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "name": "id",
+      "type": "INTEGER",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": true,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "integer",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     },
+     {
+      "name": "display_name",
+      "type": "VARCHAR(80)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.users\",\n    \"name\": \"users\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"id\",\n      \"type\": \"INTEGER\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": true,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"integer\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    },\n    {\n      \"name\": \"display_name\",\n      \"type\": \"VARCHAR(80)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.users",
+    "section": "indexes",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.users",
+     "name": "users",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "indexes",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.users\",\n    \"name\": \"users\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"indexes\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.users",
+    "section": "foreign_keys",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.users",
+     "name": "users",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "foreign_keys",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.users\",\n    \"name\": \"users\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"foreign_keys\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.users",
+    "section": "constraints",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.users",
+     "name": "users",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "constraints",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.users\",\n    \"name\": \"users\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"constraints\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.users",
+    "section": "models",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.users",
+     "name": "users",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "models",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "id": "model:app.models.ReportUser",
+      "class_name": "app.models.reporting.ReportUser",
+      "table_ids": [
+       "table:reporting.users"
+      ],
+      "primary_key": [
+       "id"
+      ],
+      "source": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.users\",\n    \"name\": \"users\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"models\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"model:app.models.ReportUser\",\n      \"class_name\": \"app.models.reporting.ReportUser\",\n      \"table_ids\": [\n        \"table:reporting.users\"\n      ],\n      \"primary_key\": [\n        \"id\"\n      ],\n      \"source\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.users",
+    "section": "relationships",
+    "limit": 100
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.users",
+     "name": "users",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "relationships",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.ReportUser",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:reporting.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "owner_id"
+        },
+        "remote": {
+         "table": "table:reporting.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.users\",\n    \"name\": \"users\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"relationships\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.ReportUser\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:reporting.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"owner_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:reporting.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:reporting.users",
+    "section": "columns",
+    "limit": 1,
+    "offset": 1
+   },
+   "response": {
+    "table": {
+     "id": "table:reporting.users",
+     "name": "users",
+     "namespace": "reporting",
+     "schema_name": null,
+     "primary_key": [
+      "id"
+     ],
+     "provenance": [
+      "declared"
+     ],
+     "owner": {
+      "kind": "application",
+      "package": null
+     }
+    },
+    "section": "columns",
+    "counts": {
+     "columns": 2,
+     "indexes": 0,
+     "foreign_keys": 0,
+     "constraints": 0,
+     "models": 1,
+     "relationships": 1
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "name": "display_name",
+      "type": "VARCHAR(80)",
+      "timezone": null,
+      "nullable": false,
+      "primary_key": false,
+      "autoincrement": false,
+      "default": null,
+      "server_default": null,
+      "comment": null,
+      "type_name": "varchar",
+      "collation": null,
+      "enum": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"table\": {\n    \"id\": \"table:reporting.users\",\n    \"name\": \"users\",\n    \"namespace\": \"reporting\",\n    \"schema_name\": null,\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"provenance\": [\n      \"declared\"\n    ],\n    \"owner\": {\n      \"kind\": \"application\",\n      \"package\": null\n    }\n  },\n  \"section\": \"columns\",\n  \"counts\": {\n    \"columns\": 2,\n    \"indexes\": 0,\n    \"foreign_keys\": 0,\n    \"constraints\": 0,\n    \"models\": 1,\n    \"relationships\": 1\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"name\": \"display_name\",\n      \"type\": \"VARCHAR(80)\",\n      \"timezone\": null,\n      \"nullable\": false,\n      \"primary_key\": false,\n      \"autoincrement\": false,\n      \"default\": null,\n      \"server_default\": null,\n      \"comment\": null,\n      \"type_name\": \"varchar\",\n      \"collation\": null,\n      \"enum\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:reporting.users",
+    "kind": "orm",
+    "limit": 100
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.ReportUser",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:reporting.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "owner_id"
+        },
+        "remote": {
+         "table": "table:reporting.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.ReportUser\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:reporting.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"owner_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:reporting.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:reporting.users",
+    "kind": "foreign_key",
+    "limit": 100
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "source_table": "table:reporting.reports",
+      "id": "table:reporting.reports:fk:fk_reports_owner",
+      "name": "fk_reports_owner",
+      "columns": [
+       "owner_id"
+      ],
+      "target_table": "table:reporting.users",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "CASCADE",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"source_table\": \"table:reporting.reports\",\n      \"id\": \"table:reporting.reports:fk:fk_reports_owner\",\n      \"name\": \"fk_reports_owner\",\n      \"columns\": [\n        \"owner_id\"\n      ],\n      \"target_table\": \"table:reporting.users\",\n      \"target_columns\": [\n        \"id\"\n      ],\n      \"on_delete\": \"CASCADE\",\n      \"on_update\": null,\n      \"deferrable\": null,\n      \"initially\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.Report"
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.Report",
+     "class_name": "app.models.reporting.Report",
+     "table_ids": [
+      "table:reporting.reports"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.ReportUser",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:reporting.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "owner_id"
+        },
+        "remote": {
+         "table": "table:reporting.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     },
+     {
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.User",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:default.public.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "requested_by"
+        },
+        "remote": {
+         "table": "table:default.public.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": "Joined in Python across binds; the databases do not know about it."
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.Report\",\n    \"class_name\": \"app.models.reporting.Report\",\n    \"table_ids\": [\n      \"table:reporting.reports\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.ReportUser\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:reporting.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"owner_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:reporting.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    },\n    {\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.User\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:default.public.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"requested_by\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.public.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": \"Joined in Python across binds; the databases do not know about it.\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.Report",
+    "limit": 1
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.Report",
+     "class_name": "app.models.reporting.Report",
+     "table_ids": [
+      "table:reporting.reports"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.ReportUser",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:reporting.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "owner_id"
+        },
+        "remote": {
+         "table": "table:reporting.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     }
+    ],
+    "next_offset": 1
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.Report\",\n    \"class_name\": \"app.models.reporting.Report\",\n    \"table_ids\": [\n      \"table:reporting.reports\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.ReportUser\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:reporting.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"owner_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:reporting.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    }\n  ],\n  \"next_offset\": 1\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.ReportUser"
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.ReportUser",
+     "class_name": "app.models.reporting.ReportUser",
+     "table_ids": [
+      "table:reporting.users"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.ReportUser\",\n    \"class_name\": \"app.models.reporting.ReportUser\",\n    \"table_ids\": [\n      \"table:reporting.users\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.ReportUser",
+    "limit": 1
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.ReportUser",
+     "class_name": "app.models.reporting.ReportUser",
+     "table_ids": [
+      "table:reporting.users"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.ReportUser\",\n    \"class_name\": \"app.models.reporting.ReportUser\",\n    \"table_ids\": [\n      \"table:reporting.users\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.User"
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.User",
+     "class_name": "app.models.User",
+     "table_ids": [
+      "table:default.public.users"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.User\",\n    \"class_name\": \"app.models.User\",\n    \"table_ids\": [\n      \"table:default.public.users\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:app.models.User",
+    "limit": 1
+   },
+   "response": {
+    "model": {
+     "id": "model:app.models.User",
+     "class_name": "app.models.User",
+     "table_ids": [
+      "table:default.public.users"
+     ],
+     "primary_key": [
+      "id"
+     ],
+     "source": null
+    },
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 0,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"model\": {\n    \"id\": \"model:app.models.User\",\n    \"class_name\": \"app.models.User\",\n    \"table_ids\": [\n      \"table:default.public.users\"\n    ],\n    \"primary_key\": [\n      \"id\"\n    ],\n    \"source\": null\n  },\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 0,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "orm",
+    "limit": 100
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.ReportUser",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:reporting.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "owner_id"
+        },
+        "remote": {
+         "table": "table:reporting.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     },
+     {
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.User",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:default.public.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "requested_by"
+        },
+        "remote": {
+         "table": "table:default.public.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": "Joined in Python across binds; the databases do not know about it."
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.ReportUser\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:reporting.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"owner_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:reporting.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    },\n    {\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.User\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:default.public.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"requested_by\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.public.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": \"Joined in Python across binds; the databases do not know about it.\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "orm",
+    "limit": 2,
+    "offset": 1
+   },
+   "response": {
+    "kind": "orm",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.User",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:default.public.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "requested_by"
+        },
+        "remote": {
+         "table": "table:default.public.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": "Joined in Python across binds; the databases do not know about it."
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.User\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:default.public.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"requested_by\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.public.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": \"Joined in Python across binds; the databases do not know about it.\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "foreign_key",
+    "limit": 100
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [
+     {
+      "source_table": "table:reporting.reports",
+      "id": "table:reporting.reports:fk:fk_reports_owner",
+      "name": "fk_reports_owner",
+      "columns": [
+       "owner_id"
+      ],
+      "target_table": "table:reporting.users",
+      "target_columns": [
+       "id"
+      ],
+      "on_delete": "CASCADE",
+      "on_update": null,
+      "deferrable": null,
+      "initially": null,
+      "provenance": [
+       "declared"
+      ]
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [\n    {\n      \"source_table\": \"table:reporting.reports\",\n      \"id\": \"table:reporting.reports:fk:fk_reports_owner\",\n      \"name\": \"fk_reports_owner\",\n      \"columns\": [\n        \"owner_id\"\n      ],\n      \"target_table\": \"table:reporting.users\",\n      \"target_columns\": [\n        \"id\"\n      ],\n      \"on_delete\": \"CASCADE\",\n      \"on_update\": null,\n      \"deferrable\": null,\n      \"initially\": null,\n      \"provenance\": [\n        \"declared\"\n      ]\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "foreign_key",
+    "limit": 2,
+    "offset": 1
+   },
+   "response": {
+    "kind": "foreign_key",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 1,
+    "items": [],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"foreign_key\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 1,\n  \"items\": [],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {},
+   "response": {
+    "kind": "orm",
+    "revision": "8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e",
+    "total": 2,
+    "items": [
+     {
+      "id": "relationship:app.models.Report.owner",
+      "name": "owner",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.ReportUser",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:reporting.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "owner_id"
+        },
+        "remote": {
+         "table": "table:reporting.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": null
+     },
+     {
+      "id": "relationship:app.models.Report.requester",
+      "name": "requester",
+      "model": "model:app.models.Report",
+      "target_model": "model:app.models.User",
+      "source_table": "table:reporting.reports",
+      "target_table": "table:default.public.users",
+      "direction": "MANYTOONE",
+      "uselist": false,
+      "viewonly": false,
+      "back_populates": null,
+      "secondary": null,
+      "primary_join": "",
+      "secondary_join": null,
+      "join_pairs": [
+       {
+        "local": {
+         "table": "table:reporting.reports",
+         "column": "requested_by"
+        },
+        "remote": {
+         "table": "table:default.public.users",
+         "column": "id"
+        }
+       }
+      ],
+      "cardinality": "many-to-one",
+      "polymorphic": null,
+      "through": null,
+      "constraints": [],
+      "note": "Joined in Python across binds; the databases do not know about it."
+     }
+    ],
+    "next_offset": null
+   },
+   "text": "{\n  \"kind\": \"orm\",\n  \"revision\": \"8d22430fe7a61c9e0724eaee7014e38b2b305a17be1af7f1d9db952689328b3e\",\n  \"total\": 2,\n  \"items\": [\n    {\n      \"id\": \"relationship:app.models.Report.owner\",\n      \"name\": \"owner\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.ReportUser\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:reporting.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"owner_id\"\n          },\n          \"remote\": {\n            \"table\": \"table:reporting.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": null\n    },\n    {\n      \"id\": \"relationship:app.models.Report.requester\",\n      \"name\": \"requester\",\n      \"model\": \"model:app.models.Report\",\n      \"target_model\": \"model:app.models.User\",\n      \"source_table\": \"table:reporting.reports\",\n      \"target_table\": \"table:default.public.users\",\n      \"direction\": \"MANYTOONE\",\n      \"uselist\": false,\n      \"viewonly\": false,\n      \"back_populates\": null,\n      \"secondary\": null,\n      \"primary_join\": \"\",\n      \"secondary_join\": null,\n      \"join_pairs\": [\n        {\n          \"local\": {\n            \"table\": \"table:reporting.reports\",\n            \"column\": \"requested_by\"\n          },\n          \"remote\": {\n            \"table\": \"table:default.public.users\",\n            \"column\": \"id\"\n          }\n        }\n      ],\n      \"cardinality\": \"many-to-one\",\n      \"polymorphic\": null,\n      \"through\": null,\n      \"constraints\": [],\n      \"note\": \"Joined in Python across binds; the databases do not know about it.\"\n    }\n  ],\n  \"next_offset\": null\n}"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:does-not-exist"
+   },
+   "error": "Unknown table ID; use schema_overview or schema_search"
+  },
+  {
+   "tool": "schema_get_model",
+   "arguments": {
+    "model": "model:does-not-exist"
+   },
+   "error": "Unknown model ID; use schema_search"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "table": "table:does-not-exist"
+   },
+   "error": "Unknown table ID"
+  },
+  {
+   "tool": "schema_overview",
+   "arguments": {
+    "revision": "0000000000000000000000000000000000000000000000000000000000000000"
+   },
+   "error": "Snapshot revision differs; restart pagination without revision"
+  },
+  {
+   "tool": "schema_search",
+   "arguments": {
+    "query_text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+   },
+   "error": "query must contain 1 to 200 characters"
+  },
+  {
+   "tool": "schema_get_table",
+   "arguments": {
+    "table": "table:default.public.users",
+    "section": "rows"
+   },
+   "error": "Unknown table section: rows"
+  },
+  {
+   "tool": "schema_get_relationships",
+   "arguments": {
+    "kind": "both"
+   },
+   "error": "kind must be orm or foreign_key"
+  }
+ ]
+}

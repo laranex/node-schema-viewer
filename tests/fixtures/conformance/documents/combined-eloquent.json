@@ -1,0 +1,2987 @@
+{
+  "connections": [
+    {
+      "coverage": {
+        "database": {
+          "complete": false,
+          "features": {
+            "checkConstraints": "unavailable",
+            "columnTypes": "complete",
+            "columns": "complete",
+            "comments": "complete",
+            "defaults": "complete",
+            "foreignKeys": "complete",
+            "includedColumns": "not_applicable",
+            "indexExpressions": "partial",
+            "indexPredicates": "not_applicable",
+            "indexes": "complete",
+            "models": "not_applicable",
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": [
+            "blog"
+          ]
+        },
+        "declared": {
+          "complete": false,
+          "features": {
+            "models": "complete",
+            "relationships": "partial",
+            "tables": "not_applicable"
+          },
+          "schemas": null
+        }
+      },
+      "defaultSchema": "blog",
+      "driver": "mysql",
+      "id": "connection:mysql",
+      "name": "mysql",
+      "tables": [
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "parent_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "parent_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "mysql:categories",
+              "id": "mysql:categories:fk:categories_parent_id_foreign",
+              "initially": null,
+              "name": "categories_parent_id_foreign",
+              "onDelete": "SET NULL",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "mysql:categories",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:categories:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "parent_id"
+              ],
+              "expression": false,
+              "id": "mysql:categories:index:categories_parent_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "categories_parent_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "parent_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "categories",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "commentable_type",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "commentable_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "body",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "text",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "timestamp",
+              "typeName": "timestamp"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "updated_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "timestamp",
+              "typeName": "timestamp"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "mysql:users",
+              "id": "mysql:comments:fk:comments_user_id_foreign",
+              "initially": null,
+              "name": "comments_user_id_foreign",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "mysql:comments",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:comments:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "commentable_type",
+                "commentable_id"
+              ],
+              "expression": false,
+              "id": "mysql:comments:index:comments_commentable_type_commentable_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "comments_commentable_type_commentable_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "commentable_type",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "commentable_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "comments",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "code",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "char(2)",
+              "typeName": "char"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "mysql:countries",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:countries:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "code"
+              ],
+              "expression": false,
+              "id": "mysql:countries:index:countries_code_unique",
+              "included": [],
+              "method": "btree",
+              "name": "countries_code_unique",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "code",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "countries",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "queue",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "payload",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "longtext",
+              "typeName": "longtext"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "mysql:jobs",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:jobs:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "queue"
+              ],
+              "expression": false,
+              "id": "mysql:jobs:index:jobs_queue_index",
+              "included": [],
+              "method": "btree",
+              "name": "jobs_queue_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "queue",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "jobs",
+          "note": null,
+          "owner": {
+            "kind": "framework",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "mysql:oauth_clients",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:oauth_clients:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "user_id"
+              ],
+              "expression": false,
+              "id": "mysql:oauth_clients:index:oauth_clients_user_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "oauth_clients_user_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "oauth_clients",
+          "note": null,
+          "owner": {
+            "kind": "package",
+            "package": "laravel/passport"
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "editor_id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "category_id",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "title",
+              "note": "Shown in feeds; keep it short.",
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "'draft'"
+              },
+              "enum": {
+                "name": null,
+                "values": [
+                  "draft",
+                  "published"
+                ]
+              },
+              "generated": null,
+              "name": "status",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "enum('draft','published')",
+              "typeName": "enum"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "expression",
+                "value": "CURRENT_TIMESTAMP"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "published_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "timestamp",
+              "typeName": "timestamp"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "timestamp",
+              "typeName": "timestamp"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "updated_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "timestamp",
+              "typeName": "timestamp"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "mysql:users",
+              "id": "mysql:posts:fk:posts_user_id_foreign",
+              "initially": null,
+              "name": "posts_user_id_foreign",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            },
+            {
+              "columns": [
+                "category_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "mysql:categories",
+              "id": "mysql:posts:fk:posts_category_id_foreign",
+              "initially": null,
+              "name": "posts_category_id_foreign",
+              "onDelete": "SET NULL",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "mysql:posts",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:posts:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "user_id"
+              ],
+              "expression": false,
+              "id": "mysql:posts:index:posts_user_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "posts_user_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "columns": [
+                "category_id"
+              ],
+              "expression": false,
+              "id": "mysql:posts:index:posts_category_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "posts_category_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "category_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "columns": [
+                "status",
+                "published_at"
+              ],
+              "expression": false,
+              "id": "mysql:posts:index:posts_status_published_at_index",
+              "included": [],
+              "method": "btree",
+              "name": "posts_status_published_at_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "status",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "published_at",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "posts",
+          "note": "Articles, drafts included.",
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "user_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "role_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "assigned_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "timestamp",
+              "typeName": "timestamp"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "user_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "mysql:users",
+              "id": "mysql:role_user:fk:role_user_user_id_foreign",
+              "initially": null,
+              "name": "role_user_user_id_foreign",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            },
+            {
+              "columns": [
+                "role_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "mysql:roles",
+              "id": "mysql:role_user:fk:role_user_role_id_foreign",
+              "initially": null,
+              "name": "role_user_role_id_foreign",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "mysql:role_user",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "user_id",
+                "role_id"
+              ],
+              "expression": false,
+              "id": "mysql:role_user:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "user_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "role_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "role_id"
+              ],
+              "expression": false,
+              "id": "mysql:role_user:index:role_user_role_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "role_user_role_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "role_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "role_user",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "user_id",
+            "role_id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "mysql:roles",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:roles:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "roles",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "tag_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "taggable_type",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "taggable_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "tag_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "mysql:tags",
+              "id": "mysql:taggables:fk:taggables_tag_id_foreign",
+              "initially": null,
+              "name": "taggables_tag_id_foreign",
+              "onDelete": "CASCADE",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "mysql:taggables",
+          "indexes": [
+            {
+              "backs": null,
+              "columns": [
+                "tag_id"
+              ],
+              "expression": false,
+              "id": "mysql:taggables:index:taggables_tag_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "taggables_tag_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "tag_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "columns": [
+                "taggable_type",
+                "taggable_id"
+              ],
+              "expression": false,
+              "id": "mysql:taggables:index:taggables_taggable_type_taggable_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "taggables_taggable_type_taggable_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "taggable_type",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                },
+                {
+                  "collation": null,
+                  "column": "taggable_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "taggables",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "name",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [],
+          "id": "mysql:tags",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:tags:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            }
+          ],
+          "name": "tags",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        },
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "country_id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "bigint unsigned",
+              "typeName": "bigint"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "email",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(255)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "remember_token",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "varchar(100)",
+              "typeName": "varchar"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "created_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "timestamp",
+              "typeName": "timestamp"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "updated_at",
+              "note": null,
+              "nullable": true,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "timestamp",
+              "typeName": "timestamp"
+            }
+          ],
+          "comment": null,
+          "constraints": [],
+          "foreignKeys": [
+            {
+              "columns": [
+                "country_id"
+              ],
+              "deferrable": null,
+              "foreignColumns": [
+                "id"
+              ],
+              "foreignTable": "mysql:countries",
+              "id": "mysql:users:fk:users_country_id_foreign",
+              "initially": null,
+              "name": "users_country_id_foreign",
+              "onDelete": "NO ACTION",
+              "onUpdate": "NO ACTION",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "id": "mysql:users",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": null,
+                "kind": "primary_key"
+              },
+              "columns": [
+                "id"
+              ],
+              "expression": false,
+              "id": "mysql:users:index:PRIMARY",
+              "included": [],
+              "method": "btree",
+              "name": "PRIMARY",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": true,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "email"
+              ],
+              "expression": false,
+              "id": "mysql:users:index:users_email_unique",
+              "included": [],
+              "method": "btree",
+              "name": "users_email_unique",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "email",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "country_id"
+              ],
+              "expression": false,
+              "id": "mysql:users:index:users_country_id_index",
+              "included": [],
+              "method": "btree",
+              "name": "users_country_id_index",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "country_id",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "users",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        }
+      ]
+    }
+  ],
+  "derivedLinks": [
+    {
+      "from": "mysql:countries",
+      "id": "d7963f1a99ffccf1a",
+      "relationship": "App\\Models\\Country::posts",
+      "to": "mysql:posts",
+      "via": [
+        "mysql:users"
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "category": "extraction",
+      "certainty": "certain",
+      "kind": "unresolved_relationship",
+      "message": "Class \"App\\Models\\Missing\" not found.",
+      "severity": "warning",
+      "subject": {
+        "columns": null,
+        "id": "App\\Models\\Post::broken",
+        "label": "Post::broken",
+        "type": "relationship"
+      }
+    },
+    {
+      "category": "inspection",
+      "certainty": "certain",
+      "kind": "unsupported_metadata",
+      "message": "MySQL reports functional index key parts without their expressions.",
+      "severity": "info",
+      "subject": {
+        "columns": null,
+        "id": "connection:mysql",
+        "label": "mysql",
+        "type": "connection"
+      }
+    },
+    {
+      "category": "lint",
+      "certainty": "likely",
+      "kind": "missing_index",
+      "message": "posts.editor_id is joined on but no index starts with it.",
+      "severity": "info",
+      "subject": {
+        "columns": [
+          "editor_id"
+        ],
+        "id": "mysql:posts",
+        "label": "posts.editor_id",
+        "type": "column"
+      }
+    },
+    {
+      "category": "lint",
+      "certainty": "certain",
+      "extensions": {
+        "laravel": {
+          "ignore": {
+            "columns": "editor_id",
+            "connection": "mysql",
+            "kind": "relation_without_foreign_key",
+            "table": "posts"
+          }
+        }
+      },
+      "kind": "relationship_without_foreign_key",
+      "message": "Post::editor joins posts.editor_id to users.id, but no foreign key enforces it.",
+      "severity": "warning",
+      "subject": {
+        "columns": [
+          "editor_id"
+        ],
+        "id": "App\\Models\\Post::editor",
+        "label": "posts.editor_id",
+        "type": "relationship"
+      }
+    }
+  ],
+  "format": "laranex-schema",
+  "generator": {
+    "name": "laravel-schema-viewer",
+    "orm": "eloquent"
+  },
+  "links": [
+    {
+      "foreignKey": "mysql:comments:fk:comments_user_id_foreign",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "mysql:comments"
+      },
+      "id": "l16963b84b58e472b",
+      "note": "Shown as the comment's byline.",
+      "polymorphic": false,
+      "relationships": [
+        "App\\Models\\Comment::author"
+      ],
+      "state": "both",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:users"
+      }
+    },
+    {
+      "foreignKey": "mysql:role_user:fk:role_user_role_id_foreign",
+      "from": {
+        "columns": [
+          "role_id"
+        ],
+        "table": "mysql:role_user"
+      },
+      "id": "l18317131a93b5ba9",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [
+        "App\\Models\\Role::users",
+        "App\\Models\\User::roles"
+      ],
+      "state": "both",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:roles"
+      }
+    },
+    {
+      "foreignKey": "mysql:role_user:fk:role_user_user_id_foreign",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "mysql:role_user"
+      },
+      "id": "l51c51ef623e0239f",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [
+        "App\\Models\\Role::users",
+        "App\\Models\\User::roles"
+      ],
+      "state": "both",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:users"
+      }
+    },
+    {
+      "foreignKey": "mysql:categories:fk:categories_parent_id_foreign",
+      "from": {
+        "columns": [
+          "parent_id"
+        ],
+        "table": "mysql:categories"
+      },
+      "id": "l56c66365674e621b",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [
+        "App\\Models\\Category::children",
+        "App\\Models\\Category::parent"
+      ],
+      "state": "both",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:categories"
+      }
+    },
+    {
+      "foreignKey": null,
+      "from": {
+        "columns": [
+          "editor_id"
+        ],
+        "table": "mysql:posts"
+      },
+      "id": "l6a165dfaf360d993",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [
+        "App\\Models\\Post::editor"
+      ],
+      "state": "relationship",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:users"
+      }
+    },
+    {
+      "foreignKey": "mysql:posts:fk:posts_category_id_foreign",
+      "from": {
+        "columns": [
+          "category_id"
+        ],
+        "table": "mysql:posts"
+      },
+      "id": "l7655b7917b89024d",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [
+        "App\\Models\\Post::category"
+      ],
+      "state": "both",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:categories"
+      }
+    },
+    {
+      "foreignKey": "mysql:taggables:fk:taggables_tag_id_foreign",
+      "from": {
+        "columns": [
+          "tag_id"
+        ],
+        "table": "mysql:taggables"
+      },
+      "id": "l80959f0c3505a3ba",
+      "note": null,
+      "polymorphic": true,
+      "relationships": [
+        "App\\Models\\Post::tags"
+      ],
+      "state": "both",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:tags"
+      }
+    },
+    {
+      "foreignKey": "mysql:posts:fk:posts_user_id_foreign",
+      "from": {
+        "columns": [
+          "user_id"
+        ],
+        "table": "mysql:posts"
+      },
+      "id": "l81e70c92625a2563",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [
+        "App\\Models\\Post::user",
+        "App\\Models\\User::latestPost",
+        "App\\Models\\User::posts"
+      ],
+      "state": "both",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:users"
+      }
+    },
+    {
+      "foreignKey": "mysql:users:fk:users_country_id_foreign",
+      "from": {
+        "columns": [
+          "country_id"
+        ],
+        "table": "mysql:users"
+      },
+      "id": "l8d384b656ddd2bc0",
+      "note": null,
+      "polymorphic": false,
+      "relationships": [],
+      "state": "foreign_key",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:countries"
+      }
+    },
+    {
+      "foreignKey": null,
+      "from": {
+        "columns": [
+          "commentable_id"
+        ],
+        "table": "mysql:comments"
+      },
+      "id": "ld3681545682dbbd8",
+      "note": null,
+      "polymorphic": true,
+      "relationships": [
+        "App\\Models\\Post::comments"
+      ],
+      "state": "relationship",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:posts"
+      }
+    },
+    {
+      "foreignKey": null,
+      "from": {
+        "columns": [
+          "taggable_id"
+        ],
+        "table": "mysql:taggables"
+      },
+      "id": "leb383a19ba178d1c",
+      "note": null,
+      "polymorphic": true,
+      "relationships": [
+        "App\\Models\\Post::tags"
+      ],
+      "state": "relationship",
+      "to": {
+        "columns": [
+          "id"
+        ],
+        "table": "mysql:posts"
+      }
+    }
+  ],
+  "models": [
+    {
+      "className": "App\\Models\\Category",
+      "extensions": {
+        "eloquent": {
+          "incrementing": true,
+          "keyType": "int",
+          "timestamps": true
+        }
+      },
+      "id": "App\\Models\\Category",
+      "primaryKey": [
+        "id"
+      ],
+      "source": {
+        "file": "app/Models/Category.php",
+        "line": 9
+      },
+      "tables": [
+        "mysql:categories"
+      ]
+    },
+    {
+      "className": "App\\Models\\Comment",
+      "extensions": {
+        "eloquent": {
+          "incrementing": true,
+          "keyType": "int",
+          "timestamps": true
+        }
+      },
+      "id": "App\\Models\\Comment",
+      "primaryKey": [
+        "id"
+      ],
+      "source": {
+        "file": "app/Models/Comment.php",
+        "line": 9
+      },
+      "tables": [
+        "mysql:comments"
+      ]
+    },
+    {
+      "className": "App\\Models\\Country",
+      "extensions": {
+        "eloquent": {
+          "incrementing": true,
+          "keyType": "int",
+          "timestamps": true
+        }
+      },
+      "id": "App\\Models\\Country",
+      "primaryKey": [
+        "id"
+      ],
+      "source": {
+        "file": "app/Models/Country.php",
+        "line": 9
+      },
+      "tables": [
+        "mysql:countries"
+      ]
+    },
+    {
+      "className": "App\\Models\\Post",
+      "extensions": {
+        "eloquent": {
+          "incrementing": true,
+          "keyType": "int",
+          "timestamps": true
+        }
+      },
+      "id": "App\\Models\\Post",
+      "primaryKey": [
+        "id"
+      ],
+      "source": {
+        "file": "app/Models/Post.php",
+        "line": 9
+      },
+      "tables": [
+        "mysql:posts"
+      ]
+    },
+    {
+      "className": "App\\Models\\Role",
+      "extensions": {
+        "eloquent": {
+          "incrementing": true,
+          "keyType": "int",
+          "timestamps": true
+        }
+      },
+      "id": "App\\Models\\Role",
+      "primaryKey": [
+        "id"
+      ],
+      "source": {
+        "file": "app/Models/Role.php",
+        "line": 9
+      },
+      "tables": [
+        "mysql:roles"
+      ]
+    },
+    {
+      "className": "App\\Models\\Tag",
+      "extensions": {
+        "eloquent": {
+          "incrementing": true,
+          "keyType": "int",
+          "timestamps": false
+        }
+      },
+      "id": "App\\Models\\Tag",
+      "primaryKey": [
+        "id"
+      ],
+      "source": {
+        "file": "app/Models/Tag.php",
+        "line": 9
+      },
+      "tables": [
+        "mysql:tags"
+      ]
+    },
+    {
+      "className": "App\\Models\\User",
+      "extensions": {
+        "eloquent": {
+          "casts": {
+            "email_verified_at": "datetime"
+          },
+          "hidden": [
+            "remember_token"
+          ],
+          "incrementing": true,
+          "keyType": "int",
+          "timestamps": true
+        }
+      },
+      "id": "App\\Models\\User",
+      "primaryKey": [
+        "id"
+      ],
+      "source": {
+        "file": "app/Models/User.php",
+        "line": 9
+      },
+      "tables": [
+        "mysql:users"
+      ]
+    }
+  ],
+  "note": "Synthetic blog used by the contract fixtures.",
+  "relationships": [
+    {
+      "cardinality": "one-to-many",
+      "collection": true,
+      "constraints": [],
+      "id": "App\\Models\\Category::children",
+      "inverse": "App\\Models\\Category::parent",
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "parent_id"
+          ],
+          "table": "mysql:categories"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:categories"
+        }
+      },
+      "model": "App\\Models\\Category",
+      "name": "children",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Category",
+      "relatedTable": "mysql:categories",
+      "source": {
+        "file": "app/Models/Category.php",
+        "line": 20
+      },
+      "table": "mysql:categories",
+      "through": null,
+      "type": "HasMany"
+    },
+    {
+      "cardinality": "many-to-one",
+      "collection": false,
+      "constraints": [],
+      "id": "App\\Models\\Category::parent",
+      "inverse": "App\\Models\\Category::children",
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "parent_id"
+          ],
+          "table": "mysql:categories"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:categories"
+        }
+      },
+      "model": "App\\Models\\Category",
+      "name": "parent",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Category",
+      "relatedTable": "mysql:categories",
+      "source": {
+        "file": "app/Models/Category.php",
+        "line": 20
+      },
+      "table": "mysql:categories",
+      "through": null,
+      "type": "BelongsTo"
+    },
+    {
+      "cardinality": "many-to-one",
+      "collection": false,
+      "constraints": [],
+      "id": "App\\Models\\Comment::author",
+      "inverse": null,
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "user_id"
+          ],
+          "table": "mysql:comments"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:users"
+        }
+      },
+      "model": "App\\Models\\Comment",
+      "name": "author",
+      "note": "Shown as the comment's byline.",
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\User",
+      "relatedTable": "mysql:users",
+      "source": {
+        "file": "app/Models/Comment.php",
+        "line": 20
+      },
+      "table": "mysql:comments",
+      "through": null,
+      "type": "BelongsTo"
+    },
+    {
+      "cardinality": "many-to-one",
+      "collection": false,
+      "constraints": [],
+      "id": "App\\Models\\Comment::commentable",
+      "inverse": "App\\Models\\Post::comments",
+      "join": null,
+      "keys": null,
+      "model": "App\\Models\\Comment",
+      "name": "commentable",
+      "note": null,
+      "pivot": null,
+      "polymorphic": {
+        "idColumn": "commentable_id",
+        "typeColumn": "commentable_type",
+        "typeValue": null
+      },
+      "readOnly": false,
+      "relatedModel": null,
+      "relatedTable": null,
+      "source": {
+        "file": "app/Models/Comment.php",
+        "line": 20
+      },
+      "table": "mysql:comments",
+      "through": null,
+      "type": "MorphTo"
+    },
+    {
+      "cardinality": "one-to-many",
+      "collection": true,
+      "constraints": [],
+      "id": "App\\Models\\Country::posts",
+      "inverse": null,
+      "join": null,
+      "keys": null,
+      "model": "App\\Models\\Country",
+      "name": "posts",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Post",
+      "relatedTable": "mysql:posts",
+      "source": {
+        "file": "app/Models/Country.php",
+        "line": 20
+      },
+      "table": "mysql:countries",
+      "through": [
+        "mysql:users"
+      ],
+      "type": "HasManyThrough"
+    },
+    {
+      "cardinality": "many-to-one",
+      "collection": false,
+      "constraints": [],
+      "id": "App\\Models\\Post::category",
+      "inverse": null,
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "category_id"
+          ],
+          "table": "mysql:posts"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:categories"
+        }
+      },
+      "model": "App\\Models\\Post",
+      "name": "category",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Category",
+      "relatedTable": "mysql:categories",
+      "source": {
+        "file": "app/Models/Post.php",
+        "line": 20
+      },
+      "table": "mysql:posts",
+      "through": null,
+      "type": "BelongsTo"
+    },
+    {
+      "cardinality": "one-to-many",
+      "collection": true,
+      "constraints": [],
+      "id": "App\\Models\\Post::comments",
+      "inverse": "App\\Models\\Comment::commentable",
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "commentable_id"
+          ],
+          "table": "mysql:comments"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:posts"
+        }
+      },
+      "model": "App\\Models\\Post",
+      "name": "comments",
+      "note": null,
+      "pivot": null,
+      "polymorphic": {
+        "idColumn": "commentable_id",
+        "typeColumn": "commentable_type",
+        "typeValue": "App\\Models\\Post"
+      },
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Comment",
+      "relatedTable": "mysql:comments",
+      "source": {
+        "file": "app/Models/Post.php",
+        "line": 20
+      },
+      "table": "mysql:posts",
+      "through": null,
+      "type": "MorphMany"
+    },
+    {
+      "cardinality": "many-to-one",
+      "collection": false,
+      "constraints": [],
+      "id": "App\\Models\\Post::editor",
+      "inverse": null,
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "editor_id"
+          ],
+          "table": "mysql:posts"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:users"
+        }
+      },
+      "model": "App\\Models\\Post",
+      "name": "editor",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\User",
+      "relatedTable": "mysql:users",
+      "source": {
+        "file": "app/Models/Post.php",
+        "line": 20
+      },
+      "table": "mysql:posts",
+      "through": null,
+      "type": "BelongsTo"
+    },
+    {
+      "cardinality": "many-to-many",
+      "collection": true,
+      "constraints": [],
+      "id": "App\\Models\\Post::tags",
+      "inverse": null,
+      "join": null,
+      "keys": null,
+      "model": "App\\Models\\Post",
+      "name": "tags",
+      "note": null,
+      "pivot": {
+        "columns": [],
+        "parentColumns": [
+          "id"
+        ],
+        "parentPivotColumns": [
+          "taggable_id"
+        ],
+        "relatedColumns": [
+          "id"
+        ],
+        "relatedPivotColumns": [
+          "tag_id"
+        ],
+        "table": "mysql:taggables"
+      },
+      "polymorphic": {
+        "idColumn": "taggable_id",
+        "typeColumn": "taggable_type",
+        "typeValue": "App\\Models\\Post"
+      },
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Tag",
+      "relatedTable": "mysql:tags",
+      "source": {
+        "file": "app/Models/Post.php",
+        "line": 20
+      },
+      "table": "mysql:posts",
+      "through": null,
+      "type": "MorphToMany"
+    },
+    {
+      "cardinality": "many-to-one",
+      "collection": false,
+      "constraints": [],
+      "id": "App\\Models\\Post::user",
+      "inverse": "App\\Models\\User::posts",
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "user_id"
+          ],
+          "table": "mysql:posts"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:users"
+        }
+      },
+      "model": "App\\Models\\Post",
+      "name": "user",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\User",
+      "relatedTable": "mysql:users",
+      "source": {
+        "file": "app/Models/Post.php",
+        "line": 20
+      },
+      "table": "mysql:posts",
+      "through": null,
+      "type": "BelongsTo"
+    },
+    {
+      "cardinality": "many-to-many",
+      "collection": true,
+      "constraints": [],
+      "id": "App\\Models\\Role::users",
+      "inverse": "App\\Models\\User::roles",
+      "join": null,
+      "keys": null,
+      "model": "App\\Models\\Role",
+      "name": "users",
+      "note": null,
+      "pivot": {
+        "columns": [
+          "assigned_at"
+        ],
+        "parentColumns": [
+          "id"
+        ],
+        "parentPivotColumns": [
+          "role_id"
+        ],
+        "relatedColumns": [
+          "id"
+        ],
+        "relatedPivotColumns": [
+          "user_id"
+        ],
+        "table": "mysql:role_user"
+      },
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\User",
+      "relatedTable": "mysql:users",
+      "source": {
+        "file": "app/Models/Role.php",
+        "line": 20
+      },
+      "table": "mysql:roles",
+      "through": null,
+      "type": "BelongsToMany"
+    },
+    {
+      "cardinality": "one-to-one",
+      "collection": false,
+      "constraints": [
+        "latestOfMany()"
+      ],
+      "id": "App\\Models\\User::latestPost",
+      "inverse": null,
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "user_id"
+          ],
+          "table": "mysql:posts"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:users"
+        }
+      },
+      "model": "App\\Models\\User",
+      "name": "latestPost",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Post",
+      "relatedTable": "mysql:posts",
+      "source": {
+        "file": "app/Models/User.php",
+        "line": 20
+      },
+      "table": "mysql:users",
+      "through": null,
+      "type": "HasOne"
+    },
+    {
+      "cardinality": "one-to-many",
+      "collection": true,
+      "constraints": [],
+      "id": "App\\Models\\User::posts",
+      "inverse": "App\\Models\\Post::user",
+      "join": null,
+      "keys": {
+        "from": {
+          "columns": [
+            "user_id"
+          ],
+          "table": "mysql:posts"
+        },
+        "to": {
+          "columns": [
+            "id"
+          ],
+          "table": "mysql:users"
+        }
+      },
+      "model": "App\\Models\\User",
+      "name": "posts",
+      "note": null,
+      "pivot": null,
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Post",
+      "relatedTable": "mysql:posts",
+      "source": {
+        "file": "app/Models/User.php",
+        "line": 20
+      },
+      "table": "mysql:users",
+      "through": null,
+      "type": "HasMany"
+    },
+    {
+      "cardinality": "many-to-many",
+      "collection": true,
+      "constraints": [],
+      "extensions": {
+        "eloquent": {
+          "accessor": "assignment",
+          "using": "App\\Models\\RoleUser"
+        }
+      },
+      "id": "App\\Models\\User::roles",
+      "inverse": "App\\Models\\Role::users",
+      "join": null,
+      "keys": null,
+      "model": "App\\Models\\User",
+      "name": "roles",
+      "note": null,
+      "pivot": {
+        "columns": [
+          "assigned_at"
+        ],
+        "parentColumns": [
+          "id"
+        ],
+        "parentPivotColumns": [
+          "user_id"
+        ],
+        "relatedColumns": [
+          "id"
+        ],
+        "relatedPivotColumns": [
+          "role_id"
+        ],
+        "table": "mysql:role_user"
+      },
+      "polymorphic": null,
+      "readOnly": false,
+      "relatedModel": "App\\Models\\Role",
+      "relatedTable": "mysql:roles",
+      "source": {
+        "file": "app/Models/User.php",
+        "line": 20
+      },
+      "table": "mysql:users",
+      "through": null,
+      "type": "BelongsToMany"
+    }
+  ],
+  "source": "combined",
+  "version": "1.0"
+}

@@ -1,0 +1,304 @@
+{
+  "connections": [
+    {
+      "coverage": {
+        "database": {
+          "complete": false,
+          "features": {
+            "checkConstraints": "partial",
+            "columnTypes": "complete",
+            "columns": "complete",
+            "comments": "not_applicable",
+            "defaults": "complete",
+            "foreignKeys": "complete",
+            "includedColumns": "not_applicable",
+            "indexExpressions": "complete",
+            "indexPredicates": "complete",
+            "indexes": "complete",
+            "models": "not_applicable",
+            "primaryKeys": "complete",
+            "referentialActions": "complete",
+            "relationships": "not_applicable",
+            "tables": "complete",
+            "uniqueConstraints": "complete"
+          },
+          "schemas": null
+        },
+        "declared": null
+      },
+      "defaultSchema": null,
+      "driver": "sqlite",
+      "id": "connection:main",
+      "name": "main",
+      "tables": [
+        {
+          "columns": [
+            {
+              "autoIncrement": true,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "id",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            },
+            {
+              "autoIncrement": false,
+              "collation": "NOCASE",
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "title",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "TEXT",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": null,
+              "enum": null,
+              "generated": null,
+              "name": "slug",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "TEXT",
+              "typeName": "text"
+            },
+            {
+              "autoIncrement": false,
+              "collation": null,
+              "comment": null,
+              "default": {
+                "kind": "literal",
+                "value": "0"
+              },
+              "enum": null,
+              "generated": null,
+              "name": "archived",
+              "note": null,
+              "nullable": false,
+              "ormDefault": null,
+              "provenance": [
+                "database"
+              ],
+              "timezone": null,
+              "type": "INTEGER",
+              "typeName": "integer"
+            }
+          ],
+          "comment": null,
+          "constraints": [
+            {
+              "columns": [
+                "slug"
+              ],
+              "expression": null,
+              "id": "sqlite:main.notes:constraint:notes_slug",
+              "kind": "unique",
+              "name": "notes_slug",
+              "provenance": [
+                "database"
+              ]
+            },
+            {
+              "columns": [
+                "archived"
+              ],
+              "expression": "archived IN (0, 1)",
+              "id": "sqlite:main.notes:constraint:notes_archived_flag",
+              "kind": "check",
+              "name": "notes_archived_flag",
+              "provenance": [
+                "database"
+              ]
+            }
+          ],
+          "foreignKeys": [],
+          "id": "sqlite:main.notes",
+          "indexes": [
+            {
+              "backs": {
+                "constraint": "sqlite:main.notes:constraint:notes_slug",
+                "kind": "unique_constraint"
+              },
+              "columns": [
+                "slug"
+              ],
+              "expression": false,
+              "id": "sqlite:main.notes:index:sqlite_autoindex_notes_1",
+              "included": [],
+              "method": null,
+              "name": "sqlite_autoindex_notes_1",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "slug",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": true
+            },
+            {
+              "backs": null,
+              "columns": [
+                "title"
+              ],
+              "expression": false,
+              "id": "sqlite:main.notes:index:notes_active_title",
+              "included": [],
+              "method": null,
+              "name": "notes_active_title",
+              "partial": true,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": "title",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": "archived = 0",
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "columns": [],
+              "expression": true,
+              "id": "sqlite:main.notes:index:notes_lower_title",
+              "included": [],
+              "method": null,
+              "name": "notes_lower_title",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": null,
+                  "column": null,
+                  "expression": "lower(title)",
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": null
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            },
+            {
+              "backs": null,
+              "columns": [
+                "title"
+              ],
+              "expression": false,
+              "id": "sqlite:main.notes:index:notes_title_nocase",
+              "included": [],
+              "method": null,
+              "name": "notes_title_nocase",
+              "partial": false,
+              "parts": [
+                {
+                  "collation": "NOCASE",
+                  "column": "title",
+                  "expression": null,
+                  "length": null,
+                  "nulls": null,
+                  "opclass": null,
+                  "order": "desc"
+                }
+              ],
+              "predicate": null,
+              "primary": false,
+              "provenance": [
+                "database"
+              ],
+              "unique": false
+            }
+          ],
+          "name": "notes",
+          "note": null,
+          "owner": {
+            "kind": "application",
+            "package": null
+          },
+          "primaryKey": [
+            "id"
+          ],
+          "provenance": [
+            "database"
+          ],
+          "schema": null
+        }
+      ]
+    }
+  ],
+  "derivedLinks": [],
+  "diagnostics": [
+    {
+      "category": "inspection",
+      "certainty": "certain",
+      "kind": "unsupported_metadata",
+      "message": "Check constraints were read from the table SQL; unnamed checks get generated names.",
+      "severity": "info",
+      "subject": {
+        "columns": null,
+        "id": "connection:main",
+        "label": "main",
+        "type": "connection"
+      }
+    }
+  ],
+  "format": "laranex-schema",
+  "generator": {
+    "name": "contract-fixtures",
+    "orm": null
+  },
+  "links": [],
+  "models": [],
+  "note": null,
+  "relationships": [],
+  "source": "database",
+  "version": "1.0"
+}
