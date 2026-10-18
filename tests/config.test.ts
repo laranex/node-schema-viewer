@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
-import { addConfig, comparisonOption, ConfigError, loadConfig, resolveSnapshot } from '../src/config.js';
+import { addConfig, comparisonOption, ConfigError, EMPTY_BUILD, loadConfig, resolveSnapshot } from '../src/config.js';
 import { tempDir } from './helpers.js';
 
 function project(dir: string, data: unknown, text?: string): string {
@@ -11,7 +11,7 @@ function project(dir: string, data: unknown, text?: string): string {
     return path;
 }
 
-const NONE = { comparisons: [], check: { severity: null, certainty: null } };
+const NONE = { comparisons: [], check: { severity: null, certainty: null }, build: EMPTY_BUILD };
 
 describe('config', () => {
     test('no package.json or no key means no configured output', (t) => {
@@ -33,7 +33,7 @@ describe('config', () => {
     test('rejects unknown keys, wrong types and non-objects', (t) => {
         const dir = tempDir(t);
         for (const [section, message] of [
-            [{ output: 'a.json', modules: [] }, /Unknown .* keys: modules/],
+            [{ output: 'a.json', recursive: true }, /Unknown .* keys: recursive/],
             [{ output: 3 }, /output must be a non-empty string path/],
             [{ output: '' }, /output must be a non-empty string path/],
             ['schema.json', /must be an object/],
@@ -130,6 +130,7 @@ describe('config', () => {
                 { baseline: { connection: 'primary', schema: null }, target: { connection: 'replica', schema: null }, limit: 500, overrides: [] },
             ],
             check: { severity: 'error', certainty: 'likely' },
+            build: EMPTY_BUILD,
         });
     });
 

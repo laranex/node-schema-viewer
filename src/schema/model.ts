@@ -1,4 +1,4 @@
-// The normalized internal schema model: what extraction (database catalog readers now, ORM adapters later) found,
+// The normalized internal schema model: what extraction (database catalog readers and ORM adapters) found,
 // independent of the laranex-schema document's field names. Extractors fill it; only serialize.ts knows the document.
 //
 // Entities carry opaque ids (ids.ts): they are identities other entities refer to, not serialization details.
@@ -12,6 +12,10 @@ export type SourceKind = 'database' | 'declared';
 export type { Feature, FeatureLevel };
 
 export type JsonScalar = string | number | boolean | null;
+export type JsonValue = JsonScalar | JsonValue[] | { [key: string]: JsonValue };
+
+// What only one ORM or framework means, keyed by a lower-case namespace (the ORM's name).
+export type OrmExtensions = Record<string, Record<string, JsonValue>>;
 
 export interface SchemaModel {
     source: SourceKind;
@@ -19,6 +23,9 @@ export interface SchemaModel {
     // The ORM the metadata came from; null for database introspection.
     orm: string | null;
     connections: ConnectionModel[];
+    // ORM models and the relationships they declare; empty for database introspection.
+    entities: EntityModel[];
+    associations: AssociationModel[];
     diagnostics: DiagnosticModel[];
 }
 
@@ -43,6 +50,7 @@ export interface TableModel {
     indexes: IndexModel[];
     foreignKeys: ForeignKeyModel[];
     constraints: ConstraintModel[];
+    extensions?: OrmExtensions;
 }
 
 export interface ColumnModel {
@@ -57,6 +65,9 @@ export interface ColumnModel {
     serverDefault: { kind: 'literal' | 'expression' | 'sequence' | 'identity' | 'raw'; sql: string } | null;
     generated: { storage: 'stored' | 'virtual' | null; expression: string } | null;
     comment: string | null;
+    // A default the ORM applies in application code (a callable is named, never called).
+    applicationDefault?: { kind: 'scalar' | 'callable' | 'sequence' | 'expression'; value: string } | null;
+    extensions?: OrmExtensions;
 }
 
 // A key part is a column or an expression, never both.
@@ -83,7 +94,8 @@ export interface IndexModel {
     includedColumns: string[];
     // Options only one dialect family states, such as { postgresql: { nullsNotDistinct: true } } or
     // { mysql: { visible: false } } (MySQL and MariaDB share the mysql family).
-    dialectOptions: Record<string, Record<string, JsonScalar>>;
+    dialectOptions: Record<string, Record<string, JsonValue>>;
+    extensions?: OrmExtensions;
 }
 
 export type ReferentialAction = 'CASCADE' | 'SET NULL' | 'SET DEFAULT' | 'RESTRICT' | 'NO ACTION';
@@ -99,17 +111,67 @@ export interface ForeignKeyModel {
     onDelete: ReferentialAction | null;
     deferrable: boolean | null;
     initially: 'DEFERRED' | 'IMMEDIATE' | null;
+    extensions?: OrmExtensions;
 }
 
 export type ConstraintModel =
-    | { kind: 'unique'; id: string; name: string | null; columns: string[] }
-    | { kind: 'check'; id: string; name: string | null; expression: string; columns: string[] };
+    | { kind: 'unique'; id: string; name: string | null; columns: string[]; extensions?: OrmExtensions }
+    | { kind: 'check'; id: string; name: string | null; expression: string; columns: string[]; extensions?: OrmExtensions };
+
+// Where an ORM declaration is, relative to the project root.
+export interface SourceLocation {
+    file: string;
+    line: number | null;
+}
+
+// An ORM model: what application code queries, mapped to zero, one or several tables (by id, in any connection).
+export interface EntityModel {
+    id: string;
+    // The class, or the name the ORM knows the model by.
+    name: string;
+    tables: string[];
+    primaryKey: string[];
+    location: SourceLocation | null;
+    extensions?: OrmExtensions;
+}
+
+export interface ColumnSetModel {
+    table: string;
+    columns: string[];
+}
+
+// A relationship an ORM model declares. Never a foreign key: physical constraints are ForeignKeyModel.
+export interface AssociationModel {
+    id: string;
+    name: string;
+    // The declaring model and its table, and the model and table it leads to (null when unresolved).
+    model: string;
+    table: string;
+    target: { model: string | null; table: string | null };
+    // The ORM's own word for it, such as "one" or "many".
+    kind: string;
+    cardinality: 'one-to-one' | 'one-to-many' | 'many-to-one' | 'many-to-many';
+    many: boolean;
+    // Whether the ORM writes through it.
+    writable: boolean;
+    // Oriented like a foreign key, whichever side declares it.
+    key: { referencing: ColumnSetModel; referenced: ColumnSetModel } | null;
+    // The id of the relationship on the target model that mirrors this one.
+    inverse: string | null;
+    location: SourceLocation | null;
+    extensions?: OrmExtensions;
+}
 
 export interface DiagnosticModel {
     kind: string;
     category: 'extraction' | 'inspection' | 'reconciliation' | 'drift' | 'lint';
     severity: 'error' | 'warning' | 'info';
     certainty: 'certain' | 'likely';
-    subject: { type: 'document' | 'connection' | 'table' | 'column' | 'index' | 'foreignKey' | 'constraint'; id: string | null; columns: string[] | null; label: string | null };
+    subject: {
+        type: 'document' | 'connection' | 'table' | 'column' | 'index' | 'foreignKey' | 'constraint' | 'model' | 'relationship';
+        id: string | null;
+        columns: string[] | null;
+        label: string | null;
+    };
     message: string;
 }

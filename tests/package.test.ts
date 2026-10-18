@@ -56,7 +56,7 @@ describe('package', { timeout: 300_000 }, () => {
         for (const required of ['LICENSE', 'NOTICE', 'README.md', 'package.json', 'dist/cli.js', 'dist/index.js', 'dist/index.d.ts', 'dist/mcp.js', 'dist/server.js', 'dist/compare.js', 'dist/check.js', 'dist/isolation/worker.js', 'dist/introspection/worker.js', 'dist/schema/serialize.js']) {
             assert.ok(files.includes(required), required);
         }
-        assert.deepEqual(files.filter((f) => !/^(dist\/(isolation\/|introspection\/|schema\/)?[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
+        assert.deepEqual(files.filter((f) => !/^(dist\/(isolation\/(extractors\/)?|introspection\/|schema\/)?[\w-]+\.(js|d\.ts)|LICENSE|NOTICE|README\.md|CHANGELOG\.md|package\.json)$/.test(f)), []);
 
         const project = join(dir, 'project');
         mkdirSync(project);

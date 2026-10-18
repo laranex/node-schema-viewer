@@ -16,8 +16,7 @@ export interface Extractor {
     extract(context: ExtractContext): unknown;
 }
 
-// Registered adapters: name -> module next to the worker. Adapters are added by later milestones (drizzle, typeorm,
-// mikro-orm, prisma, sequelize).
-export const EXTRACTORS: Readonly<Record<string, string>> = {};
+// Registered adapters: name -> module next to the worker. typeorm, mikro-orm and sequelize follow in later milestones.
+export const EXTRACTORS: Readonly<Record<string, string>> = { drizzle: './extractors/drizzle.js' };
 
 export const EXTRACTOR_NAME = /^[a-z][a-z0-9-]*$/;
