@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { connect } from 'node:net';
+import { networkInterfaces } from 'node:os';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { CLI, COMBINED, DECLARED, ROOT, runCli, tempDir } from './helpers.js';
@@ -36,6 +38,25 @@ async function startServe(args: string[], cwd: string): Promise<{ url: string; s
     };
 }
 
+// An address of this machine that is not loopback, to show what serve does and does not listen on.
+function externalAddress(): string | undefined {
+    return Object.values(networkInterfaces())
+        .flat()
+        .find((address) => address !== undefined && !address.internal && address.family === 'IPv4')?.address;
+}
+
+function connects(host: string, port: number): Promise<boolean> {
+    return new Promise((resolve) => {
+        const socket = connect(port, host, () => {
+            socket.destroy();
+            resolve(true);
+        });
+        socket.on('error', () => {
+            resolve(false);
+        });
+    });
+}
+
 describe('cli', () => {
     test('--version and --help', async () => {
         for (const flag of ['--version', '-v']) {
@@ -46,6 +67,7 @@ describe('cli', () => {
         const help = await runCli(['--help']);
         assert.equal(help.code, 0);
         assert.match(help.stdout, /Usage: node-schema-viewer <command>/);
+        assert.match(help.stdout, /serve \[--snapshot PATH\] \[--host HOST\] \[--port PORT\] \[--unsafe-allow-remote\]/);
         for (const command of ['init', 'serve', 'mcp', 'compare', 'check', 'build']) {
             assert.match(help.stdout, new RegExp(`\\n  ${command}`));
         }
@@ -122,5 +144,69 @@ describe('cli', () => {
         const config = await runCli(['serve', '--port', '0'], { cwd: dir });
         assert.equal(config.code, 1);
         assert.match(config.stderr, /must not contain a database URL/);
+    });
+
+    test('serve listens on loopback only by default', async (t) => {
+        const server = await startServe(['--snapshot', COMBINED, '--port', '0'], tempDir(t));
+        try {
+            const port = Number(new URL(server.url).port);
+            assert.match(server.url, /^http:\/\/127\.0\.0\.1:\d+$/);
+            assert.equal(await connects('127.0.0.1', port), true);
+            const external = externalAddress();
+            if (external === undefined) {
+                t.diagnostic('no non-loopback IPv4 address on this machine; only the loopback side was checked');
+            } else {
+                assert.equal(await connects(external, port), false, `${external}:${String(port)} must not accept connections`);
+            }
+            assert.doesNotMatch(server.stderr(), /Warning/);
+        } finally {
+            assert.equal(await server.stop(), 0);
+        }
+    });
+
+    test('serve refuses a host that is not loopback without --unsafe-allow-remote', async (t) => {
+        const dir = tempDir(t);
+        for (const host of ['0.0.0.0', '::', '10.0.0.1', '128.0.0.1', '::2', '::ffff:10.0.0.1', 'example.com', 'localhost.example', '']) {
+            const run = await runCli(['serve', '--snapshot', COMBINED, '--port', '0', '--host', host], { cwd: dir });
+            assert.equal(run.code, 2, host);
+            assert.equal(run.stdout, '', host);
+            assert.match(run.stderr, /^Error: --host .* is not a loopback address \(127\.0\.0\.0\/8, ::1, localhost\)\. The viewer has no authentication and no TLS/, host);
+            assert.match(run.stderr, /--unsafe-allow-remote/, host);
+            assert.match(run.stderr, /Usage:/, host);
+        }
+        for (const host of ['localhost', '127.0.0.1']) {
+            const server = await startServe(['--snapshot', COMBINED, '--port', '0', '--host', host], dir);
+            try {
+                assert.equal((await fetch(`${server.url}/`)).status, 200, host);
+                assert.doesNotMatch(server.stderr(), /Warning/, host);
+            } finally {
+                assert.equal(await server.stop(), 0, host);
+            }
+        }
+    });
+
+    test('serve --unsafe-allow-remote binds another address and warns on every start', async (t) => {
+        const external = externalAddress();
+        if (external === undefined) {
+            t.skip('no non-loopback IPv4 address on this machine');
+            return;
+        }
+        for (let start = 0; start < 2; start++) {
+            const server = await startServe(['--snapshot', COMBINED, '--port', '0', '--host', external, '--unsafe-allow-remote'], tempDir(t));
+            try {
+                assert.equal(server.url, `http://${external}:${new URL(server.url).port}`);
+                const response = await fetch(`${server.url}/snapshot.json`);
+                assert.equal(response.status, 200);
+                assert.equal(response.headers.get('cache-control'), 'no-store');
+                assert.equal(
+                    server.stderr(),
+                    `Warning: --unsafe-allow-remote: serving on ${external}, which is not loopback, with no authentication and no TLS. ` +
+                        'Anyone who can reach this address can read the schema; Host checking is not access control. ' +
+                        'Use an authenticated HTTPS reverse proxy with the server on loopback instead.\n',
+                );
+            } finally {
+                assert.equal(await server.stop(), 0);
+            }
+        }
     });
 });

@@ -17,8 +17,9 @@ Commands:
                      Save the schema as a laranex-schema 2.0 document: declared (ORM schema modules, imported
                      only in the isolated extraction worker) or database (live catalogs, read-only); database
                      URLs are read from the named environment variables only
-  serve [--snapshot PATH] [--host HOST] [--port PORT]
-                     Serve the viewer from a saved laranex-schema document (default 127.0.0.1:8765)
+  serve [--snapshot PATH] [--host HOST] [--port PORT] [--unsafe-allow-remote]
+                     Serve the viewer from a saved laranex-schema document (default 127.0.0.1:8765). Only
+                     loopback hosts unless --unsafe-allow-remote: no authentication, no TLS
   mcp [--snapshot PATH]
                      Run read-only MCP tools over stdio for a saved laranex-schema document
   compare [BASELINE=TARGET...] [--snapshot PATH] [--limit N] [--json] [--write]
@@ -88,16 +89,35 @@ function port(value: string | undefined): number {
 }
 
 async function serve(args: string[]): Promise<void> {
-    const values = parse(args, { snapshot: { type: 'string' }, host: { type: 'string' }, port: { type: 'string' } });
+    const values = parse(args, {
+        snapshot: { type: 'string' },
+        host: { type: 'string' },
+        port: { type: 'string' },
+        'unsafe-allow-remote': { type: 'boolean' },
+    });
     if (values.help) {
         process.stdout.write(USAGE);
         return;
     }
     const { resolveSnapshot } = await import('./config.js');
-    const { createViewerServer, displayUrl } = await import('./server.js');
+    const { createViewerServer, displayUrl, isLoopbackHost } = await import('./server.js');
     const host = (values.host as string | undefined) ?? '127.0.0.1';
     const listenPort = port(values.port as string | undefined);
+    const remote = !isLoopbackHost(host);
+    if (remote && !values['unsafe-allow-remote']) {
+        throw new UsageError(
+            `--host ${host} is not a loopback address (127.0.0.0/8, ::1, localhost). The viewer has no authentication and no TLS: ` +
+                'keep it on loopback behind an authenticated HTTPS reverse proxy or tunnel, or pass --unsafe-allow-remote to bind it anyway',
+        );
+    }
     const server = createViewerServer({ snapshot: resolveSnapshot(values.snapshot as string | undefined, process.cwd()), host });
+    if (remote) {
+        process.stderr.write(
+            `Warning: --unsafe-allow-remote: serving on ${host}, which is not loopback, with no authentication and no TLS. ` +
+                'Anyone who can reach this address can read the schema; Host checking is not access control. ' +
+                'Use an authenticated HTTPS reverse proxy with the server on loopback instead.\n',
+        );
+    }
     await new Promise<void>((resolve, reject) => {
         server.once('error', reject);
         server.listen(listenPort, host, () => {

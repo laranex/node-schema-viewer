@@ -5,6 +5,7 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
+import { BlockList, isIP } from 'node:net';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { canonicalJson, FORMAT, MAJOR } from 'laranex-schema-viewer-ui/contract';
@@ -98,6 +99,19 @@ export function hostname(header: string | undefined): string | null {
         name = netloc.split(':', 1)[0] ?? '';
     }
     return name === '' ? null : name;
+}
+
+const LOOPBACK = new BlockList();
+LOOPBACK.addSubnet('127.0.0.0', 8, 'ipv4');
+LOOPBACK.addAddress('::1', 'ipv6');
+
+// Whether serve may bind this host without --unsafe-allow-remote: localhost, 127.0.0.0/8 or ::1 (also IPv4-mapped).
+export function isLoopbackHost(host: string): boolean {
+    if (host.toLowerCase() === 'localhost') {
+        return true;
+    }
+    const family = isIP(host);
+    return family !== 0 && LOOPBACK.check(host, family === 4 ? 'ipv4' : 'ipv6');
 }
 
 export interface ServeOptions {
