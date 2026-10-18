@@ -53,16 +53,21 @@ Writes a laranex-schema 2.0 document: `declared` from your ORM schema modules (D
 ## serve
 
 ```bash
-npx node-schema-viewer serve [--snapshot PATH] [--host HOST] [--port PORT]
+npx node-schema-viewer serve [--snapshot PATH] [--host HOST] [--port PORT] [--unsafe-allow-remote]
 ```
 
 | Option | Default |
 | --- | --- |
 | `--snapshot PATH` | Config `output`, else `schema-viewer.json`; a laranex-schema 2.x document |
-| `--host HOST` | `127.0.0.1` |
+| `--host HOST` | `127.0.0.1`; a loopback host only (`127.0.0.0/8`, `::1`, `localhost`) unless `--unsafe-allow-remote` |
 | `--port PORT` | `8765` |
+| `--unsafe-allow-remote` | Off |
 
 Serves the shared viewer and the document, re-read and validated on every request. See the [README](../README.md#viewer).
+
+The viewer has no authentication and no TLS, so `serve` binds only to loopback. Another `--host` (`0.0.0.0`, a LAN address, a host name) is refused with exit code 2. To reach the viewer from another machine, keep `serve` on loopback and put an authenticated HTTPS reverse proxy or an access-controlled tunnel in front of it. In a container, the container's loopback is not reachable through a published port, so `serve` there needs `--host 0.0.0.0 --unsafe-allow-remote` (and warns); publish the port to the host's loopback only (`-p 127.0.0.1:8765:8765`), so that nothing beyond the host can reach it.
+
+`--unsafe-allow-remote` binds a non-loopback host anyway. It is never on by default, has no configuration key, and prints a warning to stderr on every start: anyone who can reach the address can read the whole schema, and the `Host` check is not access control. It is not a secure way to share the viewer.
 
 ## mcp
 

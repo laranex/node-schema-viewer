@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Security
+
+- `serve` binds only to loopback (`127.0.0.0/8`, `::1`, `localhost`) and refuses any other `--host` with exit code 2. `--unsafe-allow-remote` binds it anyway (never by default, no configuration key) and prints a warning on every start: no authentication, no TLS, anyone who can reach the address can read the schema, and the Host check is not access control. Remote access is documented only behind an authenticated HTTPS reverse proxy or tunnel, with the server on loopback.
+- The drift gate's GitHub Actions example builds the document in the job (from the database with a read-only role, or from the schema modules) instead of gating a committed one, and uploads only the gate report, with a short retention; `docs/build.md` says build outputs are sensitive and belong in `.gitignore`. The repository ignores `/schema-viewer.json` and `/schema-viewer.html`.
+- CI (`.github/workflows/tests.yml`): lint, typecheck and the release guard; the suite on Node.js 22.13.0, 22, 24 and 26 with PostgreSQL, MySQL and MariaDB service containers; the container isolation tests with an image built from the packed package, on host Node.js 22 and 24.
+
 ### Changed
 
 - `laranex-schema-viewer-ui` is the exact npm version 0.3.0 (the vendored tarball and the packaging test's and container image's `overrides` are gone), with the normative gate specification, `gateDocument`, `validateGateReport`, the shared producer exports (`expandComparisonRequests`, `coverageGaps`, `coverageGapText`, `scopeCovered`, `DIFFERENCE_FIELDS`, `validateSeverityOverrides`, `comparisonDiagnostics`, `storeComparisons`, `spellScope`) and their conformance cases.

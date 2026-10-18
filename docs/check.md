@@ -133,13 +133,16 @@ Findings that meet the thresholds, most severe first:
 
 ## GitHub Actions
 
-Gate a document committed to the repository, or one an earlier step built with a producer that inspects databases (`node-schema-viewer build --source database`, or python-schema-viewer's or laravel-schema-viewer's). `check` itself needs no database and no secrets.
+Build the document in the job, then gate it. Never commit a schema document, even to a private repository: it describes your whole database and stays in the Git history. Build it from the database with a read-only role (`node-schema-viewer build --source database`, or python-schema-viewer's or laravel-schema-viewer's producer), which also stores the configured comparisons, or from your schema modules (`build --source declared`, which has no comparisons to gate). `check` itself needs no database and no secrets; only the build step gets the database URL.
 
 ```json
 {
   "devDependencies": { "node-schema-viewer": "0.1.0" },
   "node-schema-viewer": {
     "output": "schema-viewer.json",
+    "databases": {
+      "app": { "driver": "postgresql", "urlEnv": "APP_DATABASE_URL", "schemas": ["tenant_template", "tenant_a", "tenant_b"] }
+    },
     "comparisons": [
       { "baseline": { "connection": "app", "schema": "tenant_template" }, "target": { "connection": "app", "schema": "*" } }
     ],
@@ -151,6 +154,8 @@ Gate a document committed to the repository, or one an earlier step built with a
 ```yaml
 name: schema
 on: [pull_request]
+permissions:
+  contents: read
 jobs:
   drift:
     runs-on: ubuntu-latest
@@ -160,18 +165,23 @@ jobs:
         with:
           node-version: 24
       - run: npm ci
+      - name: Build the schema document (read-only role)
+        run: npx node-schema-viewer build --source database
+        env:
+          APP_DATABASE_URL: ${{ secrets.SCHEMA_READER_DATABASE_URL }}
       - name: Schema drift gate
         run: npx node-schema-viewer check --output gate-report.json
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: schema
-          path: |
-            schema-viewer.json
-            gate-report.json
+          name: schema-gate-report
+          path: gate-report.json
+          retention-days: 7
 ```
 
-The job fails on exit 1 (drift) and on exit 2 (an incomplete or invalid check). With configured comparisons, the document must store them: compute them once with `npx node-schema-viewer compare --write` (or let the producer's build store them), or name them on the command line (`check 'app:tenant_template=app:*'`) to have `check` compute them in memory on every run.
+The job fails on exit 1 (drift) and on exit 2 (an incomplete or invalid check). With configured comparisons, the document must store them: a database build stores them, `npx node-schema-viewer compare --write` adds them to a document built without them, and comparisons named on the command line (`check 'app:tenant_template=app:*'`) are computed in memory on every run.
+
+The gate report names your connections, schemas, tables and columns, and the document holds the whole schema: treat both as sensitive. Upload the report only where people with access to the repository can read it, with a short retention, and do not upload the document unless you need it. Keep `schema-viewer.json` (and every other output) in `.gitignore`.
 
 ## Security
 

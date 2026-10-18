@@ -28,6 +28,8 @@ npx node-schema-viewer build --source database --database default=APP_DATABASE_U
 
 On Node.js 22 and 24 a declared build needs container isolation (see [Isolation](#isolation)).
 
+The documents `build` writes (`schema-viewer.json`, `schema-database.json` above) describe your schema in full and are sensitive: list them in `.gitignore` (`/schema-viewer.json`, `/schema-database.json`) and never commit them, even to a private repository. Build them where you need them, for example in CI before [`check`](./check.md#github-actions).
+
 ## Configuration
 
 Static JSON in the `"node-schema-viewer"` key of `package.json` (never executed). Command-line options take precedence over it, and it takes precedence over the defaults.
