@@ -61,7 +61,7 @@ export default defineConfig({
         { text: 'Supported ORMs', link: '/orm-support' },
       ] },
       { text: 'WORK WITH YOUR SCHEMA', items: [
-        // Add when docs/build.md lands: { text: 'Build a snapshot', link: '/build' },
+        { text: 'Build a snapshot', link: '/build' },
         { text: 'Database introspection', link: '/database' },
         { text: 'Multiple connections', link: '/connections' },
         { text: 'Schema comparison', link: '/comparison' },
