@@ -82,7 +82,7 @@ describe('config', () => {
         const dir = tempDir(t);
         const path = project(dir, { name: 'app' });
         addConfig(dir, 'schema.json', { orm: 'drizzle', modules: ['src/db/schema.ts'] });
-        assert.deepEqual(JSON.parse(readFileSync(path, 'utf8'))['node-schema-viewer'], { orm: 'drizzle', modules: ['src/db/schema.ts'], output: 'schema.json' });
+        assert.deepEqual((JSON.parse(readFileSync(path, 'utf8')) as Record<string, unknown>)['node-schema-viewer'], { orm: 'drizzle', modules: ['src/db/schema.ts'], output: 'schema.json' });
         assert.deepEqual(loadConfig(dir).build.modules, ['src/db/schema.ts']);
         project(dir, { name: 'app' });
         assert.throws(() => addConfig(dir, 'schema.json', { orm: 'prisma' }), /orm must be one of drizzle/);
