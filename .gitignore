@@ -11,3 +11,8 @@ coverage/
 .gh-page/.vitepress/dist/
 .gh-page/public/demo/
 .gh-page/public/logo.svg
+
+# Embedding examples
+examples/embedding/nextjs/.next/
+examples/embedding/nextjs/next-env.d.ts
+*.tsbuildinfo
