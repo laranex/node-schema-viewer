@@ -21,7 +21,7 @@ npx node-schema-viewer compare 'app:tenant_template=app:*'   # differences betwe
 npx node-schema-viewer check --output gate-report.json        # CI drift gate: exit 0, 1 or 2
 ```
 
-Documentation: [CLI and configuration](docs/cli.md), [build](docs/build.md), [schema comparison](docs/comparison.md), [schema drift gate in CI](docs/check.md), [MCP](docs/mcp.md), [database introspection](docs/database.md), [security](docs/security.md).
+Documentation site: <https://laranex.github.io/node-schema-viewer/> (built from `docs/` by `.gh-page/`, with a synthetic live demo). Documentation: [CLI and configuration](docs/cli.md), [build](docs/build.md), [schema comparison](docs/comparison.md), [schema drift gate in CI](docs/check.md), [MCP](docs/mcp.md), [database introspection](docs/database.md), [security](docs/security.md).
 
 ## Configuration
 
