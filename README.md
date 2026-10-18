@@ -2,24 +2,26 @@
 
 `node-schema-viewer` serves the shared [Laranex Schema Viewer UI](https://github.com/laranex/schema-viewer-ui) and read-only MCP tools from a saved [laranex-schema](https://github.com/laranex/schema-viewer-ui/blob/main/docs/contract.md) 2.x document, compares its schemas (`compare`) and gates schema drift in CI (`check`). `serve`, `mcp`, `compare` and `check` never connect to a database, run migrations, start processes or execute your configuration.
 
-> Status: 0.1.0, unreleased. Building snapshots from Node.js ORMs is not available yet; the commands read a document written by another Laranex Schema Viewer (Laravel, Python) or a later milestone of this package.
+> Status: 0.1.0, unreleased. `build` writes documents from Drizzle ORM schemas (`--source declared`) or live databases (`--source database`); TypeORM, MikroORM, Sequelize and `combined` builds follow.
 
 Requires Node.js 22.13 or later (22, 24 and 26 are tested).
 
 Only laranex-schema 2.x is read, and everything this package writes is a strictly validated, canonical 2.0 document. A 1.x snapshot is refused with one clear error; nothing converts it, so rebuild it with a producer that writes 2.0.
 
-Read-only database introspection (PostgreSQL, MySQL, MariaDB, SQLite) is available as an API (`introspect`, `introspectAll`) for the upcoming `build`; see [docs/database.md](docs/database.md) and [docs/security.md](docs/security.md#database-inspection).
+`build` imports your schema modules only in an isolated extraction worker (process isolation on Node.js 26, a container on 22 and 24; never weaker) and reads databases read-only in a separate worker per connection, with URLs taken only from environment variables. Read-only database introspection (PostgreSQL, MySQL, MariaDB, SQLite) is also an API (`introspect`, `introspectAll`). See [docs/build.md](docs/build.md), [docs/database.md](docs/database.md) and [docs/security.md](docs/security.md).
 
 ```bash
 npm install --save-dev node-schema-viewer
-npx node-schema-viewer init                      # adds "node-schema-viewer": {"output": "schema-viewer.json"} to package.json
+npx node-schema-viewer init --module src/db/schema.ts   # adds "node-schema-viewer" to package.json
+npx node-schema-viewer build                     # declared, from the Drizzle schema (Node.js 26; --isolation container on 22/24)
+APP_DATABASE_URL=... npx node-schema-viewer build --source database --database default=APP_DATABASE_URL
 npx node-schema-viewer serve                     # http://127.0.0.1:8765
 npx node-schema-viewer mcp --snapshot /abs/path/schema-viewer.json
 npx node-schema-viewer compare 'app:tenant_template=app:*'   # differences between tenant schemas
 npx node-schema-viewer check --output gate-report.json        # CI drift gate: exit 0, 1 or 2
 ```
 
-Documentation: [CLI and configuration](docs/cli.md), [schema comparison](docs/comparison.md), [schema drift gate in CI](docs/check.md), [MCP](docs/mcp.md), [database introspection](docs/database.md), [security](docs/security.md).
+Documentation: [CLI and configuration](docs/cli.md), [build](docs/build.md), [schema comparison](docs/comparison.md), [schema drift gate in CI](docs/check.md), [MCP](docs/mcp.md), [database introspection](docs/database.md), [security](docs/security.md).
 
 ## Configuration
 
@@ -29,6 +31,8 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
 {
   "node-schema-viewer": {
     "output": "schema-viewer.json",
+    "modules": ["src/db/schema.ts"],
+    "databases": { "default": { "urlEnv": "APP_DATABASE_URL", "schemas": ["public", "billing"] } },
     "comparisons": [
       { "baseline": { "connection": "app", "schema": "tenant_template" }, "target": { "connection": "app", "schema": "*" } }
     ],
@@ -37,7 +41,7 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
 }
 ```
 
-`output` is relative to the project root and is the default snapshot of every command. `comparisons` names scope pairs by connection and schema for `compare` and `check` ([schema comparison](docs/comparison.md#configure-comparisons)), and `check` sets the gate's thresholds ([drift gate](docs/check.md#thresholds)). Unknown keys and anything that looks like a database URL are rejected.
+`output` is relative to the project root and is the default snapshot of every command. `modules` are the schema modules `build` imports, and `databases` names each connection and the environment variable holding its URL, never the URL ([build](docs/build.md#configuration)). `comparisons` names scope pairs by connection and schema for `compare` and `check` ([schema comparison](docs/comparison.md#configure-comparisons)), and `check` sets the gate's thresholds ([drift gate](docs/check.md#thresholds)). Unknown keys and anything that looks like a database URL are rejected.
 
 ## Viewer
 

@@ -2,7 +2,7 @@
 
 A comparison lists how one scope's schema differs from another's: two tenant schemas of one PostgreSQL database, a primary and a replica, or the same application on PostgreSQL and MySQL. `node-schema-viewer compare` computes comparisons on a saved [laranex-schema 2.x](https://laranex.github.io/schema-viewer-ui/contract#comparisons) document with the shared algorithm (`compareScopes` from `laranex-schema-viewer-ui`, the same one python-schema-viewer and laravel-schema-viewer use, checked against the shared conformance cases) and can store them in the document's `comparisons` array. The viewer and MCP display stored comparisons; they never compute them.
 
-`compare` reads only the document and `package.json`: it never opens a database connection, runs SQL, starts a process or imports your application. The document must already hold what is compared, which means database (or combined) metadata read by an introspection, such as one `laranex-schema-viewer build --source database` wrote. This package has no `build` yet, so comparisons are not computed during a build here.
+`compare` reads only the document and `package.json`: it never opens a database connection, runs SQL, starts a process or imports your application. The document must already hold what is compared, which means database (or combined) metadata read by an introspection, such as one `node-schema-viewer build --source database` (or python-schema-viewer's) wrote. A database `build` also computes and stores the configured comparisons, or those named with `--compare`.
 
 ## Scopes
 

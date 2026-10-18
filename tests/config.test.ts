@@ -78,6 +78,17 @@ describe('config', () => {
         assert.deepEqual(loadConfig(dir), { output: join(dir, 'docs', 'schema.json'), ...NONE });
     });
 
+    test('init writes the build defaults it is given, validated like the rest', (t) => {
+        const dir = tempDir(t);
+        const path = project(dir, { name: 'app' });
+        addConfig(dir, 'schema.json', { orm: 'drizzle', modules: ['src/db/schema.ts'] });
+        assert.deepEqual(JSON.parse(readFileSync(path, 'utf8'))['node-schema-viewer'], { orm: 'drizzle', modules: ['src/db/schema.ts'], output: 'schema.json' });
+        assert.deepEqual(loadConfig(dir).build.modules, ['src/db/schema.ts']);
+        project(dir, { name: 'app' });
+        assert.throws(() => addConfig(dir, 'schema.json', { orm: 'prisma' }), /orm must be one of drizzle/);
+        assert.throws(() => addConfig(dir, 'schema.json', { modules: ['/abs.ts'] }), /modules\[0\] must be a path or glob pattern relative to the project root/);
+    });
+
     test('init keeps tabs and the absence of a final newline', (t) => {
         const dir = tempDir(t);
         const path = project(dir, null, '{\n\t"name": "app"\n}');

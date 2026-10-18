@@ -1,6 +1,6 @@
 # Schema drift gate in CI
 
-`node-schema-viewer check` fails a CI job when a saved laranex-schema document shows schema drift. It reads only the document (and `package.json`): it never connects to a database, imports application code, starts a process, runs migrations or rewrites the document. It checks the [comparisons](./comparison.md) stored in the document, for example by a `build --source database` of python-schema-viewer or laravel-schema-viewer, or comparisons it computes in memory from the document's inspected metadata.
+`node-schema-viewer check` fails a CI job when a saved laranex-schema document shows schema drift. It reads only the document (and `package.json`): it never connects to a database, imports application code, starts a process, runs migrations or rewrites the document. It checks the [comparisons](./comparison.md) stored in the document, for example by a `build --source database` of this package, python-schema-viewer or laravel-schema-viewer, or comparisons it computes in memory from the document's inspected metadata.
 
 ```bash
 npx node-schema-viewer check                       # exit 0, 1 or 2
@@ -133,7 +133,7 @@ Findings that meet the thresholds, most severe first:
 
 ## GitHub Actions
 
-Gate a document committed to the repository, or one an earlier step built with a producer that inspects databases (python-schema-viewer or laravel-schema-viewer `build --source database`). `check` itself needs no database and no secrets.
+Gate a document committed to the repository, or one an earlier step built with a producer that inspects databases (`node-schema-viewer build --source database`, or python-schema-viewer's or laravel-schema-viewer's). `check` itself needs no database and no secrets.
 
 ```json
 {
