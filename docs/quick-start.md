@@ -29,6 +29,8 @@ npx node-schema-viewer serve        # http://127.0.0.1:8765
 
 The server binds to loopback by default, serves only the viewer files its manifest lists, and re-reads and validates the document on every request, so a rebuilt document shows up on reload. See [CLI](./cli.md#serve).
 
+`serve` has no authentication: keep it on loopback for yourself. To add the viewer to your application as a protected development page, see [Embedding in your application](./embedding.md).
+
 ## 4. Connect an agent
 
 ```json

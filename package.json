@@ -42,6 +42,7 @@
     "lint": "eslint .",
     "test": "npm run build && node scripts/clean.mjs build && tsc -p tsconfig.test.json && node --test --test-concurrency=4 --test-timeout=300000 \"build/tests/**/*.test.js\"",
     "test:package": "npm run build && tsc -p tsconfig.test.json && node --test build/tests/package.test.js",
+    "test:examples": "npm ci --prefix examples/embedding --no-audit --no-fund && npm test --prefix examples/embedding",
     "check:release": "node scripts/check-release.mjs",
     "prepack": "npm run build",
     "prepublishOnly": "npm run check:release"

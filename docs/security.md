@@ -194,3 +194,11 @@ If you run the CLI under the Permission Model yourself (`node --permission --all
 
 - **Grant reads and writes on the output's directory.** Renaming the temporary file needs read access to it as well as write access; a directory outside `--allow-fs-write` is refused with `ERR_ACCESS_DENIED`, the command fails (exit 1 for `compare`, 2 for `check`) and nothing is written.
 - **Durability:** Node.js 22.23+, 24 and 26 refuse `fsync` under the Permission Model even inside `--allow-fs-write` (22.13 allows it). Only under the Permission Model, and only for `ERR_ACCESS_DENIED`, the CLI then renames the temporary file without flushing it first: the write stays atomic for readers, but a power loss or OS crash right after it may leave the previous file or an empty one. Any other `fsync` failure fails the write. `tests/gate-security.test.ts` runs `compare --write` and `check --output` under `--permission` with `--allow-fs-write` limited to the output directory on every tested Node.js version.
+
+## Viewer and embedding
+
+The viewer shows a database's full structure and is a development-only tool: never expose it or a snapshot in production, and require authentication even in local development. The shared policy is [Schema Viewer UI: Security](https://laranex.github.io/schema-viewer-ui/security.html).
+
+- `serve` has no authentication. It binds to loopback by default, checks the `Host` header, serves only the files the viewer's manifest lists and sends `Cache-Control: no-store`. Keep it on loopback; for access from another machine, keep it on loopback behind an authenticated HTTPS reverse proxy or an access-controlled tunnel.
+- To show the viewer inside your application, follow [Embedding in your application](./embedding.md): one server-side check in front of the page, every viewer file and the snapshot, routes registered only in development, and production builds and installs without the viewer or the snapshot. The examples' tests check each of these over HTTP.
+- Never commit snapshots, and treat the viewer's exports (Mermaid, DBML, Markdown, JSON, images, offline HTML) and `check` reports kept as CI artifacts as sensitive.

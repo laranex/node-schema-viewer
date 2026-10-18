@@ -47,6 +47,10 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
 
 `serve [--snapshot PATH] [--host HOST] [--port PORT]` binds to `127.0.0.1:8765` by default and serves only the files the viewer build's manifest lists (each verified by SHA-256 at startup) plus `/snapshot.json`, re-read and validated on every request (503 while invalid). Requests must name this host or loopback in `Host`; responses carry a strict Content-Security-Policy, `X-Content-Type-Options: nosniff` and `Cache-Control: no-store`.
 
+## Embedding in your application
+
+The viewer is a development-only tool: never expose it or a snapshot in production, and require authentication even in local development. `serve` is a standalone local viewer with no authentication of its own; to show the viewer inside an existing Express, Fastify, NestJS or Next.js application instead, behind your sign-in or HTTP Basic Auth, follow [docs/embedding.md](docs/embedding.md). Its examples live in [examples/embedding](examples/embedding) and are tested with `npm run test:examples`. The shared policy and the guide for React, Vue, Angular and FastAPI frontends are in the [Schema Viewer UI documentation](https://laranex.github.io/schema-viewer-ui/embedding.html).
+
 ## Schema comparison
 
 `compare [BASELINE=TARGET...] [--snapshot PATH] [--limit N] [--json] [--write]` compares scopes of a saved document (`CONNECTION` or `CONNECTION:SCHEMA`; a target `app:*` stands for every inspected schema) with the shared laranex-schema producer algorithms (request expansion, `compareScopes`, override validation, `storeComparisons`), prints a summary or the comparison objects, and with `--write` stores them in the document, strictly validated and atomically. It reads only the document and `package.json`. See [docs/comparison.md](docs/comparison.md).
