@@ -6,6 +6,7 @@ name: tests
 # - release: pushes to main, manual runs and callers (a publish workflow uses `matrix: release`): every supported
 #   Node.js line with every database engine, container isolation on 22 and 24, the embedding examples on the floor and
 #   on 24.
+# The 24.x job of both matrices also scans the repository and the packed package for schema snapshots.
 on:
   push:
   pull_request:
@@ -123,6 +124,27 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: npm
       - run: npm ci
+      # The repository tracks no schema document but its allowlisted synthetic fixtures (.laranex-schema-allowlist.json)
+      # and the published package holds none: any non-zero exit (exposure, uncertain or incomplete scan) fails. Once, on
+      # 24.x in both matrices: the scan does not depend on the Node.js version.
+      - name: Scan the repository and the packed package for schema snapshots
+        if: matrix.node == '24.x'
+        run: |
+          npm run build
+          node dist/cli.js scan --tracked --untracked --report "$RUNNER_TEMP/scan-tree.json"
+          mkdir "$RUNNER_TEMP/scan-pack"
+          npm pack --pack-destination "$RUNNER_TEMP/scan-pack"
+          tar -xzf "$RUNNER_TEMP"/scan-pack/node-schema-viewer-*.tgz -C "$RUNNER_TEMP/scan-pack"
+          node dist/cli.js scan --artifacts "$RUNNER_TEMP/scan-pack/package" --report "$RUNNER_TEMP/scan-package.json"
+          node -e 'const r = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8")); if (r.findings.length) { console.error("The packed package holds schema documents"); process.exit(1); }' "$RUNNER_TEMP/scan-package.json"
+      - name: Upload the scan reports
+        if: failure() && matrix.node == '24.x'
+        uses: actions/upload-artifact@v7
+        with:
+          name: scan-reports-${{ matrix.node }}
+          path: ${{ runner.temp }}/scan-*.json
+          if-no-files-found: ignore
+          retention-days: 7
       # The tests run every container with --pull never, and one builds a derived image from the base image itself,
       # so the base image must be in the local image store, not only in the builder's cache.
       - name: Pull the base image

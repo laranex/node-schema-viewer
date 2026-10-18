@@ -68,7 +68,7 @@ describe('cli', () => {
         assert.equal(help.code, 0);
         assert.match(help.stdout, /Usage: node-schema-viewer <command>/);
         assert.match(help.stdout, /serve \[--snapshot PATH\] \[--host HOST\] \[--port PORT\] \[--unsafe-allow-remote\]/);
-        for (const command of ['init', 'serve', 'mcp', 'compare', 'check', 'build']) {
+        for (const command of ['init', 'serve', 'mcp', 'compare', 'check', 'build', 'scan']) {
             assert.match(help.stdout, new RegExp(`\\n  ${command}`));
         }
     });
