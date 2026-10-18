@@ -2,7 +2,7 @@
 // guard (scripts/check-release.mjs). Needs the npm registry (or a warm npm cache) for the dependencies.
 import assert from 'node:assert/strict';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
-import { mkdirSync, readdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, cpSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, test } from 'node:test';
 import { Client } from '@modelcontextprotocol/client';
@@ -113,6 +113,23 @@ describe('package', { timeout: 300_000 }, () => {
         } finally {
             sqlite.drop();
             await postgres?.drop();
+        }
+
+        // A declared build of an application in another directory, as with npx: the extraction worker reads the
+        // application and its drizzle-orm, and this package with its contract package from where they are installed.
+        const app = join(dir, 'app');
+        mkdirSync(join(app, 'node_modules'), { recursive: true });
+        writeFileSync(join(app, 'package.json'), JSON.stringify({ name: 'app', private: true, type: 'module', dependencies: { 'drizzle-orm': '0.45.4' }, 'node-schema-viewer': { modules: ['schema.mjs'] } }));
+        cpSync(join(ROOT, 'node_modules', 'drizzle-orm'), join(app, 'node_modules', 'drizzle-orm'), { recursive: true });
+        copyFileSync(join(ROOT, 'tests', 'fixtures', 'drizzle', 'sqlite.mjs'), join(app, 'schema.mjs'));
+        const built = spawnSync(bin, ['build'], { cwd: app, encoding: 'utf8' });
+        if (Number(process.versions.node.split('.')[0]) >= 26) {
+            assert.equal(built.status, 0, built.stderr);
+            assert.match(built.stdout, /Saved laranex-schema 2\.0 \(declared\): 3 tables, 3 models, 4 ORM relationships/);
+            assert.equal((JSON.parse(readFileSync(join(app, 'schema-viewer.json'), 'utf8')) as { generator: { orm: string } }).generator.orm, 'drizzle');
+        } else {
+            assert.equal(built.status, 1);
+            assert.match(built.stderr, /Process isolation needs Node\.js 26 or later/);
         }
 
         const client = new Client({ name: 'packaging-test', version: '0.0.0' });

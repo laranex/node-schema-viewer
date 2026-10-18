@@ -13,7 +13,8 @@ import { describe, test, type TestContext } from 'node:test';
 import { canonicalJson, normalizeType, type SchemaDocument } from 'laranex-schema-viewer-ui/contract';
 import { ConfigError, loadConfig } from '../src/config.js';
 import { extract as adapter } from '../src/isolation/extractors/drizzle.js';
-import { extract } from '../src/isolation/index.js';
+import { extract, isolationConfig } from '../src/isolation/index.js';
+import { contractRoot, readRoots } from '../src/isolation/runner.js';
 import { adminUrl, serverDatabase, sqliteDatabase, type Server as DatabaseServer } from './databases.js';
 import { assertProducerDocument, CLI, ROOT, tempDir } from './helpers.js';
 
@@ -144,6 +145,14 @@ describe('build configuration', () => {
             writeFileSync(join(dir, 'package.json'), JSON.stringify({ 'node-schema-viewer': section }));
             assert.throws(() => loadConfig(dir), (error: Error) => error instanceof ConfigError && !error.message.includes('hunter2'), JSON.stringify(section));
         }
+    });
+});
+
+describe('build: the extraction worker', () => {
+    test('may read the contract package the adapters serialize with, wherever it is installed', (t) => {
+        const dir = project(t, undefined);
+        assert.ok(readRoots(dir, isolationConfig()).includes(contractRoot()));
+        assert.ok(existsSync(join(contractRoot(), 'contract', 'schema.json')));
     });
 });
 

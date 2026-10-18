@@ -40,7 +40,7 @@ On Node.js 22 and 24 the Permission Model does not restrict the network, so proc
 | Environment | Allowlist only | Allowlist only |
 | Network | Blocked by the Permission Model | None (`--network none`), plus the Permission Model inside |
 | Child processes, worker threads, native addons, WASI, inspector | Blocked by the Permission Model | Blocked by the Permission Model |
-| Reading files | The project, its workspace, `node_modules`, this package, `allowReads` | Only what is mounted: the project (read-only) and the image |
+| Reading files | The project, its workspace, `node_modules`, this package and its contract package (`laranex-schema-viewer-ui`, which the adapters serialize with), `allowReads` | Only what is mounted: the project (read-only) and the image |
 | Writing files | Private scratch directories and `allowWrites` inside the project | `/tmp` (128 MB tmpfs) and a disposable output directory; the project and root filesystem are read-only |
 | `node:sqlite` | Disabled (`--no-experimental-sqlite`) | Disabled |
 | `eval`, `new Function` | Blocked unless `allowCodeGeneration` | Same |
@@ -77,7 +77,7 @@ The Node.js [Permission Model](https://nodejs.org/api/permissions.html) restrict
 ```text
 node --permission
      --allow-fs-read=<project> --allow-fs-read=<workspace root> --allow-fs-read=<each reachable node_modules>
-     --allow-fs-read=<this package> --allow-fs-read=<allowReads ...> --allow-fs-read=<scratch>
+     --allow-fs-read=<this package> --allow-fs-read=<laranex-schema-viewer-ui> --allow-fs-read=<allowReads ...> --allow-fs-read=<scratch>
      --allow-fs-write=<scratch: home, tmp, out> --allow-fs-write=<allowWrites inside the project ...>
      --no-addons --no-experimental-sqlite --disallow-code-generation-from-strings
      <package>/dist/isolation/worker.js --result <out>/result.json
