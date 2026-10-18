@@ -1,0 +1,78 @@
+{
+  "entries": [
+    {
+      "path": ".gh-page/.vitepress/dist/demo/snapshots/combined-multi-connection.json",
+      "sha256": "b15eb4f3ffb97ff5a85171382c39b185edaecd1fe38723dc137adc1a5dfbf098"
+    },
+    {
+      "path": ".gh-page/.vitepress/dist/demo/snapshots/comparison-multi-connection.json",
+      "sha256": "4838f6abce38788bc2485987a9840da28f61cf8fe3995b241ca3151705b3aea9"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/drift-mariadb.json",
+      "sha256": "0e95468a5b099934ba7158bdb7ba5cfecb2493ba923f22081d6605d6308875cc"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/drift-mysql.json",
+      "sha256": "cec9f97c0e4d2f76a8b32243ea400f2d3a2eaf21ad056a6a80139668b94d3712"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/drift-postgresql.json",
+      "sha256": "1c6e708cd056868858cc77034004a333632c146d2693f22914be616c60d5df65"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/drift-sqlite.json",
+      "sha256": "e0bec3dde9976323e729a35d40e35bcfaab05118f3fc49724665e0c76c15b721"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/mariadb.json",
+      "sha256": "e76cf5da826f65ddf5f161868433ebc699d1e29b2d3bc02513d69137a06369e7"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/multi-connection.json",
+      "sha256": "8515b8824183b803c443c176bfd46df8c43bf83a61f9cf07fa79df33d4a9a049"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/mysql.json",
+      "sha256": "bd545d113668a849b973957b0c300435b777e3708c4d1286dadf9351fba862ae"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/postgresql-default-schema.json",
+      "sha256": "c44bd683f1b1b3d40afff53f014d82b8739d7c8e3400a5528b28404b21b3d7c5"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/postgresql.json",
+      "sha256": "8ca77eac7cd5ce6d6d0c31524c2cb666f0d726119d0b3231908cd43a922549b8"
+    },
+    {
+      "path": "tests/fixtures/conformance/database/sqlite.json",
+      "sha256": "4cc6f041c8ef5c2006b723b92736c16d090a220b3da12966ee6f5a11a2429e4e"
+    },
+    {
+      "path": "tests/fixtures/conformance/mcp/byte-limit.json",
+      "sha256": "cc68f9b3f23a4e1ec08d407a676286b0c503312deb5291767131ee02296ffc9d"
+    },
+    {
+      "path": "tests/fixtures/conformance/mcp/comparison-byte-limit.json",
+      "sha256": "a7cdf1568da6e11c98305e6606713c246d1e142ab29242346dfc058b3863ef5b"
+    },
+    {
+      "path": "tests/fixtures/conformance/python-intel/documents/mixed-drivers.json",
+      "sha256": "f74e6da3f2ce08ed2dc7924186e00c81632d918d6b2f17acb254bd99b5bfaa23"
+    },
+    {
+      "path": "tests/fixtures/conformance/python-intel/documents/postgresql-multi-tenant.json",
+      "sha256": "c6aa9a392861d84bfe321d3267fa3c777a68693956d2f21020751190bb0a1114"
+    },
+    {
+      "path": "tests/fixtures/conformance/python-intel/documents/postgresql-omitted.json",
+      "sha256": "30cafe9235406dd38cbc466e4af73f3381769fc7b33d8bafe6ad28a91600ff27"
+    },
+    {
+      "path": "tests/fixtures/conformance/python-intel/documents/postgresql-schema-named-tables.json",
+      "sha256": "2775bb2869d404b0bd36d7a70db8e790195e5f6d87697b2b685aa8298de68425"
+    }
+  ],
+  "format": "laranex-schema-allowlist",
+  "version": "1.0"
+}

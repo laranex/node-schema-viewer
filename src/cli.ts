@@ -9,7 +9,8 @@ const USAGE = `Usage: node-schema-viewer <command> [options]
 
 Commands:
   init [--output PATH] [--orm NAME] [--module PATH...] [--project-root DIR]
-                     Add "node-schema-viewer" defaults to the project's package.json
+                     Add "node-schema-viewer" defaults to the project's package.json, and the snapshot paths
+                     to its .gitignore
   build [--source declared|database] [--project-root DIR] [--module PATH...] [--orm NAME] [--output PATH]
         [--isolation process|container] [--timeout SECONDS] [--container-image IMAGE]
         [--database-url-env NAME] [--schema NAME...] [--database-connection NAME] [--database NAME=ENV_VAR...]
@@ -26,6 +27,11 @@ Commands:
                      Compare scopes of a saved document, without a database; each scope is CONNECTION or
                      CONNECTION:SCHEMA (target schema * for every inspected schema); default: the configured
                      comparisons. --write stores them in the document
+  scan [--tracked] [--untracked] [--artifacts DIR]... [--history] [--allowlist FILE] [--report FILE] [--json]
+                     Find laranex-schema snapshots by content in the Git index, untracked files, build output
+                     directories or the history (laranex-schema-viewer-ui's contract/scan.mjs; name at least one
+                     scope): exit 0 clean, 1 confirmed exposure, 2 scan failure or incomplete scan, 3 uncertain.
+                     Paths are only in the report (--json, --report FILE); allowlist: .laranex-schema-allowlist.json
   check [BASELINE=TARGET...] [--snapshot PATH] [--severity error|warning|info] [--certainty certain|likely]
         [--limit N] [--json] [--output FILE]
                      Schema drift gate for CI: exit 0 passed, 1 a finding meets the thresholds, 2 the check could
@@ -163,11 +169,21 @@ async function init(args: string[]): Promise<void> {
         return;
     }
     const { addConfig, DEFAULT_SNAPSHOT } = await import('./config.js');
-    const path = addConfig((values['project-root'] as string | undefined) ?? process.cwd(), (values.output as string | undefined) ?? DEFAULT_SNAPSHOT, {
+    const projectRoot = (values['project-root'] as string | undefined) ?? process.cwd();
+    const output = (values.output as string | undefined) ?? DEFAULT_SNAPSHOT;
+    const path = addConfig(projectRoot, output, {
         orm: values.orm as string | undefined,
         modules: (values.module as string[] | undefined) ?? [],
     });
-    process.stdout.write(`Added "node-schema-viewer" to ${path}. Next: node-schema-viewer build\n`);
+    const { addGitignoreBlock } = await import('./gitignore.js');
+    const ignore = addGitignoreBlock(projectRoot, output);
+    process.stdout.write(`Added "node-schema-viewer" to ${path}.\n`);
+    process.stdout.write(
+        ignore.added.length
+            ? `Added ${ignore.added.join(', ')} to ${ignore.path}: schema snapshots must never be committed.\n`
+            : `${ignore.path} already ignores the schema snapshots.\n`,
+    );
+    process.stdout.write('Next: node-schema-viewer build\n');
 }
 
 function positive(value: string | undefined, option: string): number | undefined {
@@ -388,6 +404,12 @@ async function main(argv: string[]): Promise<number> {
                 return await check(rest);
             case 'build':
                 return await build(rest);
+            case 'scan':
+                if (rest.includes('--help') || rest.includes('-h')) {
+                    process.stdout.write(USAGE);
+                    break;
+                }
+                return (await import('./scan.js')).scan(rest);
             case '--version':
             case '-v':
                 process.stdout.write(`${VERSION}\n`);

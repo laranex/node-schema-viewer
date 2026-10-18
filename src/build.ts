@@ -23,6 +23,7 @@ import {
     type ISOLATION_LEVELS,
     type SOURCES,
 } from './config.js';
+import { checkOutputPath } from './gitignore.js';
 import { writeDocument } from './snapshot.js';
 
 export const DATABASE_URL_ENV = 'LARANEX_SCHEMA_DATABASE_URL';
@@ -273,6 +274,7 @@ export async function build(options: BuildOptions, log: Log, warn: Log): Promise
         throw new BuildUsageError('--source combined is not available yet in node-schema-viewer: build with --source declared or --source database');
     }
     const output = options.output ?? project.output ?? DEFAULT_SNAPSHOT;
+    checkOutputPath(output, warn);
     const timeout = options.timeout ?? config.timeout ?? DEFAULT_TIMEOUT;
     const databases = databaseConnections(options, config);
     const comparisons = comparisonSpecs(options, project.comparisons);
