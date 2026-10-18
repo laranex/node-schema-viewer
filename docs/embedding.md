@@ -7,6 +7,8 @@ development-only page**. Every file on this page is a tested example in
 ::: danger Development only. Authentication is mandatory.
 Never enable, bundle or serve the Schema Viewer or its snapshots in production. Require authentication even for local
 development, and protect the page, every viewer file and the schema JSON on the server with the same check.
+The one exception is [`serve`](#serve-or-an-embedded-viewer): a loopback-only viewer with no authentication, for a single developer on
+their own machine. Never share it.
 The policy is [Schema Viewer UI: Security](https://laranex.github.io/schema-viewer-ui/security.html).
 :::
 

@@ -49,7 +49,7 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
 
 ## Embedding in your application
 
-The viewer is a development-only tool: never expose it or a snapshot in production, and require authentication even in local development. `serve` is a standalone local viewer with no authentication of its own; to show the viewer inside an existing Express, Fastify, NestJS or Next.js application instead, behind your sign-in or HTTP Basic Auth, follow [docs/embedding.md](docs/embedding.md). Its examples live in [examples/embedding](examples/embedding) and are tested with `npm run test:examples`. The shared policy and the guide for React, Vue, Angular and FastAPI frontends are in the [Schema Viewer UI documentation](https://laranex.github.io/schema-viewer-ui/embedding.html).
+The viewer is a development-only tool: never expose it or a snapshot in production, and require authentication even in local development. The one exception is `serve`, a standalone loopback-only viewer with no authentication, for a single developer on their own machine (never share it; anything beyond that machine goes through an authenticated HTTPS reverse proxy or an access-controlled tunnel); to show the viewer inside an existing Express, Fastify, NestJS or Next.js application instead, behind your sign-in or HTTP Basic Auth, follow [docs/embedding.md](docs/embedding.md). Its examples live in [examples/embedding](examples/embedding) and are tested with `npm run test:examples`. The shared policy and the guide for React, Vue, Angular and FastAPI frontends are in the [Schema Viewer UI documentation](https://laranex.github.io/schema-viewer-ui/embedding.html).
 
 ## Schema comparison
 
