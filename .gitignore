@@ -4,3 +4,10 @@ build/
 *.tgz
 .DS_Store
 coverage/
+
+# Documentation site
+.gh-page/node_modules/
+.gh-page/.vitepress/cache/
+.gh-page/.vitepress/dist/
+.gh-page/public/demo/
+.gh-page/public/logo.svg
