@@ -17,10 +17,15 @@ import {
     inferAssociations,
     migrationHistory,
     migrationState,
+    resolveAllowlist,
+    scanContent,
+    scanFiles,
+    scanMode,
     scopeCovered,
     storeComparisons,
     validateDocument,
     validateGateReport,
+    validateScanReport,
     validateSeverityOverrides,
     type Comparison,
     type CompareOptions,
@@ -29,6 +34,8 @@ import {
     type GateReport,
     type MigrationRevision,
     type RequestedComparison,
+    type ScanReport,
+    type ScanScope,
     type SchemaDocument,
     type Scope,
 } from 'laranex-schema-viewer-ui/contract';
@@ -75,9 +82,9 @@ describe('shared valid fixtures', () => {
 });
 
 // Exactly the package's own fixture directories (the gate-report fixtures in fixtures/gate are a separate format, not
-// documents). laranex-schema-viewer-ui 0.3.0 ships 14 valid and 53 invalid document fixtures, 6 valid
-// and 13 invalid gate report fixtures, 23 gate conformance cases and 43 producer cases (13 request, 11 coverage-gap,
-// 9 override, 6 comparison-diagnostic and 4 store cases).
+// documents). laranex-schema-viewer-ui 0.4.0 ships 14 valid and 53 invalid document fixtures, 6 valid
+// and 13 invalid gate report fixtures, 23 gate conformance cases, 43 producer cases (13 request, 11 coverage-gap,
+// 9 override, 6 comparison-diagnostic and 4 store cases) and 45 scan conformance cases.
 describe('shared fixture inventory', () => {
     test('the installed package has 14 valid and 53 invalid document fixtures', () => {
         assert.equal(cases('fixtures/valid').length, 14);
@@ -93,6 +100,10 @@ describe('shared fixture inventory', () => {
     test('the installed package has 43 request, coverage-gap, override, comparison-diagnostic and store cases', () => {
         const counts = ['requests', 'coverage-gaps', 'overrides', 'comparison-diagnostics', 'store'].map((d) => cases(`conformance/${d}`).length);
         assert.deepEqual(counts, [13, 11, 9, 6, 4]);
+    });
+
+    test('the installed package has 45 scan conformance cases', () => {
+        assert.equal(cases('conformance/scan').length, 45);
     });
 });
 
@@ -225,6 +236,41 @@ describe('store conformance', () => {
         test(`${name}: ${c.description}`, () => {
             assert.deepEqual(storeComparisons(c.input.document, c.input.comparisons), c.expected.document);
             assert.deepEqual(validateDocument(c.expected.document, { strict: true }).errors, []);
+        });
+    }
+});
+
+// Every scan case through the shared functions, as docs/conformance.md in laranex-schema-viewer-ui describes: the
+// allowlist resolved from the case's files, the files scanned, the exact report. Each file's classification is also
+// checked against scanContent() directly.
+describe('scan conformance', () => {
+    type File = { scope: ScanScope; path: string; commit: string | null; content?: string; contentBase64?: string };
+    type Input = { files: File[]; scopes: ScanScope[]; limit: number | null; allowlist: string | null; allowlists: Record<string, unknown> };
+    const bytesOf = (f: File) => new Uint8Array(f.contentBase64 === undefined ? Buffer.from(f.content ?? '', 'utf8') : Buffer.from(f.contentBase64, 'base64'));
+    for (const [name, c] of cases<Case<Input, ScanReport>>('conformance/scan')) {
+        test(`${name}: ${c.description}`, () => {
+            assert.deepEqual(validateScanReport(c.expected, { strict: true }).errors, []);
+            const { allowlists } = c.input;
+            const allowlist =
+                c.input.allowlist === null
+                    ? null
+                    : resolveAllowlist(c.input.allowlist, (path) => {
+                          if (!(path in allowlists)) {
+                              throw new Error('missing');
+                          }
+                          return allowlists[path];
+                      });
+            const limit = c.input.limit ?? undefined;
+            const files = c.input.files.map((f) => ({ scope: f.scope, path: f.path, commit: f.commit, bytes: bytesOf(f) }));
+            const report = scanFiles({ scopes: c.input.scopes, files, allowlist, limit });
+            assert.deepEqual(report, c.expected);
+            assert.equal(canonicalJson(report), canonicalJson(c.expected));
+            assert.deepEqual(validateScanReport(report, { strict: true }).errors, []);
+            for (const file of files) {
+                const match = scanContent(file.path, file.bytes, { mode: scanMode(file.scope), ...(limit === undefined ? {} : { limit }) });
+                const finding = report.findings.find((f) => f.scope === file.scope && f.path === file.path && f.commit === file.commit);
+                assert.deepEqual(match && { kind: match.kind, reason: match.reason }, finding ? { kind: finding.kind, reason: finding.reason } : null, file.path);
+            }
         });
     }
 });
