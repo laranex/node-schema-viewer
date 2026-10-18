@@ -118,6 +118,14 @@ async function serve(args: string[]): Promise<void> {
                 'Use an authenticated HTTPS reverse proxy with the server on loopback instead.\n',
         );
     }
+    // Registered before listening: the kernel accepts connections once the socket listens, so a client may stop the
+    // server right after the ready line, before this process runs again.
+    const stop = () => {
+        server.close();
+        server.closeAllConnections();
+    };
+    process.once('SIGINT', stop);
+    process.once('SIGTERM', stop);
     await new Promise<void>((resolve, reject) => {
         server.once('error', reject);
         server.listen(listenPort, host, () => {
@@ -128,12 +136,6 @@ async function serve(args: string[]): Promise<void> {
     const address = server.address();
     const bound = typeof address === 'object' && address !== null ? address.port : 0;
     process.stdout.write(`Laranex Schema Viewer: ${displayUrl(host, bound)}\n`);
-    const stop = () => {
-        server.close();
-        server.closeAllConnections();
-    };
-    process.once('SIGINT', stop);
-    process.once('SIGTERM', stop);
 }
 
 async function mcp(args: string[]): Promise<void> {

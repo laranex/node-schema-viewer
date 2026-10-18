@@ -85,6 +85,10 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: npm
       - run: npm ci
+      # The tests run every container with --pull never, and one builds a derived image from the base image itself,
+      # so the base image must be in the local image store, not only in the builder's cache.
+      - name: Pull the base image
+        run: docker pull node:24-slim
       - name: Build the lsv-node-test image from the packed package
         run: |
           image="$RUNNER_TEMP/lsv-image"
