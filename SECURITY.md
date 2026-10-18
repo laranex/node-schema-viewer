@@ -7,17 +7,18 @@ specific to this package. The details are in [docs/security.md](docs/security.md
 
 ## Supported versions
 
-No version has been released yet: 0.1.0 is unreleased and nothing is published to npm. Security fixes are made on the
-`main` branch.
+No version has been released yet: 0.1.0 is unreleased and nothing is published to npm, so no release is supported.
+Security fixes are made on the `main` branch. Once releases exist, during the 0.x development phase only the latest
+released version receives security fixes, with no backports to older 0.x releases or to prereleases.
 
 ## Reporting a vulnerability
 
 Do not report a suspected vulnerability in a public issue, pull request or discussion, and do not attach a real schema
 snapshot to any report.
 
-GitHub private vulnerability reporting is not enabled for this repository yet. Until it is, open an issue that asks a
-maintainer for a private channel and contains no details of the vulnerability. Then send the affected commit,
-reproduction steps with synthetic data, and the impact you observed through that channel. Please allow time for a fix
+Report it privately through
+[GitHub private vulnerability reporting](https://github.com/laranex/node-schema-viewer/security/advisories/new), with
+the affected commit, reproduction steps using synthetic data, and the impact you observed. Please allow time for a fix
 before public disclosure.
 
 In scope are, for example: reading files other than the viewer's and the snapshot through `serve`, bypasses of its
