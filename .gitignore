@@ -4,4 +4,3 @@ build/
 *.tgz
 .DS_Store
 coverage/
-!vendor/*.tgz
