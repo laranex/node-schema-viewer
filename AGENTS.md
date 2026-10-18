@@ -36,6 +36,7 @@ npm run lint           # ESLint flat config, typescript-eslint strict type-check
 npm test               # builds, compiles src+tests to build/, runs node --test (includes the packaging test)
 npm run test:package   # npm pack, install the tarball in a temporary project, run serve and mcp; reports the release guard
 npm run check:release  # fails when a dependency is not an exact registry version; npm publish runs it
+npm run test:examples  # installs examples/embedding (this package packed from the checkout) and tests the embedding examples over HTTP
 ```
 
 - Run the suite on another Node version with `PATH=/path/to/node/bin:$PATH npm test`.

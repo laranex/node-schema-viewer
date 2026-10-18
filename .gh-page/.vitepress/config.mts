@@ -66,6 +66,7 @@ export default defineConfig({
         { text: 'Multiple connections', link: '/connections' },
         { text: 'Schema comparison', link: '/comparison' },
         { text: 'Schema drift gate (CI)', link: '/check' },
+        { text: 'Embedding in your app', link: '/embedding' },
         { text: 'Live demo', link: '/demo' },
       ] },
       { text: 'REFERENCE', items: [

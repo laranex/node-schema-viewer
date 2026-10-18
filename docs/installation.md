@@ -31,6 +31,8 @@ Then add the configuration key to `package.json`:
 npx node-schema-viewer init      # adds "node-schema-viewer": {"output": "schema-viewer.json"}
 ```
 
+Keep it a development dependency: production installs (`npm ci --omit=dev`) then contain neither this package nor the viewer. To embed the viewer in your application during development, see [Embedding in your application](./embedding.md).
+
 ## Node.js versions and isolation
 
 `serve`, `mcp`, `compare` and `check` read a saved document only; they need no isolation and work on every supported Node.js version without Docker.
@@ -49,3 +51,4 @@ On Node.js 22 and 24 the Permission Model does not restrict the network, so proc
 - [Quick start](./quick-start.md): view, ask about and check a document.
 - [CLI and configuration](./cli.md): every command and option.
 - [Database introspection](./database.md): read a live database's catalogs.
+- [Embedding in your application](./embedding.md): the viewer as a protected, development-only page.
