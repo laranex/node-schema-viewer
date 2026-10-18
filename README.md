@@ -23,6 +23,14 @@ npx node-schema-viewer check --output gate-report.json        # CI drift gate: e
 
 Documentation site: <https://laranex.github.io/node-schema-viewer/> (built from `docs/` by `.gh-page/`, with a synthetic live demo). Documentation: [CLI and configuration](docs/cli.md), [build](docs/build.md), [schema comparison](docs/comparison.md), [schema drift gate in CI](docs/check.md), [MCP](docs/mcp.md), [database introspection](docs/database.md), [security](docs/security.md).
 
+## Security notice
+
+- The viewer is a development-only tool: never expose it or a snapshot in production. `serve` is loopback-only, for a single developer on their own machine; an embedded viewer needs your application's authentication, even locally.
+- Schema snapshots and every export (JSON, offline HTML, DBML, Mermaid, Markdown, SVG, PNG) and gate report describe your schema: never commit them, even to a private repository.
+- Protecting the page alone is insufficient: protect the page, every viewer file, the snapshot and every download on the server, with `Cache-Control: no-store`.
+- Run `npx node-schema-viewer scan --tracked --untracked` before each commit and in CI, and fail on every non-zero exit ([scan](docs/cli.md#scan)).
+- Policy and vulnerability reporting: [SECURITY.md](SECURITY.md); the shared policy: [Schema Viewer UI: Security](https://laranex.github.io/schema-viewer-ui/security.html).
+
 ## Configuration
 
 Static JSON in your `package.json`; JavaScript configuration files are never loaded.
