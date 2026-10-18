@@ -9,6 +9,8 @@ on:
       - 'examples/embedding/**'
       - 'package.json'
       - 'package-lock.json'
+      - '.laranex-schema-allowlist.json'
+      - 'src/scan.ts'
       - '.github/workflows/deploy-docs.yml'
   pull_request:
     paths:
@@ -17,6 +19,8 @@ on:
       - 'examples/embedding/**'
       - 'package.json'
       - 'package-lock.json'
+      - '.laranex-schema-allowlist.json'
+      - 'src/scan.ts'
       - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
 
@@ -47,6 +51,20 @@ jobs:
       - name: Test, build, and verify production links
         working-directory: .gh-page
         run: npm run check
+      # The published site holds no schema document but the two allowlisted synthetic demo snapshots: any non-zero
+      # exit (exposure, uncertain or incomplete scan) fails.
+      - name: Scan the built site for schema snapshots
+        run: |
+          npm run build
+          node dist/cli.js scan --artifacts .gh-page/.vitepress/dist --report "$RUNNER_TEMP/scan-site.json"
+      - name: Upload the scan report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: scan-report-site
+          path: ${{ runner.temp }}/scan-site.json
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v5
