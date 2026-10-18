@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { after, before, describe, test } from 'node:test';
 import { canonicalJson } from 'laranex-schema-viewer-ui/contract';
-import { createViewerServer, defaultViewerDirectory, hostname, POLICY, ViewerError } from '../src/server.js';
+import { createViewerServer, defaultViewerDirectory, hostname, isLoopbackHost, POLICY, ViewerError } from '../src/server.js';
 import { loadDocument } from '../src/snapshot.js';
 import { COMBINED, DECLARED, tempDir } from './helpers.js';
 
@@ -264,6 +264,15 @@ describe('viewer server startup', () => {
         } finally {
             server.closeAllConnections();
             await new Promise((resolve) => server.close(resolve));
+        }
+    });
+
+    test('only localhost, 127.0.0.0/8 and ::1 are loopback hosts', () => {
+        for (const host of ['localhost', 'LocalHost', '127.0.0.1', '127.255.255.254', '::1', '0:0:0:0:0:0:0:1', '::ffff:127.0.0.1']) {
+            assert.equal(isLoopbackHost(host), true, host);
+        }
+        for (const host of ['', '0.0.0.0', '::', '128.0.0.1', '10.0.0.1', '192.168.1.1', '::2', '[::1]', '::ffff:10.0.0.1', 'fe80::1', 'localhost.', 'localhost.example', 'example.com', '127.0.0.1.nip.io', '2130706433', '0x7f.1']) {
+            assert.equal(isLoopbackHost(host), false, host);
         }
     });
 

@@ -45,7 +45,7 @@ Static JSON in your `package.json`; JavaScript configuration files are never loa
 
 ## Viewer
 
-`serve [--snapshot PATH] [--host HOST] [--port PORT]` binds to `127.0.0.1:8765` by default and serves only the files the viewer build's manifest lists (each verified by SHA-256 at startup) plus `/snapshot.json`, re-read and validated on every request (503 while invalid). Requests must name this host or loopback in `Host`; responses carry a strict Content-Security-Policy, `X-Content-Type-Options: nosniff` and `Cache-Control: no-store`.
+`serve [--snapshot PATH] [--host HOST] [--port PORT] [--unsafe-allow-remote]` binds to `127.0.0.1:8765` by default, refuses a host that is not loopback unless `--unsafe-allow-remote` (no authentication, no TLS; see [CLI](docs/cli.md#serve)), and serves only the files the viewer build's manifest lists (each verified by SHA-256 at startup) plus `/snapshot.json`, re-read and validated on every request (503 while invalid). Requests must name this host or loopback in `Host`; responses carry a strict Content-Security-Policy, `X-Content-Type-Options: nosniff` and `Cache-Control: no-store`.
 
 ## Embedding in your application
 

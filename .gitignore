@@ -5,6 +5,10 @@ build/
 .DS_Store
 coverage/
 
+# Schema documents and HTML exports are sensitive: build them in CI, never commit them
+/schema-viewer.json
+/schema-viewer.html
+
 # Documentation site
 .gh-page/node_modules/
 .gh-page/.vitepress/cache/

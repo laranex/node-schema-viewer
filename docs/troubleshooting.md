@@ -26,7 +26,11 @@ Every command reads `--snapshot`, else the configured `output`, else `schema-vie
 
 ## The viewer answers "Host not allowed"
 
-Requests must name the host `serve` listens on, or a loopback name, in their `Host` header. Open the URL that `serve` prints. To reach it under another name or address, start it with `--host` set to that address, and only on a network you trust: the viewer has no authentication.
+Requests must name the host `serve` listens on, or a loopback name, in their `Host` header. Open the URL that `serve` prints. The viewer has no authentication and no TLS: to reach it from another machine, keep `serve` on loopback behind an authenticated HTTPS reverse proxy or an access-controlled tunnel. See [CLI](./cli.md#serve).
+
+## `serve` refuses a host: "is not a loopback address"
+
+`serve` binds only to `127.0.0.0/8`, `::1` and `localhost`. Use one of them and put an authenticated HTTPS reverse proxy or tunnel in front of it. `--unsafe-allow-remote` binds another address without authentication or TLS and warns on every start; in a container, use it with the port published to the host's loopback only (`-p 127.0.0.1:8765:8765`). See [CLI](./cli.md#serve).
 
 ## The MCP server does not start, or shows an old schema
 
