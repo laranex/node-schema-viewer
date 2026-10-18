@@ -9,7 +9,8 @@ Never enable, bundle or serve the Schema Viewer or its snapshots in production. 
 development, and protect the page, every viewer file and the schema JSON on the server with the same check.
 The one exception is [`serve`](#serve-or-an-embedded-viewer): a loopback-only viewer with no authentication, for a single developer on
 their own machine. Never share it.
-The policy is [Schema Viewer UI: Security](https://laranex.github.io/schema-viewer-ui/security.html).
+The policy is [Schema Viewer UI: Security](https://laranex.github.io/schema-viewer-ui/security.html); what this
+package enforces and what your application must do is in [SECURITY.md](../SECURITY.md#security-model).
 :::
 
 This page covers what is specific to Node.js. The generic rules (the shape of a protected embedding, snapshots,
@@ -211,7 +212,8 @@ the proxy runs; the redirect carries no content.
 
 ## Limitations
 
-- The package has no middleware, mount helper or authentication for frameworks; copy the examples' `lib/` files.
+- The package has no middleware, mount helper or authentication for frameworks; copy the examples' `lib/` files. They
+  are examples: authentication, and keeping the viewer out of production, remain your application's responsibility.
 - `serve` and `createViewerServer` have no authentication and are not meant to be mounted inside an application.
 - `POLICY` forbids framing; pass your own policy to `createSchemaViewer` to show the viewer in an `<iframe>`.
 - Basic Auth has no logout, no per-user audit and no rate limiting of its own; see

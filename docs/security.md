@@ -1,4 +1,8 @@
-# Build security
+# Isolation and security
+
+The security policy, how to report a vulnerability, and the table of what this package enforces and what you must do are in [SECURITY.md](../SECURITY.md); the policy shared by every Laranex Schema Viewer package is [Schema Viewer UI: Security](https://laranex.github.io/schema-viewer-ui/security.html). This page details the build's isolation, database inspection, the snapshot-only commands, the viewer and schema snapshots.
+
+## Build isolation
 
 Building a declared schema means importing your models, and importing a module runs its code. Laranex Schema Viewer for Node.js runs that code in a separate **extraction worker** and limits what reaches it. This page separates what is guaranteed from what is only best-effort. Keep the two apart when deciding where to run a build.
 
@@ -197,14 +201,18 @@ If you run the CLI under the Permission Model yourself (`node --permission --all
 
 ## Viewer and embedding
 
-The viewer shows a database's full structure and is a development-only tool: never expose it or a snapshot in production, and require authentication even in local development. The shared policy is [Schema Viewer UI: Security](https://laranex.github.io/schema-viewer-ui/security.html).
+The viewer shows a database's full structure and is a development-only tool: never expose it or a snapshot in production, and require authentication even in local development. Protecting the page alone is insufficient: the page, every viewer file, the snapshot and every download need the same server-side check ([SECURITY.md](../SECURITY.md#protecting-the-page-alone-is-insufficient)).
 
-- `serve` is the one exception to authentication in development: it has none, and is meant for a single developer on their own machine. Never share it. It binds to loopback by default, checks the `Host` header, serves only the files the viewer's manifest lists and sends `Cache-Control: no-store`. Keep it on loopback; for access from another machine, keep it on loopback behind an authenticated HTTPS reverse proxy or an access-controlled tunnel.
-- To show the viewer inside your application, follow [Embedding in your application](./embedding.md): one server-side check in front of the page, every viewer file and the snapshot, routes registered only in development, and production builds and installs without the viewer or the snapshot. The examples' tests check each of these over HTTP.
-- Never commit snapshots, and treat the viewer's exports (Mermaid, DBML, Markdown, JSON, images, offline HTML) and `check` reports kept as CI artifacts as sensitive.
+- `serve` is the one exception to authentication in development: it has none, and is meant for a single developer on their own machine. Never share it. It binds to loopback by default, checks the `Host` header, serves only the files the viewer's manifest lists and sends `Cache-Control: no-store`, `X-Content-Type-Options: nosniff` and its Content-Security-Policy on every response, errors included. Keep it on loopback; for access from another machine, keep it on loopback behind an authenticated HTTPS reverse proxy or an access-controlled tunnel ([CLI](./cli.md#serve)).
+- To show the viewer inside your application, follow [Embedding in your application](./embedding.md): one server-side check in front of the page, every viewer file and the snapshot, routes registered only in development, and production builds and installs without the viewer or the snapshot. The package provides no authentication; the examples' helpers are examples to copy, and the check is your application's. The examples' tests check each of these over HTTP.
+- `mcp` is local stdio only and read-only, with no remote transport; a bridge to HTTP must add its own authentication ([MCP](./mcp.md)).
 
 ## Schema snapshots
 
-A snapshot describes your whole schema. Never commit one, even to a private repository: it stays in the Git history. `init` adds the snapshot paths to `.gitignore`, `build` refuses to write a path that Git tracks and warns about one it does not ignore, and [`scan`](./cli.md#scan) finds snapshots by content in the Git index, untracked files, build output and, on request, the history; run it before each commit and in CI, and fail on every non-zero exit. A synthetic fixture you commit on purpose needs an explicit path and SHA-256 entry in `.laranex-schema-allowlist.json`.
+A snapshot describes your whole schema. Never commit one, even to a private repository: it stays in the Git history. Treat the viewer's exports (JSON, offline HTML, DBML, Mermaid, Markdown, SVG, PNG) and `check` reports kept as CI artifacts as just as sensitive.
 
-The scanner is a guard against accidents, not against someone hiding a snapshot on purpose: a renamed, encoded or compressed file (such as a base64+gzip offline HTML export) is not found, and SVG, PNG, DBML, Mermaid and Markdown exports cannot be recognized by content. Once you download or export a file, storing and sharing it is your responsibility; keep exports out of the repository.
+`init` adds the snapshot paths to `.gitignore`, `build` refuses to write a path that Git tracks and warns about one it does not ignore, and [`scan`](./cli.md#scan) finds snapshots by content in the Git index, untracked files, build output and, on request, the history; run it before each commit and in CI, and fail on every non-zero exit. A synthetic fixture you commit on purpose needs an explicit path and SHA-256 entry in `.laranex-schema-allowlist.json`, a review decision rather than proof that it is harmless.
+
+The scanner is a guard against accidents, not against someone hiding a snapshot on purpose: a renamed, HTML-entity-escaped, encoded or compressed file (such as a base64+gzip offline HTML export) is not found, and SVG, PNG, DBML, Mermaid and Markdown exports cannot be recognized by content. Once you download or export a file, storing and sharing it is your responsibility; keep exports out of the repository.
+
+If a snapshot reached Git or was published, follow the [incident response](../SECURITY.md#incident-response) steps: untrack and ignore it, treat what was pushed as disclosed, rewrite history only with the owner's approval, purge copies, and rotate anything the schema revealed.

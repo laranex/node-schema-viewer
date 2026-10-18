@@ -181,7 +181,7 @@ jobs:
 
 The job fails on exit 1 (drift) and on exit 2 (an incomplete or invalid check). With configured comparisons, the document must store them: a database build stores them, `npx node-schema-viewer compare --write` adds them to a document built without them, and comparisons named on the command line (`check 'app:tenant_template=app:*'`) are computed in memory on every run.
 
-The gate report names your connections, schemas, tables and columns, and the document holds the whole schema: treat both as sensitive. Upload the report only where people with access to the repository can read it, with a short retention, and do not upload the document unless you need it. Keep `schema-viewer.json` (and every other output) in `.gitignore`.
+The gate report names your connections, schemas, tables and columns, and the document holds the whole schema: treat both as sensitive. Upload the report only where people with access to the repository can read it, with a short retention, and do not upload the document unless you need it. Keep `schema-viewer.json` (and every other output) in `.gitignore`, and run [`scan`](./cli.md#scan) in the same workflow; see [SECURITY.md](../SECURITY.md#schema-snapshots-are-sensitive).
 
 ## Security
 

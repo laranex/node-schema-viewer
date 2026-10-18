@@ -81,7 +81,7 @@ Serves the shared viewer and the document, re-read and validated on every reques
 
 The viewer has no authentication and no TLS, so `serve` binds only to loopback. Another `--host` (`0.0.0.0`, a LAN address, a host name) is refused with exit code 2. To reach the viewer from another machine, keep `serve` on loopback and put an authenticated HTTPS reverse proxy or an access-controlled tunnel in front of it. In a container, the container's loopback is not reachable through a published port, so `serve` there needs `--host 0.0.0.0 --unsafe-allow-remote` (and warns); publish the port to the host's loopback only (`-p 127.0.0.1:8765:8765`), so that nothing beyond the host can reach it.
 
-`--unsafe-allow-remote` binds a non-loopback host anyway. It is never on by default, has no configuration key, and prints a warning to stderr on every start: anyone who can reach the address can read the whole schema, and the `Host` check is not access control. It is not a secure way to share the viewer.
+`--unsafe-allow-remote` binds a non-loopback host anyway. It is never on by default, has no configuration key, and prints a warning to stderr on every start: anyone who can reach the address can read the whole schema, and the `Host` check is not access control. It is not a secure way to share the viewer; see [SECURITY.md](../SECURITY.md#development-only-viewer).
 
 ## mcp
 
@@ -165,7 +165,7 @@ A synthetic fixture or a document committed on purpose is listed by exact path a
   "entries": [{ "path": "tests/fixtures/blog.json", "sha256": "…" }] }
 ```
 
-The scanner finds JSON documents (also nested ones) and documents embedded in HTML, JavaScript and source maps. It does not decode compressed or encoded payloads (such as base64+gzip offline HTML exports), and SVG, PNG, DBML, Mermaid and Markdown exports cannot be recognized by content: keep those out of the repository yourself.
+The scanner finds JSON documents (also nested ones) and documents embedded in HTML, JavaScript and source maps. It does not decode compressed or encoded payloads (such as base64+gzip offline HTML exports), and SVG, PNG, DBML, Mermaid and Markdown exports cannot be recognized by content: keep those out of the repository yourself. It guards against accidents, not adversaries; see the [limitations](../SECURITY.md#limitations) and, when a snapshot was committed or published, the [incident response](../SECURITY.md#incident-response).
 
 ### Before each commit
 
