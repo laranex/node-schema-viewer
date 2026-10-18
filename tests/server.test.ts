@@ -236,7 +236,7 @@ describe('viewer server startup', () => {
 
     test('serves the viewer of the installed contract package', () => {
         const installed = JSON.parse(readFileSync(join(defaultViewerDirectory(), 'manifest.json'), 'utf8')) as { version: string; contract: unknown };
-        assert.equal(installed.version, '0.3.0-dev.0');
+        assert.equal(installed.version, '0.3.0');
         assert.deepEqual(installed.contract, { format: 'laranex-schema', major: 2 });
     });
 
