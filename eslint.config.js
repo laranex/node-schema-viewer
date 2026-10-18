@@ -2,7 +2,7 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-    { ignores: ['dist/', 'build/', 'node_modules/', 'tests/fixtures/'] },
+    { ignores: ['dist/', 'build/', 'node_modules/', 'tests/fixtures/', '.gh-page/'] },
     js.configs.recommended,
     ...tseslint.configs.strictTypeChecked,
     {

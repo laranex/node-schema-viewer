@@ -1,0 +1,20 @@
+{
+  "name": "node-schema-viewer-docs",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=22.13.0"},
+  "scripts": {
+    "prepare:demo": "node scripts/prepare-demo.mjs",
+    "dev": "npm run prepare:demo && vitepress dev . --host 127.0.0.1",
+    "build": "npm run prepare:demo && vitepress build .",
+    "preview": "vitepress preview . --host 127.0.0.1",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm run test && npm run build && node scripts/check-build.mjs"
+  },
+  "devDependencies": {
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/geist-mono": "5.3.0",
+    "vitepress": "1.6.4",
+    "vue": "3.5.43"
+  }
+}
