@@ -4,9 +4,13 @@
 
 The package needs Node.js 22.13.0 or later (`engines.node` is `>=22.13.0`). Check with `node --version` and upgrade; 22, 24 and 26 are tested. See [installation](./installation.md).
 
-## `build` is not available yet
+## `build` refuses process isolation
 
-`node-schema-viewer build` prints `build is not available yet` and exits with an error. Building from Node.js ORMs is [in development](./orm-support.md). Use a document written by another Laranex producer, or read a database with the [introspection API](./database.md).
+On Node.js 22 and 24, `isolation: "process"` is refused because the Permission Model does not restrict the network there. Use `"isolation": "container"` with a local image, or run the build on Node.js 26. Nothing falls back to a weaker level; see [isolation](./build.md#isolation).
+
+## `build --source combined` is not available yet
+
+Combined builds (reconciling a declared and a database document) are not available yet and exit with code 2. Build `declared` and `database` documents separately in the meantime; see [build](./build.md).
 
 ## Unsupported laranex-schema version
 
@@ -50,6 +54,6 @@ Errors never echo the URL or its password.
 
 ## Limitations
 
-- `build` and the ORM adapters are not available yet; see [supported ORMs](./orm-support.md).
+- `build` supports Drizzle only so far; TypeORM, MikroORM and Sequelize v6 are planned, and `--source combined` is not available yet. See [supported ORMs](./orm-support.md).
 - Database documents leave `comparisons` (until `compare --write`), `migrations` and `inferredAssociations` empty.
 - Process isolation is best-effort and refused on Node.js 22 and 24; see [isolation and security](./security.md#limitations).

@@ -8,8 +8,15 @@ import { VERSION } from './version.js';
 const USAGE = `Usage: node-schema-viewer <command> [options]
 
 Commands:
-  init [--output PATH] [--project-root DIR]
+  init [--output PATH] [--orm NAME] [--module PATH...] [--project-root DIR]
                      Add "node-schema-viewer" defaults to the project's package.json
+  build [--source declared|database] [--project-root DIR] [--module PATH...] [--orm NAME] [--output PATH]
+        [--isolation process|container] [--timeout SECONDS] [--container-image IMAGE]
+        [--database-url-env NAME] [--schema NAME...] [--database-connection NAME] [--database NAME=ENV_VAR...]
+        [--allow-write-privileges] [--compare BASELINE=TARGET...] [--compare-limit N]
+                     Save the schema as a laranex-schema 2.0 document: declared (ORM schema modules, imported
+                     only in the isolated extraction worker) or database (live catalogs, read-only); database
+                     URLs are read from the named environment variables only
   serve [--snapshot PATH] [--host HOST] [--port PORT]
                      Serve the viewer from a saved laranex-schema document (default 127.0.0.1:8765)
   mcp [--snapshot PATH]
@@ -23,7 +30,6 @@ Commands:
                      Schema drift gate for CI: exit 0 passed, 1 a finding meets the thresholds, 2 the check could
                      not be completed (invalid document or arguments, a requested comparison not found, an
                      incomplete comparison or inspection)
-  build              Not available yet
 
 Options:
   --help, -h         Show this help
@@ -129,14 +135,102 @@ async function mcp(args: string[]): Promise<void> {
 }
 
 async function init(args: string[]): Promise<void> {
-    const values = parse(args, { output: { type: 'string' }, 'project-root': { type: 'string' } });
+    const { values } = parseWithPositionals(args, { output: { type: 'string' }, 'project-root': { type: 'string' }, orm: { type: 'string' }, module: { type: 'string', multiple: true } });
     if (values.help) {
         process.stdout.write(USAGE);
         return;
     }
     const { addConfig, DEFAULT_SNAPSHOT } = await import('./config.js');
-    const path = addConfig((values['project-root'] as string | undefined) ?? process.cwd(), (values.output as string | undefined) ?? DEFAULT_SNAPSHOT);
-    process.stdout.write(`Added "node-schema-viewer" to ${path}\n`);
+    const path = addConfig((values['project-root'] as string | undefined) ?? process.cwd(), (values.output as string | undefined) ?? DEFAULT_SNAPSHOT, {
+        orm: values.orm as string | undefined,
+        modules: (values.module as string[] | undefined) ?? [],
+    });
+    process.stdout.write(`Added "node-schema-viewer" to ${path}. Next: node-schema-viewer build\n`);
+}
+
+function positive(value: string | undefined, option: string): number | undefined {
+    if (value === undefined) {
+        return undefined;
+    }
+    const number = Number(value);
+    if (!/^\s*\d+(\.\d+)?\s*$/.test(value) || !(number > 0)) {
+        throw new UsageError(`${option} must be a positive number of seconds`);
+    }
+    return number;
+}
+
+// Extract declared metadata in the isolated worker, or inspect the database in its own worker.
+async function build(args: string[]): Promise<number> {
+    const { values, positionals } = parseWithPositionals(args, {
+        'project-root': { type: 'string' },
+        module: { type: 'string', multiple: true },
+        orm: { type: 'string' },
+        output: { type: 'string' },
+        isolation: { type: 'string' },
+        timeout: { type: 'string' },
+        'container-image': { type: 'string' },
+        source: { type: 'string' },
+        'database-url-env': { type: 'string' },
+        schema: { type: 'string', multiple: true },
+        'database-connection': { type: 'string' },
+        database: { type: 'string', multiple: true },
+        'allow-write-privileges': { type: 'boolean' },
+        compare: { type: 'string', multiple: true },
+        'compare-limit': { type: 'string' },
+    });
+    if (values.help) {
+        process.stdout.write(USAGE);
+        return 0;
+    }
+    if (positionals.length) {
+        throw new UsageError(`Unexpected argument: ${positionals[0] ?? ''}`);
+    }
+    const { ISOLATION_LEVELS, SOURCES } = await import('./config.js');
+    const { build: run, BuildUsageError } = await import('./build.js');
+    const option = (name: string): string | undefined => values[name] as string | undefined;
+    const list = (name: string): string[] => (values[name] as string[] | undefined) ?? [];
+    const isolation = choice(option('isolation'), '--isolation', ISOLATION_LEVELS);
+    const source = choice(option('source'), '--source', SOURCES);
+    const timeout = positive(option('timeout'), '--timeout');
+    const compareLimit = integer(option('compare-limit'), '--compare-limit');
+    const options: import('./build.js').BuildOptions = {
+        projectRoot: option('project-root') ?? process.cwd(),
+        modules: list('module'),
+        schemas: list('schema'),
+        databases: list('database'),
+        compare: list('compare'),
+        allowWritePrivileges: values['allow-write-privileges'] === true,
+    };
+    const optional = {
+        orm: option('orm'),
+        output: option('output'),
+        isolation,
+        timeout,
+        containerImage: option('container-image'),
+        source,
+        databaseUrlEnv: option('database-url-env'),
+        databaseConnection: option('database-connection'),
+        compareLimit,
+    };
+    for (const [key, value] of Object.entries(optional)) {
+        if (value !== undefined) {
+            Object.assign(options, { [key]: value });
+        }
+    }
+    try {
+        await run(
+            options,
+            (line) => process.stdout.write(`${line}\n`),
+            (line) => process.stderr.write(`${line}\n`),
+        );
+    } catch (error) {
+        if (error instanceof BuildUsageError) {
+            process.stderr.write(`Error: ${error.message}\n`);
+            return 2;
+        }
+        throw error;
+    }
+    return 0;
 }
 
 // Comparisons named on the command line (with limit), or else the configured ones.
@@ -271,8 +365,7 @@ async function main(argv: string[]): Promise<number> {
             case 'check':
                 return await check(rest);
             case 'build':
-                process.stderr.write('Error: build is not available yet in node-schema-viewer for Node.js; serve and mcp read a saved laranex-schema document\n');
-                return 1;
+                return await build(rest);
             case '--version':
             case '-v':
                 process.stdout.write(`${VERSION}\n`);

@@ -104,6 +104,8 @@ function model(connections: ConnectionModel[]): SchemaModel {
         producer: 'node-schema-viewer',
         orm: null,
         connections,
+        entities: [],
+        associations: [],
         diagnostics: [
             {
                 kind: 'write_privileges',
@@ -193,5 +195,18 @@ describe('layering', () => {
             }
         }
         assert.ok(readdirSync(directory).includes('catalog.ts'));
+    });
+
+    test('ORM adapters build the internal model and never write document fields', () => {
+        const directory = join(ROOT, 'src', 'isolation', 'extractors');
+        const adapters = readdirSync(directory).filter((name) => name.endsWith('.ts'));
+        assert.deepEqual(adapters, ['declared.ts', 'drizzle.ts']);
+        for (const name of adapters) {
+            const source = readFileSync(join(directory, name), 'utf8');
+            // foreignTable and foreignColumns are also Drizzle's own names, read from its foreign keys.
+            for (const field of ['provenance', 'typeName:', 'backs:', 'opclass:', 'ormDefault', 'coverage:', 'className', 'relatedModel', 'relatedTable', 'readOnly', 'collection:', 'derivedLinks', 'inferredAssociations']) {
+                assert.ok(!source.includes(field), `${name} writes ${field}`);
+            }
+        }
     });
 });
