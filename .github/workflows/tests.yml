@@ -1,13 +1,67 @@
 name: tests
 
+# Two matrices (AGENTS.md, "CI and supported versions"):
+# - pr: pull requests and branch pushes. Node.js 24 (LTS) with every database engine and container isolation,
+#   22.13.0 (the engines floor) and 26 (process isolation; Current until it enters LTS on 2026-10-28).
+# - release: pushes to main, manual runs and callers (a publish workflow uses `matrix: release`): every supported
+#   Node.js line with every database engine, container isolation on 22 and 24, the embedding examples on the floor and
+#   on 24.
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      matrix:
+        description: Which matrix to run
+        type: choice
+        options: [release, pr]
+        default: release
+  workflow_call:
+    inputs:
+      matrix:
+        description: pr or release
+        type: string
+        default: release
 
 permissions:
   contents: read
 
 jobs:
+  plan:
+    name: Select the matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      tests: ${{ steps.select.outputs.tests }}
+      examples: ${{ steps.select.outputs.examples }}
+    steps:
+      - id: select
+        env:
+          MODE: ${{ inputs.matrix || (github.event_name == 'push' && github.ref == 'refs/heads/main' && 'release') || 'pr' }}
+        run: |
+          case "$MODE" in
+            release)
+              tests='[
+                {"node": "22.13.0", "role": "minimum supported", "databases": true, "container": false},
+                {"node": "22.x", "role": "LTS", "databases": true, "container": true},
+                {"node": "24.x", "role": "LTS", "databases": true, "container": true},
+                {"node": "26.x", "role": "Current, process isolation", "databases": true, "container": false}
+              ]'
+              examples='["22.13.0", "24.x"]' ;;
+            pr)
+              tests='[
+                {"node": "24.x", "role": "LTS", "databases": true, "container": true},
+                {"node": "22.13.0", "role": "minimum supported", "databases": false, "container": false},
+                {"node": "26.x", "role": "Current, process isolation", "databases": false, "container": false}
+              ]'
+              examples='["24.x"]' ;;
+            *) echo "Unknown matrix: $MODE (expected pr or release)"; exit 1 ;;
+          esac
+          {
+            echo "tests=$(jq -c . <<< "$tests")"
+            echo "examples=$(jq -c . <<< "$examples")"
+          } >> "$GITHUB_OUTPUT"
+
   checks:
     name: Lint, typecheck and release guard
     runs-on: ubuntu-latest
@@ -26,56 +80,40 @@ jobs:
       - run: npm run check:release
 
   test:
-    # The full suite, with the introspection tests against disposable servers (tests/databases/compose.yaml; synthetic
-    # schemas and throwaway credentials only). 22.13.0 is the engines floor.
-    name: Node.js ${{ matrix.node }}
+    # The full suite (contract, conformance, parity, packaging and the security regression tests); each version skips
+    # what does not apply to it (process isolation runs on 26, its refusal on 22 and 24). Database tests run against
+    # disposable servers (tests/databases/compose.yaml; synthetic schemas and throwaway credentials only) where
+    # `databases` is set; container isolation (tests/containers/README.md) where `container` is set.
+    name: Node.js ${{ matrix.node }} (${{ matrix.role }}${{ matrix.databases && ', databases' || '' }}${{ matrix.container && ', container isolation' || '' }})
+    needs: plan
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        node: ['22.13.0', '22.x', '24.x', '26.x']
+        include: ${{ fromJSON(needs.plan.outputs.tests) }}
     services:
+      # An empty image skips the service.
       postgres:
-        image: postgres:17.6
+        image: ${{ matrix.databases && 'postgres:17.6' || '' }}
         env: {POSTGRES_PASSWORD: lsv-admin, POSTGRES_DB: lsv}
         ports: ['55432:5432']
         options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-retries 20
       mysql:
-        image: mysql:8.4.6
+        image: ${{ matrix.databases && 'mysql:8.4.6' || '' }}
         env: {MYSQL_ROOT_PASSWORD: lsv-admin, MYSQL_DATABASE: lsv}
         ports: ['53306:3306']
         options: --health-cmd "mysqladmin ping -plsv-admin" --health-interval 5s --health-retries 30
       mariadb:
-        image: mariadb:11.4.8
+        image: ${{ matrix.databases && 'mariadb:11.4.8' || '' }}
         env: {MARIADB_ROOT_PASSWORD: lsv-admin, MARIADB_DATABASE: lsv}
         ports: ['53307:3306']
         options: --health-cmd "healthcheck.sh --connect" --health-interval 5s --health-retries 30
     env:
-      LSV_TEST_POSTGRES_URL: postgresql://postgres:lsv-admin@127.0.0.1:55432/lsv
-      LSV_TEST_MYSQL_URL: mysql://root:lsv-admin@127.0.0.1:53306/lsv
-      LSV_TEST_MARIADB_URL: mysql://root:lsv-admin@127.0.0.1:53307/lsv
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ matrix.node }}
-          cache: npm
-      - run: npm ci
-      - run: npm test
-
-  container:
-    # Container isolation (tests/containers/README.md): the image holds this commit's packed package on Node.js 24;
-    # the host runs 22, where container isolation is required, and 24.
-    name: Container isolation, host Node.js ${{ matrix.node }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        node: ['22.x', '24.x']
+      # The tests skip a server whose variable is empty.
+      LSV_TEST_POSTGRES_URL: ${{ matrix.databases && 'postgresql://postgres:lsv-admin@127.0.0.1:55432/lsv' || '' }}
+      LSV_TEST_MYSQL_URL: ${{ matrix.databases && 'mysql://root:lsv-admin@127.0.0.1:53306/lsv' || '' }}
+      LSV_TEST_MARIADB_URL: ${{ matrix.databases && 'mysql://root:lsv-admin@127.0.0.1:53307/lsv' || '' }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -88,14 +126,41 @@ jobs:
       # The tests run every container with --pull never, and one builds a derived image from the base image itself,
       # so the base image must be in the local image store, not only in the builder's cache.
       - name: Pull the base image
+        if: matrix.container
         run: docker pull node:24-slim
       - name: Build the lsv-node-test image from the packed package
+        if: matrix.container
         run: |
           image="$RUNNER_TEMP/lsv-image"
           mkdir "$image"
           npm pack --pack-destination "$image"
           cp tests/containers/Dockerfile "$image/"
           docker build -t lsv-node-test "$image"
+          # Set only here: the container tests skip when the variable is unset, not when it is empty.
+          echo "LSV_TEST_CONTAINER_IMAGE=lsv-node-test" >> "$GITHUB_ENV"
       - run: npm test
-        env:
-          LSV_TEST_CONTAINER_IMAGE: lsv-node-test
+
+  examples:
+    # The embedding examples (examples/embedding: Express, Fastify, NestJS, Next.js) against this package packed from
+    # the checkout, with their authentication and exposure tests.
+    name: Embedding examples, Node.js ${{ matrix.node }}
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ${{ fromJSON(needs.plan.outputs.examples) }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            examples/embedding/package-lock.json
+      - run: npm ci
+      - run: npm run test:examples
