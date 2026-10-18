@@ -46,6 +46,24 @@ npm run test:examples  # installs examples/embedding (this package packed from t
 - Parity: `tests/parity.test.ts` runs every shared gate case through `check --json` (requests via configuration, thresholds via flags; bytes equal to `expected`), and `compare`/`check` on python-schema-viewer's own documents (`tests/fixtures/conformance/python-intel/documents/`, synthetic) against its recorded output (`python-intel/cli.json`, written by `scripts/record-python-intel-conformance.py`, same invocation as the MCP recorder): stdout and exit code, and for errors stderr, equal after mapping the configuration location (`[[tool.laranex-schema-viewer.comparisons]] entry N` → `package.json "node-schema-viewer" comparisons[N-1]`) and `object_type` → `objectType`. `tests/gate-security.test.ts` runs both commands under the Permission Model with a network/child-process sentinel (`tests/fixtures/sentinel/deny.mjs`), including `compare --write` and `check --output` with `--allow-fs-write` limited to the output directory.
 - Conformance: `tests/fixtures/conformance/mcp/*.json` are python-schema-viewer's `tests/fixtures/mcp-conformance/` recordings, copied byte for byte, and `tests/fixtures/conformance/mcp-text/*.json` the exact text its MCP server sends for each call (with the Python commit), both written by `scripts/record-mcp-conformance.py` (`PYTHONPATH=<python-schema-viewer>/src python -B scripts/record-mcp-conformance.py <python-schema-viewer> [--check]`). `tests/query.test.ts` and `tests/mcp.test.ts` require every call to match by value and by text (input-schema rejections: error only). Regenerate only for an intended, documented response change on both sides. All 1,801 recorded calls are compared (1,633 by text). Never hand-edit a recording: when a shared fixture changes, re-record from python-schema-viewer once it has adopted the change.
 
+## CI and supported versions
+
+`.github/workflows/tests.yml` tests supported LTS lines and the engines floor, not every minor or patch release. A `plan` job picks the matrix: `release` for pushes to `main`, `workflow_dispatch` (default) and `workflow_call` (default; a future `publish.yml` must call it as `uses: ./.github/workflows/tests.yml` with `matrix: release`, like python-schema-viewer's), `pr` for everything else.
+
+| Job | `pr` | `release` |
+| --- | --- | --- |
+| Lint, typecheck, `check:release` | 24 | 24 |
+| `npm test` with PostgreSQL, MySQL and MariaDB | 24 | 22.13.0, 22, 24, 26 |
+| `npm test`, container isolation (`LSV_TEST_CONTAINER_IMAGE`) | 24 | 22, 24 |
+| `npm test`, floor smoke test | 22.13.0 | 22.13.0 (with the databases) |
+| `npm test`, process isolation | 26 | 26 (with the databases) |
+| `npm run test:examples` | 24 | 22.13.0, 24 |
+
+- Every `npm test` job runs the whole suite: contract and MCP conformance, parity, the packaging test and the security regression tests (`isolation`, `build`, `gate-security`, introspection read-only enforcement); each version skips what does not apply to it. Databases run as services inside the job, all three engines together, never one job per engine. Release runs them on every line because the introspection worker's Permission Model flags differ (`--allow-net` exists only on 25+) and 22.13 still allows `fsync` under it.
+- Node.js 26 is Current, not LTS, until 2026-10-28 (the [release schedule](https://github.com/nodejs/Release/blob/main/schedule.json)). Until then it runs as its own job, `Node.js 26.x (Current, process isolation…)`, because process isolation exists only there; it fails the workflow like any other job, but branch protection should require only the 24, 22.13.0, checks and examples jobs. Once 26 is LTS, require its job too and label it LTS. When 22 reaches end of life (2027-04-30), raise `engines.node` and the floor job together; when a new LTS line starts, add it to `release`, and move `pr`'s representative line to it once it is LTS.
+- 22.13.0 stays an exact pin (the floor that passed the compatibility probes); the other entries are `22.x`/`24.x`/`26.x`, the latest patch of the line.
+- The documentation site is checked by `deploy-docs.yml` on pull requests that touch it and on `main`, not by `tests.yml`.
+
 ## Security
 
 - Viewer, MCP, `compare` and `check` must not execute SQL, connect to databases, run migrations, read rows, open sockets, start processes, import application code, rebuild snapshots, or expose arbitrary files; `compare` and `check` read only the snapshot and `package.json` (only `compare --write` and `check --output` write). Preserve bounds, manifest-only serving, path and Host checks, loopback defaults and stdout protocol hygiene.

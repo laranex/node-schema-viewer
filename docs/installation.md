@@ -46,6 +46,10 @@ Building a declared schema (`build --source declared`) imports your models in a 
 
 On Node.js 22 and 24 the Permission Model does not restrict the network, so process isolation is refused there. Nothing is ever silently downgraded: a missing Docker or Podman, a missing image, or an image with another version of this package stops the build. Use `container` for untrusted or security-sensitive projects and in CI. See [isolation and security](./security.md).
 
+## Tested versions
+
+CI tests supported release lines, not every patch release. Pull requests run Node.js 24 (LTS) with PostgreSQL, MySQL, MariaDB and container isolation, the 22.13.0 floor, and Node.js 26 for process isolation. Release validation runs every database engine on 22.13.0, 22, 24 and 26, container isolation on 22 and 24, and the embedding examples on 22.13.0 and 24. Node.js 26 is tested in its own job while it is the Current release and becomes a required check once it enters LTS (October 2026).
+
 ## Next steps
 
 - [Quick start](./quick-start.md): view, ask about and check a document.
