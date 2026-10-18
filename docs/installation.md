@@ -10,9 +10,9 @@
 | --- | --- |
 | Node.js | **22.13.0 or later** (`engines.node` is `>=22.13.0`); 22, 24 and 26 are tested |
 | Module format | ESM; the CLI and the API run on Node.js directly, no bundler needed |
-| Docker or Podman | Only for container isolation of the upcoming `build` (required there on Node.js 22 and 24) |
+| Docker or Podman | Only for container isolation of `build` (required there on Node.js 22 and 24) |
 
-Check your runtime with `node --version`. 22.13.0 is the lowest 22.x release that passed the compatibility probes. TypeScript model files (for the upcoming `build`) need Node.js 22.15 or later.
+Check your runtime with `node --version`. 22.13.0 is the lowest 22.x release that passed the compatibility probes. TypeScript schema modules (for `build`) need Node.js 22.15 or later.
 
 ## Install
 
@@ -35,7 +35,7 @@ npx node-schema-viewer init      # adds "node-schema-viewer": {"output": "schema
 
 `serve`, `mcp`, `compare` and `check` read a saved document only; they need no isolation and work on every supported Node.js version without Docker.
 
-Building a declared schema (the upcoming `build`) imports your models in a separate extraction worker. Which isolation level it may use depends on the Node.js version running it:
+Building a declared schema (`build --source declared`) imports your models in a separate extraction worker. Which isolation level it may use depends on the Node.js version running it:
 
 | Node.js running the build | `process` isolation | `container` isolation |
 | --- | --- | --- |

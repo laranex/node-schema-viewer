@@ -6,6 +6,7 @@ import {
     buildGraph,
     diagnosticId,
     FORMAT,
+    inferAssociations,
     VERSION,
     type Column,
     type Connection,
@@ -13,11 +14,26 @@ import {
     type Diagnostic,
     type ForeignKey,
     type Index,
+    type Model,
+    type Relationship,
     type SchemaDocument,
     type Table,
 } from 'laranex-schema-viewer-ui/contract';
 import { connectionId } from './ids.js';
-import type { ColumnModel, ConnectionModel, ConstraintModel, DiagnosticModel, ForeignKeyModel, IndexModel, SchemaModel, SourceKind, TableModel } from './model.js';
+import type {
+    AssociationModel,
+    ColumnModel,
+    ConnectionModel,
+    ConstraintModel,
+    DiagnosticModel,
+    EntityModel,
+    ForeignKeyModel,
+    IndexModel,
+    OrmExtensions,
+    SchemaModel,
+    SourceKind,
+    TableModel,
+} from './model.js';
 
 type Provenance = [SourceKind];
 
@@ -52,6 +68,24 @@ function byKey<T>(key: (item: T) => (string | null)[]): (a: T, b: T) => number {
 const sortById = <T extends { id: string }>(items: T[]): T[] => items.sort(byKey((i) => [i.id]));
 const sortDiagnostics = (items: Diagnostic[]): Diagnostic[] => items.sort(byKey((d) => [d.category, d.kind, d.subject.type, d.subject.id, d.message]));
 
+// Equal diagnostics have one id; each is listed once.
+function uniqueDiagnostics(items: Diagnostic[]): Diagnostic[] {
+    const seen = new Set<string>();
+    return items.filter((d) => !seen.has(d.id) && seen.add(d.id));
+}
+
+// A relationship's inverse must name a relationship the document has.
+function knownInverses(relationships: Relationship[]): Relationship[] {
+    const ids = new Set(relationships.map((r) => r.id));
+    return relationships.map((r) => (r.inverse === null || ids.has(r.inverse) ? r : { ...r, inverse: null }));
+}
+
+// Only when an extractor recorded something; an empty extensions object is never written.
+function withExtensions<T extends object>(entry: T, extensions: OrmExtensions | undefined): T {
+    const namespaces = Object.entries(extensions ?? {}).filter(([, values]) => Object.keys(values).length > 0);
+    return namespaces.length === 0 ? entry : { ...entry, extensions: Object.fromEntries(namespaces) };
+}
+
 export function serialize(model: SchemaModel): SchemaDocument {
     const provenance: Provenance = [model.source];
     return finish({
@@ -61,11 +95,11 @@ export function serialize(model: SchemaModel): SchemaDocument {
         generator: { name: model.producer, orm: model.orm },
         note: null,
         connections: model.connections.map((c) => connection(c, model.source, provenance)).sort(byKey((c) => [c.name])),
-        models: [],
-        relationships: [],
+        models: sortById(model.entities.map(entity)),
+        relationships: knownInverses(sortById(model.associations.map(association))),
         links: [],
         derivedLinks: [],
-        diagnostics: sortDiagnostics(model.diagnostics.map(diagnostic)),
+        diagnostics: uniqueDiagnostics(sortDiagnostics(model.diagnostics.map(diagnostic))),
         comparisons: [],
         migrations: [],
         inferredAssociations: [],
@@ -93,12 +127,14 @@ export function merge(documents: readonly SchemaDocument[]): SchemaDocument {
         diagnostics: sortDiagnostics(documents.flatMap((d) => d.diagnostics)),
         comparisons: sortById(documents.flatMap((d) => d.comparisons)),
         migrations: sortById(documents.flatMap((d) => d.migrations)),
-        inferredAssociations: sortById(documents.flatMap((d) => d.inferredAssociations)),
+        inferredAssociations: [],
     });
 }
 
+// The shared graph builder's links, then the shared inference's associations (none without models).
 function finish(document: SchemaDocument): SchemaDocument {
-    return assertDocument({ ...document, ...buildGraph(document) }, { strict: true });
+    const linked = { ...document, ...buildGraph(document) };
+    return assertDocument({ ...linked, inferredAssociations: inferAssociations(linked) }, { strict: true });
 }
 
 function connection(c: ConnectionModel, source: SourceKind, provenance: Provenance): Connection {
@@ -119,7 +155,7 @@ function connection(c: ConnectionModel, source: SourceKind, provenance: Provenan
 }
 
 function table(t: TableModel, provenance: Provenance): Table {
-    return {
+    return withExtensions({
         id: t.id,
         name: t.name,
         schema: t.schema,
@@ -132,11 +168,12 @@ function table(t: TableModel, provenance: Provenance): Table {
         foreignKeys: sortById(t.foreignKeys.map((f) => foreignKey(f, provenance))),
         constraints: sortById(t.constraints.map((k) => constraint(k, provenance))),
         provenance: [...provenance],
-    };
+    }, t.extensions);
 }
 
 function column(c: ColumnModel, provenance: Provenance): Column {
-    return {
+    const applied = c.applicationDefault ?? null;
+    return withExtensions({
         name: c.name,
         type: c.nativeType,
         typeName: c.baseType,
@@ -146,12 +183,12 @@ function column(c: ColumnModel, provenance: Provenance): Column {
         collation: c.collation,
         enum: c.enumeration === null ? null : { name: c.enumeration.namedType, values: [...c.enumeration.values] },
         default: c.serverDefault === null ? null : { kind: c.serverDefault.kind, value: c.serverDefault.sql },
-        ormDefault: null,
+        ormDefault: applied === null ? null : { kind: applied.kind, value: applied.value },
         generated: c.generated === null ? null : { kind: c.generated.storage, expression: c.generated.expression },
         comment: c.comment,
         note: null,
         provenance: [...provenance],
-    };
+    }, c.extensions);
 }
 
 function index(i: IndexModel, provenance: Provenance): Index {
@@ -180,11 +217,11 @@ function index(i: IndexModel, provenance: Provenance): Index {
     if (dialects.length > 0) {
         entry.dialectOptions = Object.fromEntries(dialects.map(([dialect, options]) => [dialect, { options: { ...options } }]));
     }
-    return entry;
+    return withExtensions(entry, i.extensions);
 }
 
 function foreignKey(f: ForeignKeyModel, provenance: Provenance): ForeignKey {
-    return {
+    return withExtensions({
         id: f.id,
         name: f.name,
         columns: [...f.columns],
@@ -195,18 +232,52 @@ function foreignKey(f: ForeignKeyModel, provenance: Provenance): ForeignKey {
         deferrable: f.deferrable,
         initially: f.initially,
         provenance: [...provenance],
-    };
+    }, f.extensions);
 }
 
 function constraint(k: ConstraintModel, provenance: Provenance): Constraint {
-    return {
+    return withExtensions({
         id: k.id,
         kind: k.kind,
         name: k.name,
         columns: [...k.columns],
         expression: k.kind === 'check' ? k.expression : null,
         provenance: [...provenance],
-    };
+    }, k.extensions);
+}
+
+function entity(e: EntityModel): Model {
+    return withExtensions({
+        id: e.id,
+        className: e.name,
+        tables: [...e.tables].sort(byCodePoint),
+        primaryKey: [...e.primaryKey],
+        source: e.location === null ? null : { file: e.location.file, line: e.location.line },
+    }, e.extensions);
+}
+
+function association(a: AssociationModel): Relationship {
+    return withExtensions({
+        id: a.id,
+        name: a.name,
+        model: a.model,
+        table: a.table,
+        relatedModel: a.target.model,
+        relatedTable: a.target.table,
+        type: a.kind,
+        cardinality: a.cardinality,
+        collection: a.many,
+        readOnly: !a.writable,
+        keys: a.key === null ? null : { from: { table: a.key.referencing.table, columns: [...a.key.referencing.columns] }, to: { table: a.key.referenced.table, columns: [...a.key.referenced.columns] } },
+        pivot: null,
+        polymorphic: null,
+        through: null,
+        join: null,
+        constraints: [],
+        inverse: a.inverse,
+        note: null,
+        source: a.location === null ? null : { file: a.location.file, line: a.location.line },
+    }, a.extensions);
 }
 
 function diagnostic(d: DiagnosticModel): Diagnostic {

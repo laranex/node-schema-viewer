@@ -4,7 +4,13 @@ Building a declared schema means importing your models, and importing a module r
 
 `serve` and `mcp` read a saved snapshot only. They never import application code or connect to a database, need no isolation, and keep working on Node.js 22.13+ without Docker.
 
-> The `build` command is not available yet. The isolation layer described here (`src/isolation/`) is in place and tested, so that the ORM adapters can be added on top of it.
+`build --source declared` ([build](./build.md)) is the only command that imports application code, and it does so only in the extraction worker: the ORM adapter (Drizzle) runs inside it, loads the ORM from your project, imports your schema modules and returns the document, which the parent validates. `build --source database` imports no application code; it runs the introspection worker (below).
+
+### Database URLs and the build
+
+- URLs are read only from environment variables whose names the configuration or `--database NAME=ENV_VAR` gives, by the `build` process itself, and only for a database build. They travel to the introspection worker on stdin, one worker per connection with only its own URL.
+- The extraction worker never receives them: its environment is the allowlist below, a variable named as a URL source must not appear in `envPassthrough` or `env` (the build stops), and a declared build does not read the URL variables at all.
+- Configuration values and arguments that look like URLs are refused without being repeated; introspection errors are scrubbed of the URL and its password.
 
 ## Threat model
 
@@ -34,7 +40,7 @@ On Node.js 22 and 24 the Permission Model does not restrict the network, so proc
 | Environment | Allowlist only | Allowlist only |
 | Network | Blocked by the Permission Model | None (`--network none`), plus the Permission Model inside |
 | Child processes, worker threads, native addons, WASI, inspector | Blocked by the Permission Model | Blocked by the Permission Model |
-| Reading files | The project, its workspace, `node_modules`, this package, `allowReads` | Only what is mounted: the project (read-only) and the image |
+| Reading files | The project, its workspace, `node_modules`, this package and its contract package (`laranex-schema-viewer-ui`, which the adapters serialize with), `allowReads` | Only what is mounted: the project (read-only) and the image |
 | Writing files | Private scratch directories and `allowWrites` inside the project | `/tmp` (128 MB tmpfs) and a disposable output directory; the project and root filesystem are read-only |
 | `node:sqlite` | Disabled (`--no-experimental-sqlite`) | Disabled |
 | `eval`, `new Function` | Blocked unless `allowCodeGeneration` | Same |
@@ -71,7 +77,7 @@ The Node.js [Permission Model](https://nodejs.org/api/permissions.html) restrict
 ```text
 node --permission
      --allow-fs-read=<project> --allow-fs-read=<workspace root> --allow-fs-read=<each reachable node_modules>
-     --allow-fs-read=<this package> --allow-fs-read=<allowReads ...> --allow-fs-read=<scratch>
+     --allow-fs-read=<this package> --allow-fs-read=<laranex-schema-viewer-ui> --allow-fs-read=<allowReads ...> --allow-fs-read=<scratch>
      --allow-fs-write=<scratch: home, tmp, out> --allow-fs-write=<allowWrites inside the project ...>
      --no-addons --no-experimental-sqlite --disallow-code-generation-from-strings
      <package>/dist/isolation/worker.js --result <out>/result.json
@@ -105,30 +111,30 @@ TypeScript model files are compiled in the worker by a synchronous `module.regis
 
 ## Validation
 
-`tests/isolation.test.ts` exercises hostile model modules (`tests/fixtures/adversarial/`) through a test-only extractor. On Node.js 26 at the `process` level it checks import-time writes outside the allowed directories, writes to `allowWrites`, TCP to a local listener, `fetch`, DNS and UDP, `child_process` and `worker_threads`, `process.dlopen`, `node:sqlite`, `eval` and `new Function` with and without the opt-out, credentials in the environment, under `HOME` and in a file outside the project, timeouts (the worker's pid is dead afterwards), exit hooks, the symlink limitation, TypeScript decorators, failing modules and invalid, non-declared and oversized results. On Node.js 22 and 24 it checks that process isolation is refused before any worker runs. Process-group cleanup is tested by driving the runner with a worker that is allowed to start a child, because a worker under the Permission Model cannot; the child must die with the group, on timeout and after a normal exit.
+`tests/build.test.ts` runs `build` with a hostile Drizzle schema module (`tests/fixtures/drizzle/hostile.mjs`) that tries TCP, `fetch`, a write outside the project, a child process and a database URL from the build's environment at import time: at the process level on Node.js 26 and in a container, every attempt is blocked, the local listener sees no connection, nothing is written and the URL appears nowhere in the document or the output. `tests/isolation.test.ts` exercises hostile model modules (`tests/fixtures/adversarial/`) through a test-only extractor. On Node.js 26 at the `process` level it checks import-time writes outside the allowed directories, writes to `allowWrites`, TCP to a local listener, `fetch`, DNS and UDP, `child_process` and `worker_threads`, `process.dlopen`, `node:sqlite`, `eval` and `new Function` with and without the opt-out, credentials in the environment, under `HOME` and in a file outside the project, timeouts (the worker's pid is dead afterwards), exit hooks, the symlink limitation, TypeScript decorators, failing modules and invalid, non-declared and oversized results. On Node.js 22 and 24 it checks that process isolation is refused before any worker runs. Process-group cleanup is tested by driving the runner with a worker that is allowed to start a child, because a worker under the Permission Model cannot; the child must die with the group, on timeout and after a normal exit.
 
 Container tests run only with `LSV_TEST_CONTAINER_IMAGE` (see `tests/containers/README.md`). They have passed on Docker 29.8 (Docker Desktop on macOS, arm64) with an image built from `tests/containers/Dockerfile` (Node.js 24, the package installed with `npm install --prefix /opt/lsv`), from hosts running Node.js 22.13.0, 22.23.3, 24.22.0 and 26.11.1: parity with the process level, no network past the Permission Model, a read-only project (`EROFS`) for an `allowWrites` directory, withheld credentials, container removal on timeout, the package found from the working directory and at `containerPackagePath`, refusal of a wrong `containerPackagePath` (no worker entry point), an image without the package, an image whose package has another version, and a missing image, which is refused without being pulled. Unit tests with a stand-in runtime check that nothing is pulled by default and that `pullImage` changes every run to `--pull missing`. They have not run on Podman, rootless Docker, or a Linux or Windows host. The memory, process-count and capability limits are passed to the runtime but not tested.
 
 ## Configuration
 
-The isolation settings (`IsolationConfig` in `src/isolation/index.ts`; exposed by `build` when it lands):
+The isolation settings, keys of the `"node-schema-viewer"` configuration in `package.json` read by `build` (`IsolationConfig` in `src/isolation/index.ts`):
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `level` | `process` | `process` (Node.js 26+) or `container` |
-| `timeout` | `120` | Seconds |
+| `isolation` (`--isolation`) | `process` | `process` (Node.js 26+) or `container` |
+| `timeout` (`--timeout`) | `120` | Seconds |
 | `envPassthrough` | `[]` | Extra variables the worker may see; credentials and loader settings are refused |
 | `env` | `{}` | Fixed placeholder values, such as `{"SECRET_KEY": "schema-viewer-placeholder"}` |
 | `allowWrites` | `[]` | Project directories application code may write to (process level; read-only in a container) |
 | `allowReads` | `[]` | Extra directories to read, such as packages linked from outside the project or workspace |
 | `allowCodeGeneration` | `false` | Allow `eval` and `new Function` |
-| `containerImage` | none | Required for `container` |
+| `containerImage` (`--container-image`) | none | Required for `container` |
 | `containerRuntime` | `docker`, then `podman` | |
 | `containerMemory` | `1g` | |
 | `containerPackagePath` | resolved from the image's working directory | Absolute path of the package directory inside the image |
 | `pullImage` | `false` | Let the runtime pull a missing image (`--pull missing`); pin it by digest |
 
-A container image needs Node.js 22.13+ (22.15+ for TypeScript models) and the same `node-schema-viewer` version as the host, resolvable from the image's working directory or at `containerPackagePath`. Your project, with its `node_modules`, is mounted read-only; native addons are refused, so only JavaScript dependencies load. Build the image yourself and keep it local, or pin it by digest:
+A container image needs Node.js 22.13+ (22.15+ for TypeScript models) and the same `node-schema-viewer` version as the host, resolvable from the image's working directory or at `containerPackagePath`. It does not need your ORM: the adapter loads it from your project, which is mounted read-only with its `node_modules`; native addons are refused, so only JavaScript dependencies load (Drizzle ORM is pure JavaScript). Build the image yourself and keep it local, or pin it by digest:
 
 ```dockerfile
 FROM node:24-slim@sha256:<digest>

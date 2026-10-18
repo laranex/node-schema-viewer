@@ -1,6 +1,7 @@
 // Runs the extraction worker at the requested isolation level and validates what it returns.
 import { spawn, spawnSync, type ChildProcess } from 'node:child_process';
 import { closeSync, constants, existsSync, fstatSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, readSync, realpathSync, rmSync, statSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -102,10 +103,16 @@ export function workspaceRoot(projectRoot: string): string | null {
     }
 }
 
+// The contract package the adapters serialize with. It imports nothing else, so its directory alone is granted; it is
+// outside this package when both are installed side by side (npx, a global or separate prefix).
+export function contractRoot(): string {
+    return real(dirname(createRequire(import.meta.url).resolve('laranex-schema-viewer-ui/package.json')));
+}
+
 // What the worker may read: the project, its workspace, every node_modules directory module resolution can reach
-// from it, this package, and configured extras.
+// from it, this package and its contract package, and configured extras.
 export function readRoots(projectRoot: string, config: IsolationConfig): string[] {
-    const roots = [projectRoot, packageRoot()];
+    const roots = [projectRoot, packageRoot(), contractRoot()];
     const workspace = workspaceRoot(projectRoot);
     if (workspace !== null) {
         roots.push(workspace);

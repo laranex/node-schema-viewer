@@ -1,6 +1,6 @@
 # Quick start
 
-This walk-through views, queries and checks a saved laranex-schema 2.0 document. Building a document from Node.js ORMs is [in development](./orm-support.md), so start from a document that another Laranex producer wrote, or read one from a database with the [introspection API](#read-a-database-instead).
+This walk-through views, queries and checks a saved laranex-schema 2.0 document. Write one with [`build`](./build.md) from Drizzle schema modules or a live database, use one that another Laranex producer wrote, or read one with the [introspection API](#read-a-database-instead).
 
 ## 1. Install and configure
 

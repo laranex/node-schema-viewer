@@ -44,4 +44,4 @@ See [schema comparison](./comparison.md#scopes).
 
 ## Configuring connections for `build`
 
-When `build` lands, database connections will be configured in `package.json` by the environment variable that holds each URL, never the URL itself; see [planned configuration](./database.md#planned-configuration).
+`build` configures each connection in `package.json` under `databases.NAME`, by the environment variable that holds its URL (`urlEnv`), never the URL itself, with its schemas, driver and schema modules; see [build configuration](./build.md#configuration).

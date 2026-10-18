@@ -1,15 +1,15 @@
 # Supported ORMs
 
-Building a declared document from Node.js ORM definitions (`build`) is **not available yet**. The isolation layer it runs on is in place and tested ([isolation and security](./security.md)); the ORM adapters are added on top of it one at a time. Until then, `serve`, `mcp`, `compare` and `check` read documents written by another Laranex producer or by the [database introspection API](./database.md).
+[`build --source declared`](./build.md) reads your ORM schema modules in an isolated extraction worker ([isolation and security](./security.md)) and writes a laranex-schema 2.0 document. Adapters are added one at a time; for an ORM without one, [`build --source database`](./build.md) reads the live catalogs read-only and needs no ORM.
 
 | ORM | Status | Notes |
 | --- | --- | --- |
-| Drizzle | **In development**, not yet available | The first adapter being built |
+| Drizzle | **Supported** (`drizzle-orm` 0.36 to 0.45) | `pg-core`, `mysql-core` and `sqlite-core`; relations v1 (`relations()`). 1.0 beta/rc is refused. See [Drizzle ORM](./build.md#drizzle-orm) |
 | TypeORM | Planned, not yet available | |
 | MikroORM | Planned, not yet available | |
 | Sequelize v6 | Planned, not yet available | |
 
-Every adapter will produce the same laranex-schema 2.0 document, so the viewer, the MCP tools, `compare` and `check` will work the same for every ORM. Physical foreign keys and declared ORM relationships stay separate layers of that document.
+Every adapter produces the same laranex-schema 2.0 document, so the viewer, the MCP tools, `compare` and `check` work the same for every ORM. Physical foreign keys and declared ORM relationships stay separate layers of that document.
 
 ## Out of scope
 

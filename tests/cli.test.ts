@@ -60,12 +60,6 @@ describe('cli', () => {
         }
     });
 
-    test('build is not available yet', async () => {
-        const run = await runCli(['build']);
-        assert.equal(run.code, 1);
-        assert.match(run.stderr, /build is not available yet/);
-    });
-
     test('commands import their modules lazily', () => {
         const source = readFileSync(CLI, 'utf8');
         const staticImports = [...source.matchAll(/^import .* from '([^']+)';$/gm)].map((m) => m[1]);

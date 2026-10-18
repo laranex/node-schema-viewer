@@ -5,7 +5,7 @@
 import { spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, realpathSync, rmSync } from 'node:fs';
-import { join, posix, resolve } from 'node:path';
+import { isAbsolute, join, posix, resolve } from 'node:path';
 import { VERSION } from '../version.js';
 import { workerEnvironment } from './env.js';
 import { IsolationError, type ExtractRequest, type ExtractResult, type IsolationConfig } from './index.js';
@@ -176,7 +176,9 @@ export async function extractInContainer(request: ExtractRequest, config: Isolat
             image,
             'node', ...flags, posix.join(packageDir, 'dist', 'isolation', 'worker.js'), '--result', '/out/result.json',
         ];
-        const payload = JSON.stringify({ ...request, projectRoot: map(projectRoot), extractor: map(extractor), modules: request.modules.map((m) => map(m)) });
+        // Only absolute paths have a place in the mount; a registered extractor name and relative module specifiers do not.
+        const mapped = (path: string): string => (isAbsolute(path) ? map(path) : path);
+        const payload = JSON.stringify({ ...request, projectRoot: map(projectRoot), extractor: mapped(extractor), modules: request.modules.map(mapped) });
         const log = join(out, 'output.log');
         const run = await runWorker(runtime, args, {
             cwd: projectRoot,

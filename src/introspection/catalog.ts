@@ -55,7 +55,7 @@ export async function inspectConnection(session: Session, name: string, schemas:
 
 export async function inspectDatabase(session: Session, name: string, schemas: readonly string[], diagnostics: DiagnosticModel[]): Promise<SchemaDocument> {
     const connection = await inspectConnection(session, name, schemas);
-    return serialize({ source: 'database', producer: GENERATOR, orm: null, connections: [connection], diagnostics });
+    return serialize({ source: 'database', producer: GENERATOR, orm: null, connections: [connection], entities: [], associations: [], diagnostics });
 }
 
 function coverage(session: Session): Partial<Record<Feature, FeatureLevel>> {

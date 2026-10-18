@@ -22,7 +22,7 @@ Every Laranex Schema Viewer writes the same [laranex-schema](https://laranex.git
 | Comparison and gate | `src/compare.ts`, `src/check.ts` | The document and `package.json` | Reimplements the shared algorithms; connects to databases |
 | Producer model | `src/schema/` | — | Lets extractors write document fields directly |
 | Database introspection | `src/introspection/` | Database catalogs, in verified read-only sessions | Imports application code; runs DDL, DML or row queries |
-| Isolation | `src/isolation/` | Your models, in a separate worker (for the upcoming `build`) | Falls back to a weaker isolation level |
+| Isolation | `src/isolation/` | Your schema modules, in a separate worker (`build --source declared`) | Falls back to a weaker isolation level |
 
 ## The producer layering
 

@@ -9,11 +9,12 @@ aside: false
 Laranex Schema Viewer for Node.js (npm package `node-schema-viewer`) serves the shared [Laranex Schema Viewer UI](https://laranex.github.io/schema-viewer-ui/) and read-only MCP tools from a saved [laranex-schema 2.0](https://laranex.github.io/schema-viewer-ui/contract) document, compares the document's schemas, and gates schema drift in CI. It is part of the Laranex Schema Viewer family with [Laravel Schema Viewer](https://github.com/laranex/laravel-schema-viewer) and [Python Schema Viewer](https://laranex.github.io/python-schema-viewer/): every member writes the same JSON document and shows it with the same viewer; see [architecture](./architecture.md).
 
 ::: warning Status
-Version 0.1.0 is not released yet. Building a document from Node.js ORMs (`build`) is in development; see [supported ORMs](./orm-support.md). Today the commands read a document written by another Laranex Schema Viewer (Laravel, Python), or one that the [database introspection API](./database.md) produced.
+Version 0.1.0 is not released yet. [`build`](./build.md) supports Drizzle and live databases; TypeORM, MikroORM and Sequelize v6 are planned, and combined builds are not available yet; see [supported ORMs](./orm-support.md).
 :::
 
 ## What you can do today
 
+- **Build** a laranex-schema 2.0 document from Drizzle schema modules or a live database with [`build`](./build.md).
 - **View** a laranex-schema 2.x document in the shared interactive ERD with `serve`, re-read and validated on every request.
 - **Ask** with six read-only [MCP tools](./mcp.md) for Codex, Claude Code and other MCP clients.
 - **Compare** scopes of a document, such as tenant schemas or a primary and a replica, with [`compare`](./comparison.md).
@@ -22,7 +23,7 @@ Version 0.1.0 is not released yet. Building a document from Node.js ORMs (`build
 
 ## How it works
 
-1. **Produce** a laranex-schema 2.0 document: another Laranex producer's `build`, or `introspect()` here.
+1. **Produce** a laranex-schema 2.0 document: `npx node-schema-viewer build`, or another Laranex producer's `build`.
 2. **Inspect** it in the viewer: `npx node-schema-viewer serve`.
 3. **Ask** about it through MCP, and **check** it in CI.
 

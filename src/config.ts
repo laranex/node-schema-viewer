@@ -1,13 +1,31 @@
 // Project defaults from the "node-schema-viewer" key of the project's package.json. Static JSON only: configuration
 // files are never executed, unknown keys are rejected, and database URLs never belong in configuration.
 import { readFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { isAbsolute, join, resolve } from 'node:path';
 import { spellScope, validateSeverityOverrides, WILDCARD, type Certainty, type SeverityOverride, type Severity } from 'laranex-schema-viewer-ui/contract';
+import { EXTRACTORS } from './isolation/extractor.js';
 import { writeAtomically } from './snapshot.js';
 
 export const SECTION = 'node-schema-viewer';
 export const DEFAULT_SNAPSHOT = 'schema-viewer.json';
-const KEYS = new Set(['output', 'comparisons', 'check']);
+// The build's sources: declared (ORM metadata), database (live catalogs), combined (both, reconciled).
+export const SOURCES = ['declared', 'database', 'combined'] as const;
+export const ISOLATION_LEVELS = ['process', 'container'] as const;
+export const DRIVERS = ['postgresql', 'mysql', 'mariadb', 'sqlite'] as const;
+export const CASINGS = ['snake_case', 'camelCase'] as const;
+// The registered ORM adapters (src/isolation/extractor.ts) and the npm package each one reads.
+export const ORMS: Readonly<Record<string, string>> = { drizzle: 'drizzle-orm' };
+const BUILD_KEYS = [
+    'source', 'orm', 'modules', 'databaseUrlEnv', 'databaseSchemas', 'databaseConnection', 'databases', 'isolation', 'timeout',
+    'envPassthrough', 'env', 'allowWrites', 'allowReads', 'allowCodeGeneration', 'containerImage', 'containerRuntime', 'containerMemory',
+    'containerPackagePath', 'pullImage', 'drizzle',
+];
+const SINGLE_DATABASE_KEYS = ['databaseUrlEnv', 'databaseSchemas', 'databaseConnection'];
+const KEYS = new Set(['output', 'comparisons', 'check', ...BUILD_KEYS]);
+// An environment variable name, as python-schema-viewer's ENV_NAME.
+const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
+// Characters that make a modules entry a glob pattern.
+export const GLOB = /[*?]/;
 const URL_KEYS = /^(?:url|database_?url|databaseUrl|connection_?url|connectionUrl|dsn)$/i;
 const URL_VALUE = /^[A-Za-z][A-Za-z0-9+.-]*:\/\//;
 const MAX_PACKAGE_JSON_BYTES = 4 * 1024 * 1024;
@@ -46,12 +64,54 @@ export interface CheckConfig {
     certainty: Certainty | null;
 }
 
+// One named database connection: its driver, the schema modules that declare its tables, the variable holding its URL
+// (never the URL itself) and the schemas to inspect.
+export interface DatabaseConfig {
+    name: string;
+    urlEnv: string | null;
+    schemas: string[];
+    driver: (typeof DRIVERS)[number] | null;
+    modules: string[];
+}
+
+// What build reads; null and empty for what the configuration leaves to options and defaults.
+export interface BuildConfig {
+    source: (typeof SOURCES)[number] | null;
+    orm: string | null;
+    modules: string[];
+    databaseUrlEnv: string | null;
+    databaseSchemas: string[];
+    databaseConnection: string | null;
+    // By name, in name order.
+    databases: DatabaseConfig[];
+    isolation: (typeof ISOLATION_LEVELS)[number] | null;
+    timeout: number | null;
+    envPassthrough: string[];
+    env: Record<string, string>;
+    allowWrites: string[];
+    allowReads: string[];
+    allowCodeGeneration: boolean;
+    containerImage: string | null;
+    containerRuntime: string | null;
+    containerMemory: string | null;
+    containerPackagePath: string | null;
+    pullImage: boolean;
+    casing: (typeof CASINGS)[number] | null;
+}
+
 export interface ProjectConfig {
     // Absolute path, resolved against the project root.
     output: string | null;
     comparisons: ComparisonConfig[];
     check: CheckConfig;
+    build: BuildConfig;
 }
+
+export const EMPTY_BUILD: BuildConfig = {
+    source: null, orm: null, modules: [], databaseUrlEnv: null, databaseSchemas: [], databaseConnection: null, databases: [], isolation: null,
+    timeout: null, envPassthrough: [], env: {}, allowWrites: [], allowReads: [], allowCodeGeneration: false, containerImage: null,
+    containerRuntime: null, containerMemory: null, containerPackagePath: null, pullImage: false, casing: null,
+};
 
 const sameScope = (a: ScopeConfig, b: ScopeConfig): boolean => a.connection === b.connection && a.schema === b.schema;
 const isObject = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -203,10 +263,146 @@ function rejectUrls(value: unknown, where: string): void {
     }
 }
 
+function stringList(value: unknown, at: string, nonEmpty = false): string[] {
+    if (!Array.isArray(value) || !value.every((item) => typeof item === 'string' && (!nonEmpty || item !== ''))) {
+        throw new ConfigError(`${at} must be a list of ${nonEmpty ? 'non-empty ' : ''}strings`);
+    }
+    return value as string[];
+}
+
+function optionalString(value: unknown, at: string): string | null {
+    if (value === undefined) {
+        return null;
+    }
+    if (typeof value !== 'string' || value === '') {
+        throw new ConfigError(`${at} must be a non-empty string`);
+    }
+    return value;
+}
+
+function choiceOf<T extends string>(value: unknown, allowed: readonly T[], at: string): T | null {
+    if (value === undefined) {
+        return null;
+    }
+    if (!oneOf(value, allowed)) {
+        throw new ConfigError(`${at} must be one of ${allowed.join(', ')}`);
+    }
+    return value;
+}
+
+function flag(value: unknown, at: string): boolean {
+    if (value !== undefined && typeof value !== 'boolean') {
+        throw new ConfigError(`${at} must be true or false`);
+    }
+    return value === true;
+}
+
+function envName(value: unknown, at: string): string {
+    if (typeof value !== 'string' || !ENV_NAME.test(value)) {
+        throw new ConfigError(`${at} must be the name of the environment variable holding the URL (letters, digits and _), never the URL`);
+    }
+    return value;
+}
+
+// Schema modules: paths or glob patterns relative to the project root, or package names; never outside the project.
+export function moduleEntries(value: unknown, at: string): string[] {
+    const entries = stringList(value, at, true);
+    entries.forEach((entry, i) => {
+        if (isAbsolute(entry) || /^[A-Za-z]:/.test(entry) || entry.replace(/\\/g, '/').split('/').includes('..')) {
+            throw new ConfigError(`${at}[${String(i)}] must be a path or glob pattern relative to the project root, or a package name`);
+        }
+    });
+    return entries;
+}
+
+function databasesConfig(value: unknown, where: string): DatabaseConfig[] {
+    const at = `${where} databases`;
+    if (!isObject(value) || !Object.values(value).every(isObject)) {
+        throw new ConfigError(`${at} must be an object with one object per connection, such as { "default": { "urlEnv": "DATABASE_URL" } }`);
+    }
+    return Object.keys(value)
+        .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+        .map((name) => {
+            const entry = value[name] as Record<string, unknown>;
+            const here = `${at}.${name}`;
+            if (!CONNECTION_NAME.test(name)) {
+                throw new ConfigError(`${at}: connection names use letters, digits, '_', '.' and '-'`);
+            }
+            unknownKeys(entry, ['urlEnv', 'schemas', 'driver', 'modules'], here);
+            return {
+                name,
+                urlEnv: entry.urlEnv === undefined ? null : envName(entry.urlEnv, `${here} urlEnv`),
+                schemas: entry.schemas === undefined ? [] : stringList(entry.schemas, `${here} schemas`, true),
+                driver: choiceOf(entry.driver, DRIVERS, `${here} driver`),
+                modules: entry.modules === undefined ? [] : moduleEntries(entry.modules, `${here} modules`),
+            };
+        });
+}
+
+function buildConfig(section: Record<string, unknown>, where: string): BuildConfig {
+    const at = (key: string): string => `${where} ${key}`;
+    const orms = Object.keys(EXTRACTORS);
+    const databases = section.databases === undefined ? [] : databasesConfig(section.databases, where);
+    const single = SINGLE_DATABASE_KEYS.filter((key) => key in section);
+    if (databases.length > 0 && single.length > 0) {
+        throw new ConfigError(`${where} sets both databases and ${single.join(', ')}; configure every connection under databases`);
+    }
+    if (section.modules !== undefined && databases.some((d) => d.modules.length > 0)) {
+        throw new ConfigError(`${where} sets modules both at the top level and per databases entry; list each connection's modules under databases`);
+    }
+    const listed = databases.flatMap((d) => d.modules);
+    if (new Set(listed).size !== listed.length) {
+        throw new ConfigError(`${where} databases list a module under more than one connection`);
+    }
+    const timeout = section.timeout;
+    if (timeout !== undefined && (typeof timeout !== 'number' || !Number.isFinite(timeout) || timeout <= 0)) {
+        throw new ConfigError(`${at('timeout')} must be a positive number of seconds`);
+    }
+    const env = section.env ?? {};
+    if (!isObject(env) || !Object.values(env).every((v) => typeof v === 'string')) {
+        throw new ConfigError(`${at('env')} must be an object of string values`);
+    }
+    const drizzle = section.drizzle ?? {};
+    if (!isObject(drizzle)) {
+        throw new ConfigError(`${at('drizzle')} must be an object`);
+    }
+    unknownKeys(drizzle, ['casing'], at('drizzle'));
+    return {
+        source: choiceOf(section.source, SOURCES, at('source')),
+        orm: choiceOf(section.orm, orms, at('orm')),
+        modules: section.modules === undefined ? [] : moduleEntries(section.modules, at('modules')),
+        databaseUrlEnv: section.databaseUrlEnv === undefined ? null : envName(section.databaseUrlEnv, at('databaseUrlEnv')),
+        databaseSchemas: section.databaseSchemas === undefined ? [] : stringList(section.databaseSchemas, at('databaseSchemas'), true),
+        databaseConnection: section.databaseConnection === undefined ? null : connectionName(section.databaseConnection, at('databaseConnection')),
+        databases,
+        isolation: choiceOf(section.isolation, ISOLATION_LEVELS, at('isolation')),
+        timeout: timeout === undefined ? null : timeout,
+        envPassthrough: section.envPassthrough === undefined ? [] : stringList(section.envPassthrough, at('envPassthrough'), true),
+        env: env as Record<string, string>,
+        allowWrites: section.allowWrites === undefined ? [] : stringList(section.allowWrites, at('allowWrites'), true),
+        allowReads: section.allowReads === undefined ? [] : stringList(section.allowReads, at('allowReads'), true),
+        allowCodeGeneration: flag(section.allowCodeGeneration, at('allowCodeGeneration')),
+        containerImage: optionalString(section.containerImage, at('containerImage')),
+        containerRuntime: optionalString(section.containerRuntime, at('containerRuntime')),
+        containerMemory: optionalString(section.containerMemory, at('containerMemory')),
+        containerPackagePath: optionalString(section.containerPackagePath, at('containerPackagePath')),
+        pullImage: flag(section.pullImage, at('pullImage')),
+        casing: choiceOf(drizzle.casing, CASINGS, `${at('drizzle')} casing`),
+    };
+}
+
+function connectionName(value: unknown, at: string): string {
+    if (typeof value !== 'string' || !CONNECTION_NAME.test(value)) {
+        throw new ConfigError(`${at} must be a connection name (letters, digits, '_', '.' and '-')`);
+    }
+    return value;
+}
+
 export interface Section {
     output?: string;
     comparisons: ComparisonConfig[];
     check: CheckConfig;
+    build: BuildConfig;
 }
 
 export function validateSection(section: unknown, where = `package.json "${SECTION}"`): Section {
@@ -222,16 +418,26 @@ export function validateSection(section: unknown, where = `package.json "${SECTI
     if (output !== undefined && (typeof output !== 'string' || output === '')) {
         throw new ConfigError(`${where} output must be a non-empty string path`);
     }
-    return { ...(output === undefined ? {} : { output }), comparisons: comparisonsConfig(comparisons, where), check: checkConfig(check, where) };
+    return {
+        ...(output === undefined ? {} : { output }),
+        comparisons: comparisonsConfig(comparisons, where),
+        check: checkConfig(check, where),
+        build: buildConfig(section as Record<string, unknown>, where),
+    };
 }
 
 export function loadConfig(projectRoot: string): ProjectConfig {
     const found = readPackageJson(projectRoot);
     if (found === null || !(SECTION in found.data)) {
-        return { output: null, comparisons: [], check: { severity: null, certainty: null } };
+        return { output: null, comparisons: [], check: { severity: null, certainty: null }, build: EMPTY_BUILD };
     }
     const section = validateSection(found.data[SECTION], `${found.path} "${SECTION}"`);
-    return { output: section.output === undefined ? null : resolve(projectRoot, section.output), comparisons: section.comparisons, check: section.check };
+    return {
+        output: section.output === undefined ? null : resolve(projectRoot, section.output),
+        comparisons: section.comparisons,
+        check: section.check,
+        build: section.build,
+    };
 }
 
 // Explicit path, else the configured output, else schema-viewer.json in the project root.
@@ -242,11 +448,15 @@ export function resolveSnapshot(snapshot: string | undefined, projectRoot: strin
     return loadConfig(projectRoot).output ?? resolve(projectRoot, DEFAULT_SNAPSHOT);
 }
 
-// Add the key to an existing package.json, keeping every other property, their order, the indentation and the final
-// newline. Refuses to replace an existing key.
-export function addConfig(projectRoot: string, output: string = DEFAULT_SNAPSHOT): string {
-    validateSection({ output });
-    const section = { output };
+// Add the key to an existing package.json with the build defaults given (orm, schema modules) and the output, keeping
+// every other property, their order, the indentation and the final newline. Refuses to replace an existing key.
+export function addConfig(projectRoot: string, output: string = DEFAULT_SNAPSHOT, defaults: { orm?: string | undefined; modules?: string[] } = {}): string {
+    const section = {
+        ...(defaults.orm === undefined ? {} : { orm: defaults.orm }),
+        ...(defaults.modules === undefined || defaults.modules.length === 0 ? {} : { modules: defaults.modules }),
+        output,
+    };
+    validateSection(section);
     const found = readPackageJson(projectRoot);
     if (found === null) {
         throw new ConfigError(`No package.json in ${resolve(projectRoot)}; run npm init first`);

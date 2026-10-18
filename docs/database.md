@@ -4,7 +4,7 @@ Node Schema Viewer can read a live database's catalogs into a [laranex-schema 2.
 
 The catalog readers fill a normalized internal schema model (`src/schema/model.ts`) that does not use the document's field names; one serializer (`src/schema/serialize.ts`) writes it as a canonical 2.0 document, builds the links with the contract's shared graph builder, gives each diagnostic its rule-based id, and validates the result strictly. Several connections are merged as serialized documents by the same module.
 
-> Introspection is a programmatic API for now. The `build` command, its configuration and the comparison with declared models come in a later milestone; see [Planned configuration](#planned-configuration).
+> `build --source database` runs it from the command line ([build](./build.md), [configuration](#configuration)); the comparison with declared models (`combined`) comes in a later milestone.
 
 ## API
 
@@ -89,7 +89,7 @@ Every statement first passes an allowlist (`SELECT`, `WITH`, `SHOW`, session `SE
 - **Indexes:** parts (column or expression, order, nulls order, prefix length, collation, operator class), method, uniqueness, the primary key or unique constraint each backs, partial predicates, included columns, and `dialectOptions` for PostgreSQL `NULLS NOT DISTINCT` and MySQL invisible or MariaDB ignored indexes.
 - **Ownership:** `alembic_version`, `django_migrations` and `aerich` tables are marked as framework or package tables, as python-schema-viewer marks them.
 
-Ids are python-schema-viewer's: tables `["<connection>", <schema or null for the default schema>, "<table>"]`, foreign keys `["foreign_key", <table id>, <name>, <columns>, <target id>, <target columns>]`, indexes `<table id>:index:<name>`, constraints `<table id>:constraint:<name>`. Drivers have the contract's canonical names: `postgresql`, `mysql`, `mariadb` and `sqlite`. Indexes carry `parts` and `backs` (the primary key's index has `backs.kind` `primary_key`); 2.0 has no `Index.columns` or `Index.primary`. The 2.0 arrays `comparisons`, `migrations` and `inferredAssociations` are empty: introspection does not compare scopes, read migration history or infer associations yet. [`compare --write`](./comparison.md) computes and stores comparisons on a saved document afterwards.
+Ids are python-schema-viewer's: tables `["<connection>", <schema or null for the default schema>, "<table>"]`, foreign keys `["foreign_key", <table id>, <name>, <columns>, <target id>, <target columns>]`, indexes `<table id>:index:<name>`, constraints `<table id>:constraint:<name>`. Drivers have the contract's canonical names: `postgresql`, `mysql`, `mariadb` and `sqlite`. Indexes carry `parts` and `backs` (the primary key's index has `backs.kind` `primary_key`); 2.0 has no `Index.columns` or `Index.primary`. The 2.0 arrays `comparisons`, `migrations` and `inferredAssociations` are empty: introspection does not compare scopes or read migration history yet, and a database document has no models to infer associations between. [`compare --write`](./comparison.md) computes and stores comparisons on a saved document afterwards.
 
 Coverage records what each database can express: MySQL and MariaDB have no partial indexes or included columns (`not_applicable`), MariaDB and MySQL before 8.0.13 have no functional key parts, SQLite has no comments or included columns, and its check constraints are parsed from the table SQL (`partial`).
 
@@ -109,7 +109,7 @@ Known, deliberate differences that the fixtures do not exercise:
 
 ## Migration status and inferred associations
 
-laranex-schema 2.0 defines migration tracks and inferred associations. This package writes both arrays empty for now; when they are filled, they mean exactly what the contract says:
+laranex-schema 2.0 defines migration tracks and inferred associations. This package writes no migration tracks yet; declared documents carry the inferred associations the contract's shared `inferAssociations` computes. They mean exactly what the contract says:
 
 - **`diverged`** is a migration status: one current revision recorded in the version table is an ancestor of another current revision, i.e. the version table has overlapping entries. It is not branch divergence. A history with several heads (unmerged branches) is a separate fact, reported as the `migration_multiple_heads` diagnostic, and a database at every head is `up_to_date`, not `diverged`.
 - **Inferred associations** are what an uncovered foreign key implies between two ORM models that declare no relationship over it. Their `confidence` (`high`, `medium`, `low`) is a heuristic about the inference and never means an ORM attribute or relationship exists; viewers show them as "inferred, no ORM attribute declared".
@@ -126,9 +126,9 @@ export LSV_TEST_MARIADB_URL=mysql://root:lsv-admin@127.0.0.1:53307/lsv
 npm test
 ```
 
-## Planned configuration
+## Configuration
 
-When `build` lands, database connections will be configured in the static `"node-schema-viewer"` key of `package.json`, naming only the environment variable that holds each URL, never the URL:
+`build --source database` configures connections in the static `"node-schema-viewer"` key of `package.json`, naming only the environment variable that holds each URL, never the URL:
 
 ```json
 {
@@ -141,4 +141,4 @@ When `build` lands, database connections will be configured in the static `"node
 }
 ```
 
-A URL in the configuration or on the command line will be refused, as will a `urlEnv` variable that the extraction worker is allowed to see. `allowWritePrivileges` will be a command-line flag only.
+or selects them with `--database NAME=ENV_VAR`; a single database can use `databaseUrlEnv` (default `LARANEX_SCHEMA_DATABASE_URL`), `databaseSchemas` and `databaseConnection` instead. A URL in the configuration or on the command line is refused, as is a URL variable that the extraction worker is allowed to see. `--allow-write-privileges` is a command-line flag only. See [build](./build.md#configuration).
