@@ -1,5 +1,5 @@
 {
-  "pythonCommit": "94ac1343e188d49dbdb38dda1306d045fa601848",
+  "pythonCommit": "232ba66b88bf52567fca46becc3891f1ee79cde2",
   "texts": [
     {
       "isError": false,
@@ -242,6 +242,18 @@
       "text": "Error executing tool schema_get_relationships: 1 validation error for schema_get_relationshipsArguments\nkind\n  Input should be 'orm' or 'foreign_key' [type=literal_error, input_value='sql', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
     },
     {
+      "isError": true,
+      "text": "Error executing tool schema_get_relationships: Unknown table ID"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_get_relationships: Unknown table ID"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_overview: Document revision differs; restart pagination without revision"
+    },
+    {
       "isError": false,
       "text": "{\n  \"section\": \"comparisons\",\n  \"filters\": {\n    \"comparison\": null,\n    \"baseline\": null,\n    \"target\": null,\n    \"objectType\": null,\n    \"change\": null,\n    \"severity\": null,\n    \"certainty\": null\n  },\n  \"revision\": \"5b637cca733346b4f8b861e769cfe9e85c21b4d77ee5aab90977863cb9f6c328\",\n  \"total\": 0,\n  \"offset\": 0,\n  \"limit\": 25,\n  \"items\": [],\n  \"nextOffset\": null\n}"
     },
@@ -296,6 +308,18 @@
     {
       "isError": true,
       "text": "Error executing tool schema_compare: Document revision differs; restart pagination without revision"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Unknown comparison ID; use schema_compare"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Unknown baseline connection; use schema_overview"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Unknown target connection; use schema_overview"
     }
   ]
 }
