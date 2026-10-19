@@ -7,7 +7,7 @@ specific to this package. The details are in [docs/security.md](docs/security.md
 
 ## Supported versions
 
-During the 0.x development phase only the latest released version on npm receives security fixes (currently 0.1.0).
+During the 0.x development phase only the latest released version on npm receives security fixes (currently 0.1.1).
 Fixes are made on `main` and ship in a new release; there are no backports to older 0.x releases or to prereleases.
 
 ## Reporting a vulnerability

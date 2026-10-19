@@ -2,7 +2,7 @@
 
 `node-schema-viewer` serves the shared [Laranex Schema Viewer UI](https://github.com/laranex/schema-viewer-ui) and read-only MCP tools from a saved [laranex-schema](https://github.com/laranex/schema-viewer-ui/blob/main/docs/contract.md) 2.x document, compares its schemas (`compare`) and gates schema drift in CI (`check`). `serve`, `mcp`, `compare` and `check` never connect to a database, run migrations, start processes or execute your configuration.
 
-> Status: 0.1.0, the first release. `build` writes documents from Drizzle ORM schemas (`--source declared`) or live databases (`--source database`); TypeORM, MikroORM, Sequelize and `combined` builds follow.
+> Status: 0.1.1, the first release. `build` writes documents from Drizzle ORM schemas (`--source declared`) or live databases (`--source database`); TypeORM, MikroORM, Sequelize and `combined` builds follow.
 
 Requires Node.js 22.13 or later (22, 24 and 26 are tested).
 

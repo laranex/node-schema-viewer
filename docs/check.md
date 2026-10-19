@@ -137,7 +137,7 @@ Build the document in the job, then gate it. Never commit a schema document, eve
 
 ```json
 {
-  "devDependencies": { "node-schema-viewer": "0.1.0" },
+  "devDependencies": { "node-schema-viewer": "0.1.1" },
   "node-schema-viewer": {
     "output": "schema-viewer.json",
     "databases": {

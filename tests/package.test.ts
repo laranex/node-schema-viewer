@@ -65,7 +65,7 @@ describe('package', { timeout: 300_000 }, () => {
         const bin = join(project, 'node_modules', '.bin', 'node-schema-viewer');
         assert.ok(readdirSync(join(project, 'node_modules', 'node-schema-viewer', 'dist')).includes('cli.js'));
 
-        assert.equal(execFileSync(bin, ['--version'], { cwd: project, encoding: 'utf8' }), '0.1.0\n');
+        assert.equal(execFileSync(bin, ['--version'], { cwd: project, encoding: 'utf8' }), '0.1.1\n');
 
         const child = spawn(bin, ['serve', '--snapshot', COMBINED, '--port', '0'], { cwd: project, stdio: ['ignore', 'pipe', 'pipe'] });
         try {

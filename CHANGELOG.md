@@ -4,7 +4,9 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
-## [0.1.0] - 2026-10-19
+## [0.1.1] - 2026-10-19
+
+The first release on npm. Version 0.1.0 was tagged but never published: npm refuses that version number.
 
 ### Security
 
@@ -73,5 +75,5 @@ All notable changes to this project are documented here. The format follows [Kee
 - The introspection worker can reach the network on every Node.js version (unrestricted on 22 and 24, `--allow-net` on 26), and `node:sqlite` ignores the Permission Model; SQLite safety rests on the path check, `readOnly` and `query_only`. A foreign key into a schema that is not inspected makes the document invalid, as in python-schema-viewer.
 - Process isolation is best-effort: the Permission Model is not a security boundary, symlinks inside readable directories reach their targets, inherited file descriptors, signals to other processes and `node:vm` are not restricted, and everything in the project (including `.env`) is readable. Use container isolation for untrusted code.
 
-[Unreleased]: https://github.com/laranex/node-schema-viewer/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/laranex/node-schema-viewer/releases/tag/v0.1.0
+[Unreleased]: https://github.com/laranex/node-schema-viewer/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/laranex/node-schema-viewer/releases/tag/v0.1.1

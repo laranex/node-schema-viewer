@@ -81,7 +81,7 @@ npm run test:examples  # installs examples/embedding (this package packed from t
 
 ## Releases
 
-Publishing a GitHub release `vX.Y.Z` runs `.github/workflows/publish.yml`: the full `release` test matrix (`tests.yml`), a tag/version match, a check that the version is not already on npm, `npm run check:release`, a snapshot scan of the repository and of the packed package (no finding allowed), then npm Trusted Publishing (OIDC, `npm publish --provenance --access public`, the `npm` environment; no token in the repository). Trusted Publishing must be configured for `node-schema-viewer` on npmjs.com before the first release. Do not bypass these gates; never publish from a local machine.
+Publishing a GitHub release `vX.Y.Z` runs `.github/workflows/publish.yml`: the full `release` test matrix (`tests.yml`), a tag/version match, a check that the version is not already on npm, `npm run check:release`, a snapshot scan of the repository and of the packed package (no finding allowed), then npm Trusted Publishing (OIDC, `npm publish --provenance --access public`, the `npm` environment; no token in the repository). The trusted publisher for `node-schema-viewer` on npmjs.com names this repository, `publish.yml` and the `npm` environment; change them together. npm treats a staged version (`npm stage`) like a published one: once staged, that version number can never be published normally again (0.1.0 was lost this way), so never stage a release version. Do not bypass these gates; never publish from a local machine.
 
 ## Changelog
 

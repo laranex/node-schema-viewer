@@ -24,7 +24,7 @@ async function copy() {
       <div class="lx-terminal-bar"><i></i><i></i><i></i><span>install</span><button @click="copy" :aria-label="message">{{ message === 'Copied' ? 'Copied ✓' : 'Copy' }}</button></div>
       <div class="lx-install"><span aria-hidden="true">$</span><code>{{ command }}</code></div>
     </div>
-    <p class="lx-caption">Requires Node.js 22.13 or later (22, 24 and 26 are tested). Version 0.1.0 is the first release; build supports Drizzle and live databases so far.</p>
+    <p class="lx-caption">Requires Node.js 22.13 or later (22, 24 and 26 are tested). Version 0.1.1 is the first release; build supports Drizzle and live databases so far.</p>
     <span class="sr-only" role="status">{{ message }}</span>
     <div class="lx-actions"><a class="lx-button primary" :href="withBase('/quick-start.html')">Get started <span aria-hidden="true">→</span></a><a class="lx-button secondary" :href="withBase('/demo.html')">Explore the live demo</a></div>
   </header>

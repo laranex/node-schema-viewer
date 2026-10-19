@@ -142,7 +142,7 @@ A container image needs Node.js 22.13+ (22.15+ for TypeScript models) and the sa
 
 ```dockerfile
 FROM node:24-slim@sha256:<digest>
-RUN mkdir /opt/lsv && npm install --prefix /opt/lsv node-schema-viewer@0.1.0
+RUN mkdir /opt/lsv && npm install --prefix /opt/lsv node-schema-viewer@0.1.1
 WORKDIR /opt/lsv
 ```
 
