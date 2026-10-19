@@ -1,5 +1,5 @@
 {
-  "pythonCommit": "94ac1343e188d49dbdb38dda1306d045fa601848",
+  "pythonCommit": "232ba66b88bf52567fca46becc3891f1ee79cde2",
   "texts": [
     {
       "isError": false,
@@ -230,6 +230,18 @@
       "text": "Error executing tool schema_get_relationships: 1 validation error for schema_get_relationshipsArguments\nkind\n  Input should be 'orm' or 'foreign_key' [type=literal_error, input_value='sql', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
     },
     {
+      "isError": true,
+      "text": "Error executing tool schema_get_relationships: Unknown table ID"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_get_relationships: Unknown table ID"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_overview: Document revision differs; restart pagination without revision"
+    },
+    {
       "isError": false,
       "text": "{\n  \"section\": \"comparisons\",\n  \"filters\": {\n    \"comparison\": null,\n    \"baseline\": null,\n    \"target\": null,\n    \"objectType\": null,\n    \"change\": null,\n    \"severity\": null,\n    \"certainty\": null\n  },\n  \"revision\": \"2b47140c227a4b1674ad791e2cd78b4b323ed9d270ca54d78b5eeb6ed26a8f81\",\n  \"total\": 1,\n  \"offset\": 0,\n  \"limit\": 25,\n  \"items\": [\n    {\n      \"id\": \"c9ff18bcf1370bef2\",\n      \"baseline\": {\n        \"connection\": \"connection:ledger\",\n        \"schema\": \"billing\"\n      },\n      \"target\": {\n        \"connection\": \"connection:ledger\",\n        \"schema\": \"archive\"\n      },\n      \"complete\": true,\n      \"omitted\": 0,\n      \"summary\": {\n        \"missing\": 2,\n        \"extra\": 1,\n        \"changed\": 0\n      },\n      \"labels\": {\n        \"baseline\": \"ledger:billing\",\n        \"target\": \"ledger:archive\"\n      },\n      \"counts\": {\n        \"differences\": 3,\n        \"error\": 2,\n        \"warning\": 1,\n        \"info\": 0,\n        \"certain\": 3,\n        \"likely\": 0\n      }\n    }\n  ],\n  \"nextOffset\": null\n}"
     },
@@ -360,6 +372,18 @@
     {
       "isError": true,
       "text": "Error executing tool schema_compare: Document revision differs; restart pagination without revision"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Unknown comparison ID; use schema_compare"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Unknown baseline connection; use schema_overview"
+    },
+    {
+      "isError": true,
+      "text": "Error executing tool schema_compare: Unknown target connection; use schema_overview"
     }
   ]
 }

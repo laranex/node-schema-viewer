@@ -1726,6 +1726,27 @@
       "tool": "schema_get_relationships"
     },
     {
+      "arguments": {
+        "table": "[\"default\",null,\"missing\"]"
+      },
+      "error": "Unknown table ID",
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "table": "null"
+      },
+      "error": "Unknown table ID",
+      "tool": "schema_get_relationships"
+    },
+    {
+      "arguments": {
+        "revision": "null"
+      },
+      "error": "Document revision differs; restart pagination without revision",
+      "tool": "schema_overview"
+    },
+    {
       "arguments": {},
       "result": {
         "filters": {
@@ -1861,6 +1882,27 @@
         "revision": "0000000000000000000000000000000000000000000000000000000000000000"
       },
       "error": "Document revision differs; restart pagination without revision",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "comparison": "null"
+      },
+      "error": "Unknown comparison ID; use schema_compare",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "baseline": "null"
+      },
+      "error": "Unknown baseline connection; use schema_overview",
+      "tool": "schema_compare"
+    },
+    {
+      "arguments": {
+        "target": "[]"
+      },
+      "error": "Unknown target connection; use schema_overview",
       "tool": "schema_compare"
     }
   ],
