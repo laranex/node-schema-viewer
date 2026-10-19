@@ -34,6 +34,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Added
 
+- `.github/workflows/publish.yml`: publishing a GitHub release `vX.Y.Z` runs the full release test matrix, checks the tag against `package.json` and that the version is new on npm, runs the release guard and a snapshot scan of the repository and the packed package, then publishes with npm Trusted Publishing and provenance (no npm token in the repository).
 - `SECURITY.md` (supported versions, reporting, what the package enforces and what the application or repository owner must do, sensitive snapshots and exports, Git protection with `scan`, limitations, incident response and the responsibility boundary), `CONTRIBUTING.md` (synthetic fixtures, allowlist regeneration, the scan before committing, the test commands) and a security notice in the README. Neither file is in the npm package.
 - `docs/embedding.md` and `examples/embedding/`: the viewer as a protected, development-only page in Express, Fastify, NestJS and Next.js applications (HTTP Basic Auth with constant-time comparison, or the application's own authentication; routes only in development; production installs and `next build` without the viewer or the snapshot), with tests run by `npm run test:examples`.
 
