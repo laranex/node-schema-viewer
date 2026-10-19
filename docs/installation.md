@@ -1,9 +1,5 @@
 # Installation
 
-::: warning Not released yet
-`node-schema-viewer` 0.1.0 has not been published to npm yet. The commands below are how it installs once it is.
-:::
-
 ## Requirements
 
 | Requirement | Version |

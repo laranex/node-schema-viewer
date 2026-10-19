@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-19
+
 ### Security
 
 - `scan [--tracked] [--untracked] [--artifacts DIR]... [--history] [--allowlist FILE] [--report FILE] [--json]`: finds laranex-schema snapshots by content in the Git index (staged bytes, and files tracked before they were ignored), untracked files, build output directories and, on request, the history, and judges them against a path and SHA-256 allowlist (`.laranex-schema-allowlist.json`). It is `laranex-schema-viewer-ui`'s own `contract/scan.mjs` run in process, with the same flags, one-line summary, `laranex-schema-scan` 1.0 report and exit codes: 0 clean, 1 confirmed exposure, 2 scan failure or incomplete scan, 3 uncertain (2 > 1 > 3 > 0). It reads files and runs `git` only, and never prints file content. Compressed or encoded payloads (such as base64+gzip offline HTML exports) are not decoded. See `docs/cli.md#scan`, with a pre-commit hook and a CI recipe.
@@ -70,3 +72,6 @@ All notable changes to this project are documented here. The format follows [Kee
 - `build --source combined` (reconciling declared and database metadata) is not available yet, and Drizzle is the only ORM adapter. Names Drizzle generates (`getName()`) come from the columns' keys; drizzle-kit renames them for a configured casing, which the adapter does not.
 - The introspection worker can reach the network on every Node.js version (unrestricted on 22 and 24, `--allow-net` on 26), and `node:sqlite` ignores the Permission Model; SQLite safety rests on the path check, `readOnly` and `query_only`. A foreign key into a schema that is not inspected makes the document invalid, as in python-schema-viewer.
 - Process isolation is best-effort: the Permission Model is not a security boundary, symlinks inside readable directories reach their targets, inherited file descriptors, signals to other processes and `node:vm` are not restricted, and everything in the project (including `.env`) is readable. Use container isolation for untrusted code.
+
+[Unreleased]: https://github.com/laranex/node-schema-viewer/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/laranex/node-schema-viewer/releases/tag/v0.1.0

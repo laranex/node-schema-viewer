@@ -7,9 +7,8 @@ specific to this package. The details are in [docs/security.md](docs/security.md
 
 ## Supported versions
 
-No version has been released yet: 0.1.0 is unreleased and nothing is published to npm, so no release is supported.
-Security fixes are made on the `main` branch. Once releases exist, during the 0.x development phase only the latest
-released version receives security fixes, with no backports to older 0.x releases or to prereleases.
+During the 0.x development phase only the latest released version on npm receives security fixes (currently 0.1.0).
+Fixes are made on `main` and ship in a new release; there are no backports to older 0.x releases or to prereleases.
 
 ## Reporting a vulnerability
 

@@ -9,7 +9,7 @@ aside: false
 Laranex Schema Viewer for Node.js (npm package `node-schema-viewer`) serves the shared [Laranex Schema Viewer UI](https://laranex.github.io/schema-viewer-ui/) and read-only MCP tools from a saved [laranex-schema 2.0](https://laranex.github.io/schema-viewer-ui/contract) document, compares the document's schemas, and gates schema drift in CI. It is part of the Laranex Schema Viewer family with [Laravel Schema Viewer](https://github.com/laranex/laravel-schema-viewer) and [Python Schema Viewer](https://laranex.github.io/python-schema-viewer/): every member writes the same JSON document and shows it with the same viewer; see [architecture](./architecture.md).
 
 ::: warning Status
-Version 0.1.0 is not released yet. [`build`](./build.md) supports Drizzle and live databases; TypeORM, MikroORM and Sequelize v6 are planned, and combined builds are not available yet; see [supported ORMs](./orm-support.md).
+Version 0.1.0 is the first release. [`build`](./build.md) supports Drizzle and live databases; TypeORM, MikroORM and Sequelize v6 are planned, and combined builds are not available yet; see [supported ORMs](./orm-support.md).
 :::
 
 ## What you can do today
